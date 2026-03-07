@@ -1,0 +1,60 @@
+﻿@model LedApp.Models.dulieuxuat
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Thêm dư liệu xuất</h1>
+
+@*<h4>dulieuxuat</h4>*@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CuaXuatId" class="control-label"></label>
+                <select asp-for="CuaXuatId" class ="form-control" asp-items="ViewBag.CuaXuatId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="BienSoXe" class="control-label"></label>
+                <input asp-for="BienSoXe" class="form-control" />
+                <span asp-validation-for="BienSoXe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayXuat" class="control-label"></label>
+                <input type="date" asp-for="NgayXuat" class="form-control" />
+                <span asp-validation-for="NgayXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GioXuat" class="control-label"></label>
+                <input asp-for="GioXuat" class="form-control" min="0" max="24" />
+                <span asp-validation-for="GioXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhutXuat" class="control-label"></label>
+                <input asp-for="PhutXuat" class="form-control" min="0" max="59" />
+                <span asp-validation-for="PhutXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CongRa" class="control-label"></label>
+                <input asp-for="CongRa" class="form-control" />
+                <span asp-validation-for="CongRa" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu dữ liệu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Trở lại</a>
+</div>
+

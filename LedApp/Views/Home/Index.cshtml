@@ -1,0 +1,387 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+    //Layout = null;
+}
+
+
+
+@*<div class="led3">
+    <p>
+        Giờ: <span id="hour"></span>h<span id="min"></span>
+    </p>
+    <h2>Cổng ra</h2>
+  
+    <table class="bang">
+        <thead>
+            <tr>
+                <th>Xe</th>
+           
+                <th>Giờ ra</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+    </table>
+</div>
+
+<div class="led2">
+    <p>
+        Giờ: 22h03
+    </p>
+    <h2>Cổng ra</h2>
+   
+    <table class="bang">
+        <thead>
+            <tr>
+                <th>Xe</th>
+             
+                <th>Giờ ra</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>29KT123.45</td>
+           
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+
+            <td>07h30p</td>
+        </tr>
+    </table>
+</div>*@
+<div class="hang">
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2 id="tencua">Cửa xuất X-01<span></span></h2>
+        <p class="pled5" id="tenxe_1"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_1">
+            </tbody>
+
+        </table>
+    </div>
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>Cửa xuất X-02<span></span></h2>
+        <p class="pled5" id="tenxe_2"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_2">
+            </tbody>
+
+        </table>
+    </div>
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>Cửa xuất X-03<span></span></h2>
+        <p class="pled5" id="tenxex03"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_3">
+            </tbody>
+
+        </table>
+    </div>
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>Cửa xuất X-04<span></span></h2>
+        <p class="pled5" id="tenxex04"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_4">
+            </tbody>
+
+        </table>
+    </div>
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>Cửa xuất X-05<span></span></h2>
+        <p class="pled5" id="tenxex05"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_5">
+            </tbody>
+
+        </table>
+    </div>
+    <div class="led5">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>Cửa xuất X-06<span></span></h2>
+        <p class="pled5" id="tenxex06"></p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tbody id="led5_6">
+            </tbody>
+
+        </table>
+    </div>
+</div>
+@*
+@for (int i = 1; i < 23; i++)
+{
+    <div class="led5">
+        <p>
+            Giờ: 22h03
+        </p>
+        <h2>Cửa xuất X-0<span>@i</span></h2>
+        <p>Xe:29KT123.45 Giờ XP:23h30P</p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>123 Tải</td>
+                <td>123 Tải</td>
+            </tr>
+            <tr>
+                <td>123 Tải</td>
+                <td>123 Tải</td>
+            </tr>
+            <tr>
+                <td>123 Tải</td>
+                <td>123 Tải</td>
+            </tr>
+
+        </table>
+    </div>
+}*@
+@*/*Bảng tổng hợp của xuất*/*@
+<div class="hang">
+    <div class="led4" style="width:@{
+        @ViewBag.THXuatW
+}px;height:@{
+        @ViewBag.THXuatH
+}px;">
+        <p>
+            Giờ: <span class="hour"></span>h<span class="min"></span>
+        </p>
+        <h2>@ViewBag.THXuatTen</h2>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Cửa</th>
+                    <th>Biển số</th>
+                    <th>Sản lượng</th>
+                    <th>Giờ</th>
+                </tr>
+            </thead>
+            <tbody id="led4">
+            </tbody>
+        </table>
+    </div>
+  </div>
+   
+  @* 
+   @for (int i = 1; i < 10; i++)
+    {
+        <div class="led8">
+            <p>
+                Giờ: 22h03
+            </p>
+            <h2>Cửa nhập N-0 <span>@i</span></h2>
+            <p class="xe">Xe:29KT123.45</p>
+            <table class="bang">
+                <thead>
+                    <tr>
+                        <th>Chưa bàn giao</th>
+                        <th>Đã bàn giao</th>
+                       
+                    </tr>
+                </thead>
+                @for (int j = 1; j < 4; j++)
+                {
+                    <tr>
+                        <td>100 Tải</td>
+                        <td>000 Tải</td>
+                       
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
+</div>
+
+*@
+@*/*Cửa số 7 bảng tổng hợp của nhập*/*@
+@*<div class="led7">
+    <p>
+        Giờ: 22h03
+    </p>
+    <h2>TH NHẬP <span></span></h2>
+    
+    <table class="bang">
+        <thead>
+            <tr>
+                <th>Sắp về</th>
+                <th>Đã về</th>
+                <th>Chưa vào cửa nhập</th>
+               
+            </tr>
+        </thead>
+        @for (int j = 1; j < 18; j++)
+        {
+            <tr>
+                <td>100 Xe</td>
+                <td>100 Xe</td>
+                <td>100 Xe</td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="led1">
+    <p>
+        Giờ: 22h03
+    </p>
+    <h2>Cổng vào</h2>
+    <p>Xe:29KT123.45 Giờ XP:23h30P</p>
+    <table class="bang">
+        <thead>
+            <tr>
+                <th>Xe</th>
+                <th>Vị trí vào</th>
+                <th>Giờ vào</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>29KT123.45</td>
+            <td>N-01</td>
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+            <td>N-01</td>
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+            <td>N-01</td>
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+            <td>N-01</td>
+            <td>07h30p</td>
+        </tr>
+        <tr>
+            <td>29KT123.45</td>
+            <td>N-01</td>
+            <td>07h30p</td>
+        </tr>
+    </table>
+</div>
+
+<div class="led6">
+    <p>
+        Giờ: 22h03
+    </p>
+    <h2>NHẬP <span style="margin-left:1300px;">XUẤT</span></h2>
+
+    <table class="bang">
+        <thead>
+            <tr>
+                <th>Sắp về</th>
+                <th>Chưa vào cửa nhập</th>
+                <th>Xe</th>
+                <th>Số Lượng</th>
+                <th>Giờ</th>
+            </tr>
+        </thead>
+        @for (int j = 1; j < 18; j++)
+        {
+            <tr>
+                <td>123 Xe</td>
+                <td>123 Xe</td>
+                <td>29KT123.45</td>
+                <td>123 Tải 1234 Kiện</td>
+                <td>07h30p</td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="led9">
+    Cửa số 9
+</div>
+<div class="led10">
+    Cửa số 10
+</div>
+*@

@@ -1,0 +1,26 @@
+﻿
+        @{
+            ViewData["Title"] = "tonghopnhap";
+            Layout = "~/Views/Shared/_Layout.cshtml";
+        }
+
+        <div class="led7" style="width:@{@ViewBag.THNhapW}px;height:@{@ViewBag.THNhapH}px;">
+            <p>
+                Giờ: <span class="hour"></span>h<span class="min"></span>
+            </p>
+            <h2>@ViewBag.THNhapTen</h2>
+    
+            <table class="bang">
+                <thead>
+                    <tr>
+                        <th>Sắp về</th>
+                        <th>Đã về</th>
+                        <th>Chưa vào cửa nhập</th>
+               
+                    </tr>
+                </thead>
+                <tbody id="led7">
+                </tbody>
+            </table>
+        </div>
+

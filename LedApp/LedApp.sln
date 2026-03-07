@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LedApp", "LedApp.csproj", "{72736F8F-2E45-4079-8148-9DA91EBCDB73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIReadNFC", "..\APIReadNFC\APIReadNFC.csproj", "{CBF8B966-A31C-469E-9D6E-FC9828223ACB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72736F8F-2E45-4079-8148-9DA91EBCDB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72736F8F-2E45-4079-8148-9DA91EBCDB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72736F8F-2E45-4079-8148-9DA91EBCDB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72736F8F-2E45-4079-8148-9DA91EBCDB73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF8B966-A31C-469E-9D6E-FC9828223ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF8B966-A31C-469E-9D6E-FC9828223ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF8B966-A31C-469E-9D6E-FC9828223ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF8B966-A31C-469E-9D6E-FC9828223ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {748984A8-28D7-4ACF-9939-6A5625573E8E}
+	EndGlobalSection
+EndGlobal

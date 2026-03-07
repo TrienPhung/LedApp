@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "cuanhap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.ms == null)
+{
+    <div class="led8" style="width:@{@ViewBag.cuanhapw}px;height:@{@ViewBag.cuanhaph}px;">
+        <p>
+            Giờ: 22h03
+        </p>
+        <h2>@ViewBag.tencuanhap</h2>
+        <p class="xe" id="tenxenhap_@ViewBag.id">Xe:29KT123.45</p>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>Chưa bàn giao</th>
+                    <th>Đã bàn giao</th>
+
+                </tr>
+            </thead>
+            <tbody id="led8_@ViewBag.id">
+            </tbody>
+
+        </table>
+    </div>
+}
+else
+{
+    <p>@ViewBag.ms</p>
+}
+
+

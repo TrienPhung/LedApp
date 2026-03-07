@@ -1,0 +1,59 @@
+﻿@model IEnumerable<LedApp.Models.ChitietXuat>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Quản lý chi tiết số lượng nhập</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Cổng Xuất(Biển số xe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoluongCH)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.donviCH)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoluongD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.donviD)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>X-0 @item.dulieuxuatId</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoluongCH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donviCH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoluongD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.donviD)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+               @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

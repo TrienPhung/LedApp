@@ -1,0 +1,78 @@
+﻿@model IEnumerable<LedApp.Models.dulieuxuat>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Quản lý dữ liệu xuất</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BienSoXe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayXuat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GioXuat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhutXuat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CongRa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThai)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CuaXuat)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BienSoXe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayXuat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GioXuat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhutXuat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CongRa)
+            </td>
+            <td>
+               @if(item.TrangThai==true){
+                        <span>Tắt hiển thị</span>
+                    }
+                    else
+                    {
+                        <span>Hiển thị</span>
+                    }
+                </td>
+            <td>
+               x-0 @Html.DisplayFor(modelItem => item.CuaXuat.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

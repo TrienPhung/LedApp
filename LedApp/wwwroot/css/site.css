@@ -1,0 +1,309 @@
+﻿html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/*Tỉ lệ 16:9 Khung max 3840x2160 pixel*/
+.trangchu {
+    margin: 10px;
+    width: 3840px;
+    height:2160px;
+}
+body {
+    margin-bottom: 60px;
+    background-color:#000000;
+    color:#ffffff;
+}
+/*Hàng*/
+.hang{
+    clear:both;
+    width:100%;
+    height:auto;
+    display:block;
+    padding:10px;
+}
+.trbackground{
+    background-color:red;
+}
+.highlight {
+    background: red;
+}
+/*bộ Led P2.5*/
+/*Biển led 1 mặt tại cổng vào P4 ngoài trời. 
+Độ phân giải: 720*400pixels */
+.led1 {
+    width: 720px;
+    height: 400px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+    /*padding:5px;*/
+}
+    .led1 td{
+        width:30%;
+        text-align:center;
+    }
+    .led1 th {
+        width: 30%;
+        text-align: center;
+        font-weight:bold;
+    }
+    .led1 h2{
+        text-align:center;
+        text-transform:uppercase;
+    }
+    .led1 p{
+        margin:5px;
+    }
+    /*Biển led 1 mặt tại cổng ra P4 ngoài trời.
+Độ phân giải: 480*400pixels */
+    .led2 {
+        width: 480px;
+        height: 400px;
+        display: block;
+        border: 1px solid #ffffff;
+        float: left;
+    }
+        .led2 h2 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .led2 p {
+            margin: 5px;
+        }
+        .led2 td {
+            width: 50%;
+            text-align: center;
+        }
+
+        .led2 th {
+            width: 50%;
+            text-align: center;
+            font-weight: bold;
+        }
+/*Biển led 1 mặt tại cổng ra P4 ngoài trời.
+Độ phân giải: 480*400pixels*/
+.led3 {
+    width: 480px;
+    height: 400px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+    .led3 h2 {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .led3 p {
+        margin: 5px;
+    }
+
+    .led3 td {
+        width: 50%;
+        text-align: center;
+    }
+
+    .led3 th {
+        width: 50%;
+        text-align: center;
+        font-weight: bold;
+    }
+/*Bảng tổng hợp tại cửa xuất, 2 mặt.
+Led P2.5 trong nhà.Độ phân giải: 1152*640pixels*/
+.led4 {
+    width: 1152px;
+    height: 640px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+    .led4 h2 {
+        text-align: center;
+        /* text-transform: uppercase;*/
+    }
+
+    .led4 p {
+        margin: 5px;
+    }
+
+    .led4 td {
+        width: 25%;
+        text-align: center;
+    }
+
+    .led4 th {
+        width: 25%;
+        text-align: center;
+        font-weight: bold;
+    }
+/*Bảng chi tiết tại các cửa xuất, 2 mặt.
+Led P2.5 trong nhà, mặt mica trong.
+Độ phân giải: 384*256pixel*/
+.led5 {
+    width: 384px;
+    height: 256px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+    margin-left:5px;
+}
+    .led5 h2 {
+        text-align: center;
+       /* text-transform: uppercase;*/
+    }
+
+    .led5 p {
+        margin: 5px;
+    }
+
+    .led5 td {
+        width: 50%;
+        text-align: center;
+    }
+
+    .led5 th {
+        width: 50%;
+        text-align: center;
+        font-weight: bold;
+    }
+.pled5 {
+    text-align:center;
+}
+/*Bảng trung tâm, 2 mặt. Led P2.5 trong nhà.
+Độ phân giải: 2944*896pixel.*/
+.led6 {
+    width: 2944px;
+    height: 896px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+    .led6 h2 {
+        text-align: center;
+        /* text-transform: uppercase;*/
+    }
+
+    .led6 p {
+        margin: 5px;
+    }
+
+    .led6 td {
+        width: 20%;
+        text-align: center;
+    }
+
+    .led6 th {
+        width: 20%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .led6 .xe {
+        text-align: center;
+    }
+/*Bảng tổng hợp tại cửa nhập, 2 mặt. 
+Led P2.5 trong nhà. 
+Độ phân giải: 1024*576pixels*/
+.led7 {
+    width: 1024px;
+    height: 576px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+    .led7 h2 {
+        text-align: center;
+        /* text-transform: uppercase;*/
+    }
+
+    .led7 p {
+        margin: 5px;
+    }
+
+    .led7 td {
+        width: 30%;
+        text-align: center;
+    }
+
+    .led7 th {
+        width: 30%;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .led7 .xe {
+        text-align: center;
+    }
+/*Bảng chi tiết tại các cửa nhập, 2 mặt.
+Led P2.5 trong nhà, mặt mica trong.
+Độ phân giải: 384*256pixel*/
+.led8 {
+    width: 384px;
+    height: 256px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+    .led8 h2 {
+        text-align: center;
+        /* text-transform: uppercase;*/
+    }
+
+    .led8 p {
+        margin: 5px;
+    }
+
+    .led8 td {
+        width: 50%;
+        text-align: center;
+    }
+
+    .led8 th {
+        width: 50%;
+        text-align: center;
+        font-weight: bold;
+    }
+    .led8 .xe{
+        text-align:center;
+    }
+    /*Bảng khu vực giá trị cao, 1 mặt.  
+Led P2.5 trong nhà. 
+Độ phân giải: 1408*512pixels*/
+    .led9 {
+        width: 1408px;
+        height: 512px;
+        display: block;
+        border: 1px solid #ffffff;
+        float: left;
+    }
+/*Bảng khu vực thư, 1 mặt.
+Led P2.5 trong nhà.
+Độ phân giải: 1408*512pixels*/
+.led10 {
+    width: 1408px;
+    height: 512px;
+    display: block;
+    border: 1px solid #ffffff;
+    float: left;
+}
+.bang {
+    width: 100%;
+    border-collapse: collapse;
+}
+    .bang thead, td, th {
+        border: 1px solid;
+    }
+   /* .bang td{
+        width:50%;
+    }*/
