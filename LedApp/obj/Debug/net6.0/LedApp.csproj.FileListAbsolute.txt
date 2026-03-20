@@ -544,3 +544,4 @@ E:\CodeLVTN\LedApp\LedApp\bin\Debug\net6.0\System.Net.WebSockets.WebSocketProtoc
 E:\CodeLVTN\LedApp\LedApp\bin\Debug\net6.0\System.Text.Encodings.Web.dll
 E:\CodeLVTN\LedApp\LedApp\bin\Debug\net6.0\System.Threading.Channels.dll
 E:\CodeLVTN\LedApp\LedApp\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+E:\CodeLVTN\LedApp\LedApp\obj\Debug\net6.0\LedApp.sourcelink.json

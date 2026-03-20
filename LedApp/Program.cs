@@ -68,6 +68,6 @@ app.MapAreaControllerRoute(
     pattern: "admin/{controller=Trangchu}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=tonghopnhap}/{id?}");
+    pattern: "{controller=Administrator}/{action=Index}/{id?}");
 app.UseSqlTableDependency<SubscribeChitietXuatTableDependency>(connectionString);
 app.Run();

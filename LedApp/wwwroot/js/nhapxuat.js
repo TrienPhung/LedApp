@@ -203,7 +203,7 @@ function BindNhaptoTable(x, id) {
     $(tenxe).empty();
     var px;
     px = `Xe: ${x.bienSoXe} Thời gian: ${x.gioNhap} giờ ${x.phutNhap} phút`
-    var tong = x.gioXuat * 60 + x.phutXuat;
+    var tong = x.gioNhap * 60 + x.phutNhap;
     var today = new Date();
     var hour = today.getHours();
     var cMin = today.getMinutes() + hour * 60;

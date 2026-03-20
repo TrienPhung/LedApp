@@ -18390,8 +18390,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>6sqeku8o28</Fingerprint>
-      <Integrity>Fssq5JG9YuwTHezRmURyFmvfk8dK2zfx98saOrN5U4Q=</Integrity>
+      <Fingerprint>vxwwkox8un</Fingerprint>
+      <Integrity>PY2bnjAKzY/DTK8Ne+82eKZAvPxf/lNXgjdkqOC+IBc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\nhapxuat.js'))</OriginalItemSpec>

@@ -8,7 +8,8 @@
 {
     <div class="led8" style="width:@{@ViewBag.cuanhapw}px;height:@{@ViewBag.cuanhaph}px;">
         <p>
-            Giờ: 22h03
+            @* Giờ: 22h03 *@
+            Giờ: <span class="hour"></span>h<span class="min"></span>
         </p>
         <h2>@ViewBag.tencuanhap</h2>
         <p class="xe" id="tenxenhap_@ViewBag.id">Xe:29KT123.45</p>
@@ -21,6 +22,8 @@
                 </tr>
             </thead>
             <tbody id="led8_@ViewBag.id">
+
+
             </tbody>
 
         </table>

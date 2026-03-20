@@ -12252,17 +12252,17 @@
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-YIkxmATOaVJQ2Si4LvG4/23O0ZPMXF8a\u002B296HmtQ3\u002Bc="}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"1580693"},{"Name":"Content-Type","Value":"image/jpeg"},{"Name":"ETag","Value":"\u0022YIkxmATOaVJQ2Si4LvG4/23O0ZPMXF8a\u002B296HmtQ3\u002Bc=\u0022"},{"Name":"Last-Modified","Value":"Fri, 28 Jul 2023 13:13:27 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/LedApp/js/nhapxuat.6sqeku8o28.js">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\nhapxuat.js'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"6sqeku8o28"},{"Name":"integrity","Value":"sha256-Fssq5JG9YuwTHezRmURyFmvfk8dK2zfx98saOrN5U4Q="},{"Name":"label","Value":"_content/LedApp/js/nhapxuat.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"7409"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022Fssq5JG9YuwTHezRmURyFmvfk8dK2zfx98saOrN5U4Q=\u0022"},{"Name":"Last-Modified","Value":"Sat, 30 Dec 2023 09:11:18 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/LedApp/js/nhapxuat.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\nhapxuat.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Fssq5JG9YuwTHezRmURyFmvfk8dK2zfx98saOrN5U4Q="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"7409"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022Fssq5JG9YuwTHezRmURyFmvfk8dK2zfx98saOrN5U4Q=\u0022"},{"Name":"Last-Modified","Value":"Sat, 30 Dec 2023 09:11:18 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-PY2bnjAKzY/DTK8Ne\u002B82eKZAvPxf/lNXgjdkqOC\u002BIBc="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"7409"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022PY2bnjAKzY/DTK8Ne\u002B82eKZAvPxf/lNXgjdkqOC\u002BIBc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 17:20:12 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/LedApp/js/nhapxuat.vxwwkox8un.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\nhapxuat.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"vxwwkox8un"},{"Name":"integrity","Value":"sha256-PY2bnjAKzY/DTK8Ne\u002B82eKZAvPxf/lNXgjdkqOC\u002BIBc="},{"Name":"label","Value":"_content/LedApp/js/nhapxuat.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"7409"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022PY2bnjAKzY/DTK8Ne\u002B82eKZAvPxf/lNXgjdkqOC\u002BIBc=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 17:20:12 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/LedApp/js/site.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>
