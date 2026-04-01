@@ -14,6 +14,54 @@
     <link href="~/admin/assets/libs/flot/css/float-chart.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="~/admin/dist/css/style.min.css" rel="stylesheet" />
+    <style>
+        /* Kiểu 2: xóa khoảng trắng bằng flex */
+        /* #main-wrapper { */
+        /*     display: flex; */
+        /*     flex-direction: column; */
+        /*     min-height: 100vh; */
+        /* } */
+
+        /* .page-wrapper { */
+        /*     flex: 1; */
+        /*     /* Xóa min-height thừa */ 
+        /*     min-height: unset !important; */
+        /* } */
+
+        /* .page-wrapper > .container-fluid { */
+        /*        min-height: unset !important; */
+        /* } */
+
+        /* Kiểu 1: footer fixed */
+        footer {
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 250px !important;
+            right: 0 !important;
+            z-index: 1000;
+            background: #fff;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .page-wrapper {
+            padding-bottom: 64px;
+        }
+
+        footer .container {
+            max-width: 100% !important;
+            padding-left: 20px;
+        }
+        /* Kiểu 2 - Footer ở cuối trang (không fixed)  */
+        /* Sticky footer  */
+         /* #main-wrapper {  */
+         /*     display: flex;  */
+         /*     flex-direction: column;  */
+         /*     min-height: 100vh;  */
+         /* }  */
+         /* .page-wrapper {  */
+         /*     flex: 1;  */
+         /* } */
+    </style> 
 </head>
 <body>
     <div id="main-wrapper">
@@ -125,10 +173,10 @@
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Administrator")" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","dulieuxuats")" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Dữ liệu xuất</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","ChitietXuats")" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Chi tiết xuất</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaXuats")" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">Cửa Xuất</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Nhaps")" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Dữ liệu Nhập</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaXuats")" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">Cửa xuất</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Nhaps")" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Dữ liệu nhập</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","ChitietNhaps")" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Chi tiết nhập</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaNhaps")" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">Cửa Nhập</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaNhaps")" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">Cửa nhập</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

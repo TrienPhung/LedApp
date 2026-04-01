@@ -1,13 +1,11 @@
 ﻿@page
 @model LoginModel
-
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Sign In";
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,83 +13,282 @@
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
-
-    <title>Đăng nhập hệ thống</title>
+    <title>Sign In — System</title>
 
     <!-- Bootstrap CSS -->
     <link href="~/admin/css/bootstrap.min.css" rel="stylesheet">
     <!-- bootstrap theme -->
     <link href="~/admin/css/bootstrap-theme.css" rel="stylesheet">
-    <!--external css-->
     <!-- font icon -->
     <link href="~/admin/css/elegant-icons-style.css" rel="stylesheet" />
     <link href="~/admin/css/font-awesome.css" rel="stylesheet" />
     <!-- Custom styles -->
     <link href="~/admin/css/style.css" rel="stylesheet">
     <link href="~/admin/css/style-responsive.css" rel="stylesheet" />
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
       <script src="js/respond.min.js"></script>
-      <![endif]-->
-    <!-- =======================================================
-      Theme Name: NiceAdmin
-      Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-      Author: BootstrapMade
-      Author URL: https://bootstrapmade.com
-    ======================================================= -->
+    <![endif]-->
+
+    <style>
+        /* Căn card giữa màn hình */
+        body.login-img3-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-img3-body .login-form {
+            margin: 0 auto;
+            width: 380px;
+            max-width: 95vw;
+            border-radius: 10px;
+            overflow: hidden;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @@keyframes fadeUp {
+            from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        /* Header xanh */
+        .login-form h2.login-form-heading {
+            border-radius: 10px 10px 0 0;
+            padding: 24px 15px 10px;
+            font-size: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 0;
+        }
+
+        .login-subheading {
+            background: #34aadc;
+            text-align: center;
+            color: rgba(255,255,255,0.78);
+            font-size: 13px;
+            padding: 0 15px 16px;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        /* Ẩn icon khóa đơn và hr cũ */
+        .login-form .login-img {
+            display: none;
+        }
+
+        .login-wrap > hr {
+            display: none;
+        }
+
+        /* Fix input-group Bootstrap 3 - đảm bảo icon + input cùng 1 hàng */
+        .login-form .input-group {
+            display: table !important;
+            width: 100% !important;
+            border-collapse: separate !important;
+            border: 1px solid #c8cdd5;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            padding-bottom: 0 !important;
+        }
+
+            .login-form .input-group:focus-within {
+                border-color: #34aadc;
+                box-shadow: 0 0 0 3px rgba(52,170,220,0.15);
+            }
+
+            .login-form .input-group .input-group-addon {
+                display: table-cell !important;
+                width: 1% !important;
+                white-space: nowrap;
+                vertical-align: middle;
+                padding: 0 13px !important;
+                background: #fff !important;
+                border: none !important;
+                border-right: 1px solid #e5e5e5 !important;
+                border-radius: 0 !important;
+                color: #8b9199 !important;
+                font-size: 15px !important;
+            }
+
+            .login-form .input-group .form-control {
+                display: table-cell !important;
+                width: 100% !important;
+                border: none !important;
+                box-shadow: none !important;
+                height: 44px !important;
+                font-size: 14px !important;
+                border-radius: 0 !important;
+                padding: 10px 12px !important;
+                background: #fff;
+            }
+
+                .login-form .input-group .form-control:focus {
+                    box-shadow: none !important;
+                    border: none !important;
+                }
+
+        /* Remember me + Forgot password cùng hàng */
+        .options-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .login-form .checkbox {
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+            .login-form .checkbox label {
+                font-size: 13px;
+                color: #666;
+                font-weight: 300;
+            }
+
+        .forgot-link {
+            font-size: 13px;
+            color: #34aadc !important;
+        }
+
+            .forgot-link:hover {
+                color: #1a8ab5 !important;
+            }
+
+        /* Nút Sign In */
+        .btn-signin {
+            display: block;
+            width: 100%;
+            height: 44px;
+            background: #34aadc;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .2s;
+            margin-bottom: 4px;
+        }
+
+            .btn-signin:hover {
+                background: #1f95c8;
+            }
+
+        /* Footer links */
+        .login-footer-links {
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin: 14px -20px -20px;
+            padding: 13px 20px;
+            background: rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+            .login-footer-links a {
+                font-size: 12.5px;
+                color: #34aadc !important;
+            }
+
+                .login-footer-links a:hover {
+                    color: #1a8ab5 !important;
+                }
+
+        .text-danger {
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body class="login-img3-body">
     <div class="container">
         <form class="login-form" id="account" method="post">
 
+            <!-- Header stripe -->
+            <h2 class="login-form-heading">
+                <i class="icon_lock_alt" style="margin-right:8px;"></i> Welcome Back
+            </h2>
+            <p class="login-subheading">Sign in to continue to the system</p>
+
             <div class="login-wrap">
+
+                <!-- Giữ nguyên .login-img (ẩn bằng CSS) -->
                 <p class="login-img"><i class="icon_lock_alt"></i></p>
-                <hr />
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <label asp-for="Input.Email" class="form-label">Tên đăng nhập</label>
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                <!-- Email -->
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="icon_profile"></i>
+                    </span>
+                    <input asp-for="Input.Email"
+                           class="form-control"
+                           placeholder="Email address"
+                           autocomplete="username"
+                           aria-required="true" />
                 </div>
-                <div class="form-floating">
-                    <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+                <!-- Password -->
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="icon_key_alt"></i>
+                    </span>
+                    <input asp-for="Input.Password"
+                           class="form-control"
+                           placeholder="Password"
+                           autocomplete="current-password"
+                           aria-required="true" />
                 </div>
-                <div>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <!-- Remember me + Forgot password cùng 1 hàng -->
+                <div class="options-row">
                     <div class="checkbox">
                         <label asp-for="Input.RememberMe" class="form-label">
                             <input class="form-check-input" asp-for="Input.RememberMe" />
                             @Html.DisplayNameFor(m => m.Input.RememberMe)
                         </label>
                     </div>
+                    <a class="forgot-link" asp-page="./ForgotPassword">Forgot password?</a>
                 </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Đăng nhập  </button>
+
+                <!-- Sign In button -->
+                <button id="login-submit" type="submit" class="btn-signin">
+                    Sign In
+                </button>
+
+                <!-- Footer links -->
+                <div class="login-footer-links">
+                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">
+                        <i class="fa fa-user-plus"></i> Create account
+                    </a>
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">
+                        <i class="fa fa-envelope"></i> Resend confirmation
+                    </a>
                 </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
+
             </div>
         </form>
     </div>
+
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }
-
 </body>
-
 </html>
-

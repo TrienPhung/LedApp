@@ -1,22 +1,25 @@
-﻿using System.ComponentModel;
+﻿// Models/Xuat.cs
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LedApp.Models
 {
-    [Table("Nhap")]
-    public class Nhap
+    [Table("Xuat")]
+    public class Xuat
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(CuaNhap))]
-        [DisplayName("Cửa nhập")]
-        public int CuaNhapId { get; set; }
+        [ForeignKey(nameof(CuaXuat))]
+        [DisplayName("Cửa xuất")]
+        public int CuaXuatId { get; set; }
 
-        [DisplayName("Biển số xe")]
-        public string BienSoXe { get; set; }
+        //Link tới DanhSachXe — khác với Nhap chỉ lưu BienSoXe string
+        [ForeignKey(nameof(Xe))]
+        [DisplayName("Xe")]
+        public int XeId { get; set; }
 
         [DisplayName("Thời gian phân công")]
         public DateTime ThoiGianPhanCong { get; set; }
@@ -33,6 +36,9 @@ namespace LedApp.Models
         [DisplayName("Thời gian hoàn thành")]
         public DateTime? ThoiGianHoanThanh { get; set; }
 
+        [DisplayName("Thời gian xuất phát")]
+        public DateTime? ThoiGianXuatPhat { get; set; }
+
         [ForeignKey(nameof(NhanVienXacNhan))]
         [DisplayName("Nhân viên xác nhận")]
         public int? NhanVienXacNhanId { get; set; }
@@ -41,8 +47,9 @@ namespace LedApp.Models
         public string TrangThai { get; set; } = "DaPhanCong";
 
         // Navigation properties
-        public CuaNhap? CuaNhap { get; set; }
+        public CuaXuat? CuaXuat { get; set; }
+        public DanhSachXe? Xe { get; set; }
         public nguoiDungs? NhanVienXacNhan { get; set; }
-        public ICollection<ChitietNhap>? ChitietNhaps { get; set; }
+        public ICollection<ChitietXuat>? ChitietXuats { get; set; }
     }
 }

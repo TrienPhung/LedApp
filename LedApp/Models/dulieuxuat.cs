@@ -26,6 +26,7 @@ namespace LedApp.Models
         [DefaultValue(false)]
         [DisplayName("Trạng thái")]
         public bool TrangThai { get; set; }
+        [DisplayName("Cửa xuất")]
         public CuaXuat? CuaXuat { get; set; }
         public ICollection<ChitietXuat> ChitietXuat { get; set; }
     }

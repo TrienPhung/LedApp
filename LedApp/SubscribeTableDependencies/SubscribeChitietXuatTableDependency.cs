@@ -37,7 +37,11 @@ namespace LedApp.SubscribeTableDependencies
                 //signalServer.Sendxexuat4();
                 //signalServer.Sendxexuat5();
                 //signalServer.Sendxexuat6();
-                //signalServer.SendTongHopXuat();
+
+                // Cập nhật bảng chi tiết cửa xuất
+                signalServer.Sendxexuat(e.Entity.dulieuxuatId);
+                signalServer.Sendxuat(e.Entity.dulieuxuatId);
+                signalServer.SendTongHopXuat();
             }
         }
     }

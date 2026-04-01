@@ -8287,7 +8287,8 @@ html[dir="ltr"] body .p-l-0 {
 
 .page-wrapper > .container-fluid {
   padding: 20px;
-  min-height: calc(100vh - 180px); }
+  min-height: calc(100vh - 180px);
+}
 
 /*******************
  Footer

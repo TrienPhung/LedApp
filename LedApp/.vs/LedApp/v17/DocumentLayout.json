@@ -3,8 +3,368 @@
   "WorkspaceRootPath": "E:\\CodeLVTN\\LedApp\\LedApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\ledapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:ledapp.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\nhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\nhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\lichsubangiao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\lichsubangiao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\canhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\canhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cauhinh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cauhinh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\xuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\xuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\importfromapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\importfromapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\dulieuxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\dulieuxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\cuanhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\cuanhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\cuaxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\cuaxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\chitietxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\chitietxuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\chitietnhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\chitietnhapscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230811080100_optionidentity1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230811080100_optionidentity1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20260223061029_ledapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20260223061029_ledapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230728083401_updatedisplayname2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230728083401_updatedisplayname2.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230726093226_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230726093226_initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230728074306_capnhatchitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230728074306_capnhatchitiet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230811071842_createidentityschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230811071842_createidentityschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230811075258_optionidentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230811075258_optionidentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\migrations\\20230728080829_updatedisplayname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:migrations\\20230728080829_updatedisplayname.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\cuanhapresposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\cuanhapresposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\chitietnhapreposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\chitietnhapreposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cuaxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cuaxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\nguoidung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\nguoidung.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\chitietxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\chitietxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\nguoidungs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\nguoidungs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cuanhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cuanhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\dulieuxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\dulieuxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\administrator\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\administrator\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\administrator\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\administrator\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\areas\\identity\\pages\\account\\forgotpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:areas\\identity\\pages\\account\\forgotpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\areas\\identity\\pages\\account\\resendemailconfirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:areas\\identity\\pages\\account\\resendemailconfirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\middlewareextensions\\apikeymiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:middlewareextensions\\apikeymiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nhaps\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nhaps\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nhaps\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nhaps\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nhaps\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nhaps\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\js\\nhapxuat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\js\\nhapxuat.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\cuanhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\cuanhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nhaps\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nhaps\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\tonghopnhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\tonghopnhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\subscribetabledependencies\\subscribechitietxuattabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:subscribetabledependencies\\subscribechitietxuattabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\subscribetabledependencies\\subscribechitietnhaptabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:subscribetabledependencies\\subscribechitietnhaptabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\subscribetabledependencies\\subscribenhaptabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:subscribetabledependencies\\subscribenhaptabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\importfromapi\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\importfromapi\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\manhinh.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\manhinh.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\subscribetabledependencies\\subscribedulieuxuattabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:subscribetabledependencies\\subscribedulieuxuattabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\tonghopxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\tonghopxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\cuaxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\cuaxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\cuaxuatresposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\cuaxuatresposity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\nhaprespository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\nhaprespository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\xexuatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\xexuatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\xuatrespository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\xuatrespository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dulieuxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dulieuxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nhaps\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nhaps\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\subscribetabledependencies\\isubscribetabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:subscribetabledependencies\\isubscribetabledependency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\chitietxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\chitietxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\chitietxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\chitietxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\dist\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\dist\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dulieuxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dulieuxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dulieuxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dulieuxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dulieuxuats\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dulieuxuats\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dulieuxuats\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dulieuxuats\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuaxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuaxuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuaxuats\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuaxuats\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuaxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuaxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuaxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuaxuats\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuanhaps\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuanhaps\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuanhaps\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuanhaps\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuanhaps\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuanhaps\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,23 +374,1140 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Nhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Nhap.cs",
+              "RelativeDocumentMoniker": "Models\\Nhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Nhap.cs",
+              "RelativeToolTip": "Models\\Nhap.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:13:56.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ApplicationDBContext.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ApplicationDBContext.cs",
+              "RelativeDocumentMoniker": "Models\\ApplicationDBContext.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ApplicationDBContext.cs",
+              "RelativeToolTip": "Models\\ApplicationDBContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T15:49:20.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAAAF0AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:28:14.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NhapsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhapsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NhapsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhapsController.cs",
+              "RelativeToolTip": "Controllers\\NhapsController.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAcwGsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:28:29.195Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LichSuBanGiao.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\LichSuBanGiao.cs",
+              "RelativeDocumentMoniker": "Models\\LichSuBanGiao.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\LichSuBanGiao.cs",
+              "RelativeToolTip": "Models\\LichSuBanGiao.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAcwCoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T14:50:38.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChitietNhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
+              "RelativeDocumentMoniker": "Models\\ChitietNhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
+              "RelativeToolTip": "Models\\ChitietNhap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:36:46.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CanhBao.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CanhBao.cs",
+              "RelativeDocumentMoniker": "Models\\CanhBao.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CanhBao.cs",
+              "RelativeToolTip": "Models\\CanhBao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:21:14.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CauHinh.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CauHinh.cs",
+              "RelativeDocumentMoniker": "Models\\CauHinh.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CauHinh.cs",
+              "RelativeToolTip": "Models\\CauHinh.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T07:49:09.26Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Xuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Xuat.cs",
+              "RelativeDocumentMoniker": "Models\\Xuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Xuat.cs",
+              "RelativeToolTip": "Models\\Xuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:12:31.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ImportFromApi.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ImportFromApi.cs",
+              "RelativeDocumentMoniker": "Controllers\\ImportFromApi.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ImportFromApi.cs",
+              "RelativeToolTip": "Controllers\\ImportFromApi.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABwAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:21:32.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "dulieuxuatsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\dulieuxuatsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\dulieuxuatsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\dulieuxuatsController.cs",
+              "RelativeToolTip": "Controllers\\dulieuxuatsController.cs",
+              "ViewState": "AgIAAKIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:33:50.609Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CuaXuatsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CuaXuatsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CuaXuatsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CuaXuatsController.cs",
+              "RelativeToolTip": "Controllers\\CuaXuatsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:33:33.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ChitietXuatsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ChitietXuatsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChitietXuatsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ChitietXuatsController.cs",
+              "RelativeToolTip": "Controllers\\ChitietXuatsController.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAACEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-29T15:11:21.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AdministratorController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\AdministratorController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdministratorController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\AdministratorController.cs",
+              "RelativeToolTip": "Controllers\\AdministratorController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAABAAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:28:09.856Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CuaNhapsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CuaNhapsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CuaNhapsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CuaNhapsController.cs",
+              "RelativeToolTip": "Controllers\\CuaNhapsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:28:11.335Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ChitietNhapsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ChitietNhapsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChitietNhapsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ChitietNhapsController.cs",
+              "RelativeToolTip": "Controllers\\ChitietNhapsController.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T19:28:10.535Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "20230811080100_optionIdentity1.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811080100_optionIdentity1.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230811080100_optionIdentity1.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811080100_optionIdentity1.cs",
+              "RelativeToolTip": "Migrations\\20230811080100_optionIdentity1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:43.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "20260223061029_LedApp.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20260223061029_LedApp.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260223061029_LedApp.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20260223061029_LedApp.cs",
+              "RelativeToolTip": "Migrations\\20260223061029_LedApp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:47.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "20230728083401_updateDisplayname2.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728083401_updateDisplayname2.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230728083401_updateDisplayname2.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728083401_updateDisplayname2.cs",
+              "RelativeToolTip": "Migrations\\20230728083401_updateDisplayname2.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:33:04.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "20230728074306_CapNhatChiTiet.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728074306_CapNhatChiTiet.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230728074306_CapNhatChiTiet.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728074306_CapNhatChiTiet.cs",
+              "RelativeToolTip": "Migrations\\20230728074306_CapNhatChiTiet.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:35.04Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "20230811071842_CreateIdentitySchema.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811071842_CreateIdentitySchema.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230811071842_CreateIdentitySchema.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811071842_CreateIdentitySchema.cs",
+              "RelativeToolTip": "Migrations\\20230811071842_CreateIdentitySchema.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:59.526Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "20230726093226_Initial.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230726093226_Initial.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230726093226_Initial.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230726093226_Initial.cs",
+              "RelativeToolTip": "Migrations\\20230726093226_Initial.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:20.947Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ApplicationDBContextModelSnapshot.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\ApplicationDBContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "Migrations\\ApplicationDBContextModelSnapshot.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\ApplicationDBContextModelSnapshot.cs",
+              "RelativeToolTip": "Migrations\\ApplicationDBContextModelSnapshot.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:46.525Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "20230811075258_optionIdentity.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811075258_optionIdentity.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230811075258_optionIdentity.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230811075258_optionIdentity.cs",
+              "RelativeToolTip": "Migrations\\20230811075258_optionIdentity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:41.908Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "LedApp",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\LedApp.csproj",
-              "RelativeDocumentMoniker": "LedApp.csproj",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\LedApp.csproj",
-              "RelativeToolTip": "LedApp.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-20T17:45:15.541Z",
+              "DocumentIndex": 24,
+              "Title": "20230728080829_updateDisplayname.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728080829_updateDisplayname.cs",
+              "RelativeDocumentMoniker": "Migrations\\20230728080829_updateDisplayname.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Migrations\\20230728080829_updateDisplayname.cs",
+              "RelativeToolTip": "Migrations\\20230728080829_updateDisplayname.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:32:38.156Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "ChitietNhapReposity.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\ChitietNhapReposity.cs",
+              "RelativeDocumentMoniker": "Repositories\\ChitietNhapReposity.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\ChitietNhapReposity.cs",
+              "RelativeToolTip": "Repositories\\ChitietNhapReposity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:36:32.041Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "cuanhapResposity.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\cuanhapResposity.cs",
+              "RelativeDocumentMoniker": "Repositories\\cuanhapResposity.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\cuanhapResposity.cs",
+              "RelativeToolTip": "Repositories\\cuanhapResposity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-29T17:51:33.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "DanhSachXe.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\DanhSachXe.cs",
+              "RelativeDocumentMoniker": "Models\\DanhSachXe.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\DanhSachXe.cs",
+              "RelativeToolTip": "Models\\DanhSachXe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T15:09:45.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "CuaXuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaXuat.cs",
+              "RelativeDocumentMoniker": "Models\\CuaXuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaXuat.cs",
+              "RelativeToolTip": "Models\\CuaXuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T08:39:56.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "NguoiDung.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\NguoiDung.cs",
+              "RelativeDocumentMoniker": "Models\\NguoiDung.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\NguoiDung.cs",
+              "RelativeToolTip": "Models\\NguoiDung.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAcwBQAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T15:49:40.198Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "ErrorViewModel.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ErrorViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\ErrorViewModel.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ErrorViewModel.cs",
+              "RelativeToolTip": "Models\\ErrorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T14:42:41.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "ChitietXuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietXuat.cs",
+              "RelativeDocumentMoniker": "Models\\ChitietXuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietXuat.cs",
+              "RelativeToolTip": "Models\\ChitietXuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T08:37:40.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "nguoiDungs.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\nguoiDungs.cs",
+              "RelativeDocumentMoniker": "Models\\nguoiDungs.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\nguoiDungs.cs",
+              "RelativeToolTip": "Models\\nguoiDungs.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAcwCQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T14:46:28.177Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "CuaNhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaNhap.cs",
+              "RelativeDocumentMoniker": "Models\\CuaNhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaNhap.cs",
+              "RelativeToolTip": "Models\\CuaNhap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-01T14:49:25.161Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "dulieuxuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\dulieuxuat.cs",
+              "RelativeDocumentMoniker": "Models\\dulieuxuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\dulieuxuat.cs",
+              "RelativeToolTip": "Models\\dulieuxuat.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBkAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T09:02:36.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "AppUser.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\AppUser.cs",
+              "RelativeDocumentMoniker": "Models\\AppUser.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\AppUser.cs",
+              "RelativeToolTip": "Models\\AppUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T15:49:32.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Administrator\\Login.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Login.cshtml",
+              "RelativeToolTip": "Views\\Administrator\\Login.cshtml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAADwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T09:57:11.272Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "ForgotPassword.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\ForgotPassword.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-31T16:32:09.958Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Administrator\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Index.cshtml",
+              "RelativeToolTip": "Views\\Administrator\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-31T19:35:28.012Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "ResendEmailConfirmation.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\ResendEmailConfirmation.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\ResendEmailConfirmation.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\ResendEmailConfirmation.cshtml",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\ResendEmailConfirmation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-31T16:32:06.341Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAoBAAAAAAAAAADwv/AAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T09:41:42.912Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "ApiKeyMiddleware.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\MiddlewareExtensions\\ApiKeyMiddleware.cs",
+              "RelativeDocumentMoniker": "MiddlewareExtensions\\ApiKeyMiddleware.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\MiddlewareExtensions\\ApiKeyMiddleware.cs",
+              "RelativeToolTip": "MiddlewareExtensions\\ApiKeyMiddleware.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-31T15:49:08.619Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-30T16:45:16.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nhaps\\Delete.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Delete.cshtml",
+              "RelativeToolTip": "Views\\Nhaps\\Delete.cshtml",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-30T16:45:00.572Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nhaps\\Create.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Create.cshtml",
+              "RelativeToolTip": "Views\\Nhaps\\Create.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-30T16:44:55.351Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nhaps\\Edit.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Edit.cshtml",
+              "RelativeToolTip": "Views\\Nhaps\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-29T19:29:33.005Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "nhapxuat.js",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\nhapxuat.js",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
+              "RelativeToolTip": "wwwroot\\js\\nhapxuat.js",
+              "ViewState": "AgIAALEBAAAAAAAAAAAwwLwBAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-22T08:59:25.394Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "site.js",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "wwwroot\\js\\site.js",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "wwwroot\\js\\site.js",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-23T03:17:11.677Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "SignalServer.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Hubs\\SignalServer.cs",
+              "RelativeDocumentMoniker": "Hubs\\SignalServer.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Hubs\\SignalServer.cs",
+              "RelativeToolTip": "Hubs\\SignalServer.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAArwGIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T17:15:19.451Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nhaps\\Details.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Details.cshtml",
+              "RelativeToolTip": "Views\\Nhaps\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-30T16:45:10.022Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "tonghopnhap.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\tonghopnhap.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\tonghopnhap.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\tonghopnhap.cshtml",
+              "RelativeToolTip": "Views\\Home\\tonghopnhap.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAcwCUAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T09:14:04.429Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "cuanhap.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\cuanhap.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\cuanhap.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\cuanhap.cshtml",
+              "RelativeToolTip": "Views\\Home\\cuanhap.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAADwvxsAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-23T03:01:09.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "SubscribeChitietXuatTableDependency.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeChitietXuatTableDependency.cs",
+              "RelativeDocumentMoniker": "SubscribeTableDependencies\\SubscribeChitietXuatTableDependency.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeChitietXuatTableDependency.cs",
+              "RelativeToolTip": "SubscribeTableDependencies\\SubscribeChitietXuatTableDependency.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAkAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T17:15:04.849Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "SubscribeChitietNhapTableDependency.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeChitietNhapTableDependency.cs",
+              "RelativeDocumentMoniker": "SubscribeTableDependencies\\SubscribeChitietNhapTableDependency.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeChitietNhapTableDependency.cs",
+              "RelativeToolTip": "SubscribeTableDependencies\\SubscribeChitietNhapTableDependency.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAADwvyUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:38:20.471Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "SubscribeNhapTableDependency.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeNhapTableDependency.cs",
+              "RelativeDocumentMoniker": "SubscribeTableDependencies\\SubscribeNhapTableDependency.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeNhapTableDependency.cs",
+              "RelativeToolTip": "SubscribeTableDependencies\\SubscribeNhapTableDependency.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABcAAABzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:32:53.57Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ImportFromApi\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\ImportFromApi\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ImportFromApi\\Index.cshtml",
+              "RelativeToolTip": "Views\\ImportFromApi\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T19:23:14.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAowEwAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T03:24:45.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "ManHinh.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\ManHinh.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\ManHinh.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\ManHinh.cshtml",
+              "RelativeToolTip": "Views\\Home\\ManHinh.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-25T03:12:59.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "SubscribeDulieuxuatTableDependency.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeDulieuxuatTableDependency.cs",
+              "RelativeDocumentMoniker": "SubscribeTableDependencies\\SubscribeDulieuxuatTableDependency.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\SubscribeDulieuxuatTableDependency.cs",
+              "RelativeToolTip": "SubscribeTableDependencies\\SubscribeDulieuxuatTableDependency.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAcwCMAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T09:41:51.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "tonghopxuat.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\tonghopxuat.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\tonghopxuat.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\tonghopxuat.cshtml",
+              "RelativeToolTip": "Views\\Home\\tonghopxuat.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAADwvxMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-24T04:03:25.432Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "CuaXuatResposity.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\CuaXuatResposity.cs",
+              "RelativeDocumentMoniker": "Repositories\\CuaXuatResposity.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\CuaXuatResposity.cs",
+              "RelativeToolTip": "Repositories\\CuaXuatResposity.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAADwvyAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T08:43:01.568Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "NhapRespository.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\NhapRespository.cs",
+              "RelativeDocumentMoniker": "Repositories\\NhapRespository.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\NhapRespository.cs",
+              "RelativeToolTip": "Repositories\\NhapRespository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwB4AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-23T03:13:12.056Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "cuaxuat.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\cuaxuat.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\cuaxuat.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\cuaxuat.cshtml",
+              "RelativeToolTip": "Views\\Home\\cuaxuat.cshtml",
+              "ViewState": "AgIAAAoAAAAAAAAAAADwvyAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:58:04.574Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "xexuatRepository.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\xexuatRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\xexuatRepository.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\xexuatRepository.cs",
+              "RelativeToolTip": "Repositories\\xexuatRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T08:42:34.258Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "xuatRespository.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\xuatRespository.cs",
+              "RelativeDocumentMoniker": "Repositories\\xuatRespository.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\xuatRespository.cs",
+              "RelativeToolTip": "Repositories\\xuatRespository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-23T03:11:58.283Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nhaps\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nhaps\\Index.cshtml",
+              "RelativeToolTip": "Views\\Nhaps\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-24T03:12:55.502Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\dulieuxuats\\Create.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Create.cshtml",
+              "RelativeToolTip": "Views\\dulieuxuats\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T09:01:31.305Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Privacy.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "Views\\Home\\Privacy.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-23T03:04:03.247Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "ISubscribeTableDependency.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\ISubscribeTableDependency.cs",
+              "RelativeDocumentMoniker": "SubscribeTableDependencies\\ISubscribeTableDependency.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\SubscribeTableDependencies\\ISubscribeTableDependency.cs",
+              "RelativeToolTip": "SubscribeTableDependencies\\ISubscribeTableDependency.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-22T17:15:01.58Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "site.css",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AgIAAO0AAAAAAAAAAAAcwPAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-22T19:31:20.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ChitietXuats\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\ChitietXuats\\Create.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ChitietXuats\\Create.cshtml",
+              "RelativeToolTip": "Views\\ChitietXuats\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-24T03:10:38.52Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ChitietXuats\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\ChitietXuats\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\ChitietXuats\\Index.cshtml",
+              "RelativeToolTip": "Views\\ChitietXuats\\Index.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAABAAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:15.64Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-23T03:17:39.756Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\UserRepository.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-23T03:12:00.582Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "style.css",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\dist\\css\\style.css",
+              "RelativeDocumentMoniker": "wwwroot\\admin\\dist\\css\\style.css",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\dist\\css\\style.css",
+              "RelativeToolTip": "wwwroot\\admin\\dist\\css\\style.css",
+              "ViewState": "AgIAABwhAAAAAAAAAAD4v18gAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-22T09:59:12.804Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "float-chart.css",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css",
+              "RelativeDocumentMoniker": "wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css",
+              "RelativeToolTip": "wwwroot\\admin\\assets\\libs\\flot\\css\\float-chart.css",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-22T12:09:19.865Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "_Layout1.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout1.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout1.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T09:47:42.59Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\dulieuxuats\\Details.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Details.cshtml",
+              "RelativeToolTip": "Views\\dulieuxuats\\Details.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T09:01:48.776Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Views\\dulieuxuats\\Delete.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Delete.cshtml",
+              "RelativeToolTip": "Views\\dulieuxuats\\Delete.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T09:01:41.373Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\dulieuxuats\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Index.cshtml",
+              "RelativeToolTip": "Views\\dulieuxuats\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:58:49.7Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\dulieuxuats\\Edit.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\dulieuxuats\\Edit.cshtml",
+              "RelativeToolTip": "Views\\dulieuxuats\\Edit.cshtml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:53.363Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaXuats\\Details.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Details.cshtml",
+              "RelativeToolTip": "Views\\CuaXuats\\Details.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:43.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "site.css",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\admin\\css\\site.css",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\admin\\css\\site.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-21T10:39:38.616Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "style.css",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\css\\style.css",
+              "RelativeDocumentMoniker": "wwwroot\\admin\\css\\style.css",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\css\\style.css",
+              "RelativeToolTip": "wwwroot\\admin\\css\\style.css",
+              "ViewState": "AgIAABEBAAAAAAAAAAAAwB8BAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-21T09:41:39.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaXuats\\Delete.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Delete.cshtml",
+              "RelativeToolTip": "Views\\CuaXuats\\Delete.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:42.939Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 86,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaXuats\\Create.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Create.cshtml",
+              "RelativeToolTip": "Views\\CuaXuats\\Create.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:39.642Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 87,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaNhaps\\Edit.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Edit.cshtml",
+              "RelativeToolTip": "Views\\CuaNhaps\\Edit.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:34.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 88,
+              "Title": "Delete.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Delete.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaNhaps\\Delete.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Delete.cshtml",
+              "RelativeToolTip": "Views\\CuaNhaps\\Delete.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:28.57Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaXuats\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Index.cshtml",
+              "RelativeToolTip": "Views\\CuaXuats\\Index.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:50:57.119Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 89,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\CuaNhaps\\Create.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaNhaps\\Create.cshtml",
+              "RelativeToolTip": "Views\\CuaNhaps\\Create.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-22T08:57:24.541Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 90,
+              "Title": "Login.cshtml.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAgwI0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-21T10:16:15.59Z"
             }
           ]
         }

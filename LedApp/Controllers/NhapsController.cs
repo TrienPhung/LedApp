@@ -104,7 +104,22 @@ namespace LedApp.Controllers
             }
             try
             {
-                _context.Update(nhap);
+                //_context.Update(nhap);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction(nameof(Index));
+
+                var existing = await _context.Nhaps.FindAsync(id);
+                if (existing == null) return NotFound();
+
+                existing.CuaNhapId = nhap.CuaNhapId;
+                existing.BienSoXe = nhap.BienSoXe;
+                existing.NgayNhap = nhap.NgayNhap;
+                existing.GioNhap = nhap.GioNhap;
+                existing.PhutNhap = nhap.PhutNhap;
+                existing.CongVao = nhap.CongVao;
+                existing.TrangThai = nhap.TrangThai;
+
+                _context.Entry(existing).State = EntityState.Modified; // ← thêm dòng này
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

@@ -37,7 +37,9 @@ builder.Services.AddSingleton<CuaXuatResposity>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SignalServer>();
 builder.Services.AddSingleton<SubscribeChitietXuatTableDependency>();
-
+builder.Services.AddSingleton<SubscribeNhapTableDependency>();        // ? thêm m?i
+builder.Services.AddSingleton<SubscribeChitietNhapTableDependency>();
+builder.Services.AddSingleton<SubscribeDulieuxuatTableDependency>();
 // Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
@@ -69,5 +71,10 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Administrator}/{action=Index}/{id?}");
+
+//Ki?ch hoa?t SubscribeTableDependency
 app.UseSqlTableDependency<SubscribeChitietXuatTableDependency>(connectionString);
+app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);        // ? thêm m?i
+app.UseSqlTableDependency<SubscribeChitietNhapTableDependency>(connectionString); // ? thêm m?i
+app.UseSqlTableDependency<SubscribeDulieuxuatTableDependency>(connectionString);
 app.Run();

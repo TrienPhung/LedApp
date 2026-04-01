@@ -10,14 +10,21 @@ namespace LedApp.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [ForeignKey(nameof(Nhap))]
-        [DisplayName("Mã dữ liệu nhập")]
+        [DisplayName("Mã phiếu nhập")]
         public int NhapId { get; set; }
-        //public string BienSo { get; set; }
-        [DisplayName("Số lượng nhập")]
-        public long Soluong { get; set; }
+
         [DisplayName("Đơn vị")]
-        public string donvi { get; set; }
-        //public Nhap Nhap { get; set; }
+        public string DonVi { get; set; }
+
+        [DisplayName("Chưa bàn giao")]
+        public long ChuaBG { get; set; }
+
+        [DisplayName("Đã bàn giao")]
+        public long DaBG { get; set; }
+
+        // Navigation property
+        public Nhap? Nhap { get; set; }
     }
 }

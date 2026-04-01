@@ -98,5 +98,20 @@ namespace LedApp.Hubs
             var x = xrepo.GetAllXuat();
             await Clients.All.SendAsync("ReceivedTongHopXuat", x);
         }
+
+
+        //Hàm thêm
+        /*Tổng hợp nhập*/
+        public async Task SendTongHopNhap()
+        {
+            var x = nhapRepo.GetAllNhap();
+            if (x == null || !x.Any()) // ← kiểm tra null trước
+            {
+                await Clients.All.SendAsync("ReceivedTongHopNhap", new List<Nhap>());
+                return;
+            }
+            await Clients.All.SendAsync("ReceivedTongHopNhap", x);
+        }
     }
 }
+    

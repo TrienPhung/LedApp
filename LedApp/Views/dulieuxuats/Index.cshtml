@@ -65,7 +65,7 @@
                     }
                 </td>
             <td>
-               x-0 @Html.DisplayFor(modelItem => item.CuaXuat.Id)
+                    X-@item.CuaXuat.Id.ToString("D2")
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
