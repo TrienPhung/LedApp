@@ -1,19 +1,22 @@
-﻿using LedApp.Models;
+﻿using LedApp.Data;
+using LedApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LedApp.Repositories
 {
     public class UserRepository
     {
-        private readonly ApplicationDBContext dbcontext;
-        public UserRepository(ApplicationDBContext dbcontext)
-        {
+        private readonly ApplicationDBContext _dbContext;
 
-            this.dbcontext = dbcontext;
-        }
-        public async Task<NguoiDung?> GetNguoiDung(string tendangnhap, string matkhau)
+        public UserRepository(ApplicationDBContext dbContext)
         {
-            return await dbcontext.nguoiDungs.FirstOrDefaultAsync(s => s.Username == tendangnhap && s.Password == matkhau);
+            _dbContext = dbContext;
+        }
+
+        public async Task<nguoiDungs?> GetNguoiDung(string tenDangNhap, string matKhau)
+        {
+            return await _dbContext.nguoiDungs
+                .FirstOrDefaultAsync(s => s.Username == tenDangNhap && s.Password == matKhau);
         }
     }
 }

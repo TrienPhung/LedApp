@@ -14,6 +14,6 @@ namespace LedApp.Models
         public string Ten { get; set; }
         [DisplayName("Mô tả")]
         public string Mota { get; set; }
-        public ICollection<dulieuxuat> dulieuxuat { get; set; }
+        public ICollection<Xuat> Xuats { get; set; }
     }
 }

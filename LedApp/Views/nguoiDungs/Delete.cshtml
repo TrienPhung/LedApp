@@ -1,0 +1,60 @@
+﻿@model LedApp.Models.nguoiDungs
+@{
+    ViewData["Title"] = "Xóa người dùng";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Xóa người dùng</h1>
+<h3 class="text-danger">Bạn có chắc chắn muốn xóa không?</h3>
+<hr />
+<div class="row">
+    <div class="col-md-2 text-center mb-3">
+        <img src="@(string.IsNullOrEmpty(Model.Image) ? "/uploads/avatars/default.png" : Model.Image)"
+             style="width:100px;height:100px;object-fit:cover;border:1px solid #ddd;border-radius:6px;" />
+    </div>
+    <div class="col-md-10">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Username)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Username)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Name)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Tels)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Tels)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Email)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Email)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Quyen)</dt>
+            <dd class="col-sm-9">
+                @switch (Model.Quyen)
+                {
+                    case 0:
+                        <span>Nhân viên</span>
+                        break;
+                    case 1:
+                        <span class="badge bg-primary">Quản lý</span>
+                        break;
+                    case 2:
+                        <span class="badge bg-danger">Admin</span>
+                        break;
+                    case 3:
+                        <span class="badge bg-warning text-dark">Tài xế</span>
+                        break;
+                    case 4:
+                        <span class="badge bg-secondary">Bảo vệ</span>
+                        break;
+                    default:
+                        <span>@Model.Quyen</span>
+                        break;
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+<hr />
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Xác nhận xóa" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
+</form>

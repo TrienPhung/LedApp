@@ -8,6 +8,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <title>Matrix Template - The Ultimate Multipurpose admin template</title>
     <!-- Custom CSS -->
@@ -171,12 +172,23 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Administrator")" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","dulieuxuats")" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Dữ liệu xuất</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","ChitietXuats")" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Chi tiết xuất</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaXuats")" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">Cửa xuất</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Nhaps")" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Dữ liệu nhập</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","ChitietNhaps")" aria-expanded="false"><i class="mdi mdi-blur-linear"></i><span class="hide-menu">Chi tiết nhập</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaNhaps")" aria-expanded="false"><i class="mdi mdi-pencil"></i><span class="hide-menu">Cửa nhập</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","Xuats")" aria-expanded="false"><i class="mdi mdi-chart-bar"></i><span class="hide-menu">Dữ liệu xuất</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","ChitietXuats")" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Chi tiết xuất</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CuaXuats")" aria-expanded="false"><i class="mdi mdi-border-inside"></i><span class="hide-menu">Cửa xuất</span></a></li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                               href="@Url.Action("Index","DanhSachXes")"
+                               aria-expanded="false">
+                                <i class="mdi mdi-truck"></i>
+                                <span class="hide-menu">Quản lý xe</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","CanhBaos")" aria-expanded="false"><i class="mdi mdi-alert"></i><span class="hide-menu">Cảnh báo</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","LichSuBanGiaos")" aria-expanded="false"><i class="mdi mdi-history"></i><span class="hide-menu">Lịch sử bàn giao</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="@Url.Action("index","nguoiDungs")" aria-expanded="false"><i class="mdi mdi-account"></i><span class="hide-menu">Người dùng</span></a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

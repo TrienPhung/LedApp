@@ -1,25 +1,36 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "tonghopxuat";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="led4"  style="width:@{@ViewBag.THXuatW}px;height:@{@ViewBag.THXuatH}px;">
-    <p>
-        Giờ: <span class="hour"></span>h<span class="min"></span>
-    </p>
-    <h2>@ViewBag.THXuatTen</h2>
-    <table class="bang" >
+<style>
+    .led4 td, .led4 th {
+        border: none;
+    }
+</style>
+<div class="led4" style="width:@{
+        @ViewBag.THXuatW
+}px; height:@{
+        @ViewBag.THXuatH
+}px; background:#0d0d0d; color:#fff; font-family:monospace; padding:10px; border-radius:7px; border:1.5px solid #1a1a1a; position:relative;">
+    <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:6px;">
+        <span><span class="hour"></span>:<span class="min"></span></span>
+        <span>@ViewBag.THXuatTen</span>
+    </div>
+    <h2 style="text-align:center; font-size:18px; letter-spacing:3px; color:#fff; margin-bottom:8px;">XUẤT</h2>
+    <div style="border-top:1px solid #222; margin-bottom:6px;"></div>
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
         <thead>
-            <tr>
-                <th>Cửa</th>
-                <th>Biển số</th>
-                <th>Sản lượng</th>
-                <th>Giờ</th>
+            <tr style="border-bottom:1px solid #222;">
+                <td style="width:33%; text-align:center; color:#555; padding-bottom:4px; border-right:1px solid #222;">Chờ xuất</td>
+                <td style="width:33%; text-align:center; color:#555; padding-bottom:4px; border-right:1px solid #222;">Đang xuất</td>
+                <td style="width:33%; text-align:center; color:#555; padding-bottom:4px;">Đã rời kho</td>
             </tr>
         </thead>
-        <tbody id="led4">
+        <tbody id="led4-tonghop">
         </tbody>
     </table>
+    <div style="border-top:1px solid #222; margin-top:8px; margin-bottom:6px;"></div>
+    <div id="tong-strip-xuat" style="background:#0c2a4a; color:#93c5fd; text-align:center; font-size:11px; font-weight:700; letter-spacing:.6px; padding:4px; border-radius:5px;">
+        Hoạt động bình thường
+    </div>
 </div>
-

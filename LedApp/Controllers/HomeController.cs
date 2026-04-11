@@ -1,4 +1,5 @@
-﻿using LedApp.Hubs;
+﻿using LedApp.Data;
+using LedApp.Hubs;
 using LedApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;

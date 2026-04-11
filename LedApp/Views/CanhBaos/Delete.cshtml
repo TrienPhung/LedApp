@@ -1,0 +1,28 @@
+﻿@model LedApp.Models.CanhBao
+@{
+    ViewData["Title"] = "Xóa cảnh báo";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Xóa cảnh báo</h1>
+<h3>Bạn có chắc chắn muốn xóa không?</h3>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiPhieu)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiPhieu)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.PhieuId)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.PhieuId)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiCanhBao)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiCanhBao)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ThoiGian)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.ThoiGian)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.GhiChu)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.GhiChu)</dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Xác nhận xóa" class="btn btn-danger" /> |
+    <a asp-action="Index">Trở về</a>
+</form>

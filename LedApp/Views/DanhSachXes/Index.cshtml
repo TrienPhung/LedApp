@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LedApp.Models.DanhSachXe>
+@{
+    ViewData["Title"] = "Danh sách xe";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Danh sách xe</h1>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+<p><a asp-action="Create" class="btn btn-primary">Thêm xe mới</a></p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Biển số xe</th>
+            <th>Loại xe</th>
+            <th>Tải trọng</th>
+            <th>Trạng thái</th>
+            <th>Tài xế</th>
+            <th>Thời gian dự kiến về</th>
+            <th>Ghi chú</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BienSoXe</td>
+                <td>@item.LoaiXe</td>
+                <td>@item.TaiTrong</td>
+                <td>
+                    @switch (item.TrangThai)
+                    {
+                        case (int)LedApp.Models.TrangThaiXe.TrongBai:
+                            <span class="badge bg-success">Trong bãi</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXe.DangPhanCong:
+                            <span class="badge bg-warning text-dark">Đang phân công</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXe.DangVanChuyen:
+                            <span class="badge bg-primary">Đang vận chuyển</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXe.BaoTri:
+                            <span class="badge bg-secondary">Bảo trì</span>
+                            break;
+                    }
+                </td>
+                <td>@item.TaiXe?.Name</td>
+                <td>@(item.ThoiGianDuKienVe.HasValue ? item.ThoiGianDuKienVe.Value.ToString("dd/MM/yyyy HH:mm") : "—")</td>
+                <td>@item.GhiChu</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Chi tiết</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

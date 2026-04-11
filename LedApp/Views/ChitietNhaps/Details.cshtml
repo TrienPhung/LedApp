@@ -1,31 +1,30 @@
 ﻿@model LedApp.Models.ChitietNhap
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết nhập hàng";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-
-<h1>Details</h1>
-
+<h1>Chi tiết nhập hàng</h1>
 <div>
-    <h4>ChitietNhap</h4>
+    <h4>Thông tin chi tiết</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Soluong)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Soluong)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.donvi)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.donvi)
-        </dd>
+        <dt class="col-sm-2">Biển số xe</dt>
+        <dd class="col-sm-10">@(Model.Nhap?.BienSoXe ?? "N/A")</dd>
+
+        <dt class="col-sm-2">Cửa nhập</dt>
+        <dd class="col-sm-10">@(Model.Nhap?.CuaNhap?.Ten ?? "N/A")</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DonVi)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DonVi)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ChuaBG)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ChuaBG)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DaBG)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DaBG)</dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
+    <a asp-action="Index">Trở về danh sách</a>
 </div>

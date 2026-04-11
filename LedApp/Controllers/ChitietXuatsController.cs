@@ -8,29 +8,35 @@ using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using LedApp.Data;
 
 namespace LedApp.Controllers
 {
     [Authorize]
     public class ChitietXuatsController : Controller
     {
-        ApplicationDBContext _context;
+        private readonly ApplicationDBContext _context;
         SignalServer signalServer;
+
         public ChitietXuatsController(ApplicationDBContext context, SignalServer signalServer)
         {
-            this._context = context;
             //this._context = context ?? throw new ArgumentNullException("MyCoolDbContext is null", (Exception)null);
+            this._context = context;
             this.signalServer = signalServer;
         }
 
         // GET: ChitietXuats
         public async Task<IActionResult> Index()
         {
-              return _context.ChitietXuats != null ? 
-                          View(await _context.ChitietXuats.OrderBy(s=>s.dulieuxuatId).ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.ChitietXuats'  is null.");
+            var data = await _context.Xuats
+                .AsNoTracking()
+                .Include(x => x.CuaXuat)
+                .Include(x => x.Xe)
+                .Include(x => x.ChitietXuats)
+                .OrderBy(x => x.Id)
+                .ToListAsync();
+            return View(data);
         }
-
         // GET: ChitietXuats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -40,6 +46,7 @@ namespace LedApp.Controllers
             }
 
             var chitietXuat = await _context.ChitietXuats
+                .Include(c => c.Xuat)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (chitietXuat == null)
             {
@@ -52,7 +59,15 @@ namespace LedApp.Controllers
         // GET: ChitietXuats/Create
         public IActionResult Create()
         {
-            ViewData["dulieuxuatId"] = new SelectList(_context.dulieuxuats.Where(s=>s.NgayXuat==DateTime.Today), "Id","BienSoXe");
+            var xuatList = _context.Xuats
+                .Include(x => x.Xe)
+                .ToList()
+                .Select(s => new {
+                    Id = s.Id,
+                    Ten = s.Id + " - " + (s.Xe != null ? s.Xe.BienSoXe : "Chưa có xe")
+                });
+
+            ViewData["XuatId"] = new SelectList(xuatList, "Id", "Ten");
             return View();
         }
 
@@ -61,7 +76,7 @@ namespace LedApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SoluongCH,donviCH,SoluongD,donviD,dulieuxuatId")] ChitietXuat chitietXuat)
+        public async Task<IActionResult> Create([Bind("Id,XuatId,DonVi,ChuaBG,DaBG")] ChitietXuat chitietXuat)
         {
             try
             {
@@ -76,12 +91,13 @@ namespace LedApp.Controllers
                 //signalServer.Sendxexuat6();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ViewData["dulieuxuatId"] = new SelectList(_context.dulieuxuats.Where(s => s.NgayXuat == DateTime.Today), "Id", "BienSoXe");
+                ViewData["XuatId"] = new SelectList(
+                    _context.Xuats.Where(s => s.ThoiGianPhanCong.Date == DateTime.Today),
+                    "Id", "Id", chitietXuat.XuatId);
                 return View(chitietXuat);
             }
-            
         }
 
         // GET: ChitietXuats/Edit/5
@@ -97,7 +113,7 @@ namespace LedApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["dulieuxuatId"] = new SelectList(_context.dulieuxuats, "Id", "Id");
+            ViewData["XuatId"] = new SelectList(_context.Xuats, "Id", "Id", chitietXuat.XuatId);
             return View(chitietXuat);
         }
 
@@ -106,7 +122,7 @@ namespace LedApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SoluongCH,donviCH,SoluongD,donviD,dulieuxuatId")] ChitietXuat chitietXuat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,XuatId,DonVi,ChuaBG,DaBG")] ChitietXuat chitietXuat)
         {
             if (id != chitietXuat.Id)
             {
@@ -114,7 +130,6 @@ namespace LedApp.Controllers
             }
             try
             {
-               
                 _context.Update(chitietXuat);
                 await _context.SaveChangesAsync();
                 _context.Entry(chitietXuat).State = EntityState.Detached;
@@ -128,7 +143,7 @@ namespace LedApp.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                ViewData["dulieuxuatId"] = new SelectList(_context.dulieuxuats, "Id", "Id");
+                ViewData["XuatId"] = new SelectList(_context.Xuats, "Id", "Id", chitietXuat.XuatId);
                 return View(chitietXuat);
             }
         }
@@ -142,12 +157,13 @@ namespace LedApp.Controllers
             }
 
             var chitietXuat = await _context.ChitietXuats
+                .Include(c => c.Xuat)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (chitietXuat == null)
             {
                 return NotFound();
             }
-            ViewData["dulieuxuatId"] = new SelectList(_context.dulieuxuats, "Id", "Id");
+
             return View(chitietXuat);
         }
 
@@ -164,9 +180,8 @@ namespace LedApp.Controllers
             if (chitietXuat != null)
             {
                 _context.ChitietXuats.Remove(chitietXuat);
+                await _context.SaveChangesAsync(); // ✅ trong if, tránh null reference
             }
-            
-            await _context.SaveChangesAsync();
             //signalServer.Sendxexuat();
             //signalServer.Sendxexuat2();
             //signalServer.Sendxexuat3();
@@ -178,7 +193,7 @@ namespace LedApp.Controllers
 
         private bool ChitietXuatExists(int id)
         {
-          return (_context.ChitietXuats?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ChitietXuats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

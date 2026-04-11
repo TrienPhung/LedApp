@@ -27,8 +27,8 @@ namespace LedApp.SubscribeTableDependencies
         }
         private void TableDependency_OnChanged(object sender, RecordChangedEventArgs<Nhap> e)
         {
-            if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
-                signalServer.SendTongHopNhap();
+           // if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
+               // signalServer.SendTongHopNhap();
         }
     }
 }

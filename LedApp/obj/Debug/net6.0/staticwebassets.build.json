@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "r2V8XXHHlJv/IiZFAvrier1hPcTcnHH2bjn55wnV0HA=",
+  "Hash": "ne90B90GNVF2DWNMAh1SO7qzue3H63MvHmofLXbYz8M=",
   "Source": "LedApp",
   "BasePath": "_content/LedApp",
   "Mode": "Default",
@@ -17,10 +17,10 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\css\\site.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\css\\site.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "TjhuPxIaovHDthInF3L1YN67qxqghzNA1py01oh2FJA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\css\\site.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\favicon.ico",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\favicon.ico",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "qU+KhVPK6oQw3UyjzAHU4xjRmCj3TLZUU/+39dni9E0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\favicon.ico"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\js\\site.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\js\\site.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "js/site.js",
       "AssetKind": "All",
@@ -77,13 +77,13 @@
       "Integrity": "4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\js\\site.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\js\\site.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css",
       "AssetKind": "All",
@@ -98,13 +98,13 @@
       "Integrity": "xlexqj9/k3uobVwGfciZcj/eDdooaNgcf4OFLtLUygM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.css.map",
       "AssetKind": "All",
@@ -119,13 +119,13 @@
       "Integrity": "DRvWr0gangj5/5Q3DRn6ttzpcWDzl3OpHoAwAzNDR5Q=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css",
       "AssetKind": "All",
@@ -140,13 +140,13 @@
       "Integrity": "z8OR40MowJ8GgK6P89Y+hiJK5+cclzFHzLhFQLL92bg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -161,13 +161,13 @@
       "Integrity": "gBwg2tmA0Ci2u54gMF1jNCVku6vznarkLS6D76htNNQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css",
       "AssetKind": "All",
@@ -182,13 +182,13 @@
       "Integrity": "SZ2mKaD4A+b+HIvttwl+TvLFnVy8o8/X40j+EKVwyvY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.css.map",
       "AssetKind": "All",
@@ -203,13 +203,13 @@
       "Integrity": "VFvmi/ZSwQFmjS6Pry9B8zXeZ/GA168TXLyykDhNMZE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css",
       "AssetKind": "All",
@@ -224,13 +224,13 @@
       "Integrity": "22wR6QTidoeiRZXp6zkRQyMSUb/FB+Av11jqmZJF6uU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
       "AssetKind": "All",
@@ -245,13 +245,13 @@
       "Integrity": "j7uqK5VoTT4rUHMr911QEU5Sa94lR3uh9E28XBMlzrM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css",
       "AssetKind": "All",
@@ -266,13 +266,13 @@
       "Integrity": "JtktgiuQAd+AXerCnPMrHCDz1h5AtkH5tobvpuG7xZ4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.css.map",
       "AssetKind": "All",
@@ -287,13 +287,13 @@
       "Integrity": "QO8cMbVkLiktUX1cHeXSUSe5nXMXUgyL9cjwnMyxPqc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css",
       "AssetKind": "All",
@@ -308,13 +308,13 @@
       "Integrity": "ysBT/JYxH9gcMnwxT4+MB4sPxOx/JMg9wi77FA13T9A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
       "AssetKind": "All",
@@ -329,13 +329,13 @@
       "Integrity": "72C/qDCGu+OwWeVA03bf9Ke0T8oIozCub0lfJkhzhvE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
       "AssetKind": "All",
@@ -350,13 +350,13 @@
       "Integrity": "3vUJkZSpKL/zG7x6GNvDjs0TxYUo9zMt6dAc8hp9CVo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
       "AssetKind": "All",
@@ -371,13 +371,13 @@
       "Integrity": "qvA39OMlEs53jaewqVFmE8DQQrio47bZtlTs+Wu6U8g=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
       "AssetKind": "All",
@@ -392,13 +392,13 @@
       "Integrity": "O6lb2kXarGgVw4/RDD42yYPhZIwREthThQFKGmD+3j0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
       "AssetKind": "All",
@@ -413,13 +413,13 @@
       "Integrity": "NDSZjIiMPRIoO7/w7+jHef8retP4riQa8PMj4BVRGok=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css",
       "AssetKind": "All",
@@ -434,13 +434,13 @@
       "Integrity": "4zbWr0QNFhpUwGkn4WdGWXt80KnhRFv0qXkZyVnhajY=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.css.map",
       "AssetKind": "All",
@@ -455,13 +455,13 @@
       "Integrity": "FZG0KxbNqITUi4QY7QvPFRS/TccntMfFWfSTdHN/pws=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css",
       "AssetKind": "All",
@@ -476,13 +476,13 @@
       "Integrity": "z0OApR88UEocYXTXHU7Ueycaiib9XbDUmel9Gx0gbx4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
       "AssetKind": "All",
@@ -497,13 +497,13 @@
       "Integrity": "2BbRsE/+czX1ufmDPGpnEieC9u6I3m5BKNDSX1ob3lg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
       "AssetKind": "All",
@@ -518,13 +518,13 @@
       "Integrity": "8NXw3kF49FkQVPMdjnGDqoXXRU0TwzsLfCGbK9U8gnk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
       "AssetKind": "All",
@@ -539,13 +539,13 @@
       "Integrity": "/EdWHN6t5XYPplC88vixGfrBvfEii19kAssb+0YBVU8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
       "AssetKind": "All",
@@ -560,13 +560,13 @@
       "Integrity": "a5KlgysZ4fQXw4rzIvXDHErFDPeHRSLccP7kX6HuvSQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
       "AssetKind": "All",
@@ -581,13 +581,13 @@
       "Integrity": "GMDk5pA5dFkOimkBAWeEjYZ+7lgHPS0jYln6p/WJVYs=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css",
       "AssetKind": "All",
@@ -602,13 +602,13 @@
       "Integrity": "NbFZxZLmBVNLzb/7B0WdFfb6+8jXHGX6XY190uwgbec=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.css.map",
       "AssetKind": "All",
@@ -623,13 +623,13 @@
       "Integrity": "4WIqPof/vrXYO/jeJ4fDOQKUYWIwe64V3d+9/qNju20=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css",
       "AssetKind": "All",
@@ -644,13 +644,13 @@
       "Integrity": "5+ExmMkiaI3keYQRLhNibJ5ZXnNuWRbwrXOAZoTXMFg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
       "AssetKind": "All",
@@ -665,13 +665,13 @@
       "Integrity": "p1dop4slefZhL4zG2pa6+2HUrOY1UUArGJXmet8Md9c=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
       "AssetKind": "All",
@@ -686,13 +686,13 @@
       "Integrity": "peAGH8Gu/ZL9VnbUGSMN69Ji5MxwbvOb53gDXU2cPaQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
       "AssetKind": "All",
@@ -707,13 +707,13 @@
       "Integrity": "puDgKwvlFAord9R8G8of9P2CVYIJUFSoIbjDLEsKEH0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
       "AssetKind": "All",
@@ -728,13 +728,13 @@
       "Integrity": "Wi5ZuFSHLfx6dlEgjvW3BY9TC/1NqdBjj+XFifSSqN4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
       "AssetKind": "All",
@@ -749,13 +749,13 @@
       "Integrity": "02ka4ymoE5yEecLUncLG3/SouTQMnTJOktX+96Pt/88=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js",
       "AssetKind": "All",
@@ -770,13 +770,13 @@
       "Integrity": "vQTf4d3WJi9vmWQNA4kJnjoedgEhMFXFDEMXqtHtgzk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.js.map",
       "AssetKind": "All",
@@ -791,13 +791,13 @@
       "Integrity": "gO4uhxfGuK0ONjRlHuwfghGfEXT5azm1oHWnTEFGTfk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js",
       "AssetKind": "All",
@@ -812,13 +812,13 @@
       "Integrity": "KuvCVS19rfTjoLgMyDDCdOkRRlhNrY4psEM4uezts2M=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
       "AssetKind": "All",
@@ -833,13 +833,13 @@
       "Integrity": "xIBBxDPvWhk8/JdaFEZoejadfaKFUfZFwRS1D4Jkuro=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js",
       "AssetKind": "All",
@@ -854,13 +854,13 @@
       "Integrity": "EuDXUJYKnfZuO8dSLN0f5iVbVasz36AROuAU3NJ3JBo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.js.map",
       "AssetKind": "All",
@@ -875,13 +875,13 @@
       "Integrity": "CllC/sbLvyLE9cQljmFRlITfqdZRnBv2ysX5LJtl/dg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js",
       "AssetKind": "All",
@@ -896,13 +896,13 @@
       "Integrity": "Kj4irQWPwfSb5NFeos/h0IroI5/nIg0HtAjQ+w4v6TE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
       "AssetKind": "All",
@@ -917,13 +917,13 @@
       "Integrity": "sPqzWcSS9aRa2gpWTVNQzemajn8hrFjgXPj3j9QItQo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js",
       "AssetKind": "All",
@@ -938,13 +938,13 @@
       "Integrity": "6IStRQerBchYSw6J2GWTOWGOnDRrWXmaG0r6nCwN5s4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.js.map",
       "AssetKind": "All",
@@ -959,13 +959,13 @@
       "Integrity": "Qkl5mZUZ64aYBaORRMP9jfD1kz8J6FwiV2M86JDJkdQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js",
       "AssetKind": "All",
@@ -980,13 +980,13 @@
       "Integrity": "c4Ll6eSIg6Eothk8pCWAF8aE923EvtU11pqjBy+NjNM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/dist/js/bootstrap.min.js.map",
       "AssetKind": "All",
@@ -1001,13 +1001,13 @@
       "Integrity": "ui/FQI+y0IUsY8Pbi80b8s3GeEL+PsvdaLTONobpn88=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/bootstrap/LICENSE",
       "AssetKind": "All",
@@ -1022,13 +1022,13 @@
       "Integrity": "ZH6pA6BSx6fuHZvdaKph1DwUJ+VSYilIiEQu8ilnvqk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery/dist/jquery.js",
       "AssetKind": "All",
@@ -1043,13 +1043,13 @@
       "Integrity": "QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery/dist/jquery.min.js",
       "AssetKind": "All",
@@ -1064,13 +1064,13 @@
       "Integrity": "9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery/dist/jquery.min.map",
       "AssetKind": "All",
@@ -1085,13 +1085,13 @@
       "Integrity": "PVB97BePQ5JED6qSU7EvSun5iseF5FinCKtqsv5X9uA=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery/LICENSE.txt",
       "AssetKind": "All",
@@ -1106,13 +1106,13 @@
       "Integrity": "WtKlDye/qV68IA2W1tHFTyXyc/HjQvQKBpIK1CEulFM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.js",
       "AssetKind": "All",
@@ -1127,13 +1127,13 @@
       "Integrity": "qLDpf9Urms7R6rnASrjHz38WdQfOvSOmTgLDfzQSzIQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation/dist/additional-methods.min.js",
       "AssetKind": "All",
@@ -1148,13 +1148,13 @@
       "Integrity": "2F/T6dcoSumcuA/fcU4W36VpSKPtq4nQf/0/vNFsC+w=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.js",
       "AssetKind": "All",
@@ -1169,13 +1169,13 @@
       "Integrity": "yazfaIh2SXu8rPenyD2f36pKgrkv5XT+DQCDpZ/eDao=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation/dist/jquery.validate.min.js",
       "AssetKind": "All",
@@ -1190,13 +1190,13 @@
       "Integrity": "F6h55Qw6sweK+t7SiOJX+2bpSAa3b/fnlrVCJvmEj1A=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation/LICENSE.md",
       "AssetKind": "All",
@@ -1211,13 +1211,13 @@
       "Integrity": "geHEkw/WGPdaHQMRq5HuNY9snliNzU/y2OW8ycnhGXw=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
       "AssetKind": "All",
@@ -1232,13 +1232,13 @@
       "Integrity": "XNNC8ESw29iopRLukVRazlP44TxnjGmEQanHJ5kHmtk=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
       "AssetKind": "All",
@@ -1253,13 +1253,13 @@
       "Integrity": "4xJOkIkaeBplN5tlcvxnCbBz34o5/kzpXcpjNkonVos=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Identity": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
-      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\",
+      "ContentRoot": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\",
       "BasePath": "Identity",
       "RelativePath": "lib/jquery-validation-unobtrusive/LICENSE.txt",
       "AssetKind": "All",
@@ -1274,7 +1274,7 @@
       "Integrity": "aBc/n/nO9esvq0e80G57lEYLonvE5dKKUgoozaiVfLM=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+      "OriginalItemSpec": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
       "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\LedApp.styles.css",
@@ -22774,8 +22774,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "jclfmejw4r",
-      "Integrity": "0xd6TbVjvAxmJjDY5j+WJKCGFBgjHRmhEJZvd7z/jpo=",
+      "Fingerprint": "0z4q2uatz0",
+      "Integrity": "rPUbnPmK799jTw131lO215b5sdCY1D0VP0Xh7Swntc4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\nhapxuat.js"
@@ -24165,6 +24165,237 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\microsoft\\signalr\\signalr.min.js"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/0649cf52-0366-4f6a-a2f0-242d1cb493e4#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "n1a8h9jhhh",
+      "Integrity": "JTZhEi+KEHvkANaFaRXVbKSwz7ZFhneAFuNcHmBncfE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/10566877-cec5-4508-9275-6692a160bea7#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mlnrvzzpqu",
+      "Integrity": "xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/233bb593-be97-4e7e-86c9-a800f65952c5#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "8yo8gkqk2d",
+      "Integrity": "ULDvFMvOs8MYcTTM9XbwnfiJpT2HLTCXd+psbuQ5Pm4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/583ebe46-1498-42d1-925d-96734b3a9ddf#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zavc2u81a9",
+      "Integrity": "hZzP1gpTycCfvnBXgB+Ua9Yv+QOvbiSycowurAXWI98=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/64616984-a33a-4043-86ab-34e64c0a12b4#[.{fingerprint}]?.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "mlnrvzzpqu",
+      "Integrity": "xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/6efa1e7e-adc2-4874-8026-1762b18c2966#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "6mq09ylezm",
+      "Integrity": "Qjgg/LXlvlH5JGKHbKovU3NzdNOweXFvAUrUP8wN+9A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/770325b1-3461-43d8-b755-04b5c18c92e2#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zmyf8319mg",
+      "Integrity": "5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/894e931b-29ba-4d1c-ad83-33a207605004#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "bi710cd65u",
+      "Integrity": "Q9yWLb5BfAZfCtmEkPwxOJekvmZ73zegd8u0meYgWUo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/c76b2d1e-efa9-4490-abd0-fa98ffb207dc#[.{fingerprint}]?.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sgzcrisjbh",
+      "Integrity": "dL5/dtqFF8HKPtu2rascPa1RNWJg/7kHUCOKqFwjPKA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/d8c75ee7-d4b1-489e-b8ea-7561c37b70b0#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "t9fsgh5gqz",
+      "Integrity": "UYDY37cSY10gbFuFZ8nXAyIYozH6YlMcmVodOmrU9JI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/e91a2909-b790-4293-bf24-f20c7862648c#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "21ionu1g1k",
+      "Integrity": "RjDSy4/BDi0tNcRKnFu+xsHkmO+ZUvUEMGiu7x033nM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png"
     }
   ],
   "Endpoints": [
@@ -107810,7 +108041,7 @@
     },
     {
       "Route": "Identity/css/site.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\css\\site.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107831,7 +108062,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -107847,7 +108078,7 @@
     },
     {
       "Route": "Identity/favicon.ico",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\favicon.ico",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107868,7 +108099,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -107884,7 +108115,7 @@
     },
     {
       "Route": "Identity/js/site.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\js\\site.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\js\\site.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107905,7 +108136,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -107921,7 +108152,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107942,7 +108173,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -107958,7 +108189,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -107979,7 +108210,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -107995,7 +108226,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108016,7 +108247,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108032,7 +108263,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108053,7 +108284,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108069,7 +108300,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.rtl.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108090,7 +108321,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108106,7 +108337,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108127,7 +108358,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108143,7 +108374,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108164,7 +108395,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108180,7 +108411,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108201,7 +108432,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108217,7 +108448,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108238,7 +108469,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108254,7 +108485,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108275,7 +108506,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108291,7 +108522,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108312,7 +108543,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108328,7 +108559,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108349,7 +108580,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108365,7 +108596,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108386,7 +108617,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108402,7 +108633,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108423,7 +108654,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108439,7 +108670,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108460,7 +108691,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108476,7 +108707,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108497,7 +108728,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108513,7 +108744,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108534,7 +108765,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108550,7 +108781,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108571,7 +108802,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108587,7 +108818,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108608,7 +108839,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108624,7 +108855,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108645,7 +108876,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108661,7 +108892,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108682,7 +108913,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108698,7 +108929,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108719,7 +108950,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108735,7 +108966,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108756,7 +108987,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108772,7 +109003,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108793,7 +109024,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108809,7 +109040,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108830,7 +109061,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108846,7 +109077,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108867,7 +109098,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108883,7 +109114,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108904,7 +109135,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108920,7 +109151,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108941,7 +109172,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108957,7 +109188,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -108978,7 +109209,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -108994,7 +109225,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109015,7 +109246,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109031,7 +109262,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109052,7 +109283,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109068,7 +109299,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109089,7 +109320,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109105,7 +109336,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.bundle.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109126,7 +109357,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109142,7 +109373,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109163,7 +109394,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109179,7 +109410,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109200,7 +109431,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109216,7 +109447,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109237,7 +109468,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109253,7 +109484,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.esm.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109274,7 +109505,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109290,7 +109521,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.esm.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109311,7 +109542,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109327,7 +109558,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.esm.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109348,7 +109579,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109364,7 +109595,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109385,7 +109616,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109401,7 +109632,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109422,7 +109653,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109438,7 +109669,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109459,7 +109690,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109475,7 +109706,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109496,7 +109727,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109512,7 +109743,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/dist/js/bootstrap.min.js.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109533,7 +109764,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109549,7 +109780,7 @@
     },
     {
       "Route": "Identity/lib/bootstrap/LICENSE",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\bootstrap\\LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109570,7 +109801,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109586,7 +109817,7 @@
     },
     {
       "Route": "Identity/lib/jquery/dist/jquery.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109607,7 +109838,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109623,7 +109854,7 @@
     },
     {
       "Route": "Identity/lib/jquery/dist/jquery.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109644,7 +109875,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109660,7 +109891,7 @@
     },
     {
       "Route": "Identity/lib/jquery/dist/jquery.min.map",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\dist\\jquery.min.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109681,7 +109912,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109697,7 +109928,7 @@
     },
     {
       "Route": "Identity/lib/jquery/LICENSE.txt",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109718,7 +109949,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109734,7 +109965,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation/dist/additional-methods.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109755,7 +109986,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109771,7 +110002,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation/dist/additional-methods.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109792,7 +110023,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109808,7 +110039,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation/dist/jquery.validate.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109829,7 +110060,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109845,7 +110076,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation/dist/jquery.validate.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109866,7 +110097,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109882,7 +110113,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation/LICENSE.md",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation\\LICENSE.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109903,7 +110134,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109919,7 +110150,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109940,7 +110171,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109956,7 +110187,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -109977,7 +110208,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -109993,7 +110224,7 @@
     },
     {
       "Route": "Identity/lib/jquery-validation-unobtrusive/LICENSE.txt",
-      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.21\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "AssetFile": "C:\\Users\\ACER\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\6.0.16\\staticwebassets\\V5\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -110014,7 +110245,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 15 Jul 2023 02:42:32 GMT"
+          "Value": "Fri, 24 Mar 2023 20:28:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110111,7 +110342,7 @@
       ]
     },
     {
-      "Route": "js/nhapxuat.jclfmejw4r.js",
+      "Route": "js/nhapxuat.0z4q2uatz0.js",
       "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -110121,7 +110352,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "16200"
+          "Value": "19849"
         },
         {
           "Name": "Content-Type",
@@ -110129,11 +110360,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0xd6TbVjvAxmJjDY5j+WJKCGFBgjHRmhEJZvd7z/jpo=\""
+          "Value": "\"rPUbnPmK799jTw131lO215b5sdCY1D0VP0Xh7Swntc4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 29 Mar 2026 19:46:08 GMT"
+          "Value": "Fri, 10 Apr 2026 11:45:09 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110143,7 +110374,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "jclfmejw4r"
+          "Value": "0z4q2uatz0"
         },
         {
           "Name": "label",
@@ -110151,7 +110382,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-0xd6TbVjvAxmJjDY5j+WJKCGFBgjHRmhEJZvd7z/jpo="
+          "Value": "sha256-rPUbnPmK799jTw131lO215b5sdCY1D0VP0Xh7Swntc4="
         }
       ]
     },
@@ -110166,7 +110397,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "16200"
+          "Value": "19849"
         },
         {
           "Name": "Content-Type",
@@ -110174,11 +110405,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0xd6TbVjvAxmJjDY5j+WJKCGFBgjHRmhEJZvd7z/jpo=\""
+          "Value": "\"rPUbnPmK799jTw131lO215b5sdCY1D0VP0Xh7Swntc4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 29 Mar 2026 19:46:08 GMT"
+          "Value": "Fri, 10 Apr 2026 11:45:09 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110188,7 +110419,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0xd6TbVjvAxmJjDY5j+WJKCGFBgjHRmhEJZvd7z/jpo="
+          "Value": "sha256-rPUbnPmK799jTw131lO215b5sdCY1D0VP0Xh7Swntc4="
         }
       ]
     },
@@ -110297,7 +110528,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 10 Aug 2023 01:21:04 GMT"
+          "Value": "Fri, 03 Apr 2026 09:33:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110334,7 +110565,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 10 Aug 2023 01:21:04 GMT"
+          "Value": "Fri, 03 Apr 2026 09:33:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110379,7 +110610,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 10 Aug 2023 01:21:04 GMT"
+          "Value": "Fri, 03 Apr 2026 09:33:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110424,7 +110655,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 10 Aug 2023 01:21:04 GMT"
+          "Value": "Fri, 03 Apr 2026 09:33:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -115765,6 +115996,908 @@
         {
           "Name": "integrity",
           "Value": "sha256-1e+6TJEfoToJT2aj1qODRSgYjNkWGgeIcAsZ2JA+jUI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "226349"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JTZhEi+KEHvkANaFaRXVbKSwz7ZFhneAFuNcHmBncfE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:56:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-JTZhEi+KEHvkANaFaRXVbKSwz7ZFhneAFuNcHmBncfE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/0649cf52-0366-4f6a-a2f0-242d1cb493e4.n1a8h9jhhh.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "226349"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JTZhEi+KEHvkANaFaRXVbKSwz7ZFhneAFuNcHmBncfE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:56:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "n1a8h9jhhh"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-JTZhEi+KEHvkANaFaRXVbKSwz7ZFhneAFuNcHmBncfE="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/10566877-cec5-4508-9275-6692a160bea7.jpeg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9626"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 16:08:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/10566877-cec5-4508-9275-6692a160bea7.mlnrvzzpqu.jpeg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9626"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 16:08:22 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mlnrvzzpqu"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/10566877-cec5-4508-9275-6692a160bea7.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/233bb593-be97-4e7e-86c9-a800f65952c5.8yo8gkqk2d.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "30184"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ULDvFMvOs8MYcTTM9XbwnfiJpT2HLTCXd+psbuQ5Pm4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:19:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "8yo8gkqk2d"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/233bb593-be97-4e7e-86c9-a800f65952c5.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ULDvFMvOs8MYcTTM9XbwnfiJpT2HLTCXd+psbuQ5Pm4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "30184"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ULDvFMvOs8MYcTTM9XbwnfiJpT2HLTCXd+psbuQ5Pm4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:19:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ULDvFMvOs8MYcTTM9XbwnfiJpT2HLTCXd+psbuQ5Pm4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/583ebe46-1498-42d1-925d-96734b3a9ddf.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "159021"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hZzP1gpTycCfvnBXgB+Ua9Yv+QOvbiSycowurAXWI98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:48:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hZzP1gpTycCfvnBXgB+Ua9Yv+QOvbiSycowurAXWI98="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/583ebe46-1498-42d1-925d-96734b3a9ddf.zavc2u81a9.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "159021"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hZzP1gpTycCfvnBXgB+Ua9Yv+QOvbiSycowurAXWI98=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:48:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zavc2u81a9"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/583ebe46-1498-42d1-925d-96734b3a9ddf.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hZzP1gpTycCfvnBXgB+Ua9Yv+QOvbiSycowurAXWI98="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/64616984-a33a-4043-86ab-34e64c0a12b4.jpeg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9626"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:54:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/64616984-a33a-4043-86ab-34e64c0a12b4.mlnrvzzpqu.jpeg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9626"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:54:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "mlnrvzzpqu"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/64616984-a33a-4043-86ab-34e64c0a12b4.jpeg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xvQXtV5XeDORHYWCqSSPU0pMvoQbxPkylZpzm4UQL94="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/6efa1e7e-adc2-4874-8026-1762b18c2966.6mq09ylezm.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2512268"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Qjgg/LXlvlH5JGKHbKovU3NzdNOweXFvAUrUP8wN+9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:30:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "6mq09ylezm"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/6efa1e7e-adc2-4874-8026-1762b18c2966.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Qjgg/LXlvlH5JGKHbKovU3NzdNOweXFvAUrUP8wN+9A="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/6efa1e7e-adc2-4874-8026-1762b18c2966.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2512268"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Qjgg/LXlvlH5JGKHbKovU3NzdNOweXFvAUrUP8wN+9A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:30:01 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Qjgg/LXlvlH5JGKHbKovU3NzdNOweXFvAUrUP8wN+9A="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/770325b1-3461-43d8-b755-04b5c18c92e2.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "976910"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 11 Apr 2026 08:58:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/770325b1-3461-43d8-b755-04b5c18c92e2.zmyf8319mg.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "976910"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 11 Apr 2026 08:58:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zmyf8319mg"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/770325b1-3461-43d8-b755-04b5c18c92e2.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/894e931b-29ba-4d1c-ad83-33a207605004.bi710cd65u.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "722609"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q9yWLb5BfAZfCtmEkPwxOJekvmZ73zegd8u0meYgWUo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:12:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bi710cd65u"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/894e931b-29ba-4d1c-ad83-33a207605004.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q9yWLb5BfAZfCtmEkPwxOJekvmZ73zegd8u0meYgWUo="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/894e931b-29ba-4d1c-ad83-33a207605004.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "722609"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q9yWLb5BfAZfCtmEkPwxOJekvmZ73zegd8u0meYgWUo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:12:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q9yWLb5BfAZfCtmEkPwxOJekvmZ73zegd8u0meYgWUo="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "234247"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dL5/dtqFF8HKPtu2rascPa1RNWJg/7kHUCOKqFwjPKA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:50:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dL5/dtqFF8HKPtu2rascPa1RNWJg/7kHUCOKqFwjPKA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/c76b2d1e-efa9-4490-abd0-fa98ffb207dc.sgzcrisjbh.jpg",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "234247"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/jpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dL5/dtqFF8HKPtu2rascPa1RNWJg/7kHUCOKqFwjPKA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 10 Apr 2026 20:50:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sgzcrisjbh"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dL5/dtqFF8HKPtu2rascPa1RNWJg/7kHUCOKqFwjPKA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1143127"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UYDY37cSY10gbFuFZ8nXAyIYozH6YlMcmVodOmrU9JI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 11 Apr 2026 08:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-UYDY37cSY10gbFuFZ8nXAyIYozH6YlMcmVodOmrU9JI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.t9fsgh5gqz.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1143127"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"UYDY37cSY10gbFuFZ8nXAyIYozH6YlMcmVodOmrU9JI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 11 Apr 2026 08:57:29 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "t9fsgh5gqz"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-UYDY37cSY10gbFuFZ8nXAyIYozH6YlMcmVodOmrU9JI="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/e91a2909-b790-4293-bf24-f20c7862648c.21ionu1g1k.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2909645"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RjDSy4/BDi0tNcRKnFu+xsHkmO+ZUvUEMGiu7x033nM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:11:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "21ionu1g1k"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/e91a2909-b790-4293-bf24-f20c7862648c.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-RjDSy4/BDi0tNcRKnFu+xsHkmO+ZUvUEMGiu7x033nM="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/e91a2909-b790-4293-bf24-f20c7862648c.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2909645"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RjDSy4/BDi0tNcRKnFu+xsHkmO+ZUvUEMGiu7x033nM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 03 Apr 2026 15:11:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-RjDSy4/BDi0tNcRKnFu+xsHkmO+ZUvUEMGiu7x033nM="
         }
       ]
     }

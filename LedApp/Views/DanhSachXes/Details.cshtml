@@ -1,0 +1,41 @@
+﻿@model LedApp.Models.DanhSachXe
+@{
+    ViewData["Title"] = "Chi tiết xe";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Chi tiết xe</h1>
+<hr />
+<dl class="row">
+    <dt class="col-sm-3">Biển số xe</dt>
+    <dd class="col-sm-9">@Model.BienSoXe</dd>
+    <dt class="col-sm-3">Loại xe</dt>
+    <dd class="col-sm-9">@Model.LoaiXe</dd>
+    <dt class="col-sm-3">Tải trọng</dt>
+    <dd class="col-sm-9">@Model.TaiTrong</dd>
+    <dt class="col-sm-3">Trạng thái</dt>
+    <dd class="col-sm-9">
+        @switch (Model.TrangThai)
+        {
+            case (int)LedApp.Models.TrangThaiXe.TrongBai:
+                <span class="badge bg-success">Trong bãi</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXe.DangPhanCong:
+                <span class="badge bg-warning text-dark">Đang phân công</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXe.DangVanChuyen:
+                <span class="badge bg-primary">Đang vận chuyển</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXe.BaoTri:
+                <span class="badge bg-secondary">Bảo trì</span>
+                break;
+        }
+    </dd>
+    <dt class="col-sm-3">Tài xế</dt>
+    <dd class="col-sm-9">@Model.TaiXe?.Name</dd>
+    <dt class="col-sm-3">Thời gian dự kiến về</dt>
+    <dd class="col-sm-9">@(Model.ThoiGianDuKienVe.HasValue ? Model.ThoiGianDuKienVe.Value.ToString("dd/MM/yyyy HH:mm") : "")</dd>
+    <dt class="col-sm-3">Ghi chú</dt>
+    <dd class="col-sm-9">@Model.GhiChu</dd>
+</dl>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Sửa</a>
+<a asp-action="Index" class="btn btn-secondary">Trở về</a>

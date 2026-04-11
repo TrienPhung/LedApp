@@ -1,0 +1,61 @@
+﻿@model LedApp.Models.Xuat
+@{
+    ViewData["Title"] = "Xóa phiếu xuất";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Xóa phiếu xuất</h1>
+<h3 class="text-danger">Bạn có chắc chắn muốn xóa không?</h3>
+<hr />
+<dl class="row">
+    <dt class="col-sm-3">Cửa xuất</dt>
+    <dd class="col-sm-9">@(Model.CuaXuat?.Ten ?? $"X-{Model.CuaXuatId:D2}")</dd>
+    <dt class="col-sm-3">Biển số xe</dt>
+    <dd class="col-sm-9">@(Model.Xe?.BienSoXe ?? "—")</dd>
+    <dt class="col-sm-3">Thời gian phân công</dt>
+    <dd class="col-sm-9">@Model.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</dd>
+    <dt class="col-sm-3">Thời gian xuất phát</dt>
+    <dd class="col-sm-9">@(Model.ThoiGianXuatPhat?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
+    <dt class="col-sm-3">Trạng thái</dt>
+    <dd class="col-sm-9">
+        @switch (Model.TrangThai)
+        {
+            case (int)LedApp.Models.TrangThaiXuat.DaPhanCong:
+                <span class="badge bg-secondary">Đã phân công</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXuat.DangBanGiao:
+                <span class="badge bg-primary">Đang bàn giao</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXuat.QuaThoiGian:
+                <span class="badge bg-danger">Quá thời gian</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXuat.HoanThanh:
+                <span class="badge bg-success">Hoàn thành</span>
+                break;
+            case (int)LedApp.Models.TrangThaiXuat.DaXuatPhat:
+                <span class="badge bg-dark">Đã xuất phát</span>
+                break;
+        }
+    </dd>
+    <dt class="col-sm-3">Nhân viên xác nhận</dt>
+    <dd class="col-sm-9">@(Model.NhanVienXacNhan?.Name ?? "—")</dd>
+    <dt class="col-sm-3">Ghi chú</dt>
+    <dd class="col-sm-9">@(Model.GhiChu ?? "—")</dd>
+</dl>
+@if (Model.TrangThai != (int)LedApp.Models.TrangThaiXuat.DaXuatPhat)
+{
+    <div class="alert alert-warning">
+        Xe sẽ được trả về trạng thái <strong>Trong bãi</strong> sau khi xóa.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        Xe đã xuất phát — trạng thái xe sẽ không được hoàn lại.
+    </div>
+}
+<hr />
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Xác nhận xóa" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
+</form>

@@ -32,7 +32,7 @@ namespace LedApp.SubscribeTableDependencies
         {
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
-                signalServer.SendTongHopNhap();
+              //  signalServer.SendTongHopNhap();
                 // Nếu muốn cập nhật bảng chi tiết cửa nhập thì thêm:
                 // signalServer.SendChitietNhap(e.Entity.NhapId);
             }

@@ -1,13 +1,9 @@
 ﻿@model LedApp.Models.Nhap
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Sửa";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-
-<h1>Sủa dữ liệu nhập</h1>
-
-@*<h4>Nhap</h4>*@
+<h1>Sửa dữ liệu nhập</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -25,29 +21,34 @@
                 <span asp-validation-for="BienSoXe" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NgayNhap" class="control-label"></label>
-                <input type="date" asp-for="NgayNhap" class="form-control" />
-                <span asp-validation-for="NgayNhap" class="text-danger"></span>
+                <label asp-for="ThoiGianPhanCong" class="control-label"></label>
+                <input asp-for="ThoiGianPhanCong" class="form-control flatpickr" />
+                <span asp-validation-for="ThoiGianPhanCong" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GioNhap" class="control-label"></label>
-                <input asp-for="GioNhap" class="form-control" />
-                <span asp-validation-for="GioNhap" class="text-danger"></span>
+                <label asp-for="ThoiGianVaoBai" class="control-label"></label>
+                <input asp-for="ThoiGianVaoBai" class="form-control flatpickr" />
+                <span asp-validation-for="ThoiGianVaoBai" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhutNhap" class="control-label"></label>
-                <input asp-for="PhutNhap" class="form-control" />
-                <span asp-validation-for="PhutNhap" class="text-danger"></span>
+                <label asp-for="ThoiGianVaoCua" class="control-label"></label>
+                <input asp-for="ThoiGianVaoCua" class="form-control flatpickr" />
+                <span asp-validation-for="ThoiGianVaoCua" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CongVao" class="control-label"></label>
-                <input asp-for="CongVao" class="form-control" />
-                <span asp-validation-for="CongVao" class="text-danger"></span>
+                <label asp-for="ThoiGianGioiHan" class="control-label"></label>
+                <input asp-for="ThoiGianGioiHan" class="form-control flatpickr" />
+                <span asp-validation-for="ThoiGianGioiHan" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
-                </label>
+            <div class="form-group">
+                <label asp-for="ThoiGianHoanThanh" class="control-label"></label>
+                <input asp-for="ThoiGianHoanThanh" class="form-control flatpickr" />
+                <span asp-validation-for="ThoiGianHoanThanh" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrangThai" class="control-label"></label>
+                <select asp-for="TrangThai" class="form-control" asp-items="ViewBag.TrangThai"></select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Lưu thông tin" class="btn btn-primary" />
@@ -55,8 +56,68 @@
         </form>
     </div>
 </div>
-
 <div>
     <a asp-action="Index">Trở về</a>
 </div>
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
 
+    <style>
+        .flatpickr-buttons {
+            display: flex;
+            gap: 6px;
+            padding: 6px 8px;
+            border-top: 1px solid #e2e2e2;
+        }
+
+            .flatpickr-buttons button {
+                flex: 1;
+                padding: 4px 0;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background: #f8f8f8;
+                cursor: pointer;
+                font-size: 13px;
+            }
+
+                .flatpickr-buttons button:hover {
+                    background: #e9e9e9;
+                }
+    </style>
+
+    <script>
+        flatpickr(".flatpickr", {
+            enableTime: true,
+            time_24hr: true,
+            dateFormat: "Y-m-d H:i",
+            locale: "vn",
+            allowInput: true,
+            onReady: function(selectedDates, dateStr, instance) {
+                var btnWrapper = document.createElement("div");
+                btnWrapper.className = "flatpickr-buttons";
+
+                var btnToday = document.createElement("button");
+                btnToday.type = "button";
+                btnToday.textContent = "Hôm nay";
+                btnToday.addEventListener("click", function() {
+                    instance.setDate(new Date());
+                    instance.close();
+                });
+
+                var btnClear = document.createElement("button");
+                btnClear.type = "button";
+                btnClear.textContent = "Xóa";
+                btnClear.addEventListener("click", function() {
+                    instance.clear();
+                    instance.close();
+                });
+
+                btnWrapper.appendChild(btnToday);
+                btnWrapper.appendChild(btnClear);
+                instance.calendarContainer.appendChild(btnWrapper);
+            }
+        });
+    </script>
+}

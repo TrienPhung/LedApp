@@ -1,0 +1,73 @@
+﻿@model IEnumerable<LedApp.Models.nguoiDungs>
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Quản lý người dùng</h1>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+<p><a asp-action="Create">Thêm mới</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Image)</th>
+            <th>@Html.DisplayNameFor(m => m.Username)</th>
+            <th>@Html.DisplayNameFor(m => m.Name)</th>
+            <th>@Html.DisplayNameFor(m => m.Tels)</th>
+            <th>@Html.DisplayNameFor(m => m.Email)</th>
+            <th>@Html.DisplayNameFor(m => m.Quyen)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.Image))
+                    {
+                        <img src="@item.Image" style="width:60px;height:60px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <img src="/uploads/avatars/default.png" style="width:60px;height:60px;object-fit:cover;" />
+                    }
+                </td>
+                <td>@Html.DisplayFor(m => item.Username)</td>
+                <td>@Html.DisplayFor(m => item.Name)</td>
+                <td>@Html.DisplayFor(m => item.Tels)</td>
+                <td>@Html.DisplayFor(m => item.Email)</td>
+                <td>
+                    @switch (item.Quyen)
+                    {
+                        case (int)LedApp.Models.Quyen.NhanVien:
+                            <span>Nhân viên</span>
+                            break;
+                        case (int)LedApp.Models.Quyen.QuanLy:
+                            <span class="badge bg-primary">Quản lý</span>
+                            break;
+                        case (int)LedApp.Models.Quyen.Admin:
+                            <span class="badge bg-danger">Admin</span>
+                            break;
+                        case (int)LedApp.Models.Quyen.TaiXe:
+                            <span class="badge bg-warning text-dark">Tài xế</span>
+                            break;
+                        case (int)LedApp.Models.Quyen.BaoVe:
+                            <span class="badge bg-secondary">Bảo vệ</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -4357,6 +4357,50 @@
       "PackagePath": "staticwebassets\\lib\\microsoft\\signalr\\signalr.min.js"
     },
     {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\0649cf52-0366-4f6a-a2f0-242d1cb493e4.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\583ebe46-1498-42d1-925d-96734b3a9ddf.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\64616984-a33a-4043-86ab-34e64c0a12b4.jpeg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\6efa1e7e-adc2-4874-8026-1762b18c2966.png"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\770325b1-3461-43d8-b755-04b5c18c92e2.png"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\894e931b-29ba-4d1c-ad83-33a207605004.png"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\c76b2d1e-efa9-4490-abd0-fa98ffb207dc.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\d8c75ee7-d4b1-489e-b8ea-7561c37b70b0.png"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\e91a2909-b790-4293-bf24-f20c7862648c.png"
+    },
+    {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.LedApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

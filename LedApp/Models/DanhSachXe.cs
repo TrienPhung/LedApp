@@ -22,7 +22,7 @@ namespace LedApp.Models
         public long TaiTrong { get; set; }
 
         [DisplayName("Trạng thái")]
-        public string TrangThai { get; set; } = string.Empty;
+        public int TrangThai { get; set; } = (int)TrangThaiXe.TrongBai;
 
         [DisplayName("Ghi chú")]
         public string? GhiChu { get; set; }
@@ -30,6 +30,14 @@ namespace LedApp.Models
         [DisplayName("Thời gian dự kiến về")]
         public DateTime? ThoiGianDuKienVe { get; set; }
 
+
+        // ← THÊM MỚI: FK trỏ vào bảng nguoiDungs
+        [ForeignKey(nameof(TaiXe))]
+        [DisplayName("Tài xế")]
+        public int? TaiXeId { get; set; }
+
+
+        public nguoiDungs? TaiXe { get; set; }  // ← navigation property, tên TaiXe là do mình đặt
         // Navigation
         public ICollection<Xuat>? Xuats { get; set; }
     }

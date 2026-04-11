@@ -1,72 +1,56 @@
 ﻿@model IEnumerable<LedApp.Models.Nhap>
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-
 <h1>Quản lý thông tin tổng hợp nhập</h1>
-
 <p>
-    <a asp-action="Create">Thêm mới cửa nhập</a>
+    <a asp-action="Create">Thêm mới</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BienSoXe)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NgayNhap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GioNhap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhutNhap)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CongVao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrangThai)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CuaNhap)
-            </th>
+            <th>STT</th>
+            <th>@Html.DisplayNameFor(model => model.CuaNhapId)</th>
+            <th>@Html.DisplayNameFor(model => model.BienSoXe)</th>
+            <th>@Html.DisplayNameFor(model => model.ThoiGianPhanCong)</th>
+            <th>@Html.DisplayNameFor(model => model.ThoiGianVaoBai)</th>
+            <th>@Html.DisplayNameFor(model => model.ThoiGianVaoCua)</th>
+            <th>@Html.DisplayNameFor(model => model.ThoiGianGioiHan)</th>
+            <th>@Html.DisplayNameFor(model => model.ThoiGianHoanThanh)</th>
+            <th>@Html.DisplayNameFor(model => model.NhanVienXacNhanId)</th>
+            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BienSoXe)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NgayNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GioNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhutNhap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CongVao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TrangThai)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CuaNhap.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-               @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
+        @{
+            int stt = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@stt</td>
+                <td>@(item.CuaNhap?.Ten ?? "N/A")</td>
+                <td>@item.BienSoXe</td>
+                <td>@item.ThoiGianPhanCong.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.ThoiGianVaoBai?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.ThoiGianVaoCua?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.ThoiGianGioiHan?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.ThoiGianHoanThanh?.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@(item.NhanVienXacNhan?.Name ?? "Chưa xác nhận")</td>
+                <td>
+                    <span class="badge @TrangThaiHelper.GetBadgeClassNhap(item.TrangThai)">
+                        @TrangThaiHelper.GetTenTrangThaiNhap(item.TrangThai)
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+            stt++;
+        }
     </tbody>
 </table>

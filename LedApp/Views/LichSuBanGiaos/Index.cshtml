@@ -1,0 +1,40 @@
+﻿@model IEnumerable<LedApp.Models.LichSuBanGiao>
+@{
+    ViewData["Title"] = "Lịch sử bàn giao";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Lịch sử bàn giao</h1>
+<p><a asp-action="Create">Thêm mới</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.LoaiPhieu)</th>
+            <th>@Html.DisplayNameFor(m => m.PhieuId)</th>
+            <th>@Html.DisplayNameFor(m => m.DonVi)</th>
+            <th>@Html.DisplayNameFor(m => m.SoBG)</th>
+            <th>@Html.DisplayNameFor(m => m.NhanVienId)</th>
+            <th>@Html.DisplayNameFor(m => m.ThoiGian)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(m => item.LoaiPhieu)</td>
+                <td>@Html.DisplayFor(m => item.PhieuId)</td>
+                <td>@Html.DisplayFor(m => item.DonVi)</td>
+                <td>@Html.DisplayFor(m => item.SoBG)</td>
+                <td>@(item.NhanVien?.Name ?? item.NhanVienId.ToString())</td>
+                <td>@Html.DisplayFor(m => item.ThoiGian)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

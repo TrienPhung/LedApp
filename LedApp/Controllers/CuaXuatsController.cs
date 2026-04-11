@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using LedApp.Data;
 
 namespace LedApp.Controllers
 {

@@ -1,0 +1,455 @@
+﻿@model List<LedApp.DTOs.ChuyenXeDto>
+@{
+    ViewData["Title"] = "Lịch sử chuyến xe";
+    Layout = "~/Views/Shared/_LayoutApi.cshtml";
+    var tongChuyen = Model?.Count ?? 0;
+    var hoanThanh = Model?.Count(c => c.TrangThai == 4) ?? 0;
+    var dangChay = Model?.Count(c => c.TrangThai == 1
+                                    || c.TrangThai == 2
+                                    || c.TrangThai == 3) ?? 0;
+}
+<style>
+    body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: Arial;
+    }
+
+    .wrap {
+        padding: 16px;
+    }
+
+    .top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .back {
+        padding: 6px 10px;
+        border: 1px solid #3b82f6;
+        border-radius: 6px;
+        color: #3b82f6;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+    .title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .info {
+        display: flex;
+        gap: 12px;
+        background: #1e293b;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+        .info .main {
+            flex: 1;
+        }
+
+    .bien-so {
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .meta {
+        font-size: 12px;
+        opacity: 0.6;
+        margin-top: 2px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 10px;
+    }
+
+    .box {
+        background: #334155;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-align: center;
+        min-width: 70px;
+    }
+
+        .box .val {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .box small {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+    .green {
+        color: #4ade80;
+    }
+
+    .blue {
+        color: #60a5fa;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+
+        .toolbar select {
+            padding: 6px;
+            border-radius: 6px;
+            background: #1e293b;
+            color: white;
+            border: 1px solid #334155;
+            font-size: 12px;
+        }
+
+        .toolbar .count {
+            font-size: 12px;
+            opacity: 0.5;
+            margin-left: auto;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #1e293b;
+        border-radius: 10px;
+        overflow: hidden;
+        table-layout: fixed;
+    }
+
+    th:nth-child(1), td:nth-child(1) {
+        width: 80px;
+    }
+
+    th:nth-child(2), td:nth-child(2) {
+        width: 110px;
+    }
+
+    th:nth-child(3), td:nth-child(3) {
+        width: 100px;
+    }
+
+    th:nth-child(4), td:nth-child(4) {
+        width: 100px;
+    }
+
+    th:nth-child(5), td:nth-child(5) {
+        width: 100px;
+    }
+
+    th:nth-child(6), td:nth-child(6) {
+        width: 130px;
+    }
+
+    th:nth-child(7), td:nth-child(7) {
+        width: 100px;
+    }
+
+    th:nth-child(8), td:nth-child(8) {
+        width: 70px;
+    }
+
+    td, th {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    th, td {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    th {
+        opacity: 0.6;
+        border-bottom: 1px solid #334155;
+    }
+
+    tr {
+        border-bottom: 1px solid #334155;
+    }
+
+        tr:hover {
+            background: #334155;
+        }
+
+    .hang {
+        background: #334155;
+        padding: 3px 6px;
+        border-radius: 5px;
+        font-size: 11px;
+        margin: 2px;
+        display: inline-block;
+    }
+
+    .badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .tt-0 {
+        background: #475569;
+    }
+
+    .tt-1 {
+        background: #3b82f6;
+    }
+
+    .tt-2 {
+        background: #22c55e;
+        color: #000;
+    }
+
+    .tt-3 {
+        background: #f97316;
+    }
+
+    .tt-4 {
+        background: #10b981;
+    }
+
+    .latest {
+        background: #1d4ed8;
+        color: white;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .detail {
+        display: none;
+        background: #020617;
+    }
+
+        .detail.open {
+            display: table-row;
+        }
+
+    .detail-box {
+        padding: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .field label {
+        font-size: 11px;
+        opacity: 0.5;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .field div {
+        font-size: 13px;
+    }
+
+    .btn {
+        border: 1px solid #3b82f6;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: #3b82f6;
+        background: none;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            background: #1e3a5f;
+        }
+</style>
+
+<div class="wrap">
+    <div class="top">
+        <a href="@Url.Action("Index","ImportFromApi")" class="back">← Dashboard</a>
+        <div class="title">📋 Lịch sử chuyến xe</div>
+    </div>
+
+    <div class="info">
+        <div class="main">
+            <div class="bien-so">@(ViewBag.BienSo ?? "—")</div>
+            <div class="meta">@(ViewBag.TenLaiXe ?? "—") &nbsp;·&nbsp; @(ViewBag.MaChiNhanh ?? "—")</div>
+        </div>
+        <div class="stats">
+            <div class="box">
+                <div class="val">@tongChuyen</div>
+                <small>Tổng</small>
+            </div>
+            <div class="box">
+                <div class="val green">@hoanThanh</div>
+                <small>Xong</small>
+            </div>
+            <div class="box">
+                <div class="val blue">@dangChay</div>
+                <small>Đang chạy</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <select id="filter" onchange="filterRows()">
+            <option value="">Tất cả</option>
+            <option value="0">Chưa về</option>
+            <option value="1">Đang về</option>
+            <option value="2">Đã đến</option>
+            <option value="3">Đang nhập</option>
+            <option value="4">Hoàn thành</option>
+        </select>
+        <select id="sort" onchange="sortRows()">
+            <option value="desc">Mới nhất trước</option>
+            <option value="asc">Cũ nhất trước</option>
+        </select>
+        <span class="count" id="count-label">@tongChuyen chuyến</span>
+    </div>
+
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Lần</th>
+                <th>Mã chuyến</th>
+                <th>Ngày dự kiến</th>
+                <th>Thời gian đến</th>
+                <th>Hoàn thành</th>
+                <th>Hàng hóa</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr><td colspan="8" style="text-align:center;padding:2rem;opacity:0.5">Không có dữ liệu</td></tr>
+            }
+            else
+            {
+                @foreach (var cx in Model)
+                {
+                    var tt = cx.TrangThai;
+                    var ttLabel = new[] { "Chưa về", "Đang về", "Đã đến", "Đang nhập", "Hoàn thành" };
+                    <tr class="data-row" data-tt="@tt" data-ngay="@cx.NgayDuKien.Ticks">
+                        <td>
+                            Lần @cx.LanThu
+                            @if (cx.IsLatest)
+                            {
+                                <span class="latest">Mới nhất</span>
+                            }
+                        </td>
+                        <td>@cx.MaChuyenApi</td>
+                        <td>@cx.NgayDuKien.ToString("dd/MM HH:mm")</td>
+                        <td>@(cx.ThoiGianDen?.ToString("dd/MM HH:mm") ?? "--")</td>
+                        <td>@(cx.ThoiGianHoanThanh?.ToString("dd/MM HH:mm") ?? "--")</td>
+                        <td>
+                            @if (cx.HangHoas != null && cx.HangHoas.Any())
+                            {
+                                foreach (var h in cx.HangHoas)
+                                {
+                                    <span class="hang">@h.SoLuong @h.DonVi</span>
+                                }
+                            }
+                            else
+                            {
+                                <span style="opacity:0.3">--</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge tt-@tt">@(tt < ttLabel.Length ? ttLabel[tt] : "--")</span>
+                        </td>
+                        <td>
+                            <button class="btn" id="btn-@cx.Id" onclick="toggle(@cx.Id)">Chi tiết</button>
+                        </td>
+                    </tr>
+                    <tr id="d-@cx.Id" class="detail">
+                        <td colspan="8">
+                            <div class="detail-box">
+                                <div class="field">
+                                    <label>Mã chuyến API</label>
+                                    <div>@cx.MaChuyenApi</div>
+                                </div>
+                                <div class="field">
+                                    <label>Ngày dự kiến</label>
+                                    <div>@cx.NgayDuKien.ToString("HH:mm - dd/MM/yyyy")</div>
+                                </div>
+                                <div class="field">
+                                    <label>Thời gian đến</label>
+                                    <div>@(cx.ThoiGianDen?.ToString("HH:mm - dd/MM/yyyy") ?? "—")</div>
+                                </div>
+                                <div class="field">
+                                    <label>Hoàn thành lúc</label>
+                                    <div>@(cx.ThoiGianHoanThanh?.ToString("HH:mm - dd/MM/yyyy") ?? "—")</div>
+                                </div>
+                                <div class="field">
+                                    <label>Trạng thái</label>
+                                    <div>@(tt < ttLabel.Length ? ttLabel[tt] : "--")</div>
+                                </div>
+                                <div class="field">
+                                    <label>Hàng hóa</label>
+                                    <div>
+                                        @if (cx.HangHoas != null && cx.HangHoas.Any())
+                                        {
+                                            @string.Join(", ", cx.HangHoas.Select(h => $"{h.SoLuong} {h.DonVi}"))
+                                        }
+                                        else
+                                        {
+                                            <span>—</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function toggle(id) {
+        const row = document.getElementById('d-' + id);
+        const btn = document.getElementById('btn-' + id);
+        const open = row.classList.toggle('open');
+        btn.textContent = open ? 'Thu gọn' : 'Chi tiết';
+    }
+
+    function filterRows() {
+        const v = document.getElementById('filter').value;
+        let count = 0;
+        document.querySelectorAll('#table tbody .data-row').forEach(r => {
+            const show = !v || r.dataset.tt === v;
+            r.style.display = show ? '' : 'none';
+            const dr = r.nextElementSibling;
+            if (dr && dr.classList.contains('detail')) {
+                if (!show) dr.classList.remove('open');
+                dr.style.display = show ? '' : 'none';
+            }
+            if (show) count++;
+        });
+        document.getElementById('count-label').textContent = count + ' chuyến';
+    }
+
+    function sortRows() {
+        const sort = document.getElementById('sort').value;
+        const tbody = document.querySelector('#table tbody');
+        const pairs = [];
+        document.querySelectorAll('.data-row').forEach(r => {
+            pairs.push({ data: r, detail: r.nextElementSibling });
+        });
+        pairs.sort((a, b) => sort === 'desc'
+            ? parseInt(b.data.dataset.ngay) - parseInt(a.data.dataset.ngay)
+            : parseInt(a.data.dataset.ngay) - parseInt(b.data.dataset.ngay));
+        pairs.forEach(p => { tbody.appendChild(p.data); tbody.appendChild(p.detail); });
+    }
+</script>

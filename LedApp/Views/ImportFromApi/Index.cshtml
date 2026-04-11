@@ -1,9 +1,375 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<LedApp.DTOs.DanhSachXeDto>
 @{
+    ViewData["Title"] = "Dashboard vận chuyển";
+    Layout = "~/Views/Shared/_LayoutApi.cshtml";
+    var tongXe = Model?.Count ?? 0;
+    var dangVe = Model?.Count(x => x.ChuyenHienTai?.TrangThai == 1) ?? 0;
+    var hoanThanh = Model?.Count(x => x.ChuyenHienTai?.TrangThai == 4) ?? 0;
+    var chuaXuatPhat = Model?.Count(x => x.ChuyenHienTai == null
+                                      || x.ChuyenHienTai.TrangThai == 0) ?? 0;
 }
-<div>
-    <p>Hiển thị API</p>
-    <p>@ViewBag.Data</p>
+
+<style>
+    body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: Arial;
+    }
+
+    .wrap {
+        padding: 16px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .time {
+        font-size: 12px;
+        opacity: 0.6;
+    }
+
+    .refresh {
+        padding: 6px 12px;
+        border: 1px solid #3b82f6;
+        border-radius: 6px;
+        color: #3b82f6;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .card {
+        flex: 1;
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+    }
+
+        .card .label {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        .card .value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+    .yellow {
+        color: #facc15;
+    }
+
+    .green {
+        color: #4ade80;
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+        .toolbar input, .toolbar select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #1e293b;
+            color: white;
+            font-size: 12px;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #1e293b;
+        border-radius: 10px;
+        overflow: hidden;
+        table-layout: fixed;
+    }
+
+    /* ✅ Cột 1: Xe / Lái xe */
+    th:nth-child(1), td:nth-child(1) {
+        width: 180px;
+    }
+
+    /* ✅ Cột 2: Mã chi nhánh */
+    th:nth-child(2), td:nth-child(2) {
+        width: 130px;
+        text-align: center;
+    }
+    /* ✅ Cột 3: Mã chuyến */
+    th:nth-child(3), td:nth-child(3) {
+        width: 160px;
+    }
+
+    /* ✅ Cột 4: Ngày */
+    th:nth-child(4), td:nth-child(4) {
+        width: 120px;
+    }
+
+    /* ✅ Cột 5: Hàng hóa — chiếm phần còn lại */
+    th:nth-child(5), td:nth-child(5) {
+        width: auto;
+    }
+
+    td:nth-child(5) {
+        white-space: normal; /* ✅ cho phép xuống dòng */
+        overflow: visible;
+    }
+    /* ✅ Cột 6: Trạng thái */
+    th:nth-child(6), td:nth-child(6) {
+        width: 120px;
+        text-align: center;
+    }
+
+    /* ✅ Cột 7: Nút chi tiết */
+    th:nth-child(7), td:nth-child(7) {
+        width: 90px;
+        text-align: center;
+    }
+
+    td, th {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    th {
+        opacity: 0.6;
+        border-bottom: 1px solid #334155;
+        font-size: 12px;
+    }
+
+    tr {
+        border-bottom: 1px solid #334155;
+        transition: background 0.4s;
+    }
+
+        tr:hover {
+            background: #334155;
+        }
+
+    .bien-so {
+        font-weight: bold;
+    }
+
+    .lai-xe {
+        font-size: 11px;
+        opacity: 0.6;
+        margin-top: 2px;
+    }
+
+    .hang {
+        display: inline-block;
+        background: #334155;
+        padding: 3px 7px;
+        border-radius: 5px;
+        font-size: 11px;
+        margin: 2px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+    }
+
+    .tt-0 {
+        background: #475569;
+    }
+
+    .tt-1 {
+        background: #3b82f6;
+    }
+
+    .tt-2 {
+        background: #22c55e;
+        color: #000;
+    }
+
+    .tt-3 {
+        background: #f97316;
+    }
+
+    .tt-4 {
+        background: #10b981;
+    }
+
+    .btn {
+        border: 1px solid #3b82f6;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: #3b82f6;
+        text-decoration: none;
+    }
+
+    .signal-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #475569;
+        display: inline-block;
+        margin-left: 8px;
+        vertical-align: middle;
+    }
+
+        .signal-dot.connected {
+            background: #4ade80;
+        }
+
+        .signal-dot.error {
+            background: #f87171;
+        }
+</style>
+
+<div class="wrap">
+    <div class="header">
+        <div>
+            <div class="title">
+                🚛 Dashboard vận chuyển
+                <span class="signal-dot" id="signal-dot" title="SignalR"></span>
+            </div>
+            <div class="time" id="update-time">@DateTime.Now.ToString("HH:mm dd/MM/yyyy")</div>
+        </div>
+        <a href="@Url.Action("Index","ImportFromApi")" class="refresh">↻ Refresh</a>
+    </div>
+
+    <div class="stats">
+        <div class="card">
+            <div class="label">Tổng xe</div>
+            <div class="value" id="stat-total">@tongXe</div>
+        </div>
+        <div class="card">
+            <div class="label">Đang về</div>
+            <div class="value yellow" id="stat-dang">@dangVe</div>
+        </div>
+        <div class="card">
+            <div class="label">Hoàn thành</div>
+            <div class="value green" id="stat-xong">@hoanThanh</div>
+        </div>
+        <div class="card">
+            <div class="label">Chưa đi</div>
+            <div class="value" id="stat-chua">@chuaXuatPhat</div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <input type="text" id="search" placeholder="Tìm kiếm..." oninput="filterTable()">
+        <select id="filter-tt" onchange="filterTable()">
+            <option value="">Tất cả</option>
+            <option value="0">Chưa về</option>
+            <option value="1">Đang về</option>
+            <option value="2">Đã đến</option>
+            <option value="3">Đang nhập</option>
+            <option value="4">Hoàn thành</option>
+        </select>
+    </div>
+
+    <table id="main-table">
+        <thead>
+            <tr>
+                <th>Xe / Lái xe</th>
+                <th>Mã chi nhánh</th>
+                <th>Mã chuyến</th>
+                <th>Ngày dự kiến</th>
+                <th>Hàng hóa</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr><td colspan="7" style="text-align:center;padding:2rem;opacity:0.5">Không có dữ liệu</td></tr>
+            }
+            else
+            {
+                @foreach (var xe in Model)
+                {
+                    var cx = xe.ChuyenHienTai;
+                    var tt = cx?.TrangThai ?? 0;
+                    var ttLabel = new[] { "Chưa về", "Đang về", "Đã đến", "Đang nhập", "Hoàn thành" };
+                    <tr data-xe-id="@xe.Id"
+                        data-bienso="@xe.BienSo?.ToLower()"
+                        data-laixe="@xe.TenLaiXe?.ToLower()"
+                        data-chinhanh="@xe.MaChiNhanh?.ToLower()"
+                        data-tt="@tt">
+                        <td>
+                            <div class="bien-so">@xe.BienSo</div>
+                            <div class="lai-xe">@xe.TenLaiXe</div>
+                        </td>
+                        <td>@xe.MaChiNhanh</td>
+                        <td>
+                            @if (cx != null)
+                            {
+                                <div>@cx.MaChuyenApi</div>
+                                <small style="opacity:0.5">Lần @cx.LanThu</small>
+                            }
+                            else
+                            {
+                                <span style="opacity:0.3">--</span>
+                            }
+                        </td>
+                        <td>@(cx != null ? cx.NgayDuKien.ToString("dd/MM HH:mm") : "--")</td>
+                        <td>
+                            @if (cx?.HangHoas != null && cx.HangHoas.Any())
+                            {
+                                foreach (var h in cx.HangHoas)
+                                {
+                                    <span class="hang">@h.SoLuong @h.DonVi</span>
+                                }
+                            }
+                            else
+                            {
+                                <span style="opacity:0.3">--</span>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge tt-@tt">@(tt < ttLabel.Length ? ttLabel[tt] : "--")</span>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("XeHistory","ImportFromApi", new { xeId = xe.Id })" class="btn">Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>
+
+@section Scripts {
+    <script>
+        function filterTable() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const tt = document.getElementById('filter-tt').value;
+            document.querySelectorAll('#main-table tbody tr').forEach(r => {
+                const matchSearch = !search
+                    || (r.dataset.bienso || '').includes(search)
+                    || (r.dataset.laixe || '').includes(search)
+                    || (r.dataset.chinhanh || '').includes(search);
+                const matchTt = !tt || r.dataset.tt === tt;
+                r.style.display = matchSearch && matchTt ? '' : 'none';
+            });
+        }
+    </script>
+}

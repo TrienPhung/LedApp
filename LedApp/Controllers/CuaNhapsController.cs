@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using LedApp.Data;
 
 namespace LedApp.Controllers
 {
@@ -101,7 +102,14 @@ namespace LedApp.Controllers
 
             try
             {
-                _context.Update(cuaNhap);
+                var existing = await _context.CuaNhaps
+                    .AsTracking()  
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                if (existing == null) return NotFound();
+
+                existing.Ten = cuaNhap.Ten;
+                existing.Mota = cuaNhap.Mota;
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

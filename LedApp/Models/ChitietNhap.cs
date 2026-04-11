@@ -16,13 +16,13 @@ namespace LedApp.Models
         public int NhapId { get; set; }
 
         [DisplayName("Đơn vị")]
-        public string DonVi { get; set; }
+        public string DonVi { get; set; } = string.Empty;
 
         [DisplayName("Chưa bàn giao")]
         public long ChuaBG { get; set; }
 
         [DisplayName("Đã bàn giao")]
-        public long DaBG { get; set; }
+        public long DaBG { get; set; } = 0;
 
         // Navigation property
         public Nhap? Nhap { get; set; }

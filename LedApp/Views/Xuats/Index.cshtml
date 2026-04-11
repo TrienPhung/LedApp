@@ -1,0 +1,72 @@
+﻿@model IEnumerable<LedApp.Models.Xuat>
+@{
+    ViewData["Title"] = "Quản lý phiếu xuất";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+<h1>Quản lý phiếu xuất</h1>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+<p><a asp-action="Create">Thêm mới</a></p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cửa xuất</th>
+            <th>Biển số xe</th>
+            <th>Thời gian phân công</th>
+            <th>Thời gian vào cửa</th>
+            <th>Thời gian hoàn thành</th>
+            <th>Thời gian xuất phát</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@(item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}")</td>
+                <td>@(item.Xe?.BienSoXe ?? "—")</td>
+                <td>@item.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(item.ThoiGianVaoCua?.ToString("HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianHoanThanh?.ToString("HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianXuatPhat?.ToString("HH:mm") ?? "—")</td>
+                <td>
+                    @switch (item.TrangThai)
+                    {
+                        case (int)LedApp.Models.TrangThaiXuat.DaPhanCong:
+                            <span class="badge bg-secondary">Đã phân công</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXuat.DangBanGiao:
+                            <span class="badge bg-primary">Đang bàn giao</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXuat.QuaThoiGian:
+                            <span class="badge bg-danger">Quá thời gian</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXuat.HoanThanh:
+                            <span class="badge bg-success">Hoàn thành</span>
+                            break;
+                        case (int)LedApp.Models.TrangThaiXuat.DaXuatPhat:
+                            <span class="badge bg-dark">Đã xuất phát</span>
+                            break;
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr><td colspan="9" class="text-center text-muted">Chưa có phiếu xuất nào.</td></tr>
+        }
+    </tbody>
+</table>

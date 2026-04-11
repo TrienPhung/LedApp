@@ -1,32 +1,47 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "cuaxuat";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*<p>@ViewBag.id</p>*@
+<style>
+    .led5 td, .led5 th {
+        border: none;
+    }
+</style>
 @if (ViewBag.ms == null)
 {
-    <div class="led5" style="width:@{@ViewBag.cuaxuatw}px;height:@{@ViewBag.cuaxuath}px;">
-    <p>
-        Giờ: <span class="hour"></span>h<span class="min"></span>
-    </p>
-    <h2>@ViewBag.tencuaxuat</h2>
-    <p class="pled5" id="tenxe_@ViewBag.id"></p>
-    <table class="bang">
-        <thead>
-            <tr>
-                <th>Chưa bàn giao</th>
-                <th>Đã bàn giao</th>
-            </tr>
-        </thead>
-        <tbody id="led5_@ViewBag.id">
-        </tbody>
-    </table>
-</div>
+    <div class="led5" style="width:@{
+        @ViewBag.cuaxuatw
+}px; height:@{
+        @ViewBag.cuaxuath
+}px; background:#0d0d0d; color:#fff; font-family:monospace; padding:10px; border-radius:7px; border:1.5px solid #1a1a1a; position:relative;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:6px;">
+            <span><span class="hour"></span>:<span class="min"></span></span>
+            <span>CỬA XUẤT @ViewBag.tencuaxuat</span>
+        </div>
+        <h2 id="tenxe_@ViewBag.id" style="text-align:center; font-size:16px; letter-spacing:2px; color:#facc15; margin-bottom:8px;">--</h2>
+        <div style="border-top:1px solid #222; margin-bottom:6px;"></div>
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+                <tr style="border-bottom:1px solid #222;">
+                    <td style="width:15%; text-align:center; color:#555; padding-bottom:4px;"></td>
+                    <td style="width:42%; text-align:center; color:#555; padding-bottom:4px; border-left:1px solid #222; border-right:1px solid #222;">Chưa BG</td>
+                    <td style="width:43%; text-align:center; color:#555; padding-bottom:4px;">Đã BG</td>
+                </tr>
+            </thead>
+            <tbody id="led5_@ViewBag.id">
+            </tbody>
+        </table>
+        <div style="border-top:1px solid #222; margin-top:8px; margin-bottom:6px;"></div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">
+            <span style="color:#555;">Giờ vào: <span id="giovao_@ViewBag.id" style="color:#facc15;">--:--</span></span>
+            <span style="color:#555;">Còn lại: <span id="conlai_@ViewBag.id" style="color:#facc15;">--</span></span>
+        </div>
+        <div id="strip_@ViewBag.id" style="background:#0c2a4a; color:#93c5fd; text-align:center; font-size:11px; font-weight:700; letter-spacing:.6px; padding:4px; border-radius:5px;">
+            Chờ xe ra...
+        </div>
+    </div>
 }
 else
 {
     <p>@ViewBag.ms</p>
 }
-
-

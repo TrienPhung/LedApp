@@ -1,0 +1,26 @@
+﻿@model LedApp.Models.CanhBao
+@{
+    ViewData["Title"] = "Chi tiết cảnh báo";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Chi tiết cảnh báo</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiPhieu)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiPhieu)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.PhieuId)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.PhieuId)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiCanhBao)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiCanhBao)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ThoiGian)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.ThoiGian)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.GhiChu)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.GhiChu)</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
+    <a asp-action="Index">Trở về</a>
+</div>

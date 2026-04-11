@@ -32,7 +32,7 @@ namespace LedApp.Models
 
         [ForeignKey(nameof(NhanVien))]
         [DisplayName("Nhân viên")]
-        public int NhanVienId { get; set; }
+        public int? NhanVienId { get; set; }
 
         [DisplayName("Thời gian")]
         public DateTime ThoiGian { get; set; }

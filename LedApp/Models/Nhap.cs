@@ -38,8 +38,11 @@ namespace LedApp.Models
         public int? NhanVienXacNhanId { get; set; }
 
         [DisplayName("Trạng thái")]
-        public string TrangThai { get; set; } = "DaPhanCong";
-
+        // Nhap.cs
+        public int TrangThai { get; set; } = (int)TrangThaiNhap.DaPhanCong;
+        [DisplayName("Ghi chú")]
+        [MaxLength(500)]
+        public string? GhiChu { get; set; }
         // Navigation properties
         public CuaNhap? CuaNhap { get; set; }
         public nguoiDungs? NhanVienXacNhan { get; set; }

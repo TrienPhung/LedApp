@@ -1,0 +1,46 @@
+﻿@model LedApp.Models.CanhBao
+@{
+    ViewData["Title"] = "Thêm cảnh báo";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Thêm cảnh báo</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="LoaiPhieu" class="control-label"></label>
+                <input asp-for="LoaiPhieu" class="form-control" />
+                <span asp-validation-for="LoaiPhieu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhieuId" class="control-label"></label>
+                <input asp-for="PhieuId" class="form-control" />
+                <span asp-validation-for="PhieuId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoaiCanhBao" class="control-label"></label>
+                <input asp-for="LoaiCanhBao" class="form-control" />
+                <span asp-validation-for="LoaiCanhBao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ThoiGian" class="control-label"></label>
+                <input asp-for="ThoiGian" class="form-control" type="datetime-local" step="60" />
+                <span asp-validation-for="ThoiGian" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GhiChu" class="control-label"></label>
+                <input asp-for="GhiChu" class="form-control" />
+                <span asp-validation-for="GhiChu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div><a asp-action="Index">Trở về</a></div>

@@ -1,43 +1,46 @@
 ﻿@model LedApp.Models.ChitietXuat
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết xuất</h1>
 
 <div>
-    <h4>ChitietXuat</h4>
+    <h4>Chi tiết xuất</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoluongCH)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.XuatId)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoluongCH)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.XuatId)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.donviCH)
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DonVi)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.donviCH)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DonVi)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoluongD)
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChuaBG)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoluongD)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChuaBG)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.donviD)
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DaBG)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.donviD)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DaBG)
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
+    <a asp-action="Index">Trở về</a>
 </div>

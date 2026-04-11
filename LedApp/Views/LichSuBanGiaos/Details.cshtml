@@ -1,0 +1,30 @@
+﻿@model LedApp.Models.LichSuBanGiao
+@{
+    ViewData["Title"] = "Chi tiết lịch sử bàn giao";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1>Chi tiết lịch sử bàn giao</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiPhieu)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiPhieu)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.PhieuId)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.PhieuId)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ChiTietDonViId)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.ChiTietDonViId)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.DonVi)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.DonVi)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.SoBG)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.SoBG)</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.NhanVienId)</dt>
+    <dd class="col-sm-10">@(Model.NhanVien?.Name ?? Model.NhanVienId.ToString())</dd>
+    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ThoiGian)</dt>
+    <dd class="col-sm-10">@Html.DisplayFor(m => m.ThoiGian)</dd>
+</dl>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
+    <a asp-action="Index">Trở về</a>
+</div>

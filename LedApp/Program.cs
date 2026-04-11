@@ -1,15 +1,24 @@
-using LedApp.Hubs;
+﻿using LedApp.Hubs;
 using LedApp.MiddlewareExtensions;
 using LedApp.Models;
 using LedApp.Repositories;
 using LedApp.SubscribeTableDependencies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using LedApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// ??ng ký IHttpClientFactory v?i base URL
+builder.Services.AddHttpClient("ViettelApi", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5014/");
+    client.Timeout = TimeSpan.FromSeconds(10);
+});
+
 //add dbcontext
 //dbcontext
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -33,16 +42,20 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 //Add sql denpendecy
 // DI
 builder.Services.AddSingleton<UserRepository>();
-builder.Services.AddSingleton<CuaXuatResposity>();
+builder.Services.AddSingleton<CuaXuatRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<SignalServer>();
 builder.Services.AddSingleton<SubscribeChitietXuatTableDependency>();
-builder.Services.AddSingleton<SubscribeNhapTableDependency>();        // ? th�m m?i
+builder.Services.AddSingleton<SubscribeNhapTableDependency>();        // ? thêm m?i
 builder.Services.AddSingleton<SubscribeChitietNhapTableDependency>();
-builder.Services.AddSingleton<SubscribeDulieuxuatTableDependency>();
+builder.Services.AddSingleton<SubscribeXuatTableDependency>();
 // Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+//Cảnh báo quá hạn
+// Thêm vào trước app.Run()
+builder.Services.AddHostedService<LedApp.Services.QuaHanNhapService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -74,7 +87,11 @@ app.MapControllerRoute(
 
 //Ki?ch hoa?t SubscribeTableDependency
 app.UseSqlTableDependency<SubscribeChitietXuatTableDependency>(connectionString);
-app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);        // ? th�m m?i
-app.UseSqlTableDependency<SubscribeChitietNhapTableDependency>(connectionString); // ? th�m m?i
-app.UseSqlTableDependency<SubscribeDulieuxuatTableDependency>(connectionString);
+app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);        // ? thêm m?i
+app.UseSqlTableDependency<SubscribeChitietNhapTableDependency>(connectionString); // ? thêm m?i
+app.UseSqlTableDependency<SubscribeXuatTableDependency>(connectionString);
+
+
+
+
 app.Run();

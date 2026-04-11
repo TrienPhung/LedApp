@@ -1,52 +1,50 @@
 ﻿@model LedApp.Models.ChitietXuat
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Sửa";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Edit</h1>
-
-<h4>ChitietXuat</h4>
+<h1>Sửa chi tiết xuất</h1>
+<h4>Chi tiết xuất</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
-                <label asp-for="SoluongCH" class="control-label"></label>
-                <input asp-for="SoluongCH" class="form-control" />
-                <span asp-validation-for="SoluongCH" class="text-danger"></span>
+                <label asp-for="XuatId" class="control-label"></label>
+                <select asp-for="XuatId" class="form-control" asp-items="ViewBag.XuatId"></select>
+                <span asp-validation-for="XuatId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="donviCH" class="control-label"></label>
-                <input asp-for="donviCH" class="form-control" />
-                <span asp-validation-for="donviCH" class="text-danger"></span>
+                <label asp-for="DonVi" class="control-label"></label>
+                <input asp-for="DonVi" class="form-control" />
+                <span asp-validation-for="DonVi" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="SoluongD" class="control-label"></label>
-                <input asp-for="SoluongD" class="form-control" />
-                <span asp-validation-for="SoluongD" class="text-danger"></span>
+                <label asp-for="ChuaBG" class="control-label"></label>
+                <input asp-for="ChuaBG" class="form-control" />
+                <span asp-validation-for="ChuaBG" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="donviD" class="control-label"></label>
-                <input asp-for="donviD" class="form-control" />
-                <span asp-validation-for="donviD" class="text-danger"></span>
+                <label asp-for="DaBG" class="control-label"></label>
+                <input asp-for="DaBG" class="form-control" />
+                <span asp-validation-for="DaBG" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="dulieuxuatId" class="control-label"></label>
-                <select asp-for="dulieuxuatId" class="form-control" asp-items="ViewBag.dulieuxuatId"></select>
-                <span asp-validation-for="dulieuxuatId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Lưu sửa" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở về</a>
 </div>
-

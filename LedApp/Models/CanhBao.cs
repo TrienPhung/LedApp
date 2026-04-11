@@ -28,5 +28,7 @@ namespace LedApp.Models
 
         [DisplayName("Ghi chú")]
         public string? GhiChu { get; set; }
+        [DisplayName("Trạng thái")]
+        public int TrangThai { get; set; } = 0; // ← thêm mới
     }
 }

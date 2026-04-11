@@ -1,42 +1,96 @@
-﻿@model IEnumerable<LedApp.Models.ChitietNhap>
-
+﻿@model IEnumerable<LedApp.Models.Nhap>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Chi tiết nhập";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+<h1>Quản lý thông tin chi tiết nhập</h1>
+<p><a asp-action="Create">+ Thêm mới</a></p>
 
-<h1>Quản lý thông tin dữ liệu nhập</h1>
-
-<p>
-    <a asp-action="Create">Thêm mới</a>
-</p>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Soluong)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.donvi)
-            </th>
             <th></th>
+            <th>Phiếu</th>
+            <th>Biển số xe</th>
+            <th>Cửa nhập</th>
+            <th>Thời gian phân công</th>
+            <th>Trạng thái</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Soluong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.donvi)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
+        @foreach (var nhap in Model)
+        {
+            <tr onclick="toggleCard(@nhap.Id)" style="cursor:pointer;">
+                <td><span id="icon-@nhap.Id">▶</span></td>
+                <td>#@nhap.Id</td>
+                <td>@nhap.BienSoXe</td>
+                <td>@(nhap.CuaNhap?.Ten ?? "N/A")</td>
+                <td>@nhap.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>
+                    <span class="badge @TrangThaiHelper.GetBadgeClassNhap(nhap.TrangThai)">
+                        @TrangThaiHelper.GetTenTrangThaiNhap(nhap.TrangThai)
+                    </span>
+                </td>
+            </tr>
+
+            <tr id="body-@nhap.Id" style="display:none;">
+                <td colspan="6">
+                    @if (nhap.ChitietNhaps != null && nhap.ChitietNhaps.Any())
+                    {
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Đơn vị</th>
+                                    <th>Chưa bàn giao</th>
+                                    <th>Đã bàn giao</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 1;
+                                }
+                                @foreach (var ct in nhap.ChitietNhaps)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@ct.DonVi</td>
+                                        <td>@ct.ChuaBG</td>
+                                        <td>@ct.DaBG</td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@ct.Id">Sửa</a> |
+                                            <a asp-action="Details" asp-route-id="@ct.Id">Chi tiết</a> |
+                                            <a asp-action="Delete" asp-route-id="@ct.Id">Xóa</a>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Chưa có chi tiết nào</p>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        function toggleCard(id) {
+            var body = document.getElementById('body-' + id);
+            var icon = document.getElementById('icon-' + id);
+            if (body.style.display === 'none') {
+                body.style.display = 'table-row';
+                icon.textContent = '▼';
+            } else {
+                body.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+    </script>
+}

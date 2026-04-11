@@ -16,16 +16,12 @@ namespace LedApp.Models
         [DisplayName("Cửa xuất")]
         public int CuaXuatId { get; set; }
 
-        //Link tới DanhSachXe — khác với Nhap chỉ lưu BienSoXe string
         [ForeignKey(nameof(Xe))]
         [DisplayName("Xe")]
-        public int XeId { get; set; }
+        public int? XeId { get; set; }
 
         [DisplayName("Thời gian phân công")]
         public DateTime ThoiGianPhanCong { get; set; }
-
-        [DisplayName("Thời gian vào bãi")]
-        public DateTime? ThoiGianVaoBai { get; set; }
 
         [DisplayName("Thời gian vào cửa")]
         public DateTime? ThoiGianVaoCua { get; set; }
@@ -44,7 +40,11 @@ namespace LedApp.Models
         public int? NhanVienXacNhanId { get; set; }
 
         [DisplayName("Trạng thái")]
-        public string TrangThai { get; set; } = "DaPhanCong";
+        public int TrangThai { get; set; } = (int)TrangThaiXuat.DaPhanCong;
+
+        [DisplayName("Ghi chú")]
+        [MaxLength(255)]
+        public string? GhiChu { get; set; }
 
         // Navigation properties
         public CuaXuat? CuaXuat { get; set; }
