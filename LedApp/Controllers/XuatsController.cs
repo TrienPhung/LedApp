@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using LedApp.Data;
 
 namespace LedApp.Controllers
@@ -16,12 +17,12 @@ namespace LedApp.Controllers
     public class XuatsController : Controller
     {
         private readonly ApplicationDBContext _context;
-        private readonly SignalServer signalServer;
+        private readonly IHubContext<SignalServer> _hubContext;
 
-        public XuatsController(ApplicationDBContext context, SignalServer signalServer)
+        public XuatsController(ApplicationDBContext context, IHubContext<SignalServer> hubContext)
         {
             _context = context;
-            this.signalServer = signalServer;
+            _hubContext = hubContext;
         }
 
         // GET: Xuats
@@ -53,7 +54,6 @@ namespace LedApp.Controllers
         public IActionResult Create()
         {
             ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten");
-            // Chỉ hiện xe đang rảnh (TrongBai)
             ViewData["XeId"] = new SelectList(
                 _context.DanhSachXes.Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai),
                 "Id", "BienSoXe");
@@ -69,13 +69,10 @@ namespace LedApp.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // Mặc định trạng thái khi tạo mới
                 xuat.TrangThai = (int)TrangThaiXuat.DaPhanCong;
-
                 _context.Add(xuat);
                 await _context.SaveChangesAsync();
 
-                // Đồng thời đổi trạng thái xe sang DangPhanCong
                 if (xuat.XeId.HasValue)
                 {
                     var xe = await _context.DanhSachXes.FindAsync(xuat.XeId.Value);
@@ -87,7 +84,7 @@ namespace LedApp.Controllers
                 }
 
                 await transaction.CommitAsync();
-                await signalServer.SendTongHopXuatFull();
+                await PushTongHopXuat();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -126,7 +123,7 @@ namespace LedApp.Controllers
             {
                 _context.Update(xuat);
                 await _context.SaveChangesAsync();
-                await signalServer.SendTongHopXuatFull();
+                await PushTongHopXuat();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -163,20 +160,31 @@ namespace LedApp.Controllers
                 var xuat = await _context.Xuats.FindAsync(id);
                 if (xuat != null)
                 {
-                    // Trả xe về TrongBai nếu chưa DaXuatPhat
-                    if (xuat.XeId.HasValue && xuat.TrangThai != (int)TrangThaiXuat.DaXuatPhat)
+                    // ← LẤY XeId TRƯỚC KHI XÓA
+                    var xeId = xuat.XeId;
+                    var trangThaiXuat = xuat.TrangThai;
+                    // Xóa ChitietXuat trước
+                    var chitiets = _context.ChitietXuats.Where(c => c.XuatId == id);
+                    _context.ChitietXuats.RemoveRange(chitiets);
+
+                    _context.Xuats.Remove(xuat);
+                    await _context.SaveChangesAsync();
+
+                    // ← CẬP NHẬT XE SAU KHI XÓA XONG
+                    if (xeId.HasValue && trangThaiXuat != (int)TrangThaiXuat.DaXuatPhat)
                     {
-                        var xe = await _context.DanhSachXes.FindAsync(xuat.XeId.Value);
+                        var xe = await _context.DanhSachXes
+                            .AsTracking()
+                            .FirstOrDefaultAsync(x => x.Id == xeId.Value);
                         if (xe != null)
                         {
                             xe.TrangThai = (int)TrangThaiXe.TrongBai;
+                            await _context.SaveChangesAsync();
                         }
                     }
-                    _context.Xuats.Remove(xuat);
-                    await _context.SaveChangesAsync();
                 }
                 await transaction.CommitAsync();
-                await signalServer.SendTongHopXuatFull();
+                await PushTongHopXuat();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -184,6 +192,63 @@ namespace LedApp.Controllers
                 await transaction.RollbackAsync();
                 return RedirectToAction(nameof(Index));
             }
+        }
+
+        // Helper: build và push tổng hợp xuất qua IHubContext
+        private async Task PushTongHopXuat()
+        {
+            var today = DateTime.Today;
+            var tatCa = await _context.Xuats
+                .Where(x => x.ThoiGianPhanCong.Date == today)
+                .Include(x => x.ChitietXuats)
+                .Include(x => x.Xe)
+                .ToListAsync();
+
+            var choXuat = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DaPhanCong).ToList();
+            var dangXuat = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao
+                                         || x.TrangThai == (int)TrangThaiXuat.QuaThoiGian
+                                         || x.TrangThai == (int)TrangThaiXuat.HoanThanh).ToList();
+            var daRoiKho = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DaXuatPhat).ToList();
+
+            var hangHoaMap = new Dictionary<string, (long ChoXuat, long DangXuat, long DaRoi)>();
+
+            void AddHang(List<Xuat> list, string cot)
+            {
+                foreach (var x in list)
+                    foreach (var c in x.ChitietXuats ?? new List<ChitietXuat>())
+                    {
+                        if (string.IsNullOrEmpty(c.DonVi)) continue;
+                        if (!hangHoaMap.ContainsKey(c.DonVi))
+                            hangHoaMap[c.DonVi] = (0, 0, 0);
+                        var cur = hangHoaMap[c.DonVi];
+                        hangHoaMap[c.DonVi] = cot switch
+                        {
+                            "cho" => (cur.ChoXuat + c.ChuaBG, cur.DangXuat, cur.DaRoi),
+                            "dang" => (cur.ChoXuat, cur.DangXuat + c.ChuaBG, cur.DaRoi),
+                            _ => (cur.ChoXuat, cur.DangXuat, cur.DaRoi + c.DaBG)
+                        };
+                    }
+            }
+
+            AddHang(choXuat, "cho");
+            AddHang(dangXuat, "dang");
+            AddHang(daRoiKho, "da");
+
+            var result = new
+            {
+                ChoXuatXe = choXuat.Count,
+                DangXuatXe = dangXuat.Count,
+                DaRoiKhoXe = daRoiKho.Count,
+                HangHoas = hangHoaMap.Select(kv => new
+                {
+                    DonVi = kv.Key,
+                    ChoXuat = kv.Value.ChoXuat,
+                    DangXuat = kv.Value.DangXuat,
+                    DaRoi = kv.Value.DaRoi
+                }).ToList()
+            };
+
+            await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", result);
         }
 
         private bool XuatExists(int id)

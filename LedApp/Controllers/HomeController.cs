@@ -12,13 +12,13 @@ namespace LedApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _signalrHub;
-        SignalServer signalServer;
-        public HomeController(ILogger<HomeController> logger, ApplicationDBContext context, IHubContext<SignalServer> signalrHub, SignalServer signalServer)
+      
+        public HomeController(ILogger<HomeController> logger, ApplicationDBContext context, IHubContext<SignalServer> signalrHub)
         {
             _logger = logger;
             _context = context;
             _signalrHub = signalrHub;
-            this.signalServer = signalServer;
+         
         }
 
         public IActionResult Index()

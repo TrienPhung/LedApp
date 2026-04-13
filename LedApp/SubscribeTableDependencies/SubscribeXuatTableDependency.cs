@@ -1,5 +1,8 @@
-﻿using LedApp.Hubs;
+﻿using LedApp.Data;
+using LedApp.Hubs;
 using LedApp.Models;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.EventArgs;
 
@@ -8,11 +11,15 @@ namespace LedApp.SubscribeTableDependencies
     public class SubscribeXuatTableDependency : ISubscribeTableDependency
     {
         SqlTableDependency<Xuat> tableDependency;
-        SignalServer signalServer;
+        private readonly IHubContext<SignalServer> _hubContext;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public SubscribeXuatTableDependency(SignalServer signalServer)
+        public SubscribeXuatTableDependency(
+            IHubContext<SignalServer> hubContext,
+            IServiceScopeFactory scopeFactory)
         {
-            this.signalServer = signalServer;
+            _hubContext = hubContext;
+            _scopeFactory = scopeFactory;
         }
 
         public void SubscribeTableDependency(string connectionString)
@@ -32,10 +39,17 @@ namespace LedApp.SubscribeTableDependencies
         {
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
-                // Cập nhật thông tin xe (giờ xuất, màu đỏ/trắng)
-                signalServer.Sendxuat(e.Entity.CuaXuatId);
-                // Cập nhật bảng tổng hợp
-                //signalServer.SendTongHopXuat();
+                using var scope = _scopeFactory.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+
+                var xuat = context.Xuats
+                    .Where(s => s.Id == e.Entity.Id)
+                    .FirstOrDefault();
+
+                if (xuat != null)
+                {
+                    _hubContext.Clients.All.SendAsync("Receivedxuat", xuat, xuat.CuaXuatId);
+                }
             }
         }
     }

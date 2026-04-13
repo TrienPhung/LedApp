@@ -27,8 +27,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
         options.UseSqlServer(connectionString);
         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
-    ,
-    ServiceLifetime.Singleton
+    //,
+    //ServiceLifetime.Singleton
 );
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
@@ -41,10 +41,12 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 });
 //Add sql denpendecy
 // DI
-builder.Services.AddSingleton<UserRepository>();
-builder.Services.AddSingleton<CuaXuatRepository>();
+//builder.Services.AddSingleton<UserRepository>();
+//builder.Services.AddSingleton<CuaXuatRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<CuaXuatRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddSingleton<SignalServer>();
+//builder.Services.AddSingleton<SignalServer>();
 builder.Services.AddSingleton<SubscribeChitietXuatTableDependency>();
 builder.Services.AddSingleton<SubscribeNhapTableDependency>();        // ? thêm m?i
 builder.Services.AddSingleton<SubscribeChitietNhapTableDependency>();

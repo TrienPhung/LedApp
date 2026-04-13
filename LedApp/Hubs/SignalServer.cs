@@ -40,30 +40,68 @@ namespace LedApp.Hubs
 
         // ==================== XUẤT ====================
 
-        // Lấy phiếu xuất theo cửa
+        //// Lấy phiếu xuất theo cửa
+        //public async Task Sendxuat(int? id)
+        //{
+        //    var x = xrepo.GetXuat(id);
+        //    if (Clients != null)
+        //        await Clients.All.SendAsync("Receivedxuat", x, id);
+        //}
+
+        //// Lấy chi tiết hàng hóa theo cửa
+        //public async Task Sendxexuat(int id)
+        //{
+        //    var x = xrepo.GetXuat(id);
+        //    if (x == null)
+        //    {
+        //        // Kiểm tra Clients trước khi gọi
+        //        if (Clients != null)
+        //            await Clients.All.SendAsync("Receivedxexuat", null, id);
+        //        return;
+        //    }
+        //    var xexuat = xerepo.GetChitietXuat(x.Id);
+        //    if (Clients != null)
+        //        await Clients.All.SendAsync("Receivedxexuat", xexuat, id);
+        //}
+        // ===== THAY THẾ 2 HÀM TRONG SignalServer.cs =====
+
+        // Lấy phiếu xuất theo cửa — trả DTO có BienSoXe
         public async Task Sendxuat(int? id)
         {
-            var x = xrepo.GetXuat(id);
-            if (Clients != null)
-                await Clients.All.SendAsync("Receivedxuat", x, id);
+            var x = xrepo.GetXuat(id);  // đã Include(x => x.Xe)
+            if (x == null)
+            {
+                await Clients.All.SendAsync("Receivedxuat", null, id);
+                return;
+            }
+
+            // FIX: trả DTO thay vì model — tránh circular reference và null navigation
+            var dto = new
+            {
+                id = x.Id,
+                cuaXuatId = x.CuaXuatId,
+                xeId = x.XeId,
+                bienSoXe = x.Xe?.BienSoXe ?? "--",   // ← lấy từ navigation
+                trangThai = x.TrangThai,
+                thoiGianVaoCua = x.ThoiGianVaoCua,
+                thoiGianGioiHan = x.ThoiGianGioiHan,
+                thoiGianHoanThanh = x.ThoiGianHoanThanh
+            };
+            await Clients.All.SendAsync("Receivedxuat", dto, id);
         }
 
-        // Lấy chi tiết hàng hóa theo cửa
+        // Lấy chi tiết hàng hóa theo cửa — giữ nguyên nhưng đảm bảo null-safe
         public async Task Sendxexuat(int id)
         {
             var x = xrepo.GetXuat(id);
             if (x == null)
             {
-                // Kiểm tra Clients trước khi gọi
-                if (Clients != null)
-                    await Clients.All.SendAsync("Receivedxexuat", null, id);
+                await Clients.All.SendAsync("Receivedxexuat", null, id);
                 return;
             }
             var xexuat = xerepo.GetChitietXuat(x.Id);
-            if (Clients != null)
-                await Clients.All.SendAsync("Receivedxexuat", xexuat, id);
+            await Clients.All.SendAsync("Receivedxexuat", xexuat, id);
         }
-
         public async Task SenCuaXuatSL()
         {
             var sl = cuaXuatRepo.CuaXuatSL();

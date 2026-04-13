@@ -1,5 +1,8 @@
-﻿using LedApp.Hubs;
+﻿using LedApp.Data;
+using LedApp.Hubs;
 using LedApp.Models;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.EventArgs;
 
@@ -8,10 +11,15 @@ namespace LedApp.SubscribeTableDependencies
     public class SubscribeChitietXuatTableDependency : ISubscribeTableDependency
     {
         SqlTableDependency<ChitietXuat> tableDependency;
-        SignalServer signalServer;
-        public SubscribeChitietXuatTableDependency (SignalServer signalServer)
+        private readonly IHubContext<SignalServer> _hubContext;
+        private readonly IServiceScopeFactory _scopeFactory;
+
+        public SubscribeChitietXuatTableDependency(
+            IHubContext<SignalServer> hubContext,
+            IServiceScopeFactory scopeFactory)
         {
-            this.signalServer = signalServer;
+            _hubContext = hubContext;
+            _scopeFactory = scopeFactory;
         }
 
         public void SubscribeTableDependency(string connectionString)
@@ -31,17 +39,21 @@ namespace LedApp.SubscribeTableDependencies
         {
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
-                //signalServer.Sendxexuat();
-                //signalServer.Sendxexuat2();
-                //signalServer.Sendxexuat3();
-                //signalServer.Sendxexuat4();
-                //signalServer.Sendxexuat5();
-                //signalServer.Sendxexuat6();
+                using var scope = _scopeFactory.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
 
-                // Cập nhật bảng chi tiết cửa xuất
-                signalServer.Sendxexuat(e.Entity.XuatId);
-                signalServer.Sendxuat(e.Entity.XuatId);
-                //signalServer.SendTongHopXuat();
+                var xuat = context.Xuats
+                    .Where(s => s.Id == e.Entity.XuatId)
+                    .FirstOrDefault();
+
+                if (xuat != null)
+                {
+                    var chitiet = context.ChitietXuats
+                        .Where(s => s.XuatId == xuat.Id)
+                        .ToList();
+                    _hubContext.Clients.All.SendAsync("Receivedxexuat", chitiet, xuat.CuaXuatId);
+                    _hubContext.Clients.All.SendAsync("Receivedxuat", xuat, xuat.CuaXuatId);
+                }
             }
         }
     }

@@ -1076,8 +1076,14 @@
             _reloading = true;
             try {
                 await loadPhieu();
-                await reloadXeDropdown();
-                await reloadCuaDropdown();
+
+                // Chỉ reload dropdown nếu người dùng KHÔNG đang chọn dở
+                var dangChonXe  = document.getElementById('sel-xe').value;
+                var dangChonCua = document.getElementById('sel-cua').value;
+
+                if (!dangChonXe)  await reloadXeDropdown();
+                if (!dangChonCua) await reloadCuaDropdown();
+
                 if (document.getElementById('panel-xe').style.display !== 'none') {
                     await loadXeSidebar();
                 }
@@ -1088,7 +1094,7 @@
 
         // ── SignalR — dùng reloadAll thay vì chỉ loadPhieu ──
         conn.on('UpdateBangTongHopXuat', function() {
-            reloadAll();
+           loadPhieu();
         });
 
         conn.start().then(function() {
@@ -1148,7 +1154,10 @@
 
                 var gioVao = vaoCua ? new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
                 var conLai = '—';
-                if (gioiHan && trangThai < 4) {
+                if (trangThai === 3 || trangThai === 4) {
+                    // Hoàn thành hoặc đã rời kho → không hiện còn lại
+                    conLai = '—';
+                } else if (gioiHan && trangThai < 3) {
                     var diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
                     conLai = diff > 0 ? diff + ' ph' : '<span style="color:var(--red);font-weight:700;">Quá hạn</span>';
                 }
@@ -1189,7 +1198,11 @@
                 document.getElementById('cua-status-' + cuaId).innerHTML = '— Trống —';
                 document.getElementById('cua-status-' + cuaId).className = 'cua-empty';
             });
-            phieuData.filter(p => (p.trangThai??p.TrangThai) < 4).forEach(p => {
+                phieuData.filter(p => {
+                    var tt = p.trangThai ?? p.TrangThai ?? 0;
+                    return tt === 0 || tt === 1 || tt === 2; // Chỉ hiện khi DaPhanCong, DangBanGiao, QuaThoiGian
+                }).
+                forEach(p => {
                 var cuaId    = p.cuaXuatId ?? p.CuaXuatId;
                 var tt       = p.trangThai ?? p.TrangThai ?? 0;
                 var bienSo   = p.bienSoXe  ?? p.BienSoXe  ?? '--';
@@ -1382,7 +1395,6 @@
                 }
             } catch(e) { alert('❌ Lỗi kết nối'); }
         }
-
         // ── Khởi động — dùng reloadAll thay vì chỉ loadPhieu ──
         reloadAll();
         setInterval(reloadAll, 30000);

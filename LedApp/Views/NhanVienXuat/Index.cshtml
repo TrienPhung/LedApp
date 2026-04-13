@@ -1,0 +1,1028 @@
+﻿@{
+    int cuaId = ViewBag.CuaId ?? 0;
+    string tenCua = ViewBag.TenCua ?? $"X-{cuaId:D2}";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>@tenCua — Cửa xuất</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #04080f;
+            --surface: #080f1c;
+            --surface2: #0c1628;
+            --border: #0e2040;
+            --border2: #162d57;
+            --gold: #f5a623;
+            --gold2: #ffd07a;
+            --green: #00e676;
+            --red: #ff3d3d;
+            --red2: #ff6b6b;
+            --orange: #ff6d00;
+            --blue: #00b4ff;
+            --cyan: #00e5ff;
+            --dim: #1e3a5f;
+            --text: #b0c4de;
+            --text2: #5a7fa0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New',monospace;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,180,255,.012) 2px,rgba(0,180,255,.012) 4px);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+        .corner {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            opacity: .4;
+        }
+
+        .corner-tl {
+            top: 12px;
+            left: 12px;
+            border-top: 2px solid var(--gold);
+            border-left: 2px solid var(--gold);
+        }
+
+        .corner-tr {
+            top: 12px;
+            right: 12px;
+            border-top: 2px solid var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+
+        .corner-bl {
+            bottom: 12px;
+            left: 12px;
+            border-bottom: 2px solid var(--gold);
+            border-left: 2px solid var(--gold);
+        }
+
+        .corner-br {
+            bottom: 12px;
+            right: 12px;
+            border-bottom: 2px solid var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+
+        .screen {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-rows: auto 1fr auto auto;
+            height: 100vh;
+            padding: 16px;
+            gap: 12px;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border2);
+            padding-bottom: 10px;
+        }
+
+        .cua-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--text2);
+            text-transform: uppercase;
+        }
+
+        .cua-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(245,166,35,.4);
+        }
+
+        .clock-box {
+            text-align: center;
+        }
+
+        .clock {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--cyan);
+            letter-spacing: 6px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .date {
+            font-size: 10px;
+            color: var(--text2);
+            letter-spacing: 2px;
+            margin-top: 2px;
+        }
+
+        .conn-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text2);
+            letter-spacing: 1px;
+            text-align: right;
+        }
+
+        .conn-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text2);
+        }
+
+            .conn-dot.on {
+                background: var(--green);
+                box-shadow: 0 0 8px var(--green);
+                animation: pulse 2s infinite;
+            }
+
+            .conn-dot.err {
+                background: var(--red);
+            }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* ── MAIN ── */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            min-height: 0;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .xe-card {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 18px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .xe-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--text2);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .xe-bienso {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 6px;
+            text-shadow: 0 0 30px rgba(245,166,35,.5);
+            text-align: center;
+            padding: 12px 0;
+        }
+
+            .xe-bienso.empty {
+                color: var(--dim);
+                font-size: 28px;
+                letter-spacing: 3px;
+            }
+
+        .xe-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+            .xe-meta span {
+                color: var(--text);
+            }
+
+        .timer-box {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timer-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+        }
+
+        .timer-val {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+
+            .timer-val.safe {
+                color: var(--green);
+            }
+
+            .timer-val.warn {
+                color: var(--gold);
+                animation: blink-warn 1s step-start infinite;
+            }
+
+            .timer-val.over {
+                color: var(--red);
+                animation: blink-warn .5s step-start infinite;
+            }
+
+        @@keyframes blink-warn {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ── BẢNG HÀNG ── */
+        .hang-panel {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hang-title {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--text2);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .hang-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .hang-table th {
+                font-size: 9px;
+                letter-spacing: 2px;
+                color: var(--text2);
+                text-transform: uppercase;
+                padding: 6px 10px;
+                border-bottom: 1px solid var(--border2);
+                text-align: center;
+                font-weight: 400;
+            }
+
+                .hang-table th:first-child {
+                    text-align: left;
+                }
+
+            .hang-table td {
+                padding: 12px 10px;
+                border-bottom: 1px solid var(--border);
+                font-size: 18px;
+                font-weight: 700;
+                text-align: center;
+            }
+
+                .hang-table td:first-child {
+                    text-align: left;
+                    font-size: 13px;
+                    color: var(--text2);
+                    font-weight: 400;
+                    letter-spacing: 1px;
+                }
+
+        .chua-bg {
+            color: var(--gold);
+        }
+
+        .da-bg {
+            color: var(--green);
+        }
+
+        .hang-empty {
+            text-align: center;
+            padding: 30px;
+            color: var(--dim);
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        /* ── STRIP ── */
+        .strip {
+            border-radius: 6px;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all .3s;
+        }
+
+        .strip-wait {
+            background: #0a1a2e;
+            color: var(--blue);
+            border: 1px solid #0e3060;
+        }
+
+        .strip-ready {
+            background: #0a1020;
+            color: #a78bfa;
+            border: 1px solid #2d1b69;
+        }
+
+        .strip-active {
+            background: #1a1000;
+            color: var(--gold);
+            border: 1px solid #3a2800;
+        }
+
+        .strip-warn {
+            background: #1a0800;
+            color: var(--orange);
+            border: 1px solid #3a1400;
+            animation: blink-warn .7s step-start infinite;
+        }
+
+        .strip-over {
+            background: #1a0000;
+            color: var(--red);
+            border: 1px solid #3a0000;
+            animation: blink-warn .4s step-start infinite;
+        }
+
+        .strip-done {
+            background: #001a12;
+            color: var(--green);
+            border: 1px solid #003a2a;
+        }
+
+        /* ── BUTTONS ── */
+        .actions {
+            display: grid;
+            gap: 10px;
+        }
+
+            .actions.state-wait {
+                grid-template-columns: 1fr;
+            }
+
+            .actions.state-active {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .actions.state-done {
+                grid-template-columns: 1fr;
+            }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-family: 'Courier New',monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all .15s;
+        }
+
+            .btn:disabled {
+                opacity: .3;
+                cursor: not-allowed;
+            }
+
+            .btn:active:not(:disabled) {
+                transform: scale(.97);
+            }
+
+        .btn-xacnhan {
+            background: var(--green);
+            color: #001a0a;
+            box-shadow: 0 0 20px rgba(0,230,118,.3);
+            font-size: 14px;
+            letter-spacing: 3px;
+            padding: 18px;
+        }
+
+            .btn-xacnhan:hover:not(:disabled) {
+                background: #00ff8a;
+                box-shadow: 0 0 30px rgba(0,230,118,.5);
+            }
+
+        .btn-bangiao {
+            background: var(--gold);
+            color: #1a0800;
+            box-shadow: 0 0 15px rgba(245,166,35,.3);
+        }
+
+            .btn-bangiao:hover:not(:disabled) {
+                background: var(--gold2);
+            }
+
+        .btn-hoanthanh {
+            background: transparent;
+            color: var(--green);
+            border: 1px solid var(--green);
+        }
+
+            .btn-hoanthanh:hover:not(:disabled) {
+                background: rgba(0,230,118,.1);
+            }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--red2);
+            border: 1px solid var(--red2);
+            font-size: 10px;
+        }
+
+        .btn-done-display {
+            background: #001a12;
+            color: var(--green);
+            border: 1px solid #003a2a;
+            font-size: 13px;
+            letter-spacing: 3px;
+            padding: 18px;
+            cursor: default;
+        }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.85);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            display: none;
+        }
+
+            .modal-overlay.show {
+                display: flex;
+            }
+
+        .modal {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 24px;
+            width: 440px;
+            max-width: 92vw;
+        }
+
+        .modal-title {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .modal-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .modal-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            padding: 10px 14px;
+        }
+
+        .modal-donvi {
+            font-size: 13px;
+            color: var(--text);
+            letter-spacing: 1px;
+        }
+
+        .modal-remain {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        .modal-input {
+            background: var(--bg);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 8px 10px;
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Courier New',monospace;
+            text-align: right;
+            width: 100px;
+            outline: none;
+        }
+
+            .modal-input:focus {
+                border-color: var(--gold);
+            }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-btn-ok {
+            flex: 1;
+            background: var(--gold);
+            color: #1a0800;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+            .modal-btn-ok:hover {
+                background: var(--gold2);
+            }
+
+        .modal-btn-cancel {
+            background: transparent;
+            color: var(--text2);
+            padding: 10px 16px;
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        @@keyframes flash-green {
+            0% {
+                background: rgba(0,230,118,.18)
+            }
+
+            100% {
+                background: transparent
+            }
+        }
+
+        .flash {
+            animation: flash-green .5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="screen">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div>
+                <div class="cua-label">Cửa xuất kho</div>
+                <div class="cua-name">@tenCua</div>
+            </div>
+            <div class="clock-box">
+                <div class="clock" id="clock">--:--:--</div>
+                <div class="date" id="date-str"></div>
+            </div>
+            <div class="conn-badge">
+                <div>
+                    <div style="text-align:right;margin-bottom:3px;" id="conn-text">Đang kết nối...</div>
+                    <div style="display:flex;justify-content:flex-end;"><span class="conn-dot" id="conn-dot"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main">
+            <!-- LEFT -->
+            <div class="left-panel">
+                <div class="xe-card">
+                    <div>
+                        <div class="xe-label">Xe đang xuất hàng</div>
+                        <div class="xe-bienso empty" id="xe-bienso">Chờ xe ra...</div>
+                    </div>
+                    <div class="xe-meta">
+                        <div>Tài xế: <span id="xe-taixe">—</span></div>
+                        <div>Giờ vào: <span id="xe-giovao">--:--</span></div>
+                        <div>NV XN: <span id="xe-nv">—</span></div>
+                    </div>
+                </div>
+                <div class="timer-box">
+                    <div>
+                        <div class="timer-label">Thời gian còn lại</div>
+                        <div style="font-size:10px;color:var(--text2);margin-top:3px;" id="timer-gioi-han">Giới hạn: --:--</div>
+                    </div>
+                    <div class="timer-val safe" id="timer-val">--:--</div>
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="hang-panel">
+                <div class="hang-title">Bảng hàng hóa — real-time</div>
+                <table class="hang-table">
+                    <thead>
+                        <tr>
+                            <th>Đơn vị</th>
+                            <th>Chưa BG</th>
+                            <th>Đã BG</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hang-tbody">
+                        <tr><td colspan="3" class="hang-empty">Chưa có dữ liệu</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- STRIP -->
+        <div class="strip strip-wait" id="strip">Chờ xe ra...</div>
+
+        <!-- ACTIONS -->
+        <div class="actions state-wait" id="actions">
+            <button class="btn btn-xacnhan" id="btn-xacnhan" onclick="xacNhanVaoCua()" disabled>
+                ▶ Xác nhận xe vào cửa
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL bàn giao -->
+    <div class="modal-overlay" id="modal-bangiao">
+        <div class="modal">
+            <div class="modal-title">Nhập số lượng bàn giao</div>
+            <div class="modal-rows" id="modal-rows"></div>
+            <div class="modal-actions">
+                <button class="modal-btn-cancel" onclick="closeModal()">Hủy</button>
+                <button class="modal-btn-ok" onclick="submitBanGiao()">✔ Xác nhận bàn giao</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        var CUA_ID   = @cuaId;
+        var xuatId   = null;
+        var timerInterval = null;
+        var hangData = [];   // [{id, donVi, chuaBG, daBG}]
+        var trangThai = -1;
+        var reportedOver = false;
+
+        // ── ĐỒNG HỒ ──
+        function tick() {
+            var n = new Date();
+            document.getElementById('clock').textContent    = n.toLocaleTimeString('vi-VN',{hour12:false});
+            document.getElementById('date-str').textContent = n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+        }
+        setInterval(tick,1000); tick();
+
+        // ── SIGNALR ──
+        var conn = new signalR.HubConnectionBuilder()
+            .withUrl('/signalserver')
+            .withAutomaticReconnect()
+            .build();
+
+        conn.on('Receivedxuat', function(x, id) {
+            if (parseInt(id) !== CUA_ID) return;
+            bindXuat(x);
+        });
+        conn.on('Receivedxexuat', function(xes, id) {
+            if (parseInt(id) !== CUA_ID) return;
+            bindHang(xes);
+        });
+        conn.on('UpdateBangTongHopXuat', function() {
+            loadData();
+        });
+
+        conn.start().then(function() {
+            document.getElementById('conn-dot').classList.add('on');
+            document.getElementById('conn-text').textContent = 'Realtime';
+            loadData();
+        }).catch(function() {
+            document.getElementById('conn-dot').classList.add('err');
+            document.getElementById('conn-text').textContent = 'Mất kết nối';
+        });
+
+        // ── LOAD DATA ──
+        function loadData() {
+            conn.invoke('Sendxuat',   CUA_ID).catch(console.error);
+            conn.invoke('Sendxexuat', CUA_ID).catch(console.error);
+        }
+        setInterval(loadData, 15000);
+
+        // ── BIND XE ──
+        function bindXuat(x) {
+            var bienSoEl = document.getElementById('xe-bienso');
+            if (!x) {
+                // Không có phiếu → reset màn hình
+                xuatId = null; trangThai = -1; hangData = []; reportedOver = false;
+                bienSoEl.textContent = 'Chờ xe ra...';
+                bienSoEl.className   = 'xe-bienso empty';
+                document.getElementById('xe-taixe').textContent  = '—';
+                document.getElementById('xe-giovao').textContent = '--:--';
+                document.getElementById('xe-nv').textContent     = '—';
+                document.getElementById('timer-val').textContent = '--:--';
+                document.getElementById('timer-gioi-han').textContent = 'Giới hạn: --:--';
+                clearInterval(timerInterval);
+                setStrip('wait','Chờ xe ra...');
+                setActions('wait', false);
+                return;
+            }
+
+            xuatId    = x.id        ?? x.Id;
+            trangThai = x.trangThai ?? x.TrangThai ?? 0;
+            var bienSo  = x.bienSoXe   ?? x.BienSoXe   ?? '--';
+            var taiXe   = x.tenTaiXe   ?? x.TenTaiXe   ?? '—';
+            var nv      = x.tenNhanVien ?? x.TenNhanVien ?? '—';
+            var vaoCua  = x.thoiGianVaoCua  ?? x.ThoiGianVaoCua;
+            var gioiHan = x.thoiGianGioiHan ?? x.ThoiGianGioiHan;
+
+            bienSoEl.textContent = bienSo;
+            bienSoEl.className   = 'xe-bienso';
+            document.getElementById('xe-taixe').textContent = taiXe;
+            document.getElementById('xe-nv').textContent    = nv;
+
+            if (vaoCua) {
+                var d = new Date(vaoCua);
+                document.getElementById('xe-giovao').textContent =
+                    String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+            } else {
+                document.getElementById('xe-giovao').textContent = '--:--';
+            }
+
+            // Timer
+            clearInterval(timerInterval);
+            if (gioiHan) {
+                var gh = new Date(gioiHan);
+                document.getElementById('timer-gioi-han').textContent =
+                    'Giới hạn: ' + String(gh.getHours()).padStart(2,'0') + ':' + String(gh.getMinutes()).padStart(2,'0');
+                if (trangThai === 1 || trangThai === 2) startTimer(gh);
+            } else {
+                document.getElementById('timer-gioi-han').textContent = 'Giới hạn: --:--';
+                document.getElementById('timer-val').textContent = '--:--';
+            }
+
+            // Trạng thái → strip + actions
+            if (trangThai === 0) {
+                setStrip('ready','Đã phân công — Chờ xe vào cửa');
+                setActions('wait', true);
+            } else if (trangThai === 1) {
+                setStrip('active','Đang xuất hàng');
+                setActions('active', true);
+            } else if (trangThai === 2) {
+                setStrip('over','QUÁ GIỜ XUẤT — XỬ LÝ NGAY');
+                setActions('active', true);
+                document.getElementById('timer-val').textContent = 'QUÁ HẠN';
+                document.getElementById('timer-val').className   = 'timer-val over';
+            } else if (trangThai === 3) {
+                clearInterval(timerInterval);
+                setStrip('done','Hoàn thành bàn giao — Chờ bảo vệ xác nhận ra cổng');
+                setActions('done', false);
+            } else if (trangThai === 4) {
+                clearInterval(timerInterval);
+                setStrip('done','Xe đã rời kho');
+                setActions('done', false);
+            }
+        }
+
+        // ── BIND HÀNG ──
+        function bindHang(xes) {
+            hangData = (xes || []).map(function(h) {
+                return {
+                    id:    h.id    ?? h.Id,
+                    donVi: h.donVi ?? h.DonVi ?? '--',
+                    chuaBG: h.chuaBG ?? h.ChuaBG ?? 0,
+                    daBG:   h.daBG   ?? h.DaBG   ?? 0
+                };
+            });
+            var tbody = document.getElementById('hang-tbody');
+            if (!hangData.length) {
+                tbody.innerHTML = '<tr><td colspan="3" class="hang-empty">Chưa có dữ liệu hàng hóa</td></tr>';
+                return;
+            }
+            tbody.innerHTML = hangData.map(function(h) {
+                return '<tr class="flash">' +
+                    '<td>' + h.donVi + '</td>' +
+                    '<td class="chua-bg">' + h.chuaBG + '</td>' +
+                    '<td class="da-bg">'   + h.daBG   + '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        // ── TIMER ──
+        function startTimer(deadline) {
+            function update() {
+                var diff = Math.floor((deadline - new Date()) / 1000);
+                var el   = document.getElementById('timer-val');
+                if (diff <= 0) {
+                    el.textContent = 'QUÁ HẠN';
+                    el.className   = 'timer-val over';
+                    clearInterval(timerInterval);
+                    if (trangThai === 1 && !reportedOver) reportQuaThoiGian();
+                    return;
+                }
+                var m = Math.floor(diff / 60), s = diff % 60;
+                el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+                if (diff <= 300) {
+                    el.className = 'timer-val warn';
+                    setStrip('warn','Còn ' + m + ' phút ' + s + ' giây — Nhanh lên!');
+                } else {
+                    el.className = 'timer-val safe';
+                    setStrip('active','Đang xuất hàng — còn ' + m + ' phút');
+                }
+            }
+            update();
+            timerInterval = setInterval(update, 1000);
+        }
+
+        // ── HELPERS UI ──
+        function setStrip(type, text) {
+            var el = document.getElementById('strip');
+            el.className   = 'strip strip-' + type;
+            el.textContent = text;
+        }
+
+        function setActions(state, enabled) {
+            var el = document.getElementById('actions');
+            if (state === 'wait') {
+                el.className = 'actions state-wait';
+                el.innerHTML = '<button class="btn btn-xacnhan" onclick="xacNhanVaoCua()"' +
+                    (enabled ? '' : ' disabled') + '>▶ Xác nhận xe vào cửa</button>';
+            } else if (state === 'active') {
+                el.className = 'actions state-active';
+                el.innerHTML =
+                    '<button class="btn btn-bangiao"   onclick="openModal()">⊕ Bàn giao hàng</button>' +
+                    '<button class="btn btn-hoanthanh" onclick="hoanThanh()">✔ Hoàn thành xuất</button>' +
+                    '<button class="btn btn-reset"     onclick="confirmHuy()">✕ Hủy phiếu</button>';
+            } else if (state === 'done') {
+                el.className = 'actions state-done';
+                el.innerHTML = '<button class="btn btn-done-display" disabled>✔ Hoàn thành — Cửa sẵn sàng xe tiếp</button>';
+            }
+        }
+
+        // ── API: XÁC NHẬN VÀO CỬA ──
+        async function xacNhanVaoCua() {
+            if (!xuatId) return;
+            var btn = document.querySelector('#actions button');
+            if (btn) { btn.disabled = true; btn.textContent = '⏳ Đang xử lý...'; }
+            try {
+                var res  = await fetch('/NhanVienXuat/XacNhanVaoCua', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ xuatId: xuatId })
+                });
+                var data = await res.json();
+                if (!res.ok) alert('❌ ' + (data.message || 'Lỗi!'));
+                else loadData();
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+        // ── MODAL BÀN GIAO ──
+        function openModal() {
+            if (!hangData.length) { alert('Chưa có dữ liệu hàng hóa!'); return; }
+            document.getElementById('modal-rows').innerHTML = hangData.map(function(h) {
+                return '<div class="modal-row">' +
+                    '<div>' +
+                        '<div class="modal-donvi">' + h.donVi + '</div>' +
+                        '<div class="modal-remain">Còn lại: <strong style="color:var(--gold)">' + h.chuaBG + '</strong></div>' +
+                    '</div>' +
+                    '<input class="modal-input" type="number" min="0" max="' + h.chuaBG + '" value="0"' +
+                        ' data-id="' + h.id + '" data-dv="' + h.donVi + '" data-max="' + h.chuaBG + '"/>' +
+                '</div>';
+            }).join('');
+            document.getElementById('modal-bangiao').classList.add('show');
+        }
+        function closeModal() {
+            document.getElementById('modal-bangiao').classList.remove('show');
+        }
+
+        async function submitBanGiao() {
+            var inputs = document.querySelectorAll('#modal-rows .modal-input');
+            var items  = [];
+            var valid  = true;
+            inputs.forEach(function(inp) {
+                var sl  = parseInt(inp.value) || 0;
+                var max = parseInt(inp.dataset.max) || 0;
+                if (sl < 0 || sl > max) {
+                    alert('Số lượng không hợp lệ: ' + inp.dataset.dv + ' (tối đa ' + max + ')');
+                    valid = false;
+                }
+                if (sl > 0) items.push({
+                    chitietXuatId: parseInt(inp.dataset.id),
+                    donVi:  inp.dataset.dv,
+                    soLuong: sl
+                });
+            });
+            if (!valid) return;
+            if (!items.length) { alert('Vui lòng nhập ít nhất 1 số lượng bàn giao!'); return; }
+            try {
+                var res  = await fetch('/NhanVienXuat/BanGiao', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ xuatId: xuatId, items: items })
+                });
+                var data = await res.json();
+                if (res.ok) { closeModal(); loadData(); }
+                else alert('❌ ' + (data.message || 'Lỗi bàn giao!'));
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+        // ── API: HOÀN THÀNH ──
+        async function hoanThanh() {
+            if (!confirm('Xác nhận hoàn thành bàn giao?\nXe sẽ chờ bảo vệ xác nhận ra cổng.')) return;
+            try {
+                var res  = await fetch('/NhanVienXuat/HoanThanh', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ xuatId: xuatId })
+                });
+                var data = await res.json();
+                if (res.ok) loadData();
+                else alert('❌ ' + (data.message || 'Lỗi!'));
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+        // ── API: QUÁ THỜI GIAN ──
+        async function reportQuaThoiGian() {
+            if (!xuatId || trangThai !== 1 || reportedOver) return;
+            reportedOver = true;
+            trangThai    = 2;
+            try {
+                await fetch('/NhanVienXuat/QuaThoiGian', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ xuatId: xuatId })
+                });
+                setStrip('over','QUÁ GIỜ XUẤT — XỬ LÝ NGAY');
+            } catch(e) { console.error('reportQuaThoiGian:', e); }
+        }
+
+        // ── API: HỦY PHIẾU ──
+        function confirmHuy() {
+            if (!confirm('Xác nhận hủy phiếu?\nXe sẽ trở về trạng thái Trong bãi.')) return;
+            huyPhieu();
+        }
+        async function huyPhieu() {
+            try {
+                var res  = await fetch('/DieuDoXuat/HuyPhanCong', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ xuatId: xuatId })
+                });
+                var data = await res.json();
+                if (res.ok) loadData();
+                else alert('❌ ' + (data.message || 'Lỗi hủy!'));
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+    </script>
+</body>
+</html>

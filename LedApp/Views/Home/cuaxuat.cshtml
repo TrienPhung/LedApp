@@ -3,43 +3,126 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    .led5 td, .led5 th {
-        border: none;
+    /* FIX: override site.css .bang border cho led5 */
+    .led5 table td,
+    .led5 table th,
+    .led5 table thead {
+        border: none !important;
     }
+    /* Đường kẻ ngang dùng border-top inline, không dùng border chung */
+    .led5 .row-sep td {
+        border-bottom: 1px solid #222 !important;
+    }
+
+    .led5 .row-mid td:nth-child(2) {
+        border-left: 1px solid #222 !important;
+        border-right: 1px solid #222 !important;
+    }
+    /* Loading fade-in */
+    .led5 {
+        opacity: 0;
+        transition: opacity .3s;
+    }
+
+        .led5.ready {
+            opacity: 1;
+        }
 </style>
+
 @if (ViewBag.ms == null)
 {
-    <div class="led5" style="width:@{
-        @ViewBag.cuaxuatw
-}px; height:@{
-        @ViewBag.cuaxuath
-}px; background:#0d0d0d; color:#fff; font-family:monospace; padding:10px; border-radius:7px; border:1.5px solid #1a1a1a; position:relative;">
+    <div class="led5" id="led5-wrap-@ViewBag.id"
+         style="width:@(ViewBag.cuaxuatw)px;
+                height:@(ViewBag.cuaxuath)px;
+                background:#0d0d0d;
+                color:#fff;
+                font-family:monospace;
+                padding:10px;
+                border-radius:7px;
+                border:1.5px solid #1a1a1a;
+                position:relative;
+                box-sizing:border-box;
+                overflow:hidden;">
+
+        @* Header: giờ | tên cửa *@
         <div style="display:flex; justify-content:space-between; font-size:12px; color:#555; margin-bottom:6px;">
             <span><span class="hour"></span>:<span class="min"></span></span>
-            <span>CỬA XUẤT @ViewBag.tencuaxuat</span>
+            <span style="color:#fb923c; font-weight:bold; letter-spacing:1px;">CỬA XUẤT @ViewBag.tencuaxuat</span>
         </div>
-        <h2 id="tenxe_@ViewBag.id" style="text-align:center; font-size:16px; letter-spacing:2px; color:#facc15; margin-bottom:8px;">--</h2>
+
+        @* Biển số xe *@
+        <div id="tenxe_@ViewBag.id"
+             style="text-align:center; font-size:15px; letter-spacing:2px; color:#facc15;
+                    font-weight:bold; margin-bottom:6px; min-height:20px;">
+            --
+        </div>
+
+        @* Đường kẻ *@
         <div style="border-top:1px solid #222; margin-bottom:6px;"></div>
-        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+
+        @* Bảng hàng hóa *@
+        <table style="width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed;">
             <thead>
-                <tr style="border-bottom:1px solid #222;">
-                    <td style="width:15%; text-align:center; color:#555; padding-bottom:4px;"></td>
-                    <td style="width:42%; text-align:center; color:#555; padding-bottom:4px; border-left:1px solid #222; border-right:1px solid #222;">Chưa BG</td>
-                    <td style="width:43%; text-align:center; color:#555; padding-bottom:4px;">Đã BG</td>
+                <tr class="row-sep">
+                    <td style="width:18%; color:#555; padding-bottom:4px; text-align:left;"></td>
+                    <td style="width:41%; color:#555; padding-bottom:4px; text-align:center;
+                               border-left:1px solid #222; border-right:1px solid #222;">
+                        Chưa BG
+                    </td>
+                    <td style="width:41%; color:#555; padding-bottom:4px; text-align:center;">Đã BG</td>
                 </tr>
             </thead>
             <tbody id="led5_@ViewBag.id">
+                @* Placeholder rows — tránh layout jump *@
+                <tr>
+                    <td style="color:#555; padding:2px 4px;">Tải</td>
+                    <td style="color:#333; text-align:center; border-left:1px solid #222; border-right:1px solid #222;">—</td>
+                    <td style="color:#333; text-align:center;">—</td>
+                </tr>
+                <tr>
+                    <td style="color:#555; padding:2px 4px;">Kiện</td>
+                    <td style="color:#333; text-align:center; border-left:1px solid #222; border-right:1px solid #222;">—</td>
+                    <td style="color:#333; text-align:center;">—</td>
+                </tr>
+                <tr>
+                    <td style="color:#555; padding:2px 4px;">ĐH</td>
+                    <td style="color:#333; text-align:center; border-left:1px solid #222; border-right:1px solid #222;">—</td>
+                    <td style="color:#333; text-align:center;">—</td>
+                </tr>
             </tbody>
         </table>
-        <div style="border-top:1px solid #222; margin-top:8px; margin-bottom:6px;"></div>
-        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px;">
-            <span style="color:#555;">Giờ vào: <span id="giovao_@ViewBag.id" style="color:#facc15;">--:--</span></span>
-            <span style="color:#555;">Còn lại: <span id="conlai_@ViewBag.id" style="color:#facc15;">--</span></span>
+
+        @* Đường kẻ *@
+        <div style="border-top:1px solid #222; margin-top:6px; margin-bottom:6px;"></div>
+
+        @* Giờ vào | Còn lại *@
+        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
+            <span style="color:#555;">
+                Giờ vào:
+                <span id="giovao_@ViewBag.id" style="color:#facc15; margin-left:4px;">--:--</span>
+            </span>
+            <span style="color:#555;">
+                Còn lại:
+                <span id="conlai_@ViewBag.id" style="color:#facc15; margin-left:4px;">—</span>
+            </span>
         </div>
-        <div id="strip_@ViewBag.id" style="background:#0c2a4a; color:#93c5fd; text-align:center; font-size:11px; font-weight:700; letter-spacing:.6px; padding:4px; border-radius:5px;">
+
+        @* Strip trạng thái *@
+        <div id="strip_@ViewBag.id"
+             style="background:#0c2a4a; color:#93c5fd; text-align:center;
+                    font-size:11px; font-weight:700; letter-spacing:.6px;
+                    padding:4px; border-radius:5px;">
             Chờ xe ra...
         </div>
     </div>
+
+    <script>
+        // Hiện bảng sau khi DOM sẵn sàng — tránh flash layout
+        document.addEventListener('DOMContentLoaded', function () {
+            var wrap = document.getElementById('led5-wrap-@ViewBag.id');
+            if (wrap) wrap.classList.add('ready');
+        });
+    </script>
 }
 else
 {

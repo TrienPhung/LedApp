@@ -1,5 +1,8 @@
-﻿using LedApp.Hubs;
+﻿using LedApp.Data;
+using LedApp.Hubs;
 using LedApp.Models;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.EventArgs;
 
@@ -8,11 +11,15 @@ namespace LedApp.SubscribeTableDependencies
     public class SubscribeChitietNhapTableDependency : ISubscribeTableDependency
     {
         SqlTableDependency<ChitietNhap> tableDependency;
-        SignalServer signalServer;
+        private readonly IHubContext<SignalServer> _hubContext;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public SubscribeChitietNhapTableDependency(SignalServer signalServer)
+        public SubscribeChitietNhapTableDependency(
+            IHubContext<SignalServer> hubContext,
+            IServiceScopeFactory scopeFactory)
         {
-            this.signalServer = signalServer;
+            _hubContext = hubContext;
+            _scopeFactory = scopeFactory;
         }
 
         public void SubscribeTableDependency(string connectionString)
@@ -23,7 +30,7 @@ namespace LedApp.SubscribeTableDependencies
             tableDependency.Start();
         }
 
-        private void TableDependency_OnError(object sender, TableDependency.SqlClient.Base.EventArgs.ErrorEventArgs e)
+        private void TableDependency_OnError(object sender, TableDependency.SqlClient.Base.EventArgs.ErrorEventArgs  e)
         {
             Console.WriteLine($"{nameof(ChitietNhap)} error:{e.Error.Message}");
         }
@@ -32,9 +39,19 @@ namespace LedApp.SubscribeTableDependencies
         {
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
-              //  signalServer.SendTongHopNhap();
-                // Nếu muốn cập nhật bảng chi tiết cửa nhập thì thêm:
-                // signalServer.SendChitietNhap(e.Entity.NhapId);
+                using var scope = _scopeFactory.CreateScope();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+
+                var nhap = context.Nhaps
+                    .Where(n => n.Id == e.Entity.NhapId)
+                    .FirstOrDefault();
+                if (nhap != null)
+                {
+                    var chitiet = context.ChitietNhaps
+                        .Where(c => c.NhapId == nhap.Id)
+                        .ToList();
+                    _hubContext.Clients.All.SendAsync("ReceivedChitietNhap", chitiet, nhap.CuaNhapId);
+                }
             }
         }
     }

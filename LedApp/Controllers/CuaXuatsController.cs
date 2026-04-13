@@ -16,11 +16,11 @@ namespace LedApp.Controllers
     public class CuaXuatsController : Controller
     {
         private readonly ApplicationDBContext _context;
-        SignalServer signalServer;
-        public CuaXuatsController(ApplicationDBContext context, SignalServer signalServer)
+        
+        public CuaXuatsController(ApplicationDBContext context)
         {
             _context = context;
-            this.signalServer = signalServer;
+           
         }
 
         // GET: CuaXuats

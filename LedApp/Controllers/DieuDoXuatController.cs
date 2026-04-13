@@ -4,6 +4,7 @@ using LedApp.Data;
 using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LedApp.Controllers
 {
@@ -11,12 +12,12 @@ namespace LedApp.Controllers
     public class DieuDoXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
-        private readonly SignalServer _signalServer;
+        private readonly IHubContext<SignalServer> _hubContext;
 
-        public DieuDoXuatController(ApplicationDBContext context, SignalServer signalServer)
+        public DieuDoXuatController(ApplicationDBContext context, IHubContext<SignalServer> hubContext)
         {
             _context = context;
-            _signalServer = signalServer;
+            _hubContext = hubContext;
         }
 
         // GET: /DieuDoXuat
@@ -24,16 +25,19 @@ namespace LedApp.Controllers
         {
             var today = DateTime.Today;
 
-            // Chỉ lấy cửa chưa có phiếu đang hoạt động hôm nay
             var cuaXuats = await _context.CuaXuats.ToListAsync();
             var cuaDaBanId = await _context.Xuats
                 .Where(x => x.ThoiGianPhanCong.Date == today
-                         && x.TrangThai != (int)TrangThaiXuat.DaXuatPhat)
+                         && new[] {
+                 (int)TrangThaiXuat.DaPhanCong,
+                 (int)TrangThaiXuat.DangBanGiao,
+                 (int)TrangThaiXuat.QuaThoiGian
+                         }.Contains(x.TrangThai))
                 .Select(x => x.CuaXuatId)
                 .ToListAsync();
+
             var cuaTrong = cuaXuats.Where(c => !cuaDaBanId.Contains(c.Id)).ToList();
 
-            // Chỉ lấy xe TrongBai
             var xeTrongBai = await _context.DanhSachXes
                 .Include(x => x.TaiXe)
                 .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
@@ -43,8 +47,8 @@ namespace LedApp.Controllers
                 .Where(u => u.Quyen != (int)Quyen.TaiXe)
                 .ToListAsync();
 
-            ViewBag.CuaXuats = cuaTrong;   // ← chỉ cửa trống
-            ViewBag.CuaXuatAll = cuaXuats;   // ← tất cả cửa (cho sidebar)
+            ViewBag.CuaXuats = cuaXuats;
+            ViewBag.CuaXuatAll = cuaXuats;
             ViewBag.XeTrongBai = xeTrongBai;
             ViewBag.NhanViens = nhanViens;
             return View();
@@ -108,17 +112,70 @@ namespace LedApp.Controllers
             return Json(phieus);
         }
 
+        // GET: /DieuDoXuat/GetXeTrongBai
+        [HttpGet]
+        public async Task<IActionResult> GetXeTrongBai()
+        {
+            var xes = await _context.DanhSachXes
+                .Include(x => x.TaiXe)
+                .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.BienSoXe,
+                    x.LoaiXe,
+                    x.TaiTrong,
+                    TenTaiXe = x.TaiXe != null ? x.TaiXe.Name : "Chưa có tài xế",
+                    TelTaiXe = x.TaiXe != null ? x.TaiXe.Tels : "--"
+                })
+                .ToListAsync();
+            return Json(xes);
+        }
+
+        // GET: /DieuDoXuat/GetCuaTrong
+        [HttpGet]
+        public async Task<IActionResult> GetCuaTrong()
+        {
+            var today = DateTime.Today;
+            var trangThaiDangDung = new[]
+            {
+        (int)TrangThaiXuat.DaPhanCong,   // 0
+        (int)TrangThaiXuat.DangBanGiao,  // 1
+        (int)TrangThaiXuat.QuaThoiGian   // 2
+    };
+
+            var cuaDangDungIds = await _context.Xuats
+                .Where(x => x.ThoiGianPhanCong.Date == today
+                         && trangThaiDangDung.Contains(x.TrangThai))
+                .Select(x => x.CuaXuatId)
+                .ToListAsync();
+
+            var cuaTrong = await _context.CuaXuats
+                .Where(c => !cuaDangDungIds.Contains(c.Id))
+                .Select(c => new { c.Id, c.Ten })
+                .ToListAsync();
+
+            return Json(cuaTrong);
+        }
+
         // GET: /DieuDoXuat/GetCuaXuatStatus
         [HttpGet]
         public async Task<IActionResult> GetCuaXuatStatus()
         {
             var today = DateTime.Today;
+            var trangThaiDangDung = new[]
+            {
+                (int)TrangThaiXuat.DaPhanCong,
+                (int)TrangThaiXuat.DangBanGiao,
+                (int)TrangThaiXuat.QuaThoiGian
+            };
+
             var cuaXuats = await _context.CuaXuats.ToListAsync();
             var phieuActive = await _context.Xuats
                 .Include(x => x.Xe).ThenInclude(xe => xe!.TaiXe)
                 .Include(x => x.ChitietXuats)
                 .Where(x => x.ThoiGianPhanCong.Date == today
-                         && x.TrangThai != (int)TrangThaiXuat.DaXuatPhat)
+                         && trangThaiDangDung.Contains(x.TrangThai))
                 .ToListAsync();
 
             var result = cuaXuats.Select(c =>
@@ -154,7 +211,6 @@ namespace LedApp.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // Kiểm tra xe
                 var xe = await _context.DanhSachXes
                     .AsTracking()
                     .FirstOrDefaultAsync(x => x.Id == req.XeId);
@@ -163,7 +219,6 @@ namespace LedApp.Controllers
                 if (xe.TrangThai != (int)TrangThaiXe.TrongBai)
                     return BadRequest(new { message = "Xe không ở trạng thái Trong bãi!" });
 
-                // Kiểm tra cửa chưa bị dùng hôm nay
                 var today = DateTime.Today;
                 var cuaDangDung = await _context.Xuats.AnyAsync(x =>
                     x.CuaXuatId == req.CuaXuatId
@@ -172,7 +227,6 @@ namespace LedApp.Controllers
                 if (cuaDangDung)
                     return BadRequest(new { message = "Cửa xuất này đang có xe, chọn cửa khác!" });
 
-                // Tạo phiếu xuất
                 var xuat = new Xuat
                 {
                     CuaXuatId = req.CuaXuatId,
@@ -183,9 +237,8 @@ namespace LedApp.Controllers
                     TrangThai = (int)TrangThaiXuat.DaPhanCong
                 };
                 _context.Xuats.Add(xuat);
-                await _context.SaveChangesAsync(); // lấy xuat.Id
+                await _context.SaveChangesAsync();
 
-                // INSERT ChitietXuat
                 if (req.HangHoas != null)
                 {
                     foreach (var h in req.HangHoas)
@@ -201,12 +254,14 @@ namespace LedApp.Controllers
                     }
                 }
 
-                // FIX: Đổi trạng thái xe CÙNG SaveChangesAsync với ChitietXuat
                 xe.TrangThai = (int)TrangThaiXe.DangPhanCong;
-                await _context.SaveChangesAsync(); // save cả chitiet + xe cùng lúc
+                await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
-                await _signalServer.SendTongHopXuatFull();
+
+                // Dùng IHubContext — không share DbContext với Hub
+                var tongHopData = await BuildTongHopXuatData();
+                await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", tongHopData);
 
                 return Ok(new { success = true, xuatId = xuat.Id });
             }
@@ -224,7 +279,6 @@ namespace LedApp.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // FIX: Dùng AsTracking + tách riêng query xe để tránh EF tracking conflict
                 var xuat = await _context.Xuats
                     .AsTracking()
                     .Include(x => x.ChitietXuats)
@@ -235,18 +289,14 @@ namespace LedApp.Controllers
                 if (xuat.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
                     return BadRequest(new { message = "Xe đã xuất phát, không thể hủy!" });
 
-                // Lưu XeId trước khi xóa
                 var xeId = xuat.XeId;
 
-                // Xóa ChitietXuat trước
                 if (xuat.ChitietXuats != null && xuat.ChitietXuats.Any())
                     _context.ChitietXuats.RemoveRange(xuat.ChitietXuats);
 
-                // Xóa phiếu xuất
                 _context.Xuats.Remove(xuat);
                 await _context.SaveChangesAsync();
 
-                // FIX: Query xe SAU KHI đã remove xuat để tránh tracking conflict
                 if (xeId.HasValue)
                 {
                     var xe = await _context.DanhSachXes
@@ -260,7 +310,10 @@ namespace LedApp.Controllers
                 }
 
                 await transaction.CommitAsync();
-                await _signalServer.SendTongHopXuatFull();
+
+                // Dùng IHubContext — không share DbContext với Hub
+                var tongHopData = await BuildTongHopXuatData();
+                await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", tongHopData);
 
                 return Ok(new { success = true });
             }
@@ -271,45 +324,59 @@ namespace LedApp.Controllers
             }
         }
 
-        // ===== THÊM ENDPOINT MỚI VÀO DieuDoXuatController.cs =====
-
-        // GET: /DieuDoXuat/GetXeTrongBai — xe rảnh hiện tại
-        [HttpGet]
-        public async Task<IActionResult> GetXeTrongBai()
-        {
-            var xes = await _context.DanhSachXes
-                .Include(x => x.TaiXe)
-                .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.BienSoXe,
-                    x.LoaiXe,
-                    x.TaiTrong,
-                    TenTaiXe = x.TaiXe != null ? x.TaiXe.Name : "Chưa có tài xế",
-                    TelTaiXe = x.TaiXe != null ? x.TaiXe.Tels : "--"
-                })
-                .ToListAsync();
-            return Json(xes);
-        }
-
-        // GET: /DieuDoXuat/GetCuaTrong — cửa chưa có xe hôm nay
-        [HttpGet]
-        public async Task<IActionResult> GetCuaTrong()
+        // ── Helper: build data tổng hợp xuất để push SignalR ──
+        private async Task<object> BuildTongHopXuatData()
         {
             var today = DateTime.Today;
-            var cuaDangDungIds = await _context.Xuats
-                .Where(x => x.ThoiGianPhanCong.Date == today
-                         && x.TrangThai != (int)TrangThaiXuat.DaXuatPhat)
-                .Select(x => x.CuaXuatId)
+            var tatCa = await _context.Xuats
+                .Where(x => x.ThoiGianPhanCong.Date == today)
+                .Include(x => x.ChitietXuats)
+                .Include(x => x.Xe)
                 .ToListAsync();
 
-            var cuaTrong = await _context.CuaXuats
-                .Where(c => !cuaDangDungIds.Contains(c.Id))
-                .Select(c => new { c.Id, c.Ten })
-                .ToListAsync();
+            var choXuat = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DaPhanCong).ToList();
+            var dangXuat = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao
+                                         || x.TrangThai == (int)TrangThaiXuat.QuaThoiGian
+                                         || x.TrangThai == (int)TrangThaiXuat.HoanThanh).ToList();
+            var daRoiKho = tatCa.Where(x => x.TrangThai == (int)TrangThaiXuat.DaXuatPhat).ToList();
 
-            return Json(cuaTrong);
+            var hangHoaMap = new Dictionary<string, (long ChoXuat, long DangXuat, long DaRoi)>();
+
+            void AddHang(List<Xuat> list, string cot)
+            {
+                foreach (var x in list)
+                    foreach (var c in x.ChitietXuats ?? new List<ChitietXuat>())
+                    {
+                        if (string.IsNullOrEmpty(c.DonVi)) continue;
+                        if (!hangHoaMap.ContainsKey(c.DonVi))
+                            hangHoaMap[c.DonVi] = (0, 0, 0);
+                        var cur = hangHoaMap[c.DonVi];
+                        hangHoaMap[c.DonVi] = cot switch
+                        {
+                            "cho" => (cur.ChoXuat + c.ChuaBG, cur.DangXuat, cur.DaRoi),
+                            "dang" => (cur.ChoXuat, cur.DangXuat + c.ChuaBG, cur.DaRoi),
+                            _ => (cur.ChoXuat, cur.DangXuat, cur.DaRoi + c.DaBG)
+                        };
+                    }
+            }
+
+            AddHang(choXuat, "cho");
+            AddHang(dangXuat, "dang");
+            AddHang(daRoiKho, "da");
+
+            return new
+            {
+                ChoXuatXe = choXuat.Count,
+                DangXuatXe = dangXuat.Count,
+                DaRoiKhoXe = daRoiKho.Count,
+                HangHoas = hangHoaMap.Select(kv => new
+                {
+                    DonVi = kv.Key,
+                    ChoXuat = kv.Value.ChoXuat,
+                    DangXuat = kv.Value.DangXuat,
+                    DaRoi = kv.Value.DaRoi
+                }).ToList()
+            };
         }
     }
 

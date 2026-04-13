@@ -22,6 +22,7 @@ namespace LedApp.Models
 
         // ID của ChiTietDonViNhap.Id hoặc ChiTietDonViXuat.Id
         [DisplayName("Mã chi tiết đơn vị")]
+        [Column("ChitietDonViId")]
         public int ChiTietDonViId { get; set; }
 
         [DisplayName("Đơn vị")]
