@@ -37,7 +37,9 @@
         </dd>
 
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.NhanVienXacNhanId)</dt>
-        <dd class="col-sm-10">@(Model.NhanVienXacNhan?.Name ?? "Chưa xác nhận")</dd>
+        <dd class="col-sm-10">@(Model.NhanVienXacNhan?.FullName ?? "Chưa xác nhận")</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.GhiChu)</dt>
+        <dd class="col-sm-10">@(Model.GhiChu ?? "—")</dd>
     </dl>
 </div>
 <div>

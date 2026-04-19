@@ -1,94 +1,87 @@
 ﻿@model LedApp.Models.nguoiDungs
 @{
-    ViewData["Title"] = "Sửa người dùng";
+    ViewData["Title"] = "Sửa nhân viên";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Sửa người dùng</h1>
+<h1>Sửa nhân viên</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Image" />
+            <input type="hidden" asp-for="UserId" />
+
             <div class="form-group mb-3">
                 <label class="control-label">Ảnh đại diện</label>
-                <div class="mb-2">
-                    <img id="previewImage"
-                         src="@(string.IsNullOrEmpty(Model.Image) ? "/uploads/avatars/default.png" : Model.Image)"
-                         style="width:100px;height:100px;object-fit:cover;border:1px solid #ddd;" />
+                <div class="mb-1">
+                    <div id="avatarPreviewWrapper"
+                         style="width:150px;height:180px;border:2px dashed #dee2e6;border-radius:8px;
+                                display:flex;align-items:center;justify-content:center;
+                                background:#f8f9fa;overflow:hidden;cursor:pointer;"
+                         onclick="document.querySelector('input[name=avatarFile]').click()">
+                        @if (!string.IsNullOrEmpty(Model.Image))
+                        {
+                            <img id="previewImage" src="@Model.Image" alt="Avatar"
+                                 style="width:100%;height:100%;object-fit:cover;" />
+                            <i id="defaultIcon" class="mdi mdi-account-circle"
+                               style="font-size:80px;color:#adb5bd;display:none;"></i>
+                        }
+                        else
+                        {
+                            <img id="previewImage" src="" alt=""
+                                 style="width:100%;height:100%;object-fit:cover;display:none;" />
+                            <i id="defaultIcon" class="mdi mdi-account-circle"
+                               style="font-size:80px;color:#adb5bd;"></i>
+                        }
+                    </div>
+                    <small class="text-muted d-block mt-1">Click để đổi ảnh</small>
                 </div>
-                <input type="file" name="avatarFile" class="form-control" accept="image/*"
-                       onchange="previewImg(this)" />
-                <small class="text-muted">Để trống nếu không muốn đổi ảnh</small>
+                <input type="file" name="avatarFile" class="form-control d-none"
+                       accept="image/*" onchange="previewImg(this)" />
             </div>
 
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-
-            <!-- Mật khẩu hiện tại -->
-            <div class="form-group mt-2">
-                <label class="control-label">Mật khẩu hiện tại</label>
-                <div style="position:relative;">
-                    <input type="password" id="currentPassword" class="form-control"
-                           value="@Model.Password" readonly
-                           style="background:#f8f9fa; padding-right:40px;" />
-                    <i id="eyeCurrent" class="bi bi-eye-slash"
-                       onclick="togglePwd('currentPassword', 'eyeCurrent')"
-                       style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
-                  cursor:pointer; color:#6c757d; font-size:1.1rem;"></i>
+            <div class="row">
+                <div class="col form-group mb-2">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
-                <small class="text-muted">Mật khẩu hiện tại đang lưu trong hệ thống</small>
-            </div>
-
-            <!-- Mật khẩu mới -->
-            <div class="form-group mt-2">
-                <label asp-for="Password" class="control-label">Mật khẩu mới</label>
-                <div style="position:relative;">
-                    <input asp-for="Password" id="newPassword" class="form-control" type="password"
-                           placeholder="Nhập mật khẩu mới nếu muốn đổi..."
-                           style="padding-right:40px;" />
-                    <i id="eyeNew" class="bi bi-eye-slash"
-                       onclick="togglePwd('newPassword', 'eyeNew')"
-                       style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
-                  cursor:pointer; color:#6c757d; font-size:1.1rem;"></i>
+                <div class="col form-group mb-2">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
-                <small class="text-muted">Để trống nếu không muốn đổi mật khẩu</small>
             </div>
 
-            <div class="form-group mt-2">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-group mb-2">
+                <label asp-for="NgaySinh" class="control-label"></label>
+                <input asp-for="NgaySinh" class="form-control" type="date" />
+                <span asp-validation-for="NgaySinh" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Tels" class="control-label"></label>
-                <input asp-for="Tels" class="form-control" />
-                <span asp-validation-for="Tels" class="text-danger"></span>
+            <div class="form-group mb-2">
+                <label asp-for="SoDienThoai" class="control-label"></label>
+                <input asp-for="SoDienThoai" class="form-control" placeholder="VD: 0912345678" />
+                <span asp-validation-for="SoDienThoai" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quyen" class="control-label"></label>
-                <select asp-for="Quyen" class="form-control">
-                    <option value="0">0 - Nhân viên</option>
-                    <option value="1">1 - Quản lý</option>
-                    <option value="2">2 - Admin</option>
-                    <option value="3">3 - Tài xế</option>
-                    <option value="4">4 - Bảo vệ</option>
+            <div class="form-group mb-2">
+                <label asp-for="GioiTinh" class="control-label"></label>
+                <select asp-for="GioiTinh" class="form-control"
+                        asp-items="Html.GetEnumSelectList<LedApp.Models.GioiTinhEnum>()">
+                    <option value="">-- Chọn giới tính --</option>
                 </select>
-                <span asp-validation-for="Quyen" class="text-danger"></span>
+                <span asp-validation-for="GioiTinh" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="DiaChi" class="control-label"></label>
+                <input asp-for="DiaChi" class="form-control" />
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
             </div>
 
             <div class="form-group mt-3">
-                <input type="submit" value="Lưu sửa" class="btn btn-primary" />
+                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
             </div>
         </form>
@@ -100,21 +93,16 @@
         function previewImg(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = e => document.getElementById('previewImage').src = e.target.result;
+                reader.onload = e => {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('previewImage').style.display = 'block';
+                    document.getElementById('defaultIcon').style.display = 'none';
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        function togglePwd(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'bi bi-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'bi bi-eye';
-            }
-        }
     </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -6,134 +6,144 @@ using LedApp.Data;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class nguoiDungsController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public nguoiDungsController(ApplicationDBContext context)
+        public nguoiDungsController(ApplicationDBContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
+        // ===== INDEX =====
         public async Task<IActionResult> Index()
         {
-            return View(await _context.nguoiDungs.ToListAsync());
+            var list = await _context.nguoiDungs
+                .Include(n => n.User)
+                .ToListAsync();
+            return View(list);
         }
 
+        // ===== DETAILS =====
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
-            var nguoi = await _context.nguoiDungs.FirstOrDefaultAsync(m => m.Id == id);
+
+            var nguoi = await _context.nguoiDungs
+                .Include(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (nguoi == null) return NotFound();
             return View(nguoi);
         }
 
+        // ===== CREATE GET =====
         public IActionResult Create() => View();
+
+        // ===== CREATE POST =====
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Username,Password,Name,Tels,Email,Quyen")] nguoiDungs nguoi,
+            [Bind("LastName,FirstName,NgaySinh,SoDienThoai,DiaChi,GioiTinh")] nguoiDungs nguoi,
             IFormFile? avatarFile)
         {
+            ModelState.Remove("UserId");
             if (!ModelState.IsValid) return View(nguoi);
 
-            if (avatarFile != null && avatarFile.Length > 0)
-            {
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(avatarFile.FileName)}";
-                var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/avatars");
-                Directory.CreateDirectory(folder);
-                var path = Path.Combine(folder, fileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await avatarFile.CopyToAsync(stream);
-                nguoi.Image = $"/uploads/avatars/{fileName}";
-            }
-            else
-            {
-                nguoi.Image = "/uploads/avatars/default.png"; // ← thêm dòng này
-            }
+            nguoi.Image = await SaveAvatarAsync(avatarFile) ?? "/uploads/avatars/default.png";
 
             _context.Add(nguoi);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // ===== EDIT GET =====
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
+
             var nguoi = await _context.nguoiDungs
-                .AsNoTracking() // ← thêm
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
+
             if (nguoi == null) return NotFound();
             return View(nguoi);
         }
 
+        // ===== EDIT POST =====
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
             int id,
-            [Bind("Id,Username,Password,Name,Tels,Email,Quyen,Image")] nguoiDungs nguoi,
+            [Bind("Id,LastName,FirstName,NgaySinh,SoDienThoai,DiaChi,GioiTinh,Image")] nguoiDungs nguoi,
             IFormFile? avatarFile)
         {
             if (id != nguoi.Id) return NotFound();
-            ModelState.Remove("Password");
+            ModelState.Remove("UserId");
+            ModelState.Remove("Image");
             if (!ModelState.IsValid) return View(nguoi);
 
             var existing = await _context.nguoiDungs.FindAsync(id);
             if (existing == null) return NotFound();
 
+            existing.LastName = nguoi.LastName;
+            existing.FirstName = nguoi.FirstName;
+            existing.NgaySinh = nguoi.NgaySinh;
+            existing.SoDienThoai = nguoi.SoDienThoai;
+            existing.DiaChi = nguoi.DiaChi;
+            existing.GioiTinh = nguoi.GioiTinh;
+
+            if (avatarFile != null && avatarFile.Length > 0)
+            {
+                DeleteOldAvatar(existing.Image);
+                existing.Image = await SaveAvatarAsync(avatarFile);
+            }
+
+            // Ép EF biết entity này đã thay đổi
+            _context.Entry(existing).State = EntityState.Modified;
+
+            // Bảo vệ UserId và Image khỏi bị overwrite
+            _context.Entry(existing).Property(x => x.UserId).IsModified = false;
+            if (avatarFile == null || avatarFile.Length == 0)
+                _context.Entry(existing).Property(x => x.Image).IsModified = false;
+
             try
             {
-                existing.Username = nguoi.Username;
-                if (!string.IsNullOrWhiteSpace(nguoi.Password))
-                    existing.Password = nguoi.Password;
-                existing.Name = nguoi.Name;
-                existing.Tels = nguoi.Tels;
-                existing.Email = nguoi.Email;
-                existing.Quyen = nguoi.Quyen;
-
-                _context.Entry(existing).State = EntityState.Modified; // ← thêm
-
-                if (avatarFile != null && avatarFile.Length > 0)
-                {
-                    if (!string.IsNullOrEmpty(existing.Image))
-                    {
-                        var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existing.Image.TrimStart('/'));
-                        if (System.IO.File.Exists(oldPath))
-                            System.IO.File.Delete(oldPath);
-                    }
-                    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(avatarFile.FileName)}";
-                    var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/avatars");
-                    Directory.CreateDirectory(folder);
-                    var path = Path.Combine(folder, fileName);
-                    using var stream = new FileStream(path, FileMode.Create);
-                    await avatarFile.CopyToAsync(stream);
-                    existing.Image = $"/uploads/avatars/{fileName}";
-                }
-
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Cập nhật thành công!";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!_context.nguoiDungs.Any(e => e.Id == id)) return NotFound();
-                return View(nguoi);
+                throw;
             }
         }
 
+        // ===== DELETE GET =====
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-            var nguoi = await _context.nguoiDungs.FirstOrDefaultAsync(m => m.Id == id);
+
+            var nguoi = await _context.nguoiDungs
+                .Include(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (nguoi == null) return NotFound();
             return View(nguoi);
         }
 
+        // ===== DELETE POST =====
         [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var nguoi = await _context.nguoiDungs.FindAsync(id);
             if (nguoi == null) return NotFound();
 
-            // Kiểm tra FK trước khi xóa
             bool dangDungNhap = await _context.Nhaps.AnyAsync(n => n.NhanVienXacNhanId == id);
             bool dangDungXuat = await _context.Xuats.AnyAsync(x => x.NhanVienXacNhanId == id);
 
@@ -143,16 +153,46 @@ namespace LedApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (!string.IsNullOrEmpty(nguoi.Image))
+            if (!string.IsNullOrEmpty(nguoi.UserId))
             {
-                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", nguoi.Image.TrimStart('/'));
-                if (System.IO.File.Exists(oldPath))
-                    System.IO.File.Delete(oldPath);
+                TempData["Error"] = "Không thể xóa — nhân viên này đang có tài khoản. Hãy xóa tài khoản trước!";
+                return RedirectToAction(nameof(Index));
             }
+
+            DeleteOldAvatar(nguoi.Image);
 
             _context.nguoiDungs.Remove(nguoi);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // ===== PRIVATE HELPERS =====
+
+        private async Task<string?> SaveAvatarAsync(IFormFile? file)
+        {
+            if (file == null || file.Length == 0) return null;
+
+            var folder = Path.Combine(_env.WebRootPath, "uploads", "avatars");
+            Directory.CreateDirectory(folder);
+
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+            var fullPath = Path.Combine(folder, fileName);
+
+            using var stream = new FileStream(fullPath, FileMode.Create);
+            await file.CopyToAsync(stream);
+
+            return $"/uploads/avatars/{fileName}";
+        }
+
+        private void DeleteOldAvatar(string? imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath)) return;
+            if (imagePath.Contains("default.png")) return;
+
+            var oldPath = Path.Combine(_env.WebRootPath, imagePath.TrimStart('/'));
+
+            if (System.IO.File.Exists(oldPath))
+                System.IO.File.Delete(oldPath);
         }
     }
 }

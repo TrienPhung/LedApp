@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LedApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88b1c95a57484de87868723e905f5a93c76eb252")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+311972d7f358babff38b54db6e9b93819a37f059")]
 [assembly: System.Reflection.AssemblyProductAttribute("LedApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LedApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

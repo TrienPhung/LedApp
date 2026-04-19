@@ -1,0 +1,109 @@
+﻿@model List<LedApp.Controllers.AccountIndexViewModel>
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Quản lý tài khoản</h1>
+    <a asp-action="Create" class="btn btn-primary">+ Tạo tài khoản</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Nhân viên</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="7" class="text-center text-muted">Chưa có tài khoản nào.</td>
+            </tr>
+        }
+        @foreach (var (item, i) in Model.Select((x, i) => (x, i + 1)))
+        {
+            <tr>
+                <td>@i</td>
+                <td>
+                    @if (item.NguoiDung != null)
+                    {
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="@(item.NguoiDung.Image ?? "/uploads/avatars/default.png")"
+                                 style="width:36px;height:36px;object-fit:cover;border-radius:50%;border:1px solid #ddd;" />
+                            <span>@item.NguoiDung.FullName</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>
+                    @if (item.Roles.Any())
+                    {
+                        foreach (var r in item.Roles)
+                        {
+                            <span class="badge bg-primary me-1">@r</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted">Chưa gán</span>
+                    }
+                </td>
+                <td>
+                    @if (item.IsLocked)
+                    {
+                        <span class="badge bg-danger">Đã khóa</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Hoạt động</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UserId"
+                       class="btn btn-sm btn-outline-primary me-1">Sửa</a>
+
+                    <form asp-action="ToggleLock" asp-route-id="@item.UserId"
+                          method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit"
+                                class="btn btn-sm @(item.IsLocked ? "btn-outline-success" : "btn-outline-warning") me-1"
+                                onclick="return confirm('@(item.IsLocked ? "Mở khóa" : "Khóa") tài khoản này?')">
+                            @(item.IsLocked ? "Mở khóa" : "Khóa")
+                        </button>
+                    </form>
+
+                    <a asp-action="Delete" asp-route-id="@item.UserId"
+                       class="btn btn-sm btn-outline-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

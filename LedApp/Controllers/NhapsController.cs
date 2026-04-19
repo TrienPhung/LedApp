@@ -66,7 +66,7 @@ namespace LedApp.Controllers
 
         // POST: Nhaps/Create
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai")] Nhap nhap)
+        public async Task<IActionResult> Create([Bind("CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai,GhiChu")] Nhap nhap)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace LedApp.Controllers
 
         // POST: Nhaps/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai")] Nhap nhap)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai,GhiChu")] Nhap nhap)
         {
             if (id != nhap.Id) return NotFound();
 
@@ -117,6 +117,7 @@ namespace LedApp.Controllers
                 existing.ThoiGianHoanThanh = nhap.ThoiGianHoanThanh;
                 existing.NhanVienXacNhanId = nhap.NhanVienXacNhanId;
                 existing.TrangThai         = nhap.TrangThai;
+                existing.GhiChu = nhap.GhiChu;
 
                 _context.Entry(existing).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

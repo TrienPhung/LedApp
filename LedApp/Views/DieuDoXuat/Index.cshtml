@@ -4,6 +4,14 @@
     var cuaXuats = ViewBag.CuaXuats as List<LedApp.Models.CuaXuat> ?? new();
     var xeTrongBai = ViewBag.XeTrongBai as List<LedApp.Models.DanhSachXe> ?? new();
     var nhanViens = ViewBag.NhanViens as List<LedApp.Models.nguoiDungs> ?? new();
+
+    var userName = ViewBag.UserName as string ?? User.Identity?.Name ?? "User";
+    var userEmail = ViewBag.UserEmail as string ?? "";
+    var parts = userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    var initials = parts.Length >= 2
+        ? $"{parts[0][0]}{parts[^1][0]}"
+        : userName.Length >= 2 ? userName[..2] : userName;
+    initials = initials.ToUpper();
 }
 
 <style>
@@ -30,6 +38,33 @@
         --text: #cbd5e1;
         --text-dim: #475569;
         --text-bright: #f1f5f9;
+        --dropdown-bg: #0d1525;
+        --dropdown-border: #243b5e;
+        --dropdown-hover: rgba(245,158,11,.08);
+        --divider: rgba(255,255,255,.07);
+    }
+
+    body.light-mode {
+        --bg: #f0f4f8;
+        --surface: #ffffff;
+        --surface2: #f8fafc;
+        --border: #e2e8f0;
+        --border2: #cbd5e1;
+        --gold: #d97706;
+        --gold2: #f59e0b;
+        --green: #16a34a;
+        --red: #dc2626;
+        --orange: #ea580c;
+        --blue: #0284c7;
+        --blue2: #0ea5e9;
+        --purple: #9333ea;
+        --text: #334155;
+        --text-dim: #94a3b8;
+        --text-bright: #0f172a;
+        --dropdown-bg: #ffffff;
+        --dropdown-border: #e2e8f0;
+        --dropdown-hover: rgba(217,119,6,.06);
+        --divider: rgba(0,0,0,.08);
     }
 
     body {
@@ -38,16 +73,22 @@
         font-family: 'Courier New', monospace;
         min-height: 100vh;
         overflow-x: hidden;
+        transition: background .3s, color .3s;
     }
 
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background-image: linear-gradient(rgba(245,158,11,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,.03) 1px,transparent 1px);
+            background-image: linear-gradient(rgba(245,158,11,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,.03) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
+            transition: opacity .3s;
+        }
+
+        body.light-mode::before {
+            opacity: 0.4;
         }
 
     .screen {
@@ -60,6 +101,7 @@
         gap: 10px;
     }
 
+    /* ── TOPBAR ── */
     .topbar {
         display: grid;
         grid-template-columns: 1fr auto 1fr;
@@ -70,6 +112,7 @@
         border-radius: 6px;
         padding: 10px 20px;
         flex-shrink: 0;
+        transition: background .3s, border-color .3s;
     }
 
     .tb-left {
@@ -135,6 +178,7 @@
         padding: 6px 12px;
         text-align: center;
         min-width: 65px;
+        transition: background .3s;
     }
 
         .stat-pill .num {
@@ -160,6 +204,7 @@
         padding: 6px 10px;
         font-size: 10px;
         color: var(--text-dim);
+        transition: background .3s;
     }
 
     .dot {
@@ -190,6 +235,188 @@
         }
     }
 
+    /* ── DIVIDER ── */
+    .tb-divider {
+        width: 1px;
+        height: 28px;
+        background: var(--divider);
+        border-radius: 1px;
+        flex-shrink: 0;
+    }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background .2s, border-color .2s;
+        flex-shrink: 0;
+    }
+
+        .theme-toggle:hover {
+            border-color: var(--gold);
+            background: rgba(245,158,11,.08);
+        }
+
+    /* ── USER AVATAR BUTTON ── */
+    .user-btn {
+        position: relative;
+    }
+
+    .user-avatar {
+        width: 34px;
+        height: 34px;
+        background: linear-gradient(135deg, var(--gold), var(--orange));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 800;
+        color: #0a0e18;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color .2s, transform .15s;
+        letter-spacing: .5px;
+        font-family: inherit;
+        flex-shrink: 0;
+        user-select: none;
+    }
+
+        .user-avatar:hover {
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .user-avatar.open {
+            border-color: var(--gold);
+        }
+
+    /* ── DROPDOWN ── */
+    .user-dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 10px);
+        width: 220px;
+        background: var(--dropdown-bg);
+        border: 1px solid var(--dropdown-border);
+        border-radius: 10px;
+        z-index: 999;
+        box-shadow: 0 16px 40px rgba(0,0,0,.5);
+        overflow: hidden;
+        animation: dropIn .15s ease;
+        transition: background .3s;
+    }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+    @@keyframes dropIn {
+        from {
+            opacity: 0;
+            transform: translateY(-6px) scale(.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .ud-header {
+        padding: 14px 16px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .ud-avatar-lg {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--gold), var(--orange));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 800;
+        color: #0a0e18;
+        flex-shrink: 0;
+    }
+
+    .ud-info .ud-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-bright);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 130px;
+    }
+
+    .ud-info .ud-role {
+        font-size: 10px;
+        color: var(--text-dim);
+        margin-top: 2px;
+        letter-spacing: .5px;
+    }
+
+    .ud-divider {
+        height: 1px;
+        background: var(--divider);
+        margin: 0 12px;
+    }
+
+    .ud-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        transition: background .15s, color .15s;
+        text-decoration: none;
+        font-family: inherit;
+        background: transparent;
+        border: none;
+        width: 100%;
+        text-align: left;
+        letter-spacing: .3px;
+    }
+
+        .ud-item:hover {
+            background: var(--dropdown-hover);
+            color: var(--gold);
+        }
+
+        .ud-item.danger {
+            color: var(--red);
+        }
+
+            .ud-item.danger:hover {
+                background: rgba(239,68,68,.08);
+                color: var(--red);
+            }
+
+    .ud-item-icon {
+        font-size: 14px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    /* ── MAIN LAYOUT ── */
     .main {
         flex: 1;
         display: grid;
@@ -219,6 +446,7 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 6px;
+        transition: background .3s, border-color .3s;
     }
 
     .panel-header {
@@ -271,7 +499,7 @@
         font-family: inherit;
         outline: none;
         width: 100%;
-        transition: border-color .15s;
+        transition: border-color .15s, background .3s;
     }
 
         .form-control:focus {
@@ -339,6 +567,7 @@
         font-family: inherit;
         outline: none;
         width: 100%;
+        transition: border-color .15s;
     }
 
         .hang-input:focus {
@@ -597,6 +826,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        transition: background .3s;
     }
 
     .stabs {
@@ -766,6 +996,7 @@
         color: var(--text-dim);
         flex-shrink: 0;
         letter-spacing: .5px;
+        transition: background .3s;
     }
 
     .empty-cell {
@@ -791,6 +1022,25 @@
         font-size: 10px;
         color: var(--gold2);
     }
+
+    .ud-badge {
+        margin-left: auto;
+        background: var(--green);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 20px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .ud-item-icon {
+        font-size: 15px;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+    }
 </style>
 
 <div class="screen">
@@ -812,6 +1062,48 @@
             <div class="stat-pill"><div class="num" id="stat-dang" style="color:var(--gold);">0</div><div class="lbl">Đang xuất</div></div>
             <div class="stat-pill"><div class="num" id="stat-xong" style="color:var(--green);">0</div><div class="lbl">Đã rời kho</div></div>
             <div class="signal-badge"><span class="dot" id="sig-dot"></span><span id="sig-text">Kết nối...</span></div>
+
+           
+            <div class="tb-divider"></div>
+
+            
+            <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Chế độ sáng/tối">
+                🌙
+            </button>
+
+            <div class="user-btn" id="user-btn">
+                <div class="user-avatar" id="user-avatar" onclick="toggleUserMenu()">
+                    @initials
+                </div>
+                <div class="user-dropdown" id="user-dropdown">
+                    <div class="ud-header">
+                        <div class="ud-avatar-lg">@initials</div>
+                        <div class="ud-info">
+                            <div class="ud-name">@userName</div>
+                            <div class="ud-role">@userEmail</div>
+                        </div>
+                    </div>
+                    <div class="ud-divider"></div>
+                    <a href="#" class="ud-item">
+                        <i class="bi bi-gear ud-item-icon"></i>
+                        Settings
+                    </a>
+                    <a href="#" class="ud-item">
+                        <i class="bi bi-bell ud-item-icon"></i>
+                        Notifications
+                        <span class="ud-badge">4</span>
+                    </a>
+                    <div class="ud-divider"></div>
+                    <form asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index","DieuDoXuat")" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="ud-item danger">
+                            <i class="bi bi-box-arrow-right ud-item-icon"></i>
+                            Log out
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -833,8 +1125,8 @@
                                     <option value="@xe.Id"
                                             data-loai="@xe.LoaiXe"
                                             data-tai="@xe.TaiTrong"
-                                            data-taixe="@(xe.TaiXe != null ? xe.TaiXe.Name : "Chưa có tài xế")"
-                                            data-tel="@(xe.TaiXe != null ? xe.TaiXe.Tels : "--")">
+                                            data-taixe="@(xe.TaiXe != null ? xe.TaiXe.FullName : "Chưa có tài xế")"
+                                            data-tel="@(xe.TaiXe != null ? xe.TaiXe.SoDienThoai : "--")">
                                         @xe.BienSoXe
                                     </option>
                                 }
@@ -857,13 +1149,11 @@
                             </select>
                             <div style="margin-top:8px;">
                                 <label class="form-label">Nhân viên xác nhận</label>
-                                <select class="form-control" id="sel-nv" style="margin-top:5px;">
-                                    <option value="">-- Chọn nhân viên --</option>
-                                    @foreach (var nv in nhanViens)
-                                    {
-                                        <option value="@nv.Id">@nv.Name</option>
-                                    }
-                                </select>
+                                <div class="form-control"
+                                     style="margin-top:5px; color:var(--gold); font-weight:700; cursor:default; user-select:none;">
+                                    <i class="bi bi-lock-fill" style="margin-right:6px;"></i>@ViewBag.NguoiDungHienTaiTen
+                                </div>
+                                <input type="hidden" id="sel-nv" value="@ViewBag.NguoiDungHienTaiId" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -943,11 +1233,38 @@
                         <span style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold);text-transform:uppercase;">Cửa xuất</span>
                         <span style="font-size:10px;color:var(--text-dim);">@cuaXuats.Count cửa</span>
                     </div>
+                    <div style="display:flex;gap:4px;margin-bottom:8px;">
+                        <button class="xf-btn active" onclick="filterCua(this,'all')" type="button">Tất cả</button>
+                        <button class="xf-btn" onclick="filterCua(this,'active')" type="button">
+                            <i class="bi bi-door-open"></i> Hoạt động
+                        </button>
+                        <button class="xf-btn" onclick="filterCua(this,'locked')" type="button">
+                            <i class="bi bi-lock-fill"></i> Đã khóa
+                        </button>
+                    </div>
+
                     <div id="cua-list">
                         @foreach (var cua in cuaXuats)
                         {
-                            <div class="cua-card" id="cua-card-@cua.Id" data-cua-id="@cua.Id">
-                                <div class="cua-name">@cua.Ten</div>
+                            <div class="cua-card"
+                                 id="cua-card-@cua.Id"
+                                 data-cua-id="@cua.Id"
+                                 data-active="@cua.IsActive.ToString().ToLower()">
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <div class="cua-name">@cua.Ten</div>
+                                    @if (!cua.IsActive)
+                                    {
+                                        <span style="font-size:10px;color:var(--red);">
+                                            <i class="bi bi-lock-fill"></i> Khóa
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size:10px;color:var(--green);">
+                                            <i class="bi bi-door-open"></i> Mở
+                                        </span>
+                                    }
+                                </div>
                                 <div class="cua-empty" id="cua-status-@cua.Id">— Trống —</div>
                             </div>
                         }
@@ -984,6 +1301,34 @@
         var ttLabels = ['Chờ xuất','Đang xuất','Quá giờ','Hoàn thành','Đã rời kho'];
         var xeTtLabels = ['Trong bãi','Đang phân công','Đang vận chuyển','Bảo trì'];
 
+        // ── THEME ──
+        var isLight = localStorage.getItem('theme') === 'light';
+        function applyTheme() {
+            document.body.classList.toggle('light-mode', isLight);
+            document.getElementById('theme-toggle').textContent = isLight ? '🌙' : '☀️';
+        }
+        function toggleTheme() {
+            isLight = !isLight;
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            applyTheme();
+        }
+        applyTheme();
+
+        // ── USER MENU ──
+        function toggleUserMenu() {
+            var dd = document.getElementById('user-dropdown');
+            var av = document.getElementById('user-avatar');
+            var isOpen = dd.classList.contains('show');
+            dd.classList.toggle('show', !isOpen);
+            av.classList.toggle('open', !isOpen);
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#user-btn')) {
+                document.getElementById('user-dropdown').classList.remove('show');
+                document.getElementById('user-avatar').classList.remove('open');
+            }
+        });
+
         // ── ĐỒNG HỒ ──
         function tick() {
             var n = new Date();
@@ -1003,100 +1348,63 @@
         // ── SIGNALR ──
         var conn = new signalR.HubConnectionBuilder().withUrl('/signalserver').withAutomaticReconnect().build();
 
-        // ── 1. Reload dropdown xe TrongBai sau mỗi thay đổi ──
         async function reloadXeDropdown() {
             try {
                 var res = await fetch('@Url.Action("GetXeTrongBai", "DieuDoXuat")');
                 if (!res.ok) return;
                 var xes = await res.json();
-
                 var sel = document.getElementById('sel-xe');
                 var curVal = sel.value;
                 sel.innerHTML = '<option value="">-- Chọn xe --</option>';
-
                 xes.forEach(x => {
-                    var bienSo   = x.bienSoXe  ?? x.BienSoXe  ?? '--';
-                    var loai     = x.loaiXe    ?? x.LoaiXe    ?? '--';
-                    var tai      = x.taiTrong  ?? x.TaiTrong  ?? 0;
-                    var tenTaiXe = x.tenTaiXe  ?? x.TenTaiXe  ?? 'Chưa có tài xế';
-                    var tel      = x.telTaiXe  ?? x.TelTaiXe  ?? '--';
-                    var id       = x.id        ?? x.Id;
-
                     var opt = document.createElement('option');
-                    opt.value = id;
-                    opt.textContent = bienSo;
-                    opt.dataset.loai   = loai;
-                    opt.dataset.tai    = tai;
-                    opt.dataset.taixe  = tenTaiXe;
-                    opt.dataset.tel    = tel;
+                    opt.value = x.id ?? x.Id;
+                    opt.textContent = x.bienSoXe ?? x.BienSoXe ?? '--';
+                    opt.dataset.loai  = x.loaiXe   ?? x.LoaiXe   ?? '--';
+                    opt.dataset.tai   = x.taiTrong  ?? x.TaiTrong  ?? 0;
+                    opt.dataset.taixe = x.tenTaiXe  ?? x.TenTaiXe  ?? 'Chưa có tài xế';
+                    opt.dataset.tel   = x.telTaiXe  ?? x.TelTaiXe  ?? '--';
                     sel.appendChild(opt);
                 });
-
-                // Nếu xe đang chọn không còn trong danh sách rảnh → reset
                 var stillValid = Array.from(sel.options).some(o => o.value === curVal);
-                if (curVal && !stillValid) {
-                    sel.value = '';
-                    document.getElementById('xe-info').classList.remove('show');
-                }
-            } catch(e) { console.error('reloadXeDropdown:', e); }
+                if (curVal && !stillValid) { sel.value = ''; document.getElementById('xe-info').classList.remove('show'); }
+            } catch(e) {}
         }
 
-        // ── 2. Reload dropdown cửa trống sau mỗi thay đổi ──
         async function reloadCuaDropdown() {
             try {
                 var res = await fetch('@Url.Action("GetCuaTrong", "DieuDoXuat")');
                 if (!res.ok) return;
                 var cuas = await res.json();
-
                 var sel = document.getElementById('sel-cua');
                 var curVal = sel.value;
                 sel.innerHTML = '<option value="">-- Chọn cửa --</option>';
-
                 cuas.forEach(c => {
-                    var id  = c.id  ?? c.Id;
-                    var ten = c.ten ?? c.Ten ?? '--';
                     var opt = document.createElement('option');
-                    opt.value = id;
-                    opt.textContent = ten;
+                    opt.value = c.id ?? c.Id;
+                    opt.textContent = c.ten ?? c.Ten ?? '--';
                     sel.appendChild(opt);
                 });
-
-                // Nếu cửa đang chọn không còn trống → reset
                 var stillValid = Array.from(sel.options).some(o => o.value === curVal);
-                if (curVal && !stillValid) {
-                    sel.value = '';
-                }
-            } catch(e) { console.error('reloadCuaDropdown:', e); }
+                if (curVal && !stillValid) sel.value = '';
+            } catch(e) {}
         }
 
-        // ── 3. Hàm tổng reload tất cả sau mỗi thay đổi ──
         var _reloading = false;
         async function reloadAll() {
             if (_reloading) return;
             _reloading = true;
             try {
                 await loadPhieu();
-
-                // Chỉ reload dropdown nếu người dùng KHÔNG đang chọn dở
                 var dangChonXe  = document.getElementById('sel-xe').value;
                 var dangChonCua = document.getElementById('sel-cua').value;
-
                 if (!dangChonXe)  await reloadXeDropdown();
                 if (!dangChonCua) await reloadCuaDropdown();
-
-                if (document.getElementById('panel-xe').style.display !== 'none') {
-                    await loadXeSidebar();
-                }
-            } finally {
-                _reloading = false;
-            }
+                if (document.getElementById('panel-xe').style.display !== 'none') await loadXeSidebar();
+            } finally { _reloading = false; }
         }
 
-        // ── SignalR — dùng reloadAll thay vì chỉ loadPhieu ──
-        conn.on('UpdateBangTongHopXuat', function() {
-           loadPhieu();
-        });
-
+        conn.on('UpdateBangTongHopXuat', function() { loadPhieu(); });
         conn.start().then(function() {
             document.getElementById('sig-dot').classList.add('on');
             document.getElementById('sig-text').textContent = 'Realtime';
@@ -1105,14 +1413,13 @@
             document.getElementById('sig-text').textContent = 'Mất kết nối';
         });
 
-        // ── LOAD DATA ──
         async function loadPhieu() {
             try {
                 var res = await fetch('@Url.Action("GetPhieuHomNay", "DieuDoXuat")');
                 if (!res.ok) return;
                 phieuData = await res.json();
                 renderTable(); updateStats(); updateCuaFromPhieu();
-            } catch(e) { console.error('loadPhieu:', e); }
+            } catch(e) {}
         }
 
         async function loadXeSidebar() {
@@ -1121,282 +1428,185 @@
                 if (!res.ok) return;
                 xeData = await res.json();
                 renderXeSidebar();
-            } catch(e) { console.error('loadXe:', e); }
+            } catch(e) {}
         }
 
-        // ── RENDER TABLE ──
         function renderTable() {
             var filtered = curFilter === 'all' ? phieuData : phieuData.filter(p => (p.trangThai ?? p.TrangThai) == curFilter);
             document.getElementById('phieu-count').textContent = filtered.length + ' phiếu';
             var tbody = document.getElementById('phieu-tbody');
-            if (!filtered.length) {
-                tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có phiếu xuất hôm nay</td></tr>';
-                return;
-            }
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có phiếu xuất hôm nay</td></tr>'; return; }
             tbody.innerHTML = filtered.map(p => {
-                var id         = p.id         ?? p.Id;
-                var tenCua     = p.tenCua     ?? p.TenCua     ?? '--';
-                var bienSoXe   = p.bienSoXe   ?? p.BienSoXe   ?? '--';
-                var tenTaiXe   = p.tenTaiXe   ?? p.TenTaiXe   ?? '--';
-                var trangThai  = p.trangThai  ?? p.TrangThai  ?? 0;
-                var vaoCua     = p.thoiGianVaoCua  ?? p.ThoiGianVaoCua;
-                var gioiHan    = p.thoiGianGioiHan ?? p.ThoiGianGioiHan;
-                var hangHoas   = p.hangHoas   ?? p.HangHoas   ?? [];
-
+                var id        = p.id         ?? p.Id;
+                var tenCua    = p.tenCua     ?? p.TenCua     ?? '--';
+                var bienSoXe  = p.bienSoXe   ?? p.BienSoXe   ?? '--';
+                var tenTaiXe  = p.tenTaiXe   ?? p.TenTaiXe   ?? '--';
+                var trangThai = p.trangThai  ?? p.TrangThai  ?? 0;
+                var vaoCua    = p.thoiGianVaoCua  ?? p.ThoiGianVaoCua;
+                var gioiHan   = p.thoiGianGioiHan ?? p.ThoiGianGioiHan;
+                var hangHoas  = p.hangHoas   ?? p.HangHoas   ?? [];
                 var hangStr = hangHoas.length
-                    ? hangHoas.map(h => {
-                        var dv    = h.donVi  ?? h.DonVi  ?? '--';
-                        var chua  = h.chuaBG ?? h.ChuaBG ?? 0;
-                        var da    = h.daBG   ?? h.DaBG   ?? 0;
-                        return '<span class="htag"><span style="color:var(--gold2);">'+chua+'</span>/'+da+' '+dv+'</span>';
-                      }).join('')
+                    ? hangHoas.map(h => '<span class="htag"><span style="color:var(--gold2);">'+(h.chuaBG??h.ChuaBG??0)+'</span>/'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')+'</span>').join('')
                     : '<span style="color:var(--text-dim);">--</span>';
-
                 var gioVao = vaoCua ? new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
                 var conLai = '—';
-                if (trangThai === 3 || trangThai === 4) {
-                    // Hoàn thành hoặc đã rời kho → không hiện còn lại
-                    conLai = '—';
-                } else if (gioiHan && trangThai < 3) {
+                if (trangThai < 3 && gioiHan) {
                     var diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
                     conLai = diff > 0 ? diff + ' ph' : '<span style="color:var(--red);font-weight:700;">Quá hạn</span>';
                 }
                 return '<tr>' +
-                    '<td style="color:var(--gold);font-weight:700;">' + tenCua + '</td>' +
-                    '<td><div style="color:var(--text-bright);font-weight:700;">' + bienSoXe + '</div>' +
-                        '<div style="font-size:10px;color:var(--text-dim);">' + tenTaiXe + '</div></td>' +
-                    '<td><div class="hang-tags">' + hangStr + '</div></td>' +
-                    '<td><span class="sbadge tt-' + trangThai + '">' + (ttLabels[trangThai] || '--') + '</span></td>' +
-                    '<td style="color:var(--text-dim);">' + gioVao + '</td>' +
-                    '<td>' + conLai + '</td>' +
-                    '<td>' +
-                        '<button class="btn-chitiet" onclick="xemChiTiet('+id+')">Chi tiết</button>' +
-                        (trangThai <= 1 ? '<button class="btn-huy" onclick="huyPhieu('+id+')">Hủy</button>' : '') +
-                    '</td></tr>';
+                    '<td style="color:var(--gold);font-weight:700;">'+tenCua+'</td>' +
+                    '<td><div style="color:var(--text-bright);font-weight:700;">'+bienSoXe+'</div><div style="font-size:10px;color:var(--text-dim);">'+tenTaiXe+'</div></td>' +
+                    '<td><div class="hang-tags">'+hangStr+'</div></td>' +
+                    '<td><span class="sbadge tt-'+trangThai+'">'+(ttLabels[trangThai]||'--')+'</span></td>' +
+                    '<td style="color:var(--text-dim);">'+gioVao+'</td>' +
+                    '<td>'+conLai+'</td>' +
+                    '<td><button class="btn-chitiet" onclick="xemChiTiet('+id+')">Chi tiết</button>'+(trangThai<=1?'<button class="btn-huy" onclick="huyPhieu('+id+')">Hủy</button>':'')+'</td>' +
+                    '</tr>';
             }).join('');
         }
 
         function updateStats() {
             document.getElementById('stat-tong').textContent = phieuData.length;
-            document.getElementById('stat-cho').textContent  = phieuData.filter(p => (p.trangThai??p.TrangThai) === 0).length;
-            document.getElementById('stat-dang').textContent = phieuData.filter(p => { var t=p.trangThai??p.TrangThai; return t>=1&&t<=3; }).length;
-            document.getElementById('stat-xong').textContent = phieuData.filter(p => (p.trangThai??p.TrangThai) === 4).length;
+            document.getElementById('stat-cho').textContent  = phieuData.filter(p=>(p.trangThai??p.TrangThai)===0).length;
+            document.getElementById('stat-dang').textContent = phieuData.filter(p=>{var t=p.trangThai??p.TrangThai;return t>=1&&t<=3;}).length;
+            document.getElementById('stat-xong').textContent = phieuData.filter(p=>(p.trangThai??p.TrangThai)===4).length;
         }
 
-        function setFilter(val, btn) {
-            curFilter = val;
-            document.querySelectorAll('.filter-tabs .ftab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderTable();
+        function setFilter(val,btn) {
+            curFilter=val;
+            document.querySelectorAll('.filter-tabs .ftab').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active'); renderTable();
         }
 
-        // ── CỬA SIDEBAR ──
         function updateCuaFromPhieu() {
             document.querySelectorAll('.cua-card').forEach(c => {
-                c.className = 'cua-card';
-                var cuaId = c.dataset.cuaId;
-                document.getElementById('cua-status-' + cuaId).innerHTML = '— Trống —';
-                document.getElementById('cua-status-' + cuaId).className = 'cua-empty';
+                c.className='cua-card';
+                var cid=c.dataset.cuaId;
+                document.getElementById('cua-status-'+cid).innerHTML='— Trống —';
+                document.getElementById('cua-status-'+cid).className='cua-empty';
             });
-                phieuData.filter(p => {
-                    var tt = p.trangThai ?? p.TrangThai ?? 0;
-                    return tt === 0 || tt === 1 || tt === 2; // Chỉ hiện khi DaPhanCong, DangBanGiao, QuaThoiGian
-                }).
-                forEach(p => {
-                var cuaId    = p.cuaXuatId ?? p.CuaXuatId;
-                var tt       = p.trangThai ?? p.TrangThai ?? 0;
-                var bienSo   = p.bienSoXe  ?? p.BienSoXe  ?? '--';
-                var taiXe    = p.tenTaiXe  ?? p.TenTaiXe  ?? '--';
-                var hangHoas = p.hangHoas  ?? p.HangHoas  ?? [];
-                var vaoCua   = p.thoiGianVaoCua ?? p.ThoiGianVaoCua;
-
-                var card   = document.getElementById('cua-card-' + cuaId);
-                var status = document.getElementById('cua-status-' + cuaId);
-                if (!card || !status) return;
-                card.className = 'cua-card ' + (tt === 2 ? 'is-over' : 'has-xe');
-                var hangHtml = hangHoas.length
-                    ? '<div class="cua-hang">' + hangHoas.map(h => {
-                        var dv = h.donVi??h.DonVi??'--';
-                        var cb = h.chuaBG??h.ChuaBG??0;
-                        var db = h.daBG??h.DaBG??0;
-                        return '<span class="cua-hang-tag">'+cb+'/'+db+' '+dv+'</span>';
-                      }).join('') + '</div>' : '';
-                status.className = '';
-                status.innerHTML = '<div class="cua-xe">' + bienSo + ' — ' + taiXe + '</div>' +
-                    hangHtml +
-                    '<div class="cua-footer">' +
-                        '<span class="sbadge tt-' + tt + '" style="font-size:9px;">' + (ttLabels[tt]||'--') + '</span>' +
-                        (vaoCua ? '<span style="font-size:10px;color:var(--text-dim);">' + new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + '</span>' : '') +
-                    '</div>';
+            phieuData.filter(p=>{var tt=p.trangThai??p.TrangThai??0;return tt===0||tt===1||tt===2;}).forEach(p=>{
+                var cuaId=p.cuaXuatId??p.CuaXuatId;
+                var tt=p.trangThai??p.TrangThai??0;
+                var bienSo=p.bienSoXe??p.BienSoXe??'--';
+                var taiXe=p.tenTaiXe??p.TenTaiXe??'--';
+                var hangHoas=p.hangHoas??p.HangHoas??[];
+                var vaoCua=p.thoiGianVaoCua??p.ThoiGianVaoCua;
+                var card=document.getElementById('cua-card-'+cuaId);
+                var status=document.getElementById('cua-status-'+cuaId);
+                if(!card||!status)return;
+                card.className='cua-card '+(tt===2?'is-over':'has-xe');
+                var hangHtml=hangHoas.length?'<div class="cua-hang">'+hangHoas.map(h=>'<span class="cua-hang-tag">'+(h.chuaBG??h.ChuaBG??0)+'/'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')+'</span>').join('')+'</div>':'';
+                status.className='';
+                status.innerHTML='<div class="cua-xe">'+bienSo+' — '+taiXe+'</div>'+hangHtml+'<div class="cua-footer"><span class="sbadge tt-'+tt+'" style="font-size:9px;">'+(ttLabels[tt]||'--')+'</span>'+(vaoCua?'<span style="font-size:10px;color:var(--text-dim);">'+new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})+'</span>':'')+'</div>';
             });
         }
 
         function renderXeSidebar() {
-            var filtered = curXeFilter === 'all' ? xeData : xeData.filter(x => (x.trangThai??x.TrangThai) == curXeFilter);
-            document.getElementById('xe-sidebar-count').textContent = filtered.length + ' xe';
-            var el = document.getElementById('xe-list');
-            if (!filtered.length) {
-                el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:11px;font-style:italic;">Không có xe</div>';
-                return;
-            }
-            el.innerHTML = filtered.map(x => {
-                var bienSo   = x.bienSoXe  ?? x.BienSoXe  ?? '--';
-                var loaiXe   = x.loaiXe    ?? x.LoaiXe    ?? '--';
-                var taiTrong = x.taiTrong  ?? x.TaiTrong  ?? 0;
-                var tt       = x.trangThai ?? x.TrangThai  ?? 0;
-                var tenTaiXe = x.tenTaiXe  ?? x.TenTaiXe  ?? '--';
-                var telTaiXe = x.telTaiXe  ?? x.TelTaiXe  ?? '--';
-                return '<div class="xe-card">' +
-                    '<div class="xe-card-top">' +
-                        '<span class="xe-bienso">' + bienSo + '</span>' +
-                        '<span class="sbadge xe-tt-' + tt + '" style="font-size:9px;">' + (xeTtLabels[tt]||'--') + '</span>' +
-                    '</div>' +
-                    '<div class="xe-meta">' + loaiXe + ' — ' + Number(taiTrong).toLocaleString() + ' kg</div>' +
-                    '<div class="xe-meta" style="color:var(--blue2);margin-top:2px;">' + tenTaiXe + ' | ' + telTaiXe + '</div>' +
-                    '</div>';
+            var filtered=curXeFilter==='all'?xeData:xeData.filter(x=>(x.trangThai??x.TrangThai)==curXeFilter);
+            document.getElementById('xe-sidebar-count').textContent=filtered.length+' xe';
+            var el=document.getElementById('xe-list');
+            if(!filtered.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:11px;font-style:italic;">Không có xe</div>';return;}
+            el.innerHTML=filtered.map(x=>{
+                var bienSo=x.bienSoXe??x.BienSoXe??'--';
+                var loaiXe=x.loaiXe??x.LoaiXe??'--';
+                var taiTrong=x.taiTrong??x.TaiTrong??0;
+                var tt=x.trangThai??x.TrangThai??0;
+                var tenTaiXe=x.tenTaiXe??x.TenTaiXe??'--';
+                var telTaiXe=x.telTaiXe??x.TelTaiXe??'--';
+                return '<div class="xe-card"><div class="xe-card-top"><span class="xe-bienso">'+bienSo+'</span><span class="sbadge xe-tt-'+tt+'" style="font-size:9px;">'+(xeTtLabels[tt]||'--')+'</span></div><div class="xe-meta">'+loaiXe+' — '+Number(taiTrong).toLocaleString()+' kg</div><div class="xe-meta" style="color:var(--blue2);margin-top:2px;">'+tenTaiXe+' | '+telTaiXe+'</div></div>';
             }).join('');
         }
 
-        function filterXe(btn, val) {
-            document.querySelectorAll('.xf-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            curXeFilter = val;
-            renderXeSidebar();
+        function filterXe(btn,val){document.querySelectorAll('.xf-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');curXeFilter=val;renderXeSidebar();}
+
+        function switchTab(tab){
+            document.getElementById('stab-cua').classList.toggle('active',tab==='cua');
+            document.getElementById('stab-xe').classList.toggle('active',tab==='xe');
+            document.getElementById('panel-cua').style.display=tab==='cua'?'block':'none';
+            document.getElementById('panel-xe').style.display=tab==='xe'?'block':'none';
+            if(tab==='xe')loadXeSidebar();
         }
 
-        function switchTab(tab) {
-            document.getElementById('stab-cua').classList.toggle('active', tab === 'cua');
-            document.getElementById('stab-xe').classList.toggle('active', tab === 'xe');
-            document.getElementById('panel-cua').style.display = tab === 'cua' ? 'block' : 'none';
-            document.getElementById('panel-xe').style.display  = tab === 'xe'  ? 'block' : 'none';
-            if (tab === 'xe') loadXeSidebar();
-        }
-
-        // ── FORM ──
-        function onXeChange() {
-            var sel = document.getElementById('sel-xe');
-            var opt = sel.options[sel.selectedIndex];
-            var info = document.getElementById('xe-info');
-            if (!sel.value) { info.classList.remove('show'); return; }
-            document.getElementById('xi-loai').textContent  = opt.dataset.loai  || '--';
-            document.getElementById('xi-tai').textContent   = Number(opt.dataset.tai || 0).toLocaleString() + ' kg';
-            document.getElementById('xi-taixe').textContent = opt.dataset.taixe || 'Chưa có tài xế';
-            document.getElementById('xi-tel').textContent   = opt.dataset.tel   || '--';
+        function onXeChange(){
+            var sel=document.getElementById('sel-xe');
+            var opt=sel.options[sel.selectedIndex];
+            var info=document.getElementById('xe-info');
+            if(!sel.value){info.classList.remove('show');return;}
+            document.getElementById('xi-loai').textContent=opt.dataset.loai||'--';
+            document.getElementById('xi-tai').textContent=Number(opt.dataset.tai||0).toLocaleString()+' kg';
+            document.getElementById('xi-taixe').textContent=opt.dataset.taixe||'Chưa có tài xế';
+            document.getElementById('xi-tel').textContent=opt.dataset.tel||'--';
             info.classList.add('show');
         }
 
-        function addHang() {
-            var list = document.getElementById('hang-list');
-            var row = document.createElement('div');
-            row.className = 'hang-row';
-            row.innerHTML = '<input class="hang-input" placeholder="Đơn vị..."/><input class="hang-input" type="number" placeholder="Số lượng" min="0"/><button class="btn-remove" onclick="removeHang(this)" type="button">×</button>';
-            list.appendChild(row);
-        }
+        function addHang(){var list=document.getElementById('hang-list');var row=document.createElement('div');row.className='hang-row';row.innerHTML='<input class="hang-input" placeholder="Đơn vị..."/><input class="hang-input" type="number" placeholder="Số lượng" min="0"/><button class="btn-remove" onclick="removeHang(this)" type="button">×</button>';list.appendChild(row);}
+        function removeHang(btn){var rows=document.querySelectorAll('#hang-list .hang-row');if(rows.length>1)btn.parentElement.remove();}
 
-        function removeHang(btn) {
-            var rows = document.querySelectorAll('#hang-list .hang-row');
-            if (rows.length > 1) btn.parentElement.remove();
-        }
-
-        function resetForm() {
-            document.getElementById('sel-xe').value = '';
-            document.getElementById('sel-cua').value = '';
-            document.getElementById('sel-nv').value = '';
+        function resetForm(){
+            document.getElementById('sel-xe').value='';
+            document.getElementById('sel-cua').value='';
+            document.getElementById('sel-nv').value='';
             document.getElementById('xe-info').classList.remove('show');
-            document.getElementById('inp-tgpc').value = nowLocal(0);
-            document.getElementById('inp-ghichu').value = '';
-            document.getElementById('hang-list').innerHTML = '<div class="hang-row"><input class="hang-input" placeholder="Đơn vị..."/><input class="hang-input" type="number" placeholder="Số lượng" min="0"/><button class="btn-remove" onclick="removeHang(this)" type="button">×</button></div>';
-            document.getElementById('form-status').textContent = '';
+            document.getElementById('inp-tgpc').value=nowLocal(0);
+            document.getElementById('inp-ghichu').value='';
+            document.getElementById('hang-list').innerHTML='<div class="hang-row"><input class="hang-input" placeholder="Đơn vị..."/><input class="hang-input" type="number" placeholder="Số lượng" min="0"/><button class="btn-remove" onclick="removeHang(this)" type="button">×</button></div>';
+            document.getElementById('form-status').textContent='';
         }
 
-        // ── submitForm — bỏ location.reload(), dùng reloadAll() ──
-        async function submitForm() {
-            var xeSel  = document.getElementById('sel-xe');
-            var cuaSel = document.getElementById('sel-cua');
-            if (!xeSel.value || !cuaSel.value) { alert('Vui lòng chọn xe và cửa xuất!'); return; }
-
-            var hangRows = document.querySelectorAll('#hang-list .hang-row');
-            var hangs = [];
-            hangRows.forEach(r => {
-                var inputs = r.querySelectorAll('input');
-                var dv = inputs[0].value.trim();
-                var sl = parseInt(inputs[1].value) || 0;
-                if (dv && sl > 0) hangs.push({ donVi: dv, soLuong: sl });
+        async function submitForm(){
+            var xeSel=document.getElementById('sel-xe');
+            var cuaSel=document.getElementById('sel-cua');
+            if(!xeSel.value||!cuaSel.value){alert('Vui lòng chọn xe và cửa xuất!');return;}
+            var hangs=[];
+            document.querySelectorAll('#hang-list .hang-row').forEach(r=>{
+                var inputs=r.querySelectorAll('input');
+                var dv=inputs[0].value.trim();var sl=parseInt(inputs[1].value)||0;
+                if(dv&&sl>0)hangs.push({donVi:dv,soLuong:sl});
             });
+            var payload={xeId:parseInt(xeSel.value),cuaXuatId:parseInt(cuaSel.value),nhanVienXacNhanId:parseInt(document.getElementById('sel-nv').value)||null,thoiGianPhanCong:document.getElementById('inp-tgpc').value||null,ghiChu:document.getElementById('inp-ghichu').value||null,hangHoas:hangs};
+            var btn=document.getElementById('btn-submit');
+            btn.disabled=true;btn.textContent='⏳ Đang tạo...';
+            try{
+                var res=await fetch('@Url.Action("TaoPhanCong", "DieuDoXuat")',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+                var data=await res.json();
+                if(res.ok){document.getElementById('form-status').textContent='✔ Tạo phiếu thành công!';setTimeout(()=>{document.getElementById('form-status').textContent='';},5000);resetForm();await reloadAll();}
+                else{alert('❌ '+(data.message||'Lỗi tạo phiếu!')+(data.inner?'\n'+data.inner:''));}
+            }catch(e){alert('❌ Lỗi kết nối server');}
+            finally{btn.disabled=false;btn.textContent='✔ Tạo phiếu xuất';}
+        }
 
-            var payload = {
-                xeId:              parseInt(xeSel.value),
-                cuaXuatId:         parseInt(cuaSel.value),
-                nhanVienXacNhanId: parseInt(document.getElementById('sel-nv').value) || null,
-                thoiGianPhanCong:  document.getElementById('inp-tgpc').value || null,
-                ghiChu:            document.getElementById('inp-ghichu').value || null,
-                hangHoas:          hangs
-            };
+        function xemChiTiet(id){
+            var p=phieuData.find(x=>(x.id??x.Id)===id);if(!p)return;
+            var tt=p.trangThai??p.TrangThai??0;
+            alert('=== Chi tiết phiếu #'+id+' ===\nCửa: '+(p.tenCua??p.TenCua??'--')+'\nXe: '+(p.bienSoXe??p.BienSoXe??'--')+'\nTài xế: '+(p.tenTaiXe??p.TenTaiXe??'--')+'\nNV XN: '+(p.tenNhanVien??p.TenNhanVien??'--')+'\nTrạng thái: '+(ttLabels[tt]||'--')+'\nGiờ phân công: '+(p.thoiGianPhanCong??p.ThoiGianPhanCong?new Date(p.thoiGianPhanCong??p.ThoiGianPhanCong).toLocaleString('vi-VN'):'--')+'\nGiờ vào cửa: '+(p.thoiGianVaoCua??p.ThoiGianVaoCua?new Date(p.thoiGianVaoCua??p.ThoiGianVaoCua).toLocaleString('vi-VN'):'--')+'\nGiờ giới hạn: '+(p.thoiGianGioiHan??p.ThoiGianGioiHan?new Date(p.thoiGianGioiHan??p.ThoiGianGioiHan).toLocaleString('vi-VN'):'--')+'\nHàng hóa: '+(p.hangHoas??p.HangHoas??[]).map(h=>(h.chuaBG??h.ChuaBG??0)+'/'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')).join(', '));
+        }
 
-            var btn = document.getElementById('btn-submit');
-            btn.disabled = true; btn.textContent = '⏳ Đang tạo...';
-            try {
-                var res = await fetch('@Url.Action("TaoPhanCong", "DieuDoXuat")', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                var data = await res.json();
-                if (res.ok) {
-                    document.getElementById('form-status').textContent = '✔ Tạo phiếu thành công!';
-                    setTimeout(() => {
-                        document.getElementById('form-status').textContent = '';
-                    }, 5000);
-                    resetForm();
-                    await reloadAll();
-                
-                } else {
-                    alert('❌ ' + (data.message || 'Lỗi tạo phiếu!') + (data.inner ? '\n' + data.inner : ''));
+        async function huyPhieu(id){
+            if(!confirm('Xác nhận hủy phiếu này? Xe sẽ trở về Trong bãi.'))return;
+            try{
+                var res=await fetch('@Url.Action("HuyPhanCong", "DieuDoXuat")',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({xuatId:id})});
+                var data=await res.json();
+                if(res.ok){await reloadAll();}else{alert('❌ '+(data.message||'Lỗi hủy!'));}
+            }catch(e){alert('❌ Lỗi kết nối');}
+        }
+        function filterCua(btn, val) {
+            document.querySelectorAll('#panel-cua .xf-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('#cua-list .cua-card').forEach(card => {
+                var isActive = card.dataset.active === 'true';
+                if (val === 'all') {
+                    card.style.display = '';
+                } else if (val === 'active') {
+                    card.style.display = isActive ? '' : 'none';
+                } else if (val === 'locked') {
+                    card.style.display = !isActive ? '' : 'none';
                 }
-            } catch(e) {
-                alert('❌ Lỗi kết nối server');
-            } finally {
-                btn.disabled = false; btn.textContent = '✔ Tạo phiếu xuất';
-            }
+            });
         }
-
-        function xemChiTiet(id) {
-            var p = phieuData.find(x => (x.id??x.Id) === id);
-            if (!p) return;
-            var tt  = p.trangThai ?? p.TrangThai ?? 0;
-            var msg = '=== Chi tiết phiếu #' + id + ' ===\n' +
-                'Cửa: '       + (p.tenCua??p.TenCua??'--') +
-                '\nXe: '       + (p.bienSoXe??p.BienSoXe??'--') +
-                '\nTài xế: '   + (p.tenTaiXe??p.TenTaiXe??'--') +
-                '\nNV XN: '    + (p.tenNhanVien??p.TenNhanVien??'--') +
-                '\nTrạng thái: '+ (ttLabels[tt]||'--') +
-                '\nGiờ phân công: ' + (p.thoiGianPhanCong??p.ThoiGianPhanCong ? new Date(p.thoiGianPhanCong??p.ThoiGianPhanCong).toLocaleString('vi-VN') : '--') +
-                '\nGiờ vào cửa: '  + (p.thoiGianVaoCua??p.ThoiGianVaoCua   ? new Date(p.thoiGianVaoCua??p.ThoiGianVaoCua).toLocaleString('vi-VN')   : '--') +
-                '\nGiờ giới hạn: ' + (p.thoiGianGioiHan??p.ThoiGianGioiHan ? new Date(p.thoiGianGioiHan??p.ThoiGianGioiHan).toLocaleString('vi-VN') : '--') +
-                '\nHàng hóa: ' + (p.hangHoas??p.HangHoas??[]).map(h => (h.chuaBG??h.ChuaBG??0)+'/'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')).join(', ');
-            alert(msg);
-        }
-
-        // ── huyPhieu — dùng reloadAll() thay vì chỉ loadPhieu() ──
-        async function huyPhieu(id) {
-            if (!confirm('Xác nhận hủy phiếu này? Xe sẽ trở về Trong bãi.')) return;
-            try {
-                var res = await fetch('@Url.Action("HuyPhanCong", "DieuDoXuat")', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ xuatId: id })
-                });
-                var data = await res.json();
-                if (res.ok) {
-                    // Reload tất cả — không cần reload trang
-                    await reloadAll();
-                } else {
-                    alert('❌ ' + (data.message || 'Lỗi hủy!'));
-                }
-            } catch(e) { alert('❌ Lỗi kết nối'); }
-        }
-        // ── Khởi động — dùng reloadAll thay vì chỉ loadPhieu ──
         reloadAll();
-        setInterval(reloadAll, 30000);
+        setInterval(reloadAll,30000);
     </script>
 }

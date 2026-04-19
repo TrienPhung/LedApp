@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
-using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using LedApp.Data;
 
@@ -16,145 +10,92 @@ namespace LedApp.Controllers
     public class CuaXuatsController : Controller
     {
         private readonly ApplicationDBContext _context;
-        
-        public CuaXuatsController(ApplicationDBContext context)
-        {
-            _context = context;
-           
-        }
+        public CuaXuatsController(ApplicationDBContext context) => _context = context;
 
-        // GET: CuaXuats
-        public async Task<IActionResult> Index()
-        {
-              return _context.CuaXuats != null ? 
-                          View(await _context.CuaXuats.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.CuaXuats'  is null.");
-        }
+        public async Task<IActionResult> Index() =>
+            _context.CuaXuats != null
+                ? View(await _context.CuaXuats.ToListAsync())
+                : Problem("Entity set 'ApplicationDBContext.CuaXuats' is null.");
 
-        // GET: CuaXuats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CuaXuats == null)
-            {
-                return NotFound();
-            }
-
-            var cuaXuat = await _context.CuaXuats
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuaXuat == null)
-            {
-                return NotFound();
-            }
-
-            return View(cuaXuat);
+            if (id == null || _context.CuaXuats == null) return NotFound();
+            var item = await _context.CuaXuats.FirstOrDefaultAsync(m => m.Id == id);
+            return item == null ? NotFound() : View(item);
         }
 
-        // GET: CuaXuats/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
-        // POST: CuaXuats/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Ten,Mota")] CuaXuat cuaXuat)
+        public async Task<IActionResult> Create([Bind("Id,Ten,Mota,IsActive")] CuaXuat cuaXuat)
         {
             try
-            { 
+            {
                 _context.Add(cuaXuat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-             catch (Exception ex)
-            {
-                return View(cuaXuat);
-            }
-           
+            catch { return View(cuaXuat); }
         }
 
-        // GET: CuaXuats/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CuaXuats == null)
-            {
-                return NotFound();
-            }
-
-            var cuaXuat = await _context.CuaXuats.FindAsync(id);
-            if (cuaXuat == null)
-            {
-                return NotFound();
-            }
-            return View(cuaXuat);
+            if (id == null || _context.CuaXuats == null) return NotFound();
+            var item = await _context.CuaXuats.FindAsync(id);
+            return item == null ? NotFound() : View(item);
         }
 
-        // POST: CuaXuats/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Ten,Mota")] CuaXuat cuaXuat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Ten,Mota,IsActive")] CuaXuat cuaXuat)
         {
-            if (id != cuaXuat.Id)
-            {
-                return NotFound();
-            }
+            if (id != cuaXuat.Id) return NotFound();
             try
             {
-                _context.Update(cuaXuat);
+                var existing = await _context.CuaXuats.AsTracking()
+                    .FirstOrDefaultAsync(c => c.Id == id);
+                if (existing == null) return NotFound();
+
+                existing.Ten = cuaXuat.Ten;
+                existing.Mota = cuaXuat.Mota;
+                existing.IsActive = cuaXuat.IsActive;
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
-            {
-                return View(cuaXuat);
-            }
-
+            catch (DbUpdateConcurrencyException) { return View(cuaXuat); }
         }
 
-        // GET: CuaXuats/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleActive(int id)
         {
-            if (id == null || _context.CuaXuats == null)
-            {
-                return NotFound();
-            }
-
-            var cuaXuat = await _context.CuaXuats
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuaXuat == null)
-            {
-                return NotFound();
-            }
-
-            return View(cuaXuat);
-        }
-
-        // POST: CuaXuats/Delete/5
-        [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.CuaXuats == null)
-            {
-                return Problem("Entity set 'ApplicationDBContext.CuaXuats'  is null.");
-            }
-            var cuaXuat = await _context.CuaXuats.FindAsync(id);
-            if (cuaXuat != null)
-            {
-                _context.CuaXuats.Remove(cuaXuat);
-            }
-            
+            var item = await _context.CuaXuats.FindAsync(id);
+            if (item == null) return NotFound();
+            item.IsActive = !item.IsActive;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CuaXuatExists(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-          return (_context.CuaXuats?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (id == null || _context.CuaXuats == null) return NotFound();
+            var item = await _context.CuaXuats.FirstOrDefaultAsync(m => m.Id == id);
+            return item == null ? NotFound() : View(item);
         }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.CuaXuats == null)
+                return Problem("Entity set 'ApplicationDBContext.CuaXuats' is null.");
+            var item = await _context.CuaXuats.FindAsync(id);
+            if (item != null) _context.CuaXuats.Remove(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool CuaXuatExists(int id) =>
+            (_context.CuaXuats?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

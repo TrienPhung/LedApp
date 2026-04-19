@@ -15,151 +15,92 @@ namespace LedApp.Controllers
     public class CuaNhapsController : Controller
     {
         private readonly ApplicationDBContext _context;
+        public CuaNhapsController(ApplicationDBContext context) => _context = context;
 
-        public CuaNhapsController(ApplicationDBContext context)
-        {
-            _context = context;
-        }
+        public async Task<IActionResult> Index() =>
+            _context.CuaNhaps != null
+                ? View(await _context.CuaNhaps.ToListAsync())
+                : Problem("Entity set 'ApplicationDBContext.CuaNhaps' is null.");
 
-        // GET: CuaNhaps
-        public async Task<IActionResult> Index()
-        {
-              return _context.CuaNhaps != null ? 
-                          View(await _context.CuaNhaps.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.CuaNhaps'  is null.");
-        }
-
-        // GET: CuaNhaps/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.CuaNhaps == null)
-            {
-                return NotFound();
-            }
-
-            var cuaNhap = await _context.CuaNhaps
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuaNhap == null)
-            {
-                return NotFound();
-            }
-
-            return View(cuaNhap);
+            if (id == null || _context.CuaNhaps == null) return NotFound();
+            var item = await _context.CuaNhaps.FirstOrDefaultAsync(m => m.Id == id);
+            return item == null ? NotFound() : View(item);
         }
 
-        // GET: CuaNhaps/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
-        // POST: CuaNhaps/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Ten,Mota")] CuaNhap cuaNhap)
+        public async Task<IActionResult> Create([Bind("Id,Ten,Mota,IsActive")] CuaNhap cuaNhap)
         {
-            //if (ModelState.IsValid)
-            try{
+            try
+            {
                 _context.Add(cuaNhap);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }catch(Exception ex)
-            {
-                return View(cuaNhap);
             }
-            //
+            catch { return View(cuaNhap); }
         }
 
-        // GET: CuaNhaps/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.CuaNhaps == null)
-            {
-                return NotFound();
-            }
-
-            var cuaNhap = await _context.CuaNhaps.FindAsync(id);
-            if (cuaNhap == null)
-            {
-                return NotFound();
-            }
-            return View(cuaNhap);
+            if (id == null || _context.CuaNhaps == null) return NotFound();
+            var item = await _context.CuaNhaps.FindAsync(id);
+            return item == null ? NotFound() : View(item);
         }
 
-        // POST: CuaNhaps/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Ten,Mota")] CuaNhap cuaNhap)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Ten,Mota,IsActive")] CuaNhap cuaNhap)
         {
-            if (id != cuaNhap.Id)
-            {
-                return NotFound();
-            }
-
+            if (id != cuaNhap.Id) return NotFound();
             try
             {
-                var existing = await _context.CuaNhaps
-                    .AsTracking()  
+                var existing = await _context.CuaNhaps.AsTracking()
                     .FirstOrDefaultAsync(c => c.Id == id);
                 if (existing == null) return NotFound();
 
                 existing.Ten = cuaNhap.Ten;
                 existing.Mota = cuaNhap.Mota;
+                existing.IsActive = cuaNhap.IsActive;
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                return View(cuaNhap);
-            }
-            
+            catch (DbUpdateConcurrencyException) { return View(cuaNhap); }
         }
 
-        // GET: CuaNhaps/Delete/5
+        // Toggle nhanh không cần vào form Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleActive(int id)
+        {
+            var item = await _context.CuaNhaps.FindAsync(id);
+            if (item == null) return NotFound();
+            item.IsActive = !item.IsActive;
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.CuaNhaps == null)
-            {
-                return NotFound();
-            }
-
-            var cuaNhap = await _context.CuaNhaps
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cuaNhap == null)
-            {
-                return NotFound();
-            }
-
-            return View(cuaNhap);
+            if (id == null || _context.CuaNhaps == null) return NotFound();
+            var item = await _context.CuaNhaps.FirstOrDefaultAsync(m => m.Id == id);
+            return item == null ? NotFound() : View(item);
         }
 
-        // POST: CuaNhaps/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.CuaNhaps == null)
-            {
-                return Problem("Entity set 'ApplicationDBContext.CuaNhaps'  is null.");
-            }
-            var cuaNhap = await _context.CuaNhaps.FindAsync(id);
-            if (cuaNhap != null)
-            {
-                _context.CuaNhaps.Remove(cuaNhap);
-            }
-            
+                return Problem("Entity set 'ApplicationDBContext.CuaNhaps' is null.");
+            var item = await _context.CuaNhaps.FindAsync(id);
+            if (item != null) _context.CuaNhaps.Remove(item);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool CuaNhapExists(int id)
-        {
-          return (_context.CuaNhaps?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        private bool CuaNhapExists(int id) =>
+             (_context.CuaNhaps?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

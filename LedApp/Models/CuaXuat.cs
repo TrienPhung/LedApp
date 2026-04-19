@@ -14,6 +14,8 @@ namespace LedApp.Models
         public string Ten { get; set; }
         [DisplayName("Mô tả")]
         public string Mota { get; set; }
+        [DisplayName("Trạng thái")]
+        public bool IsActive { get; set; } = true;
         public ICollection<Xuat> Xuats { get; set; }
     }
 }

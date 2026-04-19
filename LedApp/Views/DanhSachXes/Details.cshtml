@@ -31,7 +31,7 @@
         }
     </dd>
     <dt class="col-sm-3">Tài xế</dt>
-    <dd class="col-sm-9">@Model.TaiXe?.Name</dd>
+    <dd class="col-sm-9">@Model.TaiXe?.FullName</dd>
     <dt class="col-sm-3">Thời gian dự kiến về</dt>
     <dd class="col-sm-9">@(Model.ThoiGianDuKienVe.HasValue ? Model.ThoiGianDuKienVe.Value.ToString("dd/MM/yyyy HH:mm") : "")</dd>
     <dt class="col-sm-3">Ghi chú</dt>

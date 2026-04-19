@@ -109,6 +109,7 @@ namespace LedApp.Hubs
         }
 
         // Tổng hợp xuất — 3 cột: Chờ xuất / Đang xuất / Đã rời kho
+
         public async Task SendTongHopXuatFull()
         {
             try

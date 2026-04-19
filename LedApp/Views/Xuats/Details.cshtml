@@ -11,7 +11,7 @@
     <dt class="col-sm-3">Biển số xe</dt>
     <dd class="col-sm-9">@(Model.Xe?.BienSoXe ?? "—")</dd>
     <dt class="col-sm-3">Nhân viên xác nhận</dt>
-    <dd class="col-sm-9">@(Model.NhanVienXacNhan?.Name ?? "—")</dd>
+    @* <dd class="col-sm-9">@(Model.NhanVienXacNhan?.Name ?? "—")</dd> *@
     <dt class="col-sm-3">Trạng thái</dt>
     <dd class="col-sm-9">
         @switch (Model.TrangThai)

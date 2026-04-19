@@ -11,6 +11,7 @@ namespace LedApp.Models
         public int Id { get; set; }
         public string Ten { get; set; }
         public string Mota { get; set; }
+        public bool IsActive { get; set; } = true;
         public ICollection<Nhap> Nhaps { get; set; }
     }
 }

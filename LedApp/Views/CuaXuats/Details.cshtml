@@ -1,31 +1,36 @@
 ﻿@model LedApp.Models.CuaXuat
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết cửa xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Details</h1>
+<h5 class="mb-4">Chi tiết cửa xuất</h5>
 
-<div>
-    <h4>CuaXuat</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ten)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ten)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Mota)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Mota)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="row">
+    <div class="col-md-5">
+        <dl class="row small mb-4">
+            <dt class="col-4 text-secondary fw-normal">Tên cửa</dt>
+            <dd class="col-8">@Html.DisplayFor(model => model.Ten)</dd>
+
+            <dt class="col-4 text-secondary fw-normal">Mô tả</dt>
+            <dd class="col-8">@Html.DisplayFor(model => model.Mota)</dd>
+
+            <dt class="col-4 text-secondary fw-normal">Trạng thái</dt>
+            <dd class="col-8">
+                @if (Model.IsActive)
+                {
+                    <span class="badge rounded-pill text-success" style="background:#EAF3DE">● Đang mở</span>
+                }
+                else
+                {
+                    <span class="badge rounded-pill text-secondary" style="background:#F1EFE8">● Đã đóng</span>
+                }
+            </dd>
+        </dl>
+
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-sm btn-dark">Sửa</a>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Trở lại danh sách</a>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,333 @@
+﻿@model LedApp.Controllers.AccountCreateViewModel
+@{
+    ViewData["Title"] = "Tạo tài khoản";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .custom-select-wrapper {
+        position: relative;
+        user-select: none;
+    }
+
+    .custom-select-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 38px;
+        padding: 0 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        background: #fff;
+        cursor: pointer;
+        font-size: 14px;
+        color: #212529;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .custom-select-trigger:hover {
+            border-color: #86b7fe;
+        }
+
+        .custom-select-trigger.open {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+            border-radius: 6px 6px 0 0;
+        }
+
+        .custom-select-trigger .placeholder {
+            color: #adb5bd;
+        }
+
+        .custom-select-trigger .clear-btn {
+            color: #adb5bd;
+            font-size: 16px;
+            margin-right: 6px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+            .custom-select-trigger .clear-btn:hover {
+                color: #e74c3c;
+            }
+
+        .custom-select-trigger .arrow {
+            font-size: 12px;
+            color: #6c757d;
+            transition: transform .2s;
+        }
+
+        .custom-select-trigger.open .arrow {
+            transform: rotate(180deg);
+        }
+
+    .custom-select-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border: 1px solid #86b7fe;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        z-index: 9999;
+    }
+
+        .custom-select-dropdown.open {
+            display: block;
+        }
+
+    .custom-select-search {
+        padding: 8px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .custom-select-search input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+            .custom-select-search input:focus {
+                border-color: #86b7fe;
+                box-shadow: 0 0 0 2px rgba(13,110,253,0.15);
+            }
+
+    .custom-select-list {
+        max-height: 200px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ced4da #f8f9fa;
+    }
+
+        .custom-select-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-select-list::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+
+        .custom-select-list::-webkit-scrollbar-thumb {
+            background: #ced4da;
+            border-radius: 3px;
+        }
+
+            .custom-select-list::-webkit-scrollbar-thumb:hover {
+                background: #adb5bd;
+            }
+
+    .custom-select-option {
+        padding: 8px 14px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .custom-select-option:hover {
+            background: #e9f0ff;
+            color: #0d6efd;
+        }
+
+        .custom-select-option.selected {
+            background: #e9f0ff;
+            color: #0d6efd;
+            font-weight: 500;
+        }
+
+        .custom-select-option.no-result {
+            color: #adb5bd;
+            cursor: default;
+        }
+
+            .custom-select-option.no-result:hover {
+                background: none;
+            }
+</style>
+
+<h1>Tạo tài khoản</h1>
+<hr />
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <input type="hidden" asp-for="NguoiDungId" id="hdNguoiDungId" />
+
+            <div class="form-group mb-3">
+                <label class="control-label">Nhân viên</label>
+                <div class="custom-select-wrapper" id="nhanVienSelect">
+                    <div class="custom-select-trigger" onclick="toggleDropdown()">
+                        <span id="selectedLabel" class="placeholder">-- Tìm nhân viên --</span>
+                        <div style="display:flex;align-items:center;gap:4px;">
+                            <span class="clear-btn" id="clearBtn" onclick="clearSelect(event)" style="display:none">×</span>
+                            <span class="arrow"><i class="mdi mdi-chevron-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="custom-select-dropdown" id="dropdown">
+                        <div class="custom-select-search">
+                            <input type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="filterOptions(this.value)" />
+                        </div>
+                        <div class="custom-select-list" id="optionList">
+                            @foreach (var nv in Model.DanhSachNhanVien)
+                            {
+                                <div class="custom-select-option"
+                                     data-value="@nv.Id"
+                                     data-label="@nv.FullName"
+                                     onclick="selectOption(this)">
+                                    @nv.FullName
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <span asp-validation-for="NguoiDungId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="UserName" class="control-label">Username</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Password" class="control-label">Mật khẩu</label>
+                <div style="position:relative;">
+                    <input asp-for="Password" class="form-control" type="password"
+                           id="passwordInput" style="padding-right:40px;" />
+                    <i class="mdi mdi-eye" onclick="togglePass('passwordInput', this)"
+                       style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+                              cursor:pointer;color:#6c757d;font-size:18px;"></i>
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Role" class="control-label">Role</label>
+                <select asp-for="Role" class="form-control">
+                    <option value="">-- Không gán role --</option>
+                    @foreach (var r in Model.AvailableRoles)
+                    {
+                        <option value="@r">@r</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Tạo tài khoản" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleDropdown() {
+            const trigger = document.querySelector('.custom-select-trigger');
+            const dropdown = document.getElementById('dropdown');
+            const isOpen = dropdown.classList.contains('open');
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                trigger.classList.add('open');
+                dropdown.classList.add('open');
+                document.getElementById('searchInput').focus();
+            }
+        }
+
+        function closeDropdown() {
+            document.querySelector('.custom-select-trigger').classList.remove('open');
+            document.getElementById('dropdown').classList.remove('open');
+            document.getElementById('searchInput').value = '';
+            filterOptions('');
+        }
+
+        function selectOption(el) {
+            const value = el.dataset.value;
+            const label = el.dataset.label;
+            document.getElementById('hdNguoiDungId').value = value;
+            document.getElementById('selectedLabel').textContent = label;
+            document.getElementById('selectedLabel').classList.remove('placeholder');
+            document.getElementById('clearBtn').style.display = 'inline';
+
+            document.querySelectorAll('.custom-select-option').forEach(o => {
+                o.classList.toggle('selected', o.dataset.value == value);
+            });
+
+            closeDropdown();
+        }
+
+        function clearSelect(e) {
+            e.stopPropagation();
+            document.getElementById('hdNguoiDungId').value = '';
+            document.getElementById('selectedLabel').textContent = '-- Tìm nhân viên --';
+            document.getElementById('selectedLabel').classList.add('placeholder');
+            document.getElementById('clearBtn').style.display = 'none';
+            document.querySelectorAll('.custom-select-option').forEach(o => o.classList.remove('selected'));
+        }
+
+        function filterOptions(keyword) {
+            const kw = keyword.toLowerCase();
+            const options = document.querySelectorAll('.custom-select-option');
+            let found = false;
+            options.forEach(o => {
+                const match = o.dataset.label.toLowerCase().includes(kw);
+                o.style.display = match ? 'block' : 'none';
+                if (match) found = true;
+            });
+
+            const noResult = document.getElementById('noResult');
+            if (!found) {
+                if (!noResult) {
+                    const div = document.createElement('div');
+                    div.id = 'noResult';
+                    div.className = 'custom-select-option no-result';
+                    div.textContent = 'Không tìm thấy nhân viên';
+                    document.getElementById('optionList').appendChild(div);
+                }
+            } else {
+                if (noResult) noResult.remove();
+            }
+        }
+
+        // Đóng khi click ra ngoài
+        document.addEventListener('click', function (e) {
+            if (!document.getElementById('nhanVienSelect').contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        function togglePass(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('mdi-eye', 'mdi-eye-off');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('mdi-eye-off', 'mdi-eye');
+            }
+        }
+                // Tự động chọn sẵn nhân viên nếu có nguoiDungId từ URL
+        document.addEventListener('DOMContentLoaded', function () {
+            const preselectedId = '@Model.NguoiDungId';
+            if (preselectedId && preselectedId !== '0') {
+                const option = document.querySelector(`.custom-select-option[data-value="${preselectedId}"]`);
+                if (option) {
+                    selectOption(option);
+                }
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

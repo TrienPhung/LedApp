@@ -1,42 +1,54 @@
 ﻿@model IEnumerable<LedApp.Models.CuaXuat>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý cửa xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Quản lý thông tin cửa xuất</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Quản lý cửa xuất</h5>
+    <a asp-action="Create" class="btn btn-sm btn-dark">+ Thêm mới</a>
+</div>
 
-<p>
-    <a asp-action="Create">Thêm mới</a>
-</p>
-<table class="table">
-    <thead>
+<table class="table table-hover align-middle">
+    <thead class="table-light">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Ten)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mota)
-            </th>
+            <th>#</th>
+            <th>Tên cửa</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ten)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mota)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-               @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-secondary">@item.Id.ToString("D2")</td>
+                <td>@Html.DisplayFor(modelItem => item.Ten)</td>
+                <td class="text-secondary">@Html.DisplayFor(modelItem => item.Mota)</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <span class="badge rounded-pill text-success" style="background:#EAF3DE">● Đang mở</span>
+                    }
+                    else
+                    {
+                        <span class="badge rounded-pill text-secondary" style="background:#F1EFE8">● Đã đóng</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none small me-1">Sửa</a>
+                    <span class="text-secondary small">|</span>
+                    <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post" class="d-inline mx-1">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none small">
+                            @(item.IsActive ? "Đóng" : "Mở lại")
+                        </button>
+                    </form>
+                    <span class="text-secondary small">|</span>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-decoration-none small text-danger ms-1">Xóa</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

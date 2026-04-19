@@ -1,0 +1,321 @@
+﻿@{
+    ViewData["Title"] = "tongtrungtam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .led6 td, .led6 th {
+        border: none !important;
+    }
+
+    .led6 {
+        overflow: hidden;
+    }
+</style>
+
+<div class="led6" style="width:@(ViewBag.W??2944)px; height:@(ViewBag.H??896)px;
+     background:#0a0a0a; color:#fff; font-family:monospace;
+     display:grid; grid-template-rows:auto 1fr;
+     border:1.5px solid #1a1a1a; border-radius:4px;">
+
+    @* ── HEADER ── *@
+    <div style="display:flex; justify-content:space-between; align-items:center;
+                padding:10px 20px; border-bottom:1px solid #1a1a1a; flex-shrink:0;">
+        <div style="font-size:14px; font-weight:700; letter-spacing:4px; color:#4ade80;">
+            TRUNG TÂM ĐIỀU HÀNH KHO
+        </div>
+        <div style="font-size:20px; font-weight:700; color:#facc15; letter-spacing:6px; font-family:monospace;">
+            <span class="hour"></span>:<span class="min"></span>
+        </div>
+        <div style="font-size:12px; color:#555; letter-spacing:2px;" id="date-top"></div>
+    </div>
+
+    @* ── MAIN: trái NHẬP | phải XUẤT ── *@
+    <div style="display:grid; grid-template-columns:1fr 1px 1fr; min-height:0;">
+
+        @* ── BÊN TRÁI: NHẬP ── *@
+        <div style="display:grid; grid-template-rows:auto 1fr; padding:12px; gap:10px; min-height:0;">
+
+            @* Header nhập *@
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:13px; font-weight:700; letter-spacing:3px; color:#93c5fd;">NHẬP KHO</div>
+                <div style="display:flex; gap:16px; font-size:11px;">
+                    <span style="color:#555;">Sắp về: <span id="n-sapve" style="color:#facc15; font-weight:700;">0</span></span>
+                    <span style="color:#555;">Đã về: <span id="n-dave" style="color:#4ade80; font-weight:700;">0</span></span>
+                    <span style="color:#555;">Chưa vào cửa: <span id="n-chuavao" style="color:#f87171; font-weight:700;">0</span></span>
+                </div>
+            </div>
+
+            @* Bảng cửa nhập *@
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px; align-content:start;">
+                @{
+                    var cuaNhaps = ViewBag.CuaNhaps as List<LedApp.Models.CuaNhap> ?? new();
+                }
+                @foreach (var cua in cuaNhaps)
+                {
+                    <div id="nhap-card-@cua.Id" style="background:#0d0d0d; border:1.5px solid #1a1a1a;
+                         border-radius:6px; padding:10px; transition:border-color .3s;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                            <span style="color:#93c5fd; font-size:11px; font-weight:700; letter-spacing:2px;">@cua.Ten</span>
+                            <span id="nhap-tt-@cua.Id" style="font-size:10px; color:#555;">Trống</span>
+                        </div>
+                        <div id="nhap-xe-@cua.Id" style="color:#facc15; font-size:14px; font-weight:700; min-height:18px;">—</div>
+                        <div style="border-top:1px solid #1a1a1a; margin:6px 0;"></div>
+                        <table style="width:100%; border-collapse:collapse; font-size:10px;">
+                            <tr>
+                                <td style="color:#555; padding:1px 0;">Chưa BG</td>
+                                <td id="nhap-chua-@cua.Id" style="color:#facc15; text-align:right; font-weight:700;">—</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#555; padding:1px 0;">Đã BG</td>
+                                <td id="nhap-da-@cua.Id" style="color:#4ade80; text-align:right; font-weight:700;">—</td>
+                            </tr>
+                        </table>
+                        <div id="nhap-strip-@cua.Id" style="margin-top:6px; padding:3px 6px; border-radius:3px;
+                             text-align:center; font-size:9px; font-weight:700; letter-spacing:.5px;
+                             background:#0c2a4a; color:#93c5fd;">
+                            Trống
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        @* ── DIVIDER ── *@
+        <div style="background:#1a1a1a;"></div>
+
+        @* ── BÊN PHẢI: XUẤT ── *@
+        <div style="display:grid; grid-template-rows:auto 1fr; padding:12px; gap:10px; min-height:0;">
+
+            @* Header xuất *@
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:13px; font-weight:700; letter-spacing:3px; color:#fb923c;">XUẤT KHO</div>
+                <div style="display:flex; gap:16px; font-size:11px;">
+                    <span style="color:#555;">Chờ xuất: <span id="x-cho" style="color:#facc15; font-weight:700;">0</span></span>
+                    <span style="color:#555;">Đang xuất: <span id="x-dang" style="color:#fb923c; font-weight:700;">0</span></span>
+                    <span style="color:#555;">Đã rời: <span id="x-roi" style="color:#4ade80; font-weight:700;">0</span></span>
+                </div>
+            </div>
+
+            @* Bảng cửa xuất *@
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:8px; align-content:start;">
+                @{
+                    var cuaXuats = ViewBag.CuaXuats as List<LedApp.Models.CuaXuat> ?? new();
+                }
+                @foreach (var cua in cuaXuats)
+                {
+                    <div id="xuat-card-@cua.Id" style="background:#0d0d0d; border:1.5px solid #1a1a1a;
+                         border-radius:6px; padding:10px; transition:border-color .3s;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                            <span style="color:#fb923c; font-size:11px; font-weight:700; letter-spacing:2px;">@cua.Ten</span>
+                            <span id="xuat-tt-@cua.Id" style="font-size:10px; color:#555;">Trống</span>
+                        </div>
+                        <div id="xuat-xe-@cua.Id" style="color:#facc15; font-size:14px; font-weight:700; min-height:18px;">—</div>
+                        <div style="border-top:1px solid #1a1a1a; margin:6px 0;"></div>
+                        <table style="width:100%; border-collapse:collapse; font-size:10px;">
+                            <tr>
+                                <td style="color:#555; padding:1px 0;">Chưa BG</td>
+                                <td id="xuat-chua-@cua.Id" style="color:#facc15; text-align:right; font-weight:700;">—</td>
+                            </tr>
+                            <tr>
+                                <td style="color:#555; padding:1px 0;">Đã BG</td>
+                                <td id="xuat-da-@cua.Id" style="color:#4ade80; text-align:right; font-weight:700;">—</td>
+                            </tr>
+                        </table>
+                        <div id="xuat-strip-@cua.Id" style="margin-top:6px; padding:3px 6px; border-radius:3px;
+                             text-align:center; font-size:9px; font-weight:700; letter-spacing:.5px;
+                             background:#1a1a1a; color:#555;">
+                            Trống
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Date header
+    var d = new Date();
+    document.getElementById('date-top').textContent =
+        d.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}).toUpperCase();
+
+    var conn = new signalR.HubConnectionBuilder().withUrl('/signalserver').build();
+
+    // ── NHẬP ──
+    conn.on('UpdateBangTongHop', function(data) {
+        if (!data) return;
+        document.getElementById('n-sapve').textContent  = data.sapVeXe   ?? data.SapVeXe   ?? 0;
+        document.getElementById('n-dave').textContent   = data.daVeXe    ?? data.DaVeXe    ?? 0;
+        document.getElementById('n-chuavao').textContent = data.chuaVaoXe ?? data.ChuaVaoXe ?? 0;
+    });
+
+    conn.on('ReceivedNhap', function(x, id) {
+        updateNhapCard(id, x);
+    });
+
+    conn.on('ReceivedChitietNhap', function(ct, id) {
+        updateNhapChitiet(id, ct);
+    });
+
+    // ── XUẤT ──
+    conn.on('UpdateBangTongHopXuat', function(data) {
+        if (!data) return;
+        document.getElementById('x-cho').textContent  = data.choXuatXe  ?? data.ChoXuatXe  ?? 0;
+        document.getElementById('x-dang').textContent = data.dangXuatXe ?? data.DangXuatXe ?? 0;
+        document.getElementById('x-roi').textContent  = data.daRoiKhoXe ?? data.DaRoiKhoXe ?? 0;
+    });
+
+    conn.on('Receivedxuat', function(x, id) {
+        updateXuatCard(id, x);
+    });
+
+    conn.on('Receivedxexuat', function(xes, id) {
+        updateXuatChitiet(id, xes);
+    });
+
+    conn.start().then(function() {
+        // Gọi tổng hợp
+        conn.invoke('SendTongHopNhapFull').catch(console.error);
+        conn.invoke('SendTongHopXuatFull').catch(console.error);
+
+        // Gọi từng cửa nhập
+    @foreach (var cua in cuaNhaps)
+    {
+        @:conn.invoke('SendNhap', @cua.Id).catch(console.error);
+        @:conn.invoke('SendChitietNhap', @cua.Id).catch(console.error);
+    }
+
+        // Gọi từng cửa xuất
+    @foreach (var cua in cuaXuats)
+    {
+        @:conn.invoke('Sendxuat', @cua.Id).catch(console.error);
+        @:conn.invoke('Sendxexuat', @cua.Id).catch(console.error);
+    }
+    }).catch(console.error);
+
+    // Refresh định kỳ 30s
+    setInterval(function() {
+        conn.invoke('SendTongHopNhapFull').catch(console.error);
+        conn.invoke('SendTongHopXuatFull').catch(console.error);
+    @foreach (var cua in cuaNhaps)
+    {
+        @:conn.invoke('SendNhap', @cua.Id).catch(console.error);
+        @:conn.invoke('Sendxexuat', @cua.Id).catch(console.error);
+    }
+    @foreach (var cua in cuaXuats)
+    {
+        @:conn.invoke('Sendxuat', @cua.Id).catch(console.error);
+        @:conn.invoke('Sendxexuat', @cua.Id).catch(console.error);
+    }
+    }, 30000);
+
+    // ── CẬP NHẬT CARD NHẬP ──
+    function updateNhapCard(id, x) {
+        var card  = document.getElementById('nhap-card-' + id);
+        var xe    = document.getElementById('nhap-xe-' + id);
+        var tt    = document.getElementById('nhap-tt-' + id);
+        var strip = document.getElementById('nhap-strip-' + id);
+        if (!card) return;
+
+        if (!x) {
+            xe.textContent = '—';
+            tt.textContent = 'Trống';
+            card.style.borderColor = '#1a1a1a';
+            strip.textContent = 'Trống';
+            strip.style.background = '#1a1a1a'; strip.style.color = '#555';
+            return;
+        }
+
+        var bienSo  = x.bienSoXe ?? x.BienSoXe ?? '--';
+        var vaoCua  = x.thoiGianVaoCua  ?? x.ThoiGianVaoCua;
+        var gioiHan = x.thoiGianGioiHan ?? x.ThoiGianGioiHan;
+        var trangThai = x.trangThai ?? x.TrangThai ?? 0;
+
+        xe.textContent = bienSo;
+        card.style.borderColor = vaoCua ? '#1a3a5c' : '#1a1a1a';
+
+        if (!vaoCua) {
+            tt.textContent = 'Chờ vào';
+            strip.textContent = 'Đã phân công — chờ xe';
+            strip.style.background = '#0c2a4a'; strip.style.color = '#93c5fd';
+        } else if (gioiHan) {
+            var diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
+            if (diff > 0) {
+                tt.textContent = 'Đang BG';
+                strip.textContent = 'Còn ' + diff + ' phút';
+                strip.style.background = '#0c2a4a'; strip.style.color = '#93c5fd';
+                card.style.borderColor = '#1a3a5c';
+            } else {
+                tt.textContent = 'QUÁ GIỜ';
+                strip.textContent = 'QUÁ GIỜ — XỬ LÝ NGAY';
+                strip.style.background = '#4a0c0c'; strip.style.color = '#fca5a5';
+                card.style.borderColor = '#5a0000';
+            }
+        }
+    }
+
+    function updateNhapChitiet(id, ct) {
+        var chua = document.getElementById('nhap-chua-' + id);
+        var da   = document.getElementById('nhap-da-'   + id);
+        if (!chua || !da) return;
+        if (!ct || !ct.length) { chua.textContent = '—'; da.textContent = '—'; return; }
+        var tc = ct.reduce((s,c) => s + (c.chuaBG??c.ChuaBG??0), 0);
+        var td = ct.reduce((s,c) => s + (c.daBG  ??c.DaBG  ??0), 0);
+        chua.textContent = tc.toLocaleString();
+        da.textContent   = td.toLocaleString();
+    }
+
+    // ── CẬP NHẬT CARD XUẤT ──
+    function updateXuatCard(id, x) {
+        var card  = document.getElementById('xuat-card-' + id);
+        var xe    = document.getElementById('xuat-xe-' + id);
+        var tt    = document.getElementById('xuat-tt-' + id);
+        var strip = document.getElementById('xuat-strip-' + id);
+        if (!card) return;
+
+        if (!x || (x.trangThai??x.TrangThai) >= 3) {
+            xe.textContent = '—';
+            tt.textContent = 'Trống';
+            card.style.borderColor = '#1a1a1a';
+            strip.textContent = 'Trống';
+            strip.style.background = '#1a1a1a'; strip.style.color = '#555';
+            return;
+        }
+
+        var bienSo  = x.bienSoXe ?? x.BienSoXe ?? '--';
+        var vaoCua  = x.thoiGianVaoCua  ?? x.ThoiGianVaoCua;
+        var gioiHan = x.thoiGianGioiHan ?? x.ThoiGianGioiHan;
+
+        xe.textContent = bienSo;
+        card.style.borderColor = '#3a1f05';
+
+        if (!vaoCua) {
+            tt.textContent = 'Chờ vào';
+            strip.textContent = 'Đã phân công — chờ xe';
+            strip.style.background = '#3a1f05'; strip.style.color = '#fbbf24';
+        } else if (gioiHan) {
+            var diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
+            if (diff > 0) {
+                tt.textContent = 'Đang XH';
+                strip.textContent = 'Còn ' + diff + ' phút';
+                strip.style.background = '#3a1f05'; strip.style.color = '#fb923c';
+            } else {
+                tt.textContent = 'QUÁ GIỜ';
+                strip.textContent = 'QUÁ GIỜ — XỬ LÝ NGAY';
+                strip.style.background = '#4a0c0c'; strip.style.color = '#fca5a5';
+                card.style.borderColor = '#5a0000';
+            }
+        }
+    }
+
+    function updateXuatChitiet(id, xes) {
+        var chua = document.getElementById('xuat-chua-' + id);
+        var da   = document.getElementById('xuat-da-'   + id);
+        if (!chua || !da) return;
+        if (!xes || !xes.length) { chua.textContent = '—'; da.textContent = '—'; return; }
+        var tc = xes.reduce((s,c) => s + (c.chuaBG??c.ChuaBG??0), 0);
+        var td = xes.reduce((s,c) => s + (c.daBG  ??c.DaBG  ??0), 0);
+        chua.textContent = tc.toLocaleString();
+        da.textContent   = td.toLocaleString();
+    }
+</script>

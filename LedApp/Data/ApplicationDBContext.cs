@@ -17,7 +17,7 @@ namespace LedApp.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         #region
-        // ✅ Thêm/sửa các dòng mới
+        //  Thêm/sửa các dòng mới
         public DbSet<DanhSachXe> DanhSachXes { get; set; }
         public DbSet<CuaXuat> CuaXuats { get; set; }
         public DbSet<Xuat> Xuats { get; set; }

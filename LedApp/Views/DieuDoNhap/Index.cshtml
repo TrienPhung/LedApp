@@ -1,0 +1,1250 @@
+﻿@{
+    ViewData["Title"] = "Điều độ phân cửa";
+    Layout = "~/Views/Shared/_LayoutApi.cshtml";
+    var cuaNhaps = ViewBag.CuaNhaps as List<LedApp.Models.CuaNhap> ?? new();
+    var xeList = ViewBag.XeList as List<LedApp.DTOs.DanhSachXeDto> ?? new();
+}
+
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --bg: #080d18; --surface: #0d1525; --surface2: #111d30;
+        --border: #1a2d4a; --border2: #243b5e;
+        --accent: #0ea5e9; --accent2: #38bdf8;
+        --gold: #f59e0b; --green: #22c55e; --red: #ef4444;
+        --orange: #f97316; --purple: #a855f7;
+        --text: #cbd5e1; --text-dim: #475569; --text-bright: #f1f5f9;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Courier New', monospace;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background-image: linear-gradient(rgba(14,165,233,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .screen {
+        position: relative; z-index: 1;
+        display: flex; flex-direction: column;
+        height: 100vh; padding: 12px; gap: 10px;
+    }
+
+    .topbar {
+        display: grid; grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        @* border-top: 2px solid var(--accent); *@
+        border-radius: 6px; padding: 10px 20px; flex-shrink: 0;
+    }
+
+    .tb-left { display: flex; align-items: center; gap: 12px; }
+
+    .tb-logo {
+        width: 36px; height: 36px;
+        background: linear-gradient(135deg, var(--accent), #0369a1);
+        border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+
+    .tb-title { font-size: 13px; font-weight: 700; color: var(--text-bright); letter-spacing: 2px; text-transform: uppercase; }
+    .tb-sub { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; margin-top: 1px; }
+    .tb-clock { text-align: center; font-size: 28px; font-weight: 700; color: var(--gold); letter-spacing: 4px; font-variant-numeric: tabular-nums; text-shadow: 0 0 20px rgba(245,158,11,.4); }
+    .tb-date { font-size: 10px; color: var(--text-dim); text-align: center; letter-spacing: 1px; margin-top: 2px; }
+    .tb-right { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+
+    .stat-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 6px 12px; text-align: center; min-width: 60px; }
+    .stat-pill .num { font-size: 18px; font-weight: 700; }
+    .stat-pill .lbl { font-size: 9px; color: var(--text-dim); letter-spacing: 1px; margin-top: 1px; text-transform: uppercase; }
+    .stat-pill.c-blue .num { color: var(--accent); }
+    .stat-pill.c-gold .num { color: var(--gold); }
+    .stat-pill.c-green .num { color: var(--green); }
+    .stat-pill.c-orange .num { color: var(--orange); }
+
+    .signal-badge { display: flex; align-items: center; gap: 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 6px 10px; font-size: 10px; color: var(--text-dim); }
+
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+    .dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot.err { background: var(--red); }
+
+    .main { flex: 1; display: grid; grid-template-columns: 1fr 300px; gap: 10px; overflow: hidden; }
+
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-direction: column; overflow: hidden; }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .panel-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+    .panel-body { flex: 1; overflow-y: auto; }
+    .panel-body::-webkit-scrollbar { width: 4px; }
+    .panel-body::-webkit-scrollbar-track { background: transparent; }
+    .panel-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+    .filter-tabs { display: flex; gap: 4px; padding: 8px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .ftab { padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 1px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-dim); transition: all .15s; }
+    .ftab:hover { border-color: var(--border2); color: var(--text); }
+    .ftab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .xe-table { width: 100%; border-collapse: collapse; }
+    .xe-table thead th { padding: 8px 12px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); border-bottom: 1px solid var(--border); text-align: left; position: sticky; top: 0; background: var(--surface); z-index: 1; }
+
+    .xe-row { border-bottom: 1px solid var(--border); transition: background .15s; cursor: default; }
+    .xe-row:hover { background: var(--surface2); }
+    .xe-row.highlight-row { background: rgba(14,165,233,.06); border-left: 2px solid var(--accent); }
+    .xe-row td { padding: 10px 12px; font-size: 12px; vertical-align: middle; }
+
+    .bien-so { font-size: 14px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+    .xe-meta { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+    .hang-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    .htag { background: var(--surface2); border: 1px solid var(--border); padding: 2px 6px; border-radius: 3px; font-size: 10px; color: var(--accent2); }
+
+    .sbadge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: .5px; white-space: nowrap; }
+    .sbadge.tt-0 { background: rgba(100,116,139,.15); color: #94a3b8; border: 1px solid #334155; }
+    .sbadge.tt-1 { background: rgba(14,165,233,.15); color: var(--accent2); border: 1px solid rgba(14,165,233,.3); }
+    .sbadge.tt-2 { background: rgba(245,158,11,.15); color: var(--gold); border: 1px solid rgba(245,158,11,.3); }
+    .sbadge.tt-3 { background: rgba(168,85,247,.15); color: var(--purple); border: 1px solid rgba(168,85,247,.3); }
+    .sbadge.tt-4 { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+
+    .btn-pc { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; border: none; padding: 7px 14px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: .5px; cursor: pointer; transition: all .2s; white-space: nowrap; font-family: inherit; }
+    .btn-pc:hover { background: linear-gradient(135deg, #0ea5e9, #0284c7); box-shadow: 0 0 12px rgba(14,165,233,.4); }
+    .btn-pc:disabled { background: #1e293b; color: #334155; cursor: not-allowed; box-shadow: none; }
+    .btn-done { background: rgba(34,197,94,.1); color: var(--green); border: 1px solid rgba(34,197,94,.2); padding: 7px 14px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: default; font-family: inherit; }
+
+    .cua-list { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+    .cua-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 10px 12px; transition: border-color .2s; }
+    .cua-card.has-xe { border-left: 3px solid var(--orange); }
+    .cua-card.empty { border-left: 3px solid var(--border2); }
+    .cua-name { font-size: 12px; font-weight: 700; color: var(--text-bright); }
+    .cua-xe { font-size: 11px; color: var(--gold); margin-top: 4px; }
+    .cua-empty { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-style: italic; }
+
+    .footer { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 6px 16px; display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); flex-shrink: 0; letter-spacing: .5px; }
+
+    /* ===== POPUP (đổi tên tránh Bootstrap) ===== */
+    .dd-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,.82);
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+    .dd-overlay.show { display: flex; }
+
+    .dd-popup {
+        background: #0d1525;
+        border: 1px solid #243b5e;
+        border-top: 2px solid #0ea5e9;
+        border-radius: 8px;
+        width: 520px;
+        max-width: 95vw;
+        position: relative;
+        z-index: 100000;
+    }
+
+    .dd-popup-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .dd-popup-title { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+    .dd-popup-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; line-height: 1; transition: color .15s; }
+    .dd-popup-close:hover { color: var(--text-bright); }
+
+    .dd-popup-body { padding: 18px; }
+
+    .xe-info-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 12px; margin-bottom: 16px; }
+    .info-bien-so { font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+    .info-meta { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+    .info-hangs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+    .form-row { margin-bottom: 14px; }
+    .form-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; display: block; }
+
+    .cua-select-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; }
+    .cua-opt { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 10px 8px; text-align: center; cursor: pointer; transition: all .15s; font-size: 11px; font-weight: 700; color: var(--text); font-family: inherit; }
+    .cua-opt:hover { border-color: var(--accent); color: var(--accent); }
+    .cua-opt.selected { background: rgba(14,165,233,.15); border-color: var(--accent); color: var(--accent2); box-shadow: 0 0 8px rgba(14,165,233,.2); }
+
+    .time-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; color: var(--text-bright); font-size: 12px; font-family: inherit; width: 100%; outline: none; transition: border-color .15s; }
+    .time-input:focus { border-color: var(--accent); }
+
+    .dd-popup-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 18px; border-top: 1px solid var(--border); }
+
+    .btn-cancel { background: transparent; border: 1px solid var(--border2); color: var(--text-dim); padding: 9px 18px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .15s; }
+    .btn-cancel:hover { border-color: var(--text-dim); color: var(--text); }
+
+    .btn-confirm { background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; border: none; padding: 9px 22px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: .5px; transition: all .2s; }
+    .btn-confirm:hover { box-shadow: 0 0 14px rgba(14,165,233,.5); }
+    .btn-confirm:disabled { background: #1e293b; color: #334155; cursor: not-allowed; box-shadow: none; }
+    /* Alert báo sai xe */
+    .alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,.85);
+        z-index: 199999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .alert-overlay.show {
+            display: flex;
+        }
+
+    .alert-box {
+        background: #1a0808;
+        border: 1px solid #ef4444;
+        border-top: 3px solid #ef4444;
+        border-radius: 8px;
+        width: 460px;
+        max-width: 95vw;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .alert-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #ef4444;
+        letter-spacing: 2px;
+    }
+
+    .alert-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 6px 0;
+        border-bottom: 1px solid #2a1010;
+    }
+
+    .alert-lbl {
+        color: #475569;
+    }
+
+    .alert-val {
+        color: #f1f5f9;
+        font-weight: 700;
+    }
+
+        .alert-val.red {
+            color: #ef4444;
+        }
+
+        .alert-val.gold {
+            color: #f59e0b;
+        }
+
+    .alert-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 4px;
+    }
+
+    .btn-alert-huy {
+        background: rgba(239,68,68,.15);
+        color: #ef4444;
+        border: 1px solid rgba(239,68,68,.3);
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+        .btn-alert-huy:hover {
+            background: rgba(239,68,68,.25);
+        }
+
+    .btn-alert-doi {
+        background: linear-gradient(135deg,#0284c7,#0369a1);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .btn-alert-close {
+        background: transparent;
+        border: 1px solid var(--border2);
+        color: var(--text-dim);
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+    }
+    /* Chuông */
+    .bell-wrap {
+        position: relative;
+        cursor: pointer;
+        width: 36px;
+        height: 36px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color .2s;
+    }
+
+        .bell-wrap:hover {
+            border-color: var(--accent);
+        }
+
+        .bell-wrap.has-new {
+            border-color: var(--red);
+            animation: bellShake .5s ease infinite;
+        }
+
+    .bell-icon {
+        font-size: 16px;
+    }
+
+    .bell-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: var(--red);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+    }
+    @@keyframes bellShake {
+        0%,100%
+
+    {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+
+    }
+
+    /* Slide panel */
+    .notif-panel {
+        position: fixed;
+        top: 0;
+        right: -400px;
+        bottom: 0;
+        width: 380px;
+        background: #0a1220;
+        border-left: 1px solid var(--border);
+        z-index: 99998;
+        transition: right .3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .notif-panel.open {
+            right: 0;
+        }
+
+    .notif-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.4);
+        z-index: 99997;
+        display: none;
+    }
+
+        .notif-overlay.show {
+            display: block;
+        }
+
+    .notif-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    .notif-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--accent);
+    }
+
+    .notif-close {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .notif-tabs {
+        display: flex;
+        gap: 4px;
+        padding: 8px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+    }
+
+    .ntab {
+        padding: 4px 10px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-dim);
+        font-family: inherit;
+    }
+
+        .ntab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+    .notif-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .notif-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .notif-list::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 2px;
+        }
+
+    .notif-card {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 10px 12px;
+        border-left: 3px solid var(--border);
+    }
+
+        .notif-card.tt-0 {
+            border-left-color: var(--red);
+            background: rgba(239,68,68,.05);
+        }
+
+        .notif-card.tt-1 {
+            border-left-color: var(--gold);
+            background: rgba(245,158,11,.05);
+        }
+
+        .notif-card.tt-2 {
+            border-left-color: var(--border);
+            opacity: .6;
+        }
+
+    .notif-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .notif-badge {
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 3px;
+    }
+
+        .notif-badge.tt-0 {
+            background: rgba(239,68,68,.2);
+            color: var(--red);
+        }
+
+        .notif-badge.tt-1 {
+            background: rgba(245,158,11,.2);
+            color: var(--gold);
+        }
+
+        .notif-badge.tt-2 {
+            background: rgba(100,116,139,.2);
+            color: #94a3b8;
+        }
+
+    .notif-time {
+        font-size: 10px;
+        color: var(--text-dim);
+    }
+
+    .notif-row {
+        font-size: 11px;
+        margin-bottom: 3px;
+    }
+
+    .notif-lbl {
+        color: var(--text-dim);
+    }
+
+    .notif-val {
+        color: var(--text-bright);
+        font-weight: 700;
+    }
+
+        .notif-val.red {
+            color: var(--red);
+        }
+
+        .notif-val.gold {
+            color: var(--gold);
+        }
+
+    .notif-actions {
+        display: flex;
+        gap: 5px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-n {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-family: inherit;
+        border: none;
+    }
+
+        .btn-n.huy {
+            background: rgba(239,68,68,.15);
+            color: var(--red);
+            border: 1px solid rgba(239,68,68,.3);
+        }
+
+        .btn-n.doi {
+            background: linear-gradient(135deg,#0284c7,#0369a1);
+            color: #fff;
+        }
+
+        .btn-n.dang {
+            background: rgba(245,158,11,.15);
+            color: var(--gold);
+            border: 1px solid rgba(245,158,11,.3);
+        }
+
+        .btn-n.xong {
+            background: rgba(34,197,94,.15);
+            color: var(--green);
+            border: 1px solid rgba(34,197,94,.3);
+        }
+
+    .notif-empty {
+        text-align: center;
+        padding: 40px 20px;
+        font-size: 11px;
+        color: var(--text-dim);
+    }
+</style>
+
+<div class="screen">
+    <div class="topbar">
+        <div class="tb-left">
+            <div class="tb-logo">⚡</div>
+            <div>
+                <div class="tb-title">Điều độ phân cửa nhập</div>
+                <div class="tb-sub">Warehouse Control Center — Inbound Gate Assignment</div>
+            </div>
+        </div>
+        <div>
+            <div class="tb-clock" id="clock">--:--:--</div>
+            <div class="tb-date" id="date-str"></div>
+        </div>
+        <div class="tb-right">
+            <div class="stat-pill c-blue"><div class="num" id="stat-total">0</div><div class="lbl">Tổng xe</div></div>
+            <div class="stat-pill c-gold"><div class="num" id="stat-daden">0</div><div class="lbl">Đã đến</div></div>
+            <div class="stat-pill c-orange"><div class="num" id="stat-chophan">0</div><div class="lbl">Chờ phân</div></div>
+            <div class="stat-pill c-green"><div class="num" id="stat-daphan">0</div><div class="lbl">Đã phân</div></div>
+
+            <!-- ← THÊM CHUÔNG VÀO ĐÂY -->
+            <div class="bell-wrap" onclick="togglePanel()">
+                <span class="bell-icon">🔔</span>
+                <span class="bell-badge" id="bell-badge" style="display:none;">0</span>
+            </div>
+
+            <div class="signal-badge"><span class="dot" id="sig-dot"></span><span id="sig-text">Kết nối...</span></div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">▪ Danh sách xe</span>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <span style="font-size:10px;color:var(--text-dim);" id="last-update"></span>
+                    <button onclick="loadXe()" style="background:var(--surface2);border:1px solid var(--border);color:var(--accent);padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;font-family:inherit;">⟳ Làm mới</button>
+                </div>
+            </div>
+            <div class="filter-tabs">
+                <button class="ftab active" onclick="setFilter('all', this)">Tất cả</button>
+                <button class="ftab" onclick="setFilter('0', this)">Chưa về</button>
+                <button class="ftab" onclick="setFilter('1', this)">Đang về</button>
+                <button class="ftab" onclick="setFilter('2', this)">Đã đến</button>
+                <button class="ftab" onclick="setFilter('3', this)">Đang nhập</button>
+                <button class="ftab" onclick="setFilter('4', this)">Hoàn thành</button>
+            </div>
+            <div class="panel-body">
+                <table class="xe-table">
+                    <thead>
+                        <tr>
+                            <th>Xe / Hàng hóa</th>
+                            <th>Trạng thái</th>
+                            <th>Dự kiến</th>
+                            <th>Mã chuyến</th>
+                            <th style="text-align:center;">Phân công</th>
+                        </tr>
+                    </thead>
+                    <tbody id="xe-tbody">
+                        <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-dim);">Đang tải...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">▪ Cửa nhập</span>
+                <span style="font-size:10px;color:var(--text-dim);">@cuaNhaps.Count cửa</span>
+            </div>
+            <div class="panel-body">
+                <div class="cua-list" id="cua-list">
+                    @foreach (var c in cuaNhaps)
+                    {
+                        <div class="cua-card empty" id="cua-card-@c.Id" data-cua-id="@c.Id">
+                            <div class="cua-name">@c.Ten</div>
+                            <div class="cua-empty" id="cua-xe-@c.Id">— Trống —</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>© Hệ thống quản lý kho — Điều độ nhập</span>
+        <span id="footer-time"></span>
+    </div>
+</div>
+
+<div class="dd-overlay" id="dd-overlay" onclick="closePopup(event)">
+    <div class="dd-popup" onclick="event.stopPropagation()">
+        <div class="dd-popup-header">
+            <span class="dd-popup-title">⚙ Phân công cửa nhập</span>
+            <button class="dd-popup-close" onclick="closePopupDirect()">×</button>
+        </div>
+        <div class="dd-popup-body">
+            <div class="xe-info-box">
+                <div class="info-bien-so" id="m-bienso">—</div>
+                <div class="info-meta" id="m-meta">—</div>
+                <div class="info-hangs" id="m-hangs"></div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">Chọn cửa nhập</label>
+                <div class="cua-select-grid" id="m-cua-grid">
+                    @foreach (var c in cuaNhaps)
+                    {
+                        <button class="cua-opt" onclick="selectCua(@c.Id, this)" data-cua-id="@c.Id">@c.Ten</button>
+                    }
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">Ghi chú (tùy chọn)</label>
+                <input type="text" id="m-ghichu" class="time-input"
+                       placeholder="VD: Hàng dễ vỡ, ưu tiên xử lý..." />
+            </div>
+        </div>
+        <div class="dd-popup-footer">
+            <button class="btn-cancel" onclick="closePopupDirect()">Hủy</button>
+            <button class="btn-confirm" id="btn-confirm-pc" onclick="confirmPhanCong()" disabled>✔ Xác nhận phân công</button>
+        </div>
+    </div>
+   
+</div>
+<!-- Alert báo sai xe từ nhân viên -->
+<div class="alert-overlay" id="alert-overlay">
+    <div class="alert-box">
+        <div class="alert-title">⚠ BÁO SAI XE — CẦN XỬ LÝ NGAY</div>
+        <div class="alert-row">
+            <span class="alert-lbl">Cửa nhập</span>
+            <span class="alert-val" id="al-cua">—</span>
+        </div>
+        <div class="alert-row">
+            <span class="alert-lbl">Xe DB đang chờ</span>
+            <span class="alert-val gold" id="al-du-kien">—</span>
+        </div>
+        <div class="alert-row">
+            <span class="alert-lbl">Xe thực tế trước cửa</span>
+            <span class="alert-val red" id="al-thuc-te">—</span>
+        </div>
+        <div class="alert-row">
+            <span class="alert-lbl">Thời gian báo</span>
+            <span class="alert-val" id="al-time">—</span>
+        </div>
+        <div class="alert-actions">
+            <button class="btn-alert-close" onclick="closeAlert()">Bỏ qua</button>
+            <button class="btn-alert-huy" onclick="huyCuaAlert()">🗑 Huỷ phân công</button>
+            <button class="btn-alert-doi" onclick="doiCuaAlert()">🔄 Đổi cửa</button>
+        </div>
+    </div>
+</div>
+<!-- Overlay mờ -->
+<div class="notif-overlay" id="notif-overlay" onclick="togglePanel()"></div>
+
+<!-- Slide panel thông báo -->
+<div class="notif-panel" id="notif-panel">
+    <div class="notif-header">
+        <span class="notif-title">🔔 THÔNG BÁO</span>
+        <button class="notif-close" onclick="togglePanel()">×</button>
+    </div>
+    <div class="notif-tabs">
+        <button class="ntab active" onclick="setNotifTab('chua', this)">Chưa xử lý</button>
+        <button class="ntab" onclick="setNotifTab('dang', this)">Đang xử lý</button>
+        <button class="ntab" onclick="setNotifTab('all', this)">Tất cả</button>
+    </div>
+    <div class="notif-list" id="notif-list">
+        <div class="notif-empty">Không có thông báo</div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // ① Biến toàn cục — khai báo hết ở đây
+        let currentXe = null, selectedCua = null, currentFilter = 'all', xeData = [];
+        let alertData = null;
+        const ttLabels = ['Chưa về','Đang về','Đã đến','Đang nhập','Hoàn thành'];
+
+        function tick() {
+            const n = new Date();
+            document.getElementById('clock').textContent = n.toLocaleTimeString('vi-VN',{hour12:false});
+            document.getElementById('date-str').textContent = n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+            document.getElementById('footer-time').textContent = 'Cập nhật: ' + n.toLocaleTimeString('vi-VN');
+        }
+        setInterval(tick, 1000); tick();
+
+        // ② Khai báo conn
+        const conn = new signalR.HubConnectionBuilder()
+            .withUrl('/signalserver')
+            .withAutomaticReconnect()
+            .build();
+
+        // ③ Đăng ký TẤT CẢ listener TRƯỚC khi start
+        conn.on('TrangThaiXeUpdated', () => loadXe());
+
+        conn.on('BaoSaiXe', function(data) {
+            alertData = data;
+            const cuaCard = document.querySelector(`.cua-card[data-cua-id="${data.cuaNhapId}"] .cua-name`);
+            const tenCua = cuaCard ? cuaCard.textContent : `Cửa ${data.cuaNhapId}`;
+            document.getElementById('al-cua').textContent = tenCua;
+            document.getElementById('al-du-kien').textContent = data.bienSoDuKien;
+            document.getElementById('al-thuc-te').textContent = data.bienSoThucTe;
+            document.getElementById('al-time').textContent = new Date(data.thoiGian).toLocaleTimeString('vi-VN');
+            document.getElementById('alert-overlay').classList.add('show');
+        });
+
+        // ④ Start SAU khi đã đăng ký listener
+        conn.start()
+            .then(() => {
+                document.getElementById('sig-dot').classList.add('on');
+                document.getElementById('sig-text').textContent = 'Realtime';
+            })
+            .catch(() => {
+                document.getElementById('sig-dot').classList.add('err');
+                document.getElementById('sig-text').textContent = 'Mất kết nối';
+            });
+
+        async function loadXe() {
+            try {
+                const res = await fetch('@Url.Action("GetXeList", "DieuDoNhap")');
+                if (!res.ok) return;
+                xeData = await res.json();
+                renderTable(); renderCuaPanel(); updateStats();
+                document.getElementById('last-update').textContent = new Date().toLocaleTimeString('vi-VN');
+            } catch(e) { console.error('loadXe:', e); }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('xe-tbody');
+            let filtered = currentFilter === 'all' ? xeData : xeData.filter(x => x.chuyenHienTai?.trangThai == currentFilter);
+            if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-dim);">Không có xe nào</td></tr>`; return; }
+            tbody.innerHTML = filtered.map(x => {
+                const cx = x.chuyenHienTai;
+                const tt = cx?.trangThai ?? -1;
+                const daPhan = x.daPhanCong;
+                const canPhan = tt === 2 && !daPhan;
+                const ngay = cx ? new Date(cx.ngayDuKien).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}) : '--';
+                const hangs = cx?.hangHoas?.map(h => { const sl = h.soLuong??h.SoLuong??0; const dv = h.donVi??h.DonVi??''; return `<span class="htag">${sl} ${dv}</span>`; }).join('') ?? '';
+                const btnHtml = daPhan
+                    ? `<button class="btn-done">✔ Đã phân</button>`
+                    : canPhan
+                        ? `<button class="btn-pc" onclick='openPopup(${JSON.stringify(x)})'>⚙ Phân công</button>`
+                        : `<button class="btn-pc" disabled>⚙ Phân công</button>`;
+                return `<tr class="xe-row ${canPhan?'highlight-row':''}" data-bien-so="${x.bienSo}">
+                    <td><div class="bien-so">${x.bienSo}</div><div class="xe-meta">👤 ${x.tenLaiXe??'--'} &nbsp;|&nbsp; 🏢 ${x.maChiNhanh??'--'}</div><div class="hang-tags">${hangs}</div></td>
+                    <td><span class="sbadge tt-${tt}">${ttLabels[tt]??'--'}</span></td>
+                    <td style="font-size:12px;color:var(--accent2);">${ngay}</td>
+                    <td style="font-size:11px;">${cx?.maChuyenApi??'--'}<br><span style="color:var(--text-dim);font-size:10px;">Lần ${cx?.lanThu??'--'}</span></td>
+                    <td style="text-align:center;">${btnHtml}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderCuaPanel() {
+            document.querySelectorAll('.cua-card').forEach(c => {
+                c.className = 'cua-card empty';
+                document.getElementById(`cua-xe-${c.dataset.cuaId}`).innerHTML = '— Trống —';
+            });
+
+            xeData.forEach(x => {
+                if (!x.cuaNhapId) return;
+                const card = document.getElementById(`cua-card-${x.cuaNhapId}`);
+                const lbl  = document.getElementById(`cua-xe-${x.cuaNhapId}`);
+                if (!card || !lbl) return;
+
+                const tt = x.trangThaiNhap ?? 0;
+
+                // Màu border card theo trạng thái
+                if (tt === 2) {
+                    card.className = 'cua-card has-xe';
+                    card.style.borderLeftColor = 'var(--red)';
+                } else if (tt === 1) {
+                    card.className = 'cua-card has-xe';
+                    card.style.borderLeftColor = 'var(--orange)';
+                } else if (tt === 3) {
+                    card.className = 'cua-card has-xe';
+                    card.style.borderLeftColor = 'var(--green)';
+                } else {
+                    card.className = 'cua-card has-xe';
+                    card.style.borderLeftColor = 'var(--border2)';
+                }
+
+                // Badge trạng thái
+                const badgeMap = {
+                    0: { text: 'Chờ vào cửa',    color: '#94a3b8', bg: 'rgba(100,116,139,.15)', border: '#334155' },
+                    1: { text: 'Đang bàn giao',  color: 'var(--orange)', bg: 'rgba(249,115,22,.15)', border: 'rgba(249,115,22,.3)' },
+                    2: { text: 'Quá giờ!',       color: 'var(--red)',    bg: 'rgba(239,68,68,.15)',  border: 'rgba(239,68,68,.3)' },
+                    3: { text: 'Chờ BV xác nhận',color: 'var(--green)',  bg: 'rgba(34,197,94,.15)',  border: 'rgba(34,197,94,.3)' },
+                };
+                const badge = badgeMap[tt] ?? badgeMap[0];
+                const blink = tt === 2 ? 'animation:blink 0.6s step-start infinite;' : '';
+
+                const btnHuy = (tt === 0 && x.nhapId)
+                    ? `<button onclick="huyPhanCong(${x.nhapId}, '${x.bienSo}')"
+                        style="background:rgba(239,68,68,.15);color:#f87171;
+                               border:1px solid rgba(239,68,68,.3);padding:2px 7px;
+                               border-radius:3px;font-size:10px;font-weight:700;
+                               cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;">
+                        🗑 Huỷ
+                      </button>`
+                    : '';
+
+                // Hàng hóa từ chuyến
+                const cx = x.chuyenHienTai;
+                const hangHtml = cx?.hangHoas?.length
+                    ? `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;">
+                        ${cx.hangHoas.map(h => {
+                            const sl = h.soLuong ?? h.SoLuong ?? 0;
+                            const dv = h.donVi   ?? h.DonVi   ?? '';
+                            return `<span style="background:var(--surface);border:1px solid var(--border);
+                                        padding:2px 6px;border-radius:3px;font-size:10px;
+                                        color:var(--accent2);">${sl} ${dv}</span>`;
+                        }).join('')}
+                      </div>`
+                    : '';
+
+                lbl.innerHTML = `
+                    <div style="margin-top:5px;">
+                        <!-- Biển số + badge + nút huỷ -->
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;">
+                            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                                <span style="color:var(--gold);font-weight:700;font-size:13px;letter-spacing:1px;">
+                                    ${x.bienSo}
+                                </span>
+                                <span style="background:${badge.bg};color:${badge.color};
+                                             border:1px solid ${badge.border};
+                                             padding:2px 7px;border-radius:3px;
+                                             font-size:9px;font-weight:700;letter-spacing:.5px;
+                                             ${blink}">
+                                    ${badge.text}
+                                </span>
+                            </div>
+                            ${btnHuy}
+                        </div>
+                        <!-- Tài xế -->
+                        <div style="font-size:10px;color:var(--text-dim);margin-top:3px;">
+                            👤 ${x.tenLaiXe ?? '--'}
+                            &nbsp;|&nbsp;
+                            📦 Lần ${cx?.lanThu ?? '--'}
+                            &nbsp;|&nbsp;           
+                            ${cx?.maChuyenApi ?? '--'}
+                        </div>
+                        <!-- Hàng hóa -->
+                        ${hangHtml}
+                    </div>`;
+            });
+        }
+
+        async function huyPhanCong(nhapId, bienSo) {
+            if (!confirm(`Huỷ phân công xe ${bienSo}?\nCửa sẽ về trống.`)) return;
+            try {
+                const res = await fetch('/DieuDoNhap/HuyPhanCong', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nhapId })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    await loadXe();
+                } else {
+                    alert('❌ ' + (data.message ?? 'Lỗi huỷ'));
+                }
+            } catch(e) {
+                alert('❌ Lỗi kết nối');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = xeData.length;
+            document.getElementById('stat-daden').textContent = xeData.filter(x => x.chuyenHienTai?.trangThai === 2).length;
+            document.getElementById('stat-chophan').textContent = xeData.filter(x => x.chuyenHienTai?.trangThai === 2 && !x.daPhanCong).length;
+            document.getElementById('stat-daphan').textContent = xeData.filter(x => x.daPhanCong).length;
+        }
+
+        function setFilter(val, btn) {
+            currentFilter = val;
+            document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderTable();
+        }
+
+        function openPopup(xe) {
+            currentXe = xe; selectedCua = null;
+            const cuaBan = new Set(
+                xeData.filter(x => x.daPhanCong && x.cuaNhapId).map(x => x.cuaNhapId)
+            );
+            document.querySelectorAll('.cua-opt').forEach(btn => {
+                const id = parseInt(btn.dataset.cuaId);
+                if (cuaBan.has(id)) {
+                    btn.disabled = true; btn.style.opacity = '0.35';
+                    btn.style.cursor = 'not-allowed'; btn.title = 'Cửa đang có xe';
+                } else {
+                    btn.disabled = false; btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer'; btn.title = '';
+                }
+            });
+            const cx = xe.chuyenHienTai;
+            document.getElementById('m-bienso').textContent = xe.bienSo;
+            document.getElementById('m-meta').textContent = `👤 ${xe.tenLaiXe??'--'}  |  🏢 ${xe.maChiNhanh??'--'}  |  Lần ${cx?.lanThu??'--'}  —  ${cx?.maChuyenApi??'--'}`;
+            document.getElementById('m-hangs').innerHTML = cx?.hangHoas?.map(h => { const sl=h.soLuong??h.SoLuong??0; const dv=h.donVi??h.DonVi??''; return `<span class="htag">📦 ${sl} ${dv}</span>`; }).join('') ?? '';
+            document.querySelectorAll('.cua-opt').forEach(b => b.classList.remove('selected'));
+            document.getElementById('btn-confirm-pc').disabled = true;
+            document.getElementById('dd-overlay').classList.add('show');
+        }
+
+        function closePopup(e) { if (e.target === document.getElementById('dd-overlay')) closePopupDirect(); }
+        function closePopupDirect() { document.getElementById('dd-overlay').classList.remove('show'); currentXe = null; selectedCua = null; }
+
+        function selectCua(id, btn) {
+            selectedCua = id;
+            document.querySelectorAll('.cua-opt').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('btn-confirm-pc').disabled = false;
+        }
+
+        async function confirmPhanCong() {
+            if (!currentXe || !selectedCua) return;
+            const btn = document.getElementById('btn-confirm-pc');
+            btn.disabled = true; btn.textContent = '⏳ Đang xử lý...';
+            const payload = {
+                bienSo: currentXe.bienSo,
+                cuaNhapId: selectedCua,
+                thoiGianVaoBai: currentXe.chuyenHienTai?.thoiGianDen ?? null,
+                ghiChu: document.getElementById('m-ghichu').value ?? '',
+                hangHoas: (currentXe.chuyenHienTai?.hangHoas ?? []).map(h => ({
+                    donVi: h.donVi ?? h.DonVi ?? '',
+                    soLuong: h.soLuong ?? h.SoLuong ?? 0
+                }))
+            };
+            try {
+                const res = await fetch('@Url.Action("PhanCong", "DieuDoNhap")', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (res.ok) { closePopupDirect(); await loadXe(); }
+                else { alert('❌ ' + (data.message ?? 'Lỗi') + '\n' + (data.inner ?? '')); btn.disabled = false; btn.textContent = '✔ Xác nhận phân công'; }
+            } catch(e) { alert('❌ Lỗi kết nối server'); btn.disabled = false; btn.textContent = '✔ Xác nhận phân công'; }
+        }
+
+        // ── ALERT XỬ LÝ
+        function closeAlert() {
+            document.getElementById('alert-overlay').classList.remove('show');
+            alertData = null;
+        }
+
+        async function huyCuaAlert() {
+            if (!alertData) return;
+            if (!confirm(`Huỷ phân công xe ${alertData.bienSoDuKien}?\nCửa sẽ về trống.`)) return;
+            try {
+                const res = await fetch('/DieuDoNhap/HuyPhanCong', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nhapId: alertData.nhapId })
+                });
+                const data = await res.json();
+                if (res.ok) { closeAlert(); await loadXe(); }
+                else { alert('❌ ' + (data.message ?? 'Lỗi huỷ')); }
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+                async function doiCuaAlert() {
+            if (!alertData) return;
+            closeAlert();
+
+            // ① Huỷ phân công cũ — await đầy đủ
+            const huyRes = await fetch('/DieuDoNhap/HuyPhanCong', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nhapId: alertData.nhapId })
+            });
+
+            if (!huyRes.ok) {
+                const err = await huyRes.json();
+                alert('❌ Lỗi huỷ phân công: ' + (err.message ?? 'Không xác định'));
+                return;
+            }
+
+            // ② Đánh dấu cảnh báo đã xử lý
+            if (alertData.canhBaoId) {
+                await fetch('/DieuDoNhap/CapNhatTrangThaiCanhBao', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ canhBaoId: alertData.canhBaoId, trangThai: 2 })
+                });
+            }
+
+            // ③ Lưu lại biển số trước khi clear alertData
+            const bienSo = alertData.bienSoDuKien;
+
+            // ④ Reload danh sách — chờ xong mới mở popup
+            await loadXe();
+
+            // ⑤ Tìm xe và mở popup phân công lại
+            const xe = xeData.find(x => x.bienSo === bienSo);
+            if (xe) {
+                openPopup(xe);
+            } else {
+                alert('Không tìm thấy xe trong danh sách — có thể xe đã rời bãi');
+            }
+        }
+                // ── NOTIFICATION PANEL
+        let canhBaoData = [];
+        let notifTab = 'chua';
+
+        async function loadCanhBao() {
+            try {
+                const res = await fetch('/DieuDoNhap/GetCanhBao');
+                if (!res.ok) return;
+                canhBaoData = await res.json();
+                renderNotifList();
+                updateBellBadge();
+            } catch(e) { console.error('loadCanhBao:', e); }
+        }
+
+        function updateBellBadge() {
+            const chuaXuLy = canhBaoData.filter(c => c.trangThai === 0).length;
+            const badge = document.getElementById('bell-badge');
+            const bell  = document.querySelector('.bell-wrap');
+            badge.textContent = chuaXuLy;
+            badge.style.display = chuaXuLy > 0 ? 'flex' : 'none';
+            bell.classList.toggle('has-new', chuaXuLy > 0);
+        }
+
+        function setNotifTab(tab, btn) {
+            notifTab = tab;
+            document.querySelectorAll('.ntab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderNotifList();
+        }
+
+        function renderNotifList() {
+            let filtered = canhBaoData;
+            if (notifTab === 'chua') filtered = canhBaoData.filter(c => c.trangThai === 0);
+            if (notifTab === 'dang') filtered = canhBaoData.filter(c => c.trangThai === 1);
+
+            const el = document.getElementById('notif-list');
+            if (!filtered.length) {
+                el.innerHTML = '<div class="notif-empty">Không có thông báo nào</div>';
+                return;
+            }
+
+            const ttLabel = ['CHƯA XỬ LÝ', 'ĐANG XỬ LÝ', 'ĐÃ XỬ LÝ'];
+
+            el.innerHTML = filtered.map(c => {
+                // Parse GhiChu: "DB:29KT-123|ThucTe:51A-999|Cua:1"
+                const parts = {};
+                (c.ghiChu || '').split('|').forEach(p => {
+                    const [k, v] = p.split(':');
+                    if (k && v) parts[k] = v;
+                });
+                const bienSoDB   = parts['DB']     ?? '--';
+                const bienSoTT   = parts['ThucTe'] ?? '--';
+                const cuaId      = parts['Cua']    ?? '--';
+
+                // Tìm tên cửa
+                const cuaCard = document.querySelector(`.cua-card[data-cua-id="${cuaId}"] .cua-name`);
+                const tenCua  = cuaCard ? cuaCard.textContent : `Cửa ${cuaId}`;
+
+                const thoiGian = new Date(c.thoiGian).toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+
+                // Nút hành động theo trạng thái
+                let actions = '';
+                if (c.trangThai === 0) {
+                    actions = `
+                        <button class="btn-n huy"  onclick="notifHuy(${c.id}, ${c.phieuId})">🗑 Huỷ PC</button>
+                        <button class="btn-n doi"  onclick="notifDoi(${c.id}, ${c.phieuId}, '${bienSoDB}')">🔄 Đổi cửa</button>
+                        <button class="btn-n dang" onclick="notifCapNhat(${c.id}, 1)">→ Đang xử lý</button>
+                    `;
+                } else if (c.trangThai === 1) {
+                    actions = `
+                        <button class="btn-n xong" onclick="notifCapNhat(${c.id}, 2)">✔ Hoàn thành</button>
+                    `;
+                }
+
+                return `
+                <div class="notif-card tt-${c.trangThai}" id="notif-card-${c.id}">
+                    <div class="notif-card-header">
+                        <span class="notif-badge tt-${c.trangThai}">${ttLabel[c.trangThai]}</span>
+                        <span class="notif-time">${thoiGian}</span>
+                    </div>
+                    <div class="notif-row"><span class="notif-lbl">Cửa: </span><span class="notif-val">${tenCua}</span></div>
+                    <div class="notif-row"><span class="notif-lbl">DB chờ: </span><span class="notif-val gold">${bienSoDB}</span></div>
+                    <div class="notif-row"><span class="notif-lbl">Thực tế: </span><span class="notif-val red">${bienSoTT}</span></div>
+                    ${actions ? `<div class="notif-actions">${actions}</div>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        function togglePanel() {
+            const panel   = document.getElementById('notif-panel');
+            const overlay = document.getElementById('notif-overlay');
+            const isOpen  = panel.classList.contains('open');
+            panel.classList.toggle('open', !isOpen);
+            overlay.classList.toggle('show', !isOpen);
+            if (!isOpen) loadCanhBao(); // reload mỗi khi mở
+        }
+
+        // Cập nhật trạng thái cảnh báo
+        async function notifCapNhat(canhBaoId, trangThai) {
+            try {
+                const res = await fetch('/DieuDoNhap/CapNhatTrangThaiCanhBao', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ canhBaoId, trangThai })
+                });
+                if (res.ok) await loadCanhBao();
+                else alert('❌ Lỗi cập nhật');
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+        // Huỷ phân công từ panel
+        async function notifHuy(canhBaoId, nhapId) {
+            if (!confirm('Huỷ phân công xe này?\nCửa sẽ về trống.')) return;
+            try {
+                const res = await fetch('/DieuDoNhap/HuyPhanCong', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nhapId })
+                });
+                if (res.ok) {
+                    await notifCapNhat(canhBaoId, 2); // đánh dấu đã xử lý
+                    await loadXe();
+                } else {
+                    const data = await res.json();
+                    alert('❌ ' + (data.message ?? 'Lỗi'));
+                }
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+        }
+
+        // Đổi cửa từ panel
+               async function notifDoi(canhBaoId, nhapId, bienSoDB) {
+            togglePanel();
+
+            // ① Huỷ phân công cũ
+            const huyRes = await fetch('/DieuDoNhap/HuyPhanCong', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nhapId })
+            });
+
+            if (!huyRes.ok) {
+                const err = await huyRes.json();
+                alert('❌ ' + (err.message ?? 'Lỗi huỷ'));
+                return;
+            }
+
+            // ② Đánh dấu đã xử lý
+            await notifCapNhat(canhBaoId, 2);
+
+            // ③ Reload rồi mở popup
+            await loadXe();
+            const xe = xeData.find(x => x.bienSo === bienSoDB);
+            if (xe) openPopup(xe);
+            else alert('Không tìm thấy xe trong danh sách');
+        }
+
+        // Nhận SignalR badge update
+        conn.on('UpdateCanhBaoBadge', function(soLuong) {
+            const badge = document.getElementById('bell-badge');
+            const bell  = document.querySelector('.bell-wrap');
+            badge.textContent = soLuong;
+            badge.style.display = soLuong > 0 ? 'flex' : 'none';
+            bell.classList.toggle('has-new', soLuong > 0);
+            // Nếu panel đang mở thì reload luôn
+            if (document.getElementById('notif-panel').classList.contains('open'))
+                loadCanhBao();
+        });
+
+        // Load lần đầu
+        loadCanhBao();
+        setInterval(loadCanhBao, 60000); // refresh mỗi 1 phút
+        loadXe();
+        setInterval(loadXe, 30000);
+    </script>
+}

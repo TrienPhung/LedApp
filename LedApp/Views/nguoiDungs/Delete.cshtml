@@ -1,9 +1,9 @@
 ﻿@model LedApp.Models.nguoiDungs
 @{
-    ViewData["Title"] = "Xóa người dùng";
+    ViewData["Title"] = "Xóa nhân viên";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Xóa người dùng</h1>
+<h1>Xóa nhân viên</h1>
 <h3 class="text-danger">Bạn có chắc chắn muốn xóa không?</h3>
 <hr />
 <div class="row">
@@ -13,40 +13,28 @@
     </div>
     <div class="col-md-10">
         <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Username)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Username)</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Name)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NgaySinh)</dt>
+            <dd class="col-sm-9">@(Model.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Tels)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Tels)</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GioiTinh)</dt>
+            <dd class="col-sm-9">@Model.GioiTinh</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Email)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Email)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Quyen)</dt>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DiaChi)</dt>
+            <dd class="col-sm-9">@(Model.DiaChi ?? "—")</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.SoDienThoai)</dt>
+            <dd class="col-sm-9">@(Model.SoDienThoai ?? "—")</dd>
+            <dt class="col-sm-3">Tài khoản liên kết</dt>
             <dd class="col-sm-9">
-                @switch (Model.Quyen)
+                @if (Model.User != null)
                 {
-                    case 0:
-                        <span>Nhân viên</span>
-                        break;
-                    case 1:
-                        <span class="badge bg-primary">Quản lý</span>
-                        break;
-                    case 2:
-                        <span class="badge bg-danger">Admin</span>
-                        break;
-                    case 3:
-                        <span class="badge bg-warning text-dark">Tài xế</span>
-                        break;
-                    case 4:
-                        <span class="badge bg-secondary">Bảo vệ</span>
-                        break;
-                    default:
-                        <span>@Model.Quyen</span>
-                        break;
+                    <span class="badge bg-danger">⚠ Đang có tài khoản: @Model.User.UserName — Hãy xóa tài khoản trước!</span>
+                }
+                else
+                {
+                    <span class="text-muted">Không có</span>
                 }
             </dd>
         </dl>
@@ -55,6 +43,7 @@
 <hr />
 <form asp-action="Delete">
     <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Xác nhận xóa" class="btn btn-danger" />
+    <input type="submit" value="Xác nhận xóa" class="btn btn-danger"
+    @(Model.User != null ? "disabled" : "") />
     <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
 </form>

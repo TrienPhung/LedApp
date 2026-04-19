@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // ??ng ký IHttpClientFactory v?i base URL
+
+
 builder.Services.AddHttpClient("ViettelApi", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5014/");
@@ -35,10 +37,12 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 
 
 //add SignalR
+
 builder.Services.AddSignalR();
 builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
+
 //Add sql denpendecy
 // DI
 //builder.Services.AddSingleton<UserRepository>();
@@ -57,7 +61,11 @@ builder.Services.AddSession();
 
 //Cảnh báo quá hạn
 // Thêm vào trước app.Run()
+
+
 builder.Services.AddHostedService<LedApp.Services.QuaHanNhapService>();
+builder.Services.AddHostedService<LedApp.Services.XuatCanhBaoService>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -95,5 +103,16 @@ app.UseSqlTableDependency<SubscribeXuatTableDependency>(connectionString);
 
 
 
+// Thêm vào cuối Program.cs, trước app.Run() phân quyền 
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    foreach (var role in Enum.GetNames<Quyen>())
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
 
 app.Run();

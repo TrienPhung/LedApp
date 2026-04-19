@@ -4,50 +4,55 @@ using Microsoft.EntityFrameworkCore;
 using LedApp.Models;
 using LedApp.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,QuanLy")]
     public class DanhSachXesController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public DanhSachXesController(ApplicationDBContext context)
+        public DanhSachXesController(ApplicationDBContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: DanhSachXes
+        // Helper: lấy danh sách nhân viên có role TaiXe
+        private async Task<List<nguoiDungs>> GetDanhSachTaiXe()
+        {
+            var usersInRole = await _userManager.GetUsersInRoleAsync(nameof(Quyen.TaiXe));
+            var userIds = usersInRole.Select(u => u.Id).ToList();
+            return await _context.nguoiDungs
+                .Where(n => n.UserId != null && userIds.Contains(n.UserId))
+                .ToListAsync();
+        }
+
         public async Task<IActionResult> Index()
         {
-            var danhSachXe = _context.DanhSachXes
-                .Include(x => x.TaiXe);
+            var danhSachXe = _context.DanhSachXes.Include(x => x.TaiXe);
             return View(await danhSachXe.ToListAsync());
         }
 
-        // GET: DanhSachXes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
-
             var xe = await _context.DanhSachXes
                 .Include(x => x.TaiXe)
                 .FirstOrDefaultAsync(m => m.Id == id);
-
             if (xe == null) return NotFound();
             return View(xe);
         }
 
-        // GET: DanhSachXes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TaiXeId"] = new SelectList(
-                _context.nguoiDungs.Where(u => u.Quyen == (int)Quyen.TaiXe),
-                "Id", "Name");
+            var taixe = await GetDanhSachTaiXe();
+            ViewData["TaiXeId"] = new SelectList(taixe, "Id", "FullName");
             return View();
         }
 
-        // POST: DanhSachXes/Create
         [HttpPost]
         public async Task<IActionResult> Create(
             [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,ThoiGianDuKienVe,TaiXeId")] DanhSachXe xe)
@@ -58,37 +63,30 @@ namespace LedApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch
             {
-                ViewData["TaiXeId"] = new SelectList(
-                    _context.nguoiDungs.Where(u => u.Quyen == (int)Quyen.TaiXe),
-                    "Id", "Name", xe.TaiXeId);
+                var taixe = await GetDanhSachTaiXe();
+                ViewData["TaiXeId"] = new SelectList(taixe, "Id", "FullName", xe.TaiXeId);
                 return View(xe);
             }
         }
 
-        // GET: DanhSachXes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-
             var xe = await _context.DanhSachXes.FindAsync(id);
             if (xe == null) return NotFound();
-
-            ViewData["TaiXeId"] = new SelectList(
-                _context.nguoiDungs.Where(u => u.Quyen == (int)Quyen.TaiXe),
-                "Id", "Name", xe.TaiXeId);
+            var taixe = await GetDanhSachTaiXe();
+            ViewData["TaiXeId"] = new SelectList(taixe, "Id", "FullName", xe.TaiXeId);
             return View(xe);
         }
 
-        // POST: DanhSachXes/Edit/5
         [HttpPost]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,ThoiGianDuKienVe,TaiXeId")] DanhSachXe xe)
         {
             if (id != xe.Id) return NotFound();
 
-            // THÊM ĐOẠN NÀY ĐỂ DEBUG
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values
@@ -96,9 +94,8 @@ namespace LedApp.Controllers
                     .Select(e => e.ErrorMessage)
                     .ToList();
                 TempData["Error"] = string.Join(" | ", errors);
-                ViewData["TaiXeId"] = new SelectList(
-                    _context.nguoiDungs.Where(u => u.Quyen == (int)Quyen.TaiXe),
-                    "Id", "Name", xe.TaiXeId);
+                var taixe = await GetDanhSachTaiXe();
+                ViewData["TaiXeId"] = new SelectList(taixe, "Id", "FullName", xe.TaiXeId);
                 return View(xe);
             }
 
@@ -110,28 +107,23 @@ namespace LedApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = ex.Message; // THÊM để xem lỗi
-                ViewData["TaiXeId"] = new SelectList(
-                    _context.nguoiDungs.Where(u => u.Quyen == (int)Quyen.TaiXe),
-                    "Id", "Name", xe.TaiXeId);
+                TempData["Error"] = ex.Message;
+                var taixe = await GetDanhSachTaiXe();
+                ViewData["TaiXeId"] = new SelectList(taixe, "Id", "FullName", xe.TaiXeId);
                 return View(xe);
             }
         }
 
-        // GET: DanhSachXes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
-
             var xe = await _context.DanhSachXes
                 .Include(x => x.TaiXe)
                 .FirstOrDefaultAsync(m => m.Id == id);
-
             if (xe == null) return NotFound();
             return View(xe);
         }
 
-        // POST: DanhSachXes/Delete/5
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -102,6 +102,27 @@ namespace LedApp.Controllers
         {
             return View();
         }
+        public IActionResult tongtrungtam()
+        {
+            var cuaNhaps = _context.CuaNhaps.ToList();
+            var cuaXuats = _context.CuaXuats.ToList();
+
+            ViewBag.CuaNhaps = cuaNhaps;
+            ViewBag.CuaXuats = cuaXuats;
+
+            // Kích thước bảng LED6: 2944x896
+            ViewBag.W = _context.CauHinhs
+                .Where(c => c.Key == "Led6W")
+                .Select(c => c.Value)
+                .FirstOrDefault() ?? "2944";
+
+            ViewBag.H = _context.CauHinhs
+                .Where(c => c.Key == "Led6H")
+                .Select(c => c.Value)
+                .FirstOrDefault() ?? "896";
+
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

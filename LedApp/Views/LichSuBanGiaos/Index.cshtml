@@ -27,7 +27,7 @@
                 <td>@Html.DisplayFor(m => item.PhieuId)</td>
                 <td>@Html.DisplayFor(m => item.DonVi)</td>
                 <td>@Html.DisplayFor(m => item.SoBG)</td>
-                <td>@(item.NhanVien?.Name ?? item.NhanVienId.ToString())</td>
+                @* <td>@(item.NhanVien?.Name ?? item.NhanVienId.ToString())</td> *@
                 <td>@Html.DisplayFor(m => item.ThoiGian)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |

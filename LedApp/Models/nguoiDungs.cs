@@ -11,38 +11,46 @@ namespace LedApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DisplayName("Tên đăng nhập")]
+
+        [MaxLength(450)]
+        public string? UserId { get; set; }
+
+        [DisplayName("Họ")]
         [Required]
         [MaxLength(100)]
-        public string Username { get; set; }
+        public string LastName { get; set; }
 
-        [DisplayName("Mật khẩu")]
+        [DisplayName("Tên")]
         [Required]
-        [MaxLength(255)]
-        public string Password { get; set; }
-
-        [DisplayName("Họ tên")]
-        [Required]
-        [MaxLength(150)]
-        public string Name { get; set; }
-
-        [DisplayName("Điện thoại")]
-        [MaxLength(20)]
-        public string? Tels { get; set; }
-
-        [DisplayName("Email")]
-        [MaxLength(150)]
-        [EmailAddress]
-        public string? Email { get; set; }
-
-        [DisplayName("Quyền truy cập")]
-        public int Quyen { get; set; }
+        [MaxLength(100)]
+        public string FirstName { get; set; }
 
         [DisplayName("Ảnh đại diện")]
         [MaxLength(500)]
         public string? Image { get; set; }
 
-        // Navigation properties
+        [DisplayName("Ngày sinh")]
+        public DateTime? NgaySinh { get; set; }
+
+        [DisplayName("Số điện thoại")]
+        [MaxLength(15)]
+        [Phone]
+        public string? SoDienThoai { get; set; }
+
+        [DisplayName("Địa chỉ")]
+        [MaxLength(255)]
+        public string? DiaChi { get; set; }
+
+        [DisplayName("Giới tính")]
+        public GioiTinhEnum? GioiTinh { get; set; }
+
+        [ForeignKey("UserId")]
+        public AppUser? User { get; set; }
+
+        [NotMapped]
+        public string FullName => $"{LastName} {FirstName}";
+        //hoặc viết cách này public string FullName => LastName + " " + FirstName;
+
         public ICollection<Nhap>? Nhaps { get; set; }
         public ICollection<Xuat>? Xuats { get; set; }
         public ICollection<LichSuBanGiao>? LichSuBanGiaos { get; set; }

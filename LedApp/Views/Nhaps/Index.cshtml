@@ -38,7 +38,7 @@
                 <td>@item.ThoiGianVaoCua?.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>@item.ThoiGianGioiHan?.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>@item.ThoiGianHoanThanh?.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@(item.NhanVienXacNhan?.Name ?? "Chưa xác nhận")</td>
+                <td>@(item.NhanVienXacNhan?.FullName ?? "Chưa xác nhận")</td>
                 <td>
                     <span class="badge @TrangThaiHelper.GetBadgeClassNhap(item.TrangThai)">
                         @TrangThaiHelper.GetTenTrangThaiNhap(item.TrangThai)

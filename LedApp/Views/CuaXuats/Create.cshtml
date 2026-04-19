@@ -1,36 +1,39 @@
 ﻿@model LedApp.Models.CuaXuat
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Thêm mới cửa xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Thêm mới của xuất</h1>
+<h5 class="mb-4">Thêm mới cửa xuất</h5>
 
-@*<h4>CuaXuat</h4>*@
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Ten" class="control-label"></label>
-                <input asp-for="Ten" class="form-control" />
-                <span asp-validation-for="Ten" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+            <div class="mb-3">
+                <label class="form-label small text-secondary">Tên cửa</label>
+                <input asp-for="Ten" class="form-control form-control-sm" placeholder="VD: Kho A – Cửa xuất chính" />
+                <span asp-validation-for="Ten" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Mota" class="control-label"></label>
-                <input asp-for="Mota" class="form-control" />
-                <span asp-validation-for="Mota" class="text-danger"></span>
+
+            <div class="mb-3">
+                <label class="form-label small text-secondary">Mô tả</label>
+                <textarea asp-for="Mota" class="form-control form-control-sm" rows="3" placeholder="Mô tả ngắn..."></textarea>
+                <span asp-validation-for="Mota" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Lưu thông tin" class="btn btn-primary" />
+
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+                <label class="form-label small text-secondary mb-0">Trạng thái mở</label>
+                <div class="form-check form-switch mb-0">
+                    <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" checked />
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-dark">Lưu</button>
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Hủy</a>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Trở về </a>
-</div>
-

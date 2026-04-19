@@ -29,15 +29,15 @@ namespace LedApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string tendangnhap, string matkhau)
         {
-            var userFromDb = await userRepo.GetNguoiDung(tendangnhap, matkhau);
+            //var userFromDb = await userRepo.GetNguoiDung(tendangnhap, matkhau);
 
-            if (userFromDb == null)
-            {
-                ModelState.AddModelError("Login", "Invalid credentials");
-                return View();
-            }
+            //if (userFromDb == null)
+            //{
+            //    ModelState.AddModelError("Login", "Invalid credentials");
+            //    return View();
+            //}
 
-            HttpContext.Session.SetString("Username", userFromDb.Username);
+            //HttpContext.Session.SetString("Username", userFromDb.Username);
 
             return RedirectToAction("Index", "Administrator");
         }

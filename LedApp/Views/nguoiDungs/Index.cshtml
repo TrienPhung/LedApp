@@ -1,26 +1,37 @@
 ﻿@model IEnumerable<LedApp.Models.nguoiDungs>
 @{
-    ViewData["Title"] = "Quản lý người dùng";
+    ViewData["Title"] = "Quản lý nhân viên";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Quản lý người dùng</h1>
+<h1>Quản lý nhân viên</h1>
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show">
         @TempData["Error"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
-<p><a asp-action="Create">Thêm mới</a></p>
-<table class="table">
-    <thead>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<p><a asp-action="Create" class="btn btn-success btn-sm">+ Thêm nhân viên</a></p>
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
         <tr>
-            <th>@Html.DisplayNameFor(m => m.Image)</th>
-            <th>@Html.DisplayNameFor(m => m.Username)</th>
-            <th>@Html.DisplayNameFor(m => m.Name)</th>
-            <th>@Html.DisplayNameFor(m => m.Tels)</th>
-            <th>@Html.DisplayNameFor(m => m.Email)</th>
-            <th>@Html.DisplayNameFor(m => m.Quyen)</th>
+            <th>Ảnh</th>
+            <th>Họ tên</th>
+            <th>Ngày sinh</th>
+            <th>Số điện thoại</th>
+            <th>Giới tính</th>
+            <th>Địa chỉ</th>
+            <th>Tài khoản</th>
             <th></th>
         </tr>
     </thead>
@@ -31,41 +42,60 @@
                 <td>
                     @if (!string.IsNullOrEmpty(item.Image))
                     {
-                        <img src="@item.Image" style="width:60px;height:60px;object-fit:cover;" />
+                        <img src="@item.Image"
+                             style="width:55px;height:55px;object-fit:cover;border-radius:4px;" />
                     }
                     else
                     {
-                        <img src="/uploads/avatars/default.png" style="width:60px;height:60px;object-fit:cover;" />
+                        <div style="width:55px;height:55px;border-radius:4px;background:#e9ecef;
+                    display:flex;align-items:center;justify-content:center;">
+                            <i class="mdi mdi-account" style="font-size:28px;color:#adb5bd;"></i>
+                        </div>
                     }
                 </td>
-                <td>@Html.DisplayFor(m => item.Username)</td>
-                <td>@Html.DisplayFor(m => item.Name)</td>
-                <td>@Html.DisplayFor(m => item.Tels)</td>
-                <td>@Html.DisplayFor(m => item.Email)</td>
+                <td>@item.FullName</td>
+                <td>@(item.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</td>
+                <td>@(item.SoDienThoai ?? "—")</td>
                 <td>
-                    @switch (item.Quyen)
+                    @switch (item.GioiTinh)
                     {
-                        case (int)LedApp.Models.Quyen.NhanVien:
-                            <span>Nhân viên</span>
+                        case LedApp.Models.GioiTinhEnum.Nam:
+                            <span class="badge bg-primary">Nam</span>
                             break;
-                        case (int)LedApp.Models.Quyen.QuanLy:
-                            <span class="badge bg-primary">Quản lý</span>
+                        case LedApp.Models.GioiTinhEnum.Nu:
+                            <span class="badge bg-danger">Nữ</span>
                             break;
-                        case (int)LedApp.Models.Quyen.Admin:
-                            <span class="badge bg-danger">Admin</span>
+                        case LedApp.Models.GioiTinhEnum.Khac:
+                            <span class="badge bg-secondary">Khác</span>
                             break;
-                        case (int)LedApp.Models.Quyen.TaiXe:
-                            <span class="badge bg-warning text-dark">Tài xế</span>
-                            break;
-                        case (int)LedApp.Models.Quyen.BaoVe:
-                            <span class="badge bg-secondary">Bảo vệ</span>
+                        default:
+                            <span>—</span>
                             break;
                     }
                 </td>
+                <td>@(item.DiaChi ?? "—")</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                    @if (item.User != null)
+                    {
+                        <span class="badge bg-success">@item.User.UserName</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Chưa có tài khoản</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Xóa</a>
+
+                    @if (item.User == null)
+                    {
+                        <a asp-controller="Accounts"
+                           asp-action="Create"
+                           asp-route-nguoiDungId="@item.Id"
+                           class="btn btn-warning btn-sm">+ Tạo tài khoản</a>
+                    }
                 </td>
             </tr>
         }

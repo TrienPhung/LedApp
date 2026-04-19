@@ -13,10 +13,10 @@ namespace LedApp.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<nguoiDungs?> GetNguoiDung(string tenDangNhap, string matKhau)
-        {
-            return await _dbContext.nguoiDungs
-                .FirstOrDefaultAsync(s => s.Username == tenDangNhap && s.Password == matKhau);
-        }
+        //public async Task<nguoiDungs?> GetNguoiDung(string tenDangNhap, string matKhau)
+        //{
+        //    return await _dbContext.nguoiDungs
+        //        .FirstOrDefaultAsync(s => s.Username == tenDangNhap && s.Password == matKhau);
+        //}
     }
 }

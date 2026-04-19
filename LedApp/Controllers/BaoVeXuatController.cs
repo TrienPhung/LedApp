@@ -49,9 +49,9 @@ namespace LedApp.Controllers
                     BienSoXe = x.Xe != null ? x.Xe.BienSoXe : "--",
                     LoaiXe = x.Xe != null ? x.Xe.LoaiXe : "--",
                     TaiTrong = x.Xe != null ? x.Xe.TaiTrong : 0,
-                    TenTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.Name : "--",
-                    TelTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.Tels : "--",
-                    TenNhanVien = x.NhanVienXacNhan != null ? x.NhanVienXacNhan.Name : "--",
+                    TenTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.FullName : "--",
+                    TelTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.SoDienThoai : "--",
+                    TenNhanVien = x.NhanVienXacNhan != null ? x.NhanVienXacNhan.FullName : "--",
                     x.TrangThai,
                     x.ThoiGianPhanCong,
                     x.ThoiGianVaoCua,
@@ -81,8 +81,8 @@ namespace LedApp.Controllers
                     x.LoaiXe,
                     x.TaiTrong,
                     x.ThoiGianDuKienVe,
-                    TenTaiXe = x.TaiXe != null ? x.TaiXe.Name : "--",
-                    TelTaiXe = x.TaiXe != null ? x.TaiXe.Tels : "--"
+                    TenTaiXe = x.TaiXe != null ? x.TaiXe.FullName : "--",
+                    TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--"
                 })
                 .ToListAsync();
 

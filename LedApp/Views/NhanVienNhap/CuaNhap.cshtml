@@ -1,0 +1,1269 @@
+﻿@{
+	ViewData["Title"] = "Cửa Nhập — Nhân Viên";
+	Layout = null;
+	int cuaNhapId = ViewBag.CuaNhapId;
+	string tenCua = ViewBag.TenCua;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+	<title>@tenCua — Nhân Viên</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background: #0a0f1a;
+			color: #c8d8e8;
+			font-family: 'Courier New',monospace;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			padding: 12px;
+		}
+
+		.hdr {
+			background: #0d1828;
+			border: 1px solid #1a3050;
+			border-top: 2px solid #0ea5e9;
+			border-radius: 8px;
+			padding: 10px 18px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.hdr-gate {
+			font-size: 28px;
+			font-weight: 700;
+			color: #f0f4f8;
+			letter-spacing: 3px;
+		}
+
+		.hdr-sub {
+			font-size: 11px;
+			color: #4a6580;
+			margin-top: 2px;
+			letter-spacing: 1px;
+		}
+
+		.hdr-clock {
+			font-size: 26px;
+			font-weight: 700;
+			color: #f59e0b;
+			letter-spacing: 3px;
+		}
+
+		.hdr-date {
+			font-size: 10px;
+			color: #4a6580;
+			text-align: center;
+			margin-top: 2px;
+		}
+
+		.sig {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			font-size: 11px;
+			color: #4a6580;
+			background: #0a1520;
+			border: 1px solid #1a3050;
+			border-radius: 4px;
+			padding: 5px 10px;
+		}
+
+		.dot {
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			background: #4a6580;
+		}
+
+			.dot.on {
+				background: #22c55e;
+				animation: pulse 2s infinite;
+			}
+
+			.dot.err {
+				background: #ef4444;
+			}
+
+		@@keyframes pulse {
+			0%, 100% {
+				opacity: 1
+			}
+
+			50% {
+				opacity: .4
+			}
+		}
+
+		.main {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+			flex: 1;
+		}
+
+		.panel {
+			background: #0d1828;
+			border: 1px solid #1a3050;
+			border-radius: 8px;
+			padding: 14px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		.panel-title {
+			font-size: 9px;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			color: #4a6580;
+			border-bottom: 1px solid #1a3050;
+			padding-bottom: 8px;
+		}
+
+		.xe-plate {
+			font-size: 32px;
+			font-weight: 700;
+			color: #f59e0b;
+			letter-spacing: 2px;
+			text-align: center;
+			padding: 8px;
+			background: #0a1520;
+			border: 1px solid #1e3a5a;
+			border-radius: 6px;
+		}
+
+			.xe-plate.empty {
+				color: #2a4060;
+				font-size: 16px;
+				padding: 18px;
+				font-weight: 400;
+			}
+
+		.info-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 12px;
+			padding: 4px 0;
+			border-bottom: 1px solid #121e30;
+		}
+
+		.info-lbl {
+			color: #4a6580;
+		}
+
+		.info-val {
+			color: #c8d8e8;
+			font-weight: 700;
+		}
+
+		.timer {
+			text-align: center;
+			padding: 10px;
+			background: #0a1520;
+			border-radius: 6px;
+			border: 1px solid #1e3a5a;
+		}
+
+		.timer-num {
+			font-size: 28px;
+			font-weight: 700;
+			letter-spacing: 2px;
+		}
+
+		.timer-lbl {
+			font-size: 10px;
+			color: #4a6580;
+			margin-top: 3px;
+			letter-spacing: 1px;
+		}
+
+		.timer-num.ok {
+			color: #22c55e;
+		}
+
+		.timer-num.warn {
+			color: #f59e0b;
+		}
+
+		.timer-num.over {
+			color: #ef4444;
+		}
+
+		.strip {
+			text-align: center;
+			padding: 8px;
+			border-radius: 5px;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 1px;
+		}
+
+			.strip.wait {
+				background: #0c2a4a;
+				color: #38bdf8;
+			}
+
+			.strip.going {
+				background: #0c2a0c;
+				color: #4ade80;
+			}
+
+			.strip.over {
+				background: #3a0c0c;
+				color: #f87171;
+			}
+
+			.strip.done {
+				background: #0c3a20;
+				color: #34d399;
+			}
+
+		.hang-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 12px;
+		}
+
+			.hang-table th {
+				color: #4a6580;
+				font-size: 9px;
+				letter-spacing: 1.5px;
+				text-transform: uppercase;
+				padding: 6px 8px;
+				border-bottom: 1px solid #1a3050;
+				text-align: center;
+			}
+
+			.hang-table td {
+				padding: 6px 8px;
+				text-align: center;
+				border-bottom: 1px solid #121e30;
+			}
+
+				.hang-table td:first-child {
+					text-align: left;
+					color: #4a6580;
+				}
+
+		.val-chua {
+			color: #f59e0b;
+			font-weight: 700;
+		}
+
+		.val-da {
+			color: #22c55e;
+			font-weight: 700;
+		}
+
+		.prog-wrap {
+			background: #0a1520;
+			border-radius: 3px;
+			height: 5px;
+			margin-top: 4px;
+			overflow: hidden;
+		}
+
+		.prog-bar {
+			height: 100%;
+			background: #22c55e;
+			border-radius: 3px;
+			transition: width .5s;
+		}
+
+		.action-zone {
+			background: #0d1828;
+			border: 1px solid #1a3050;
+			border-radius: 8px;
+			padding: 14px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		.btn-xacnhan {
+			width: 100%;
+			padding: 14px;
+			background: linear-gradient(135deg,#0284c7,#0369a1);
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			font-size: 14px;
+			font-weight: 700;
+			letter-spacing: 1px;
+			cursor: pointer;
+			font-family: inherit;
+			transition: all .2s;
+		}
+
+			.btn-xacnhan:hover:not(:disabled) {
+				background: linear-gradient(135deg,#0ea5e9,#0284c7);
+			}
+
+			.btn-xacnhan:disabled {
+				background: #1a3050;
+				color: #2a5070;
+				cursor: not-allowed;
+			}
+
+		.bg-form {
+			display: none;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+			.bg-form.show {
+				display: flex;
+			}
+
+		.bg-form-title {
+			font-size: 10px;
+			letter-spacing: 1.5px;
+			text-transform: uppercase;
+			color: #4a6580;
+		}
+
+		.bg-inputs {
+			display: grid;
+			grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+			gap: 8px;
+		}
+
+		.bg-inp-wrap {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
+
+		.bg-inp-lbl {
+			font-size: 10px;
+			color: #4a6580;
+			letter-spacing: 1px;
+		}
+
+		.bg-inp-sub {
+			font-size: 10px;
+			color: #f59e0b;
+		}
+
+		.bg-inp {
+			background: #0a1520;
+			border: 1px solid #1e3a5a;
+			border-radius: 5px;
+			padding: 8px;
+			color: #c8d8e8;
+			font-size: 16px;
+			font-family: inherit;
+			width: 100%;
+			text-align: center;
+			outline: none;
+		}
+
+			.bg-inp:focus {
+				border-color: #0ea5e9;
+			}
+
+		.btn-bg {
+			width: 100%;
+			padding: 11px;
+			background: #0f6e56;
+			color: #a7f3d0;
+			border: none;
+			border-radius: 5px;
+			font-size: 13px;
+			font-weight: 700;
+			cursor: pointer;
+			font-family: inherit;
+			letter-spacing: .5px;
+		}
+
+			.btn-bg:hover {
+				background: #1d9e75;
+			}
+
+		.btn-done {
+			display: none;
+			width: 100%;
+			padding: 12px;
+			background: #22c55e;
+			color: #0a1a0a;
+			border: none;
+			border-radius: 6px;
+			font-size: 14px;
+			font-weight: 700;
+			cursor: pointer;
+			font-family: inherit;
+			letter-spacing: 1px;
+		}
+
+			.btn-done.show {
+				display: block;
+			}
+
+		.ghi-chu {
+			font-size: 11px;
+			color: #38bdf8;
+			background: #0c2a3a;
+			border: 1px solid #1a4060;
+			border-radius: 4px;
+			padding: 6px 10px;
+			font-style: italic;
+		}
+
+		.empty-note {
+			color: #2a4060;
+			font-size: 12px;
+			text-align: center;
+			padding: 20px;
+		}
+
+		.toast {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			padding: 12px 20px;
+			border-radius: 6px;
+			font-size: 13px;
+			font-weight: 700;
+			letter-spacing: .5px;
+			z-index: 9999;
+			animation: fadein .2s;
+		}
+
+			.toast.ok {
+				background: #0f6e56;
+				color: #a7f3d0;
+				border-left: 3px solid #22c55e;
+			}
+
+			.toast.err {
+				background: #3a0c0c;
+				color: #f87171;
+				border-left: 3px solid #ef4444;
+			}
+
+		@@keyframes fadein {
+			from {
+				opacity: 0;
+				transform: translateY(10px)
+			}
+
+			to {
+				opacity: 1;
+				transform: none
+			}
+		}
+		/* Khu vực xác nhận biển số */
+		.bs-check-zone {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			background: #0a1520;
+			border: 1px solid #1e3a5a;
+			border-radius: 8px;
+			padding: 14px;
+		}
+
+		.bs-zone-title {
+			font-size: 9px;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			color: #4a6580;
+			margin-bottom: 2px;
+		}
+
+		.bs-input-row {
+			display: flex;
+			gap: 8px;
+			align-items: stretch;
+		}
+
+		.bs-inp {
+			flex: 1;
+			background: #060d18;
+			border: 1.5px solid #1e3a5a;
+			border-radius: 6px;
+			padding: 12px 16px;
+			color: #f59e0b;
+			font-size: 22px;
+			font-weight: 700;
+			font-family: 'Courier New', monospace;
+			text-align: center;
+			letter-spacing: 4px;
+			outline: none;
+			text-transform: uppercase;
+			transition: border-color .2s, background .2s;
+		}
+
+			.bs-inp::placeholder {
+				color: #1e3a5a;
+				font-size: 14px;
+				letter-spacing: 1px;
+			}
+
+			.bs-inp:focus {
+				border-color: #0ea5e9;
+			}
+
+			.bs-inp.ok {
+				border-color: #22c55e;
+				background: #061a0e;
+				color: #22c55e;
+			}
+
+			.bs-inp.err {
+				border-color: #ef4444;
+				background: #1a0606;
+				color: #f87171;
+			}
+
+		.btn-xacnhan-bs {
+			padding: 12px 20px;
+			background: linear-gradient(135deg,#0284c7,#0369a1);
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: .5px;
+			cursor: pointer;
+			font-family: inherit;
+			white-space: nowrap;
+			transition: all .2s;
+		}
+
+			.btn-xacnhan-bs:hover:not(:disabled) {
+				background: linear-gradient(135deg,#0ea5e9,#0284c7);
+			}
+
+			.btn-xacnhan-bs:disabled {
+				background: #0d1e30;
+				color: #1e4060;
+				cursor: not-allowed;
+			}
+
+		.bs-feedback {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			min-height: 18px;
+		}
+
+		.bs-msg {
+			flex: 1;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: .3px;
+			transition: color .2s;
+		}
+
+			.bs-msg.ok {
+				color: #22c55e;
+			}
+
+			.bs-msg.err {
+				color: #f87171;
+			}
+
+		.btn-baosai {
+			display: none;
+			padding: 6px 14px;
+			background: rgba(239,68,68,.12);
+			color: #f87171;
+			border: 1px solid rgba(239,68,68,.35);
+			border-radius: 5px;
+			font-size: 11px;
+			font-weight: 700;
+			cursor: pointer;
+			font-family: inherit;
+			letter-spacing: .3px;
+			white-space: nowrap;
+			transition: background .15s;
+		}
+
+			.btn-baosai.show {
+				display: inline-flex;
+				align-items: center;
+				gap: 5px;
+			}
+
+			.btn-baosai:hover {
+				background: rgba(239,68,68,.22);
+			}
+
+			.btn-baosai:disabled {
+				opacity: .5;
+				cursor: not-allowed;
+			}
+
+
+		.btn-xuly {
+			width: 100%;
+			padding: 11px;
+			background: rgba(239,68,68,.15);
+			color: #f87171;
+			border: 1px solid rgba(239,68,68,.4);
+			border-radius: 5px;
+			font-size: 13px;
+			font-weight: 700;
+			cursor: pointer;
+			font-family: inherit;
+			letter-spacing: .5px;
+			display: none;
+			transition: background .15s;
+		}
+
+			.btn-xuly.show {
+				display: block;
+			}
+
+			.btn-xuly:hover {
+				background: rgba(239,68,68,.25);
+			}
+
+			.btn-xuly:disabled {
+				opacity: .5;
+				cursor: not-allowed;
+			}
+	</style>
+</head>
+<body>
+
+	<div class="hdr">
+		<div>
+			<div class="hdr-gate" id="gate-name">@tenCua</div>
+			<div class="hdr-sub">CỬA NHẬP — BOOTH NHÂN VIÊN</div>
+		</div>
+		<div style="text-align:center;">
+			<div class="hdr-clock" id="clk">--:--:--</div>
+			<div class="hdr-date" id="dt-str"></div>
+		</div>
+		<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+			<div class="sig"><span class="dot" id="sig-dot"></span><span id="sig-txt">Đang kết nối...</span></div>
+			<div style="font-size:10px;color:#4a6580;">Cửa ID: <span style="color:#38bdf8;">@cuaNhapId</span></div>
+		</div>
+	</div>
+
+	<div class="main">
+		<div class="panel">
+			<div class="panel-title">Thông tin xe hiện tại</div>
+			<div class="xe-plate empty" id="xe-plate">Chờ xe vào...</div>
+
+			<div id="info-block">
+				<div class="info-row"><span class="info-lbl">Giờ vào cửa</span><span class="info-val" id="gio-vao">--:--</span></div>
+				<div class="info-row"><span class="info-lbl">Giờ giới hạn</span><span class="info-val" id="gio-han">--:--</span></div>
+				<div class="info-row"><span class="info-lbl">Trạng thái</span><span class="info-val" id="tt-text">Chờ xe</span></div>
+			</div>
+
+			<div class="timer" id="timer-box">
+				<div class="timer-num ok" id="timer-num">--:--</div>
+				<div class="timer-lbl">THỜI GIAN CÒN LẠI</div>
+			</div>
+
+			<div id="ghi-chu-box" style="display:none;">
+				<div class="ghi-chu" id="ghi-chu-text"></div>
+			</div>
+
+			<div class="strip wait" id="status-strip">Đang chờ xe vào...</div>
+		</div>
+
+		<div class="panel">
+			<div class="panel-title">Hàng hóa bàn giao — real-time</div>
+			<table class="hang-table">
+				<thead><tr><th>Đơn vị</th><th>Chưa BG</th><th>Đã BG</th><th>Tiến độ</th></tr></thead>
+				<tbody id="hang-tbody">
+					<tr><td colspan="4" class="empty-note">Chưa có dữ liệu</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="action-zone">
+		<!-- Bước 1: Nhập biển số xác nhận — chỉ hiện khi DaPhanCong -->
+		<div class="bs-check-zone" id="bs-check-zone" style="display:none;">
+			<div class="bs-zone-title">Nhập biển số xe đang đứng trước cửa</div>
+			<div class="bs-input-row">
+				<input type="text" class="bs-inp" id="bs-inp"
+					   placeholder="VD: 29KT-123"
+					   oninput="onBienSoInput(this.value)"
+					   autocomplete="off" />
+				<button class="btn-xacnhan-bs" id="btn-xacnhan"
+						disabled onclick="xacNhanVaoCua()">
+					✔ XÁC NHẬN
+				</button>
+			</div>
+			<div class="bs-feedback">
+				<div class="bs-msg" id="bs-msg"></div>
+				<button class="btn-baosai" id="btn-baosai" onclick="baoSaiXe()">
+					⚠ Báo điều độ
+				</button>
+			</div>
+		</div>
+
+		<!-- Bước 2: Form bàn giao — hiện khi DangBanGiao -->
+		<div class="bg-form" id="bg-form">
+			<div class="bg-form-title">Nhập số lượng bàn giao</div>
+			<div class="bg-inputs" id="bg-inputs"></div>
+			<button class="btn-bg" onclick="xacNhanBanGiao()">XÁC NHẬN BÀN GIAO</button>
+		</div>
+		<!-- Nút xử lý — chỉ hiện khi quá giờ và chưa xử lý -->
+		<button class="btn-xuly" id="btn-xuly" onclick="xuLyQuaGio()">
+			⚠ XÁC NHẬN ĐANG XỬ LÝ — Đã điều người xuống
+		</button>
+		<button class="btn-done" id="btn-done" onclick="hoanThanh()">
+			HOÀN THÀNH NHẬP — ĐÓNG CỬA
+		</button>
+	</div>
+
+	<script>
+		var CUA_NHAP_ID = @cuaNhapId;
+		var ANTIFORGERY_TOKEN = '@Html.AntiForgeryToken()';
+
+		// ── STATE
+		var state = {
+			nhapId: null, bienSo: null,
+			trangThai: -1, ghiChu: null,
+			thoiGianVaoCua: null, thoiGianGioiHan: null,
+			chitiet: []
+		};
+
+		// ── CLOCK
+		function tick() {
+			var n = new Date();
+			document.getElementById('clk').textContent = n.toLocaleTimeString('vi-VN', { hour12: false });
+			document.getElementById('dt-str').textContent = n.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit' });
+			updateTimer();
+		}
+		setInterval(tick, 1000); tick();
+
+				// ── Cờ chống gọi nhiều lần
+		var _daBooCanhBao = false;
+
+		function updateTimer() {
+			if (!state.thoiGianGioiHan) return;
+			var now = new Date();
+			var dl = new Date(state.thoiGianGioiHan);
+			var diff = Math.floor((dl - now) / 1000);
+			var el = document.getElementById('timer-num');
+			var strip = document.getElementById('status-strip');
+
+			if (diff > 0) {
+				var m = Math.floor(diff / 60), s = diff % 60;
+				el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+				el.className = 'timer-num ' + (diff > 600 ? 'ok' : diff > 180 ? 'warn' : 'over');
+				_daBooCanhBao = false; // reset nếu timer còn chạy
+			} else if (state.trangThai === 1 || state.trangThai === 2) {
+				el.textContent = 'QUÁ HẠN';
+				el.className = 'timer-num over';
+				strip.className = 'strip over';
+				strip.textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
+
+				// ✅ Chỉ gọi 1 lần duy nhất
+				if (!_daBooCanhBao && state.nhapId && state.trangThai === 1) {
+					_daBooCanhBao = true;
+					baoCanhBaoQuaGio();
+				}
+			}
+		}
+
+		// ✅ Hàm mới — client tự báo quá giờ
+		async function baoCanhBaoQuaGio() {
+			try {
+				var res = await fetch('/NhanVienNhap/BaoCanhBaoQuaGio', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nhapId: state.nhapId })
+				});
+				if (res.ok) {
+					state.trangThai = 2; // QuaThoiGian
+					document.getElementById('tt-text').textContent = 'Quá thời gian';
+					console.log('Đã báo cảnh báo quá giờ nhapId=' + state.nhapId);
+				}
+			} catch(e) {
+				console.error('baoCanhBaoQuaGio lỗi:', e);
+			}
+		}
+				// ── XỬ LÝ QUÁ GIỜ — cập nhật CanhBao sang DangXuLy
+				async function xuLyQuaGio() {
+			console.log('xuLyQuaGio state.nhapId =', state.nhapId);
+			if (!state.nhapId) return;
+
+			var btn = document.getElementById('btn-xuly');
+			btn.disabled = true;
+			btn.textContent = '⏳ Đang gửi...';
+
+			try {
+				var res = await fetch('/NhanVienNhap/XuLyCanhBao', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nhapId: state.nhapId })
+				});
+
+				if (res.ok) {
+					showToast('Đã ghi nhận đang xử lý', 'ok');
+					// ← Chỉ cập nhật UI, KHÔNG reload state
+					btn.className = 'btn-xuly'; // ẩn nút đi
+					document.getElementById('status-strip').textContent = 'QUÁ GIỜ — Đang xử lý...';
+				} else {
+					btn.disabled = false;
+					btn.textContent = '⚠ XÁC NHẬN ĐANG XỬ LÝ — Đã điều người xuống';
+					showToast('Lỗi gửi', 'err');
+				}
+			} catch(e) {
+				btn.disabled = false;
+				btn.textContent = '⚠ XÁC NHẬN ĐANG XỬ LÝ — Đã điều người xuống';
+				showToast('Lỗi kết nối', 'err');
+			}
+		}
+		// ── RENDER HÀNG HÓA
+		function renderHang() {
+			var tb = document.getElementById('hang-tbody');
+			if (!state.chitiet.length) {
+				tb.innerHTML = '<tr><td colspan="4" class="empty-note">Chưa có dữ liệu</td></tr>';
+				document.getElementById('btn-done').style.display = 'none';
+				return;
+			}
+			tb.innerHTML = state.chitiet.map(function (c) {
+				var tong = c.chuaBG + c.daBG;
+				var pct = tong > 0 ? Math.round(c.daBG / tong * 100) : 0;
+				return '<tr>'
+					+ '<td>' + c.donVi + '</td>'
+					+ '<td><span class="val-chua">' + c.chuaBG.toLocaleString('vi-VN') + '</span></td>'
+					+ '<td><span class="val-da">' + c.daBG.toLocaleString('vi-VN') + '</span></td>'
+					+ '<td style="min-width:80px;"><div style="font-size:10px;color:#4a6580;text-align:right;">' + pct + '%</div>'
+					+ '<div class="prog-wrap"><div class="prog-bar" style="width:' + pct + '%"></div></div></td>'
+					+ '</tr>';
+			}).join('');
+
+			var allDone = state.chitiet.every(function (c) { return c.chuaBG === 0; });
+			var dangBanGiao = state.trangThai === 1 || state.trangThai === 2; // ← thêm trangThai 2
+			var btnDone = document.getElementById('btn-done');
+			if (allDone && dangBanGiao) {
+				btnDone.className = 'btn-done show';
+				btnDone.style.display = 'block';
+			} else {
+				btnDone.className = 'btn-done';
+				btnDone.style.display = 'none';
+			}
+		}
+
+		// ── RENDER INPUT BÀN GIAO
+		function renderBgInputs() {
+			document.getElementById('bg-inputs').innerHTML = state.chitiet.map(function (c, i) {
+				return '<div class="bg-inp-wrap">'
+					+ '<div class="bg-inp-lbl">' + c.donVi + '</div>'
+					+ '<div class="bg-inp-sub">Còn: ' + c.chuaBG.toLocaleString('vi-VN') + '</div>'
+					+ '<input type="number" class="bg-inp" id="inp-' + i + '" data-id="' + c.id + '" min="0" max="' + c.chuaBG + '" placeholder="0"/>'
+					+ '</div>';
+			}).join('');
+		}
+
+		// ── LOAD DỮ LIỆU TỪ SERVER
+		async function loadNhapHienTai() {
+			try {
+				var res = await fetch('/NhanVienNhap/GetNhapHienTai?cuaNhapId=' + CUA_NHAP_ID);
+				if (!res.ok) {
+					var err = await res.json();
+					console.error('GetNhapHienTai lỗi:', err);
+					return;
+				}
+				var data = await res.json();
+				applyNhapData(data);
+			} catch (e) {
+				console.error('loadNhapHienTai:', e);
+			}
+		}
+		function applyNhapData(data) {
+
+			if (!data) {
+				state = {
+					nhapId: null, bienSo: null, trangThai: -1, ghiChu: null,
+					thoiGianVaoCua: null, thoiGianGioiHan: null, chitiet: [],
+					dangHoanThanh: false
+				};
+				document.getElementById('xe-plate').textContent = 'Chờ xe vào...';
+				document.getElementById('xe-plate').className = 'xe-plate empty';
+				document.getElementById('gio-vao').textContent = '--:--';
+				document.getElementById('gio-han').textContent = '--:--';
+				document.getElementById('tt-text').textContent = 'Chờ xe';
+				document.getElementById('timer-num').textContent = '--:--';
+				document.getElementById('timer-num').className = 'timer-num ok';
+				document.getElementById('status-strip').className = 'strip wait';
+				document.getElementById('status-strip').textContent = 'Đang chờ xe vào...';
+				document.getElementById('ghi-chu-box').style.display = 'none';
+				document.getElementById('btn-xuly').className = 'btn-xuly';
+
+
+				// ✅ Xóa inline style + reset class
+				var bgForm = document.getElementById('bg-form');
+				bgForm.className = 'bg-form';
+				bgForm.style.display = 'none';
+
+				var btnDone = document.getElementById('btn-done');
+				btnDone.className = 'btn-done';
+				btnDone.style.display = 'none';
+
+				var btnXacNhan = document.getElementById('btn-xacnhan');
+				btnXacNhan.style.display = '';
+				btnXacNhan.disabled = true;
+				btnXacNhan.textContent = 'XÁC NHẬN XE VÀO CỬA — BẮT ĐẦU BÀN GIAO';
+
+				document.getElementById('bs-check-zone').style.display = 'none';
+
+				renderHang();
+				return;
+			}
+
+			state.nhapId          = data.nhapId;
+			state.bienSo          = data.bienSoXe;
+			state.trangThai       = data.trangThai;
+			state.ghiChu          = data.ghiChu;
+			state.thoiGianVaoCua  = data.thoiGianVaoCua;
+			state.thoiGianGioiHan = data.thoiGianGioiHan;
+			state.chitiet         = data.chitiet || [];
+
+			document.getElementById('xe-plate').textContent = data.bienSoXe;
+			document.getElementById('xe-plate').className = 'xe-plate';
+
+			if (data.ghiChu) {
+				document.getElementById('ghi-chu-box').style.display = 'block';
+				document.getElementById('ghi-chu-text').textContent = 'Ghi chú: ' + data.ghiChu;
+			} else {
+				document.getElementById('ghi-chu-box').style.display = 'none';
+			}
+
+			if (data.thoiGianVaoCua) {
+				document.getElementById('gio-vao').textContent = fmt(new Date(data.thoiGianVaoCua));
+			} else {
+				document.getElementById('gio-vao').textContent = '--:--';
+			}
+
+			if (data.thoiGianGioiHan) {
+				document.getElementById('gio-han').textContent = fmt(new Date(data.thoiGianGioiHan));
+			} else {
+				document.getElementById('gio-han').textContent = '--:--';
+			}
+
+			// ✅ Reset hết trước, rồi mới set theo trangThai
+			document.getElementById('bs-check-zone').style.display = 'none';
+			document.getElementById('bg-form').className = 'bg-form';
+			document.getElementById('bg-form').style.display = 'none';
+			document.getElementById('btn-done').className = 'btn-done';
+			document.getElementById('btn-done').style.display = 'none';
+			document.getElementById('btn-xacnhan').style.display = '';
+
+			if (data.trangThai === 0) {
+				document.getElementById('tt-text').textContent = 'Đã phân công — chờ vào';
+				document.getElementById('status-strip').className = 'strip wait';
+				document.getElementById('status-strip').textContent = 'Đã phân công — chờ xe vào cửa';
+				document.getElementById('bs-check-zone').style.display = 'flex';
+				document.getElementById('bs-inp').value = '';
+				document.getElementById('bs-msg').textContent = '';
+				document.getElementById('bs-msg').className = 'bs-msg';
+				document.getElementById('bs-inp').className = 'bs-inp';
+				document.getElementById('btn-xacnhan').disabled = true;
+				document.getElementById('btn-baosai').className = 'btn-baosai';
+			}
+
+			if (data.trangThai === 1) {
+				document.getElementById('tt-text').textContent = 'Đang bàn giao';
+				document.getElementById('status-strip').className = 'strip going';
+				document.getElementById('status-strip').textContent = 'Đang bàn giao — timer đang chạy';
+				document.getElementById('bs-check-zone').style.display = 'none';
+				document.getElementById('bg-form').className = 'bg-form show';
+				document.getElementById('bg-form').style.display = '';
+				renderBgInputs();
+			}
+					// Thêm sau if (data.trangThai === 1)
+		if (data.trangThai === 2) { // QuaThoiGian
+			document.getElementById('tt-text').textContent = 'Quá thời gian';
+			document.getElementById('status-strip').className = 'strip over';
+			document.getElementById('status-strip').textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
+			document.getElementById('bs-check-zone').style.display = 'none';
+			document.getElementById('bg-form').className = 'bg-form show';
+			document.getElementById('bg-form').style.display = '';
+			document.getElementById('btn-xuly').className = 'btn-xuly show'; // ← hiện nút xử lý
+			renderBgInputs(); // vẫn cho bàn giao tiếp
+		}
+			renderHang();
+		}
+				// ── KIỂM TRA BIỂN SỐ REALTIME
+		   function onBienSoInput(val) {
+			val = val.trim().toUpperCase();
+			var msg      = document.getElementById('bs-msg');
+			var inp      = document.getElementById('bs-inp');
+			var btn      = document.getElementById('btn-xacnhan');
+			var btnBaoSai = document.getElementById('btn-baosai');
+
+			// Xóa hết → reset
+			if (!val) {
+				inp.className = 'bs-inp';
+				msg.textContent = '';
+				msg.className = 'bs-msg';
+				btn.disabled = true;
+				btnBaoSai.className = 'btn-baosai';
+				return;
+			}
+
+			var expected = (state.bienSo || '').trim().toUpperCase();
+
+			if (val === expected) {
+				// Khớp chính xác → cho xác nhận
+				inp.className = 'bs-inp ok';
+				msg.textContent = '✔ Biển số khớp — có thể xác nhận';
+				msg.className = 'bs-msg ok';
+				btn.disabled = false;
+				btnBaoSai.className = 'btn-baosai';
+			} else {
+				// Không khớp → luôn hiện nút báo sai, không cần đủ ký tự
+				inp.className = 'bs-inp err';
+				msg.textContent = val.length < expected.length
+					? '✘ Đang nhập... — Xác nhận nếu đây là xe thực tế trước cửa'
+					: '✘ Không khớp — nhập lại hoặc báo điều độ';
+				msg.className = 'bs-msg err';
+				btn.disabled = true;
+				btnBaoSai.className = 'btn-baosai show';
+			}
+		}
+
+		// ── BÁO SAI XE → ALERT ĐIỀU ĐỘ
+		async function baoSaiXe() {
+			var bienSoThucTe = document.getElementById('bs-inp').value.trim().toUpperCase();
+				// ← THÊM DÒNG NÀY ĐỂ DEBUG
+		console.log('baoSaiXe:', { nhapId: state.nhapId, bienSoThucTe, cuaNhapId: CUA_NHAP_ID });
+
+			if (!bienSoThucTe || !state.nhapId) return;
+
+			var btn = document.getElementById('btn-baosai');
+			btn.disabled = true;
+			btn.textContent = '⏳ Đang gửi...';
+
+			try {
+				var res = await fetch('/NhanVienNhap/BaoSaiXe', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						nhapId: state.nhapId,
+						bienSoThucTe: bienSoThucTe,
+						cuaNhapId: CUA_NHAP_ID
+					})
+				});
+
+				if (res.ok) {
+					showToast('Đã báo điều độ — chờ xử lý', 'ok');
+					btn.textContent = '✔ Đã báo điều độ — đang chờ xử lý';
+				} else {
+					showToast('Lỗi gửi báo cáo', 'err');
+					btn.disabled = false;
+					btn.textContent = '⚠ Xe trước cửa không đúng — Báo điều độ xử lý';
+				}
+			} catch(e) {
+				showToast('Lỗi kết nối', 'err');
+				btn.disabled = false;
+				btn.textContent = '⚠ Xe trước cửa không đúng — Báo điều độ xử lý';
+			}
+		}
+		function fmt(d) {
+			return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+		}
+
+		// ── XÁC NHẬN XE VÀO CỬA
+		async function xacNhanVaoCua() {
+			if (!state.nhapId) return;
+			document.getElementById('btn-xacnhan').disabled = true;
+			document.getElementById('btn-xacnhan').textContent = '⏳ Đang xử lý...';
+
+			try {
+				var res = await fetch('/NhanVienNhap/XacNhanVaoCua', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nhapId: state.nhapId })
+				});
+
+				if (res.ok) {
+					var data = await res.json();
+					state.trangThai = 1;
+					state.thoiGianVaoCua  = data.thoiGianVaoCua;
+					state.thoiGianGioiHan = data.thoiGianGioiHan;
+
+					document.getElementById('gio-vao').textContent = fmt(new Date(data.thoiGianVaoCua));
+					document.getElementById('gio-han').textContent = fmt(new Date(data.thoiGianGioiHan));
+					document.getElementById('tt-text').textContent = 'Đang bàn giao';
+					document.getElementById('status-strip').className = 'strip going';
+					document.getElementById('status-strip').textContent = 'Đang bàn giao — timer đang chạy';
+					document.getElementById('btn-xacnhan').style.display = 'none';
+					document.getElementById('bg-form').className = 'bg-form show';
+					renderBgInputs();
+					showToast('Xe vào cửa thành công!', 'ok');
+				} else {
+					var err = await res.json();
+					showToast('Lỗi: ' + (err.message || 'Không xác định'), 'err');
+					document.getElementById('btn-xacnhan').disabled = false;
+					document.getElementById('btn-xacnhan').textContent = 'XÁC NHẬN XE VÀO CỬA — BẮT ĐẦU BÀN GIAO';
+				}
+			} catch (e) {
+				showToast('Lỗi kết nối server', 'err');
+				document.getElementById('btn-xacnhan').disabled = false;
+				document.getElementById('btn-xacnhan').textContent = 'XÁC NHẬN XE VÀO CỬA — BẮT ĐẦU BÀN GIAO';
+			}
+		}
+
+		// ── XÁC NHẬN BÀN GIAO
+		async function xacNhanBanGiao() {
+			var items = [];
+			state.chitiet.forEach(function (c, i) {
+				var inp = document.getElementById('inp-' + i);
+				var val = parseInt(inp?.value) || 0;
+				if (val > 0) items.push({ chitietId: c.id, soLuong: val });
+			});
+
+			if (!items.length) { showToast('Vui lòng nhập số lượng bàn giao!', 'err'); return; }
+
+			try {
+				var res = await fetch('/NhanVienNhap/BanGiao', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nhapId: state.nhapId, items: items })
+				});
+
+				if (res.ok) {
+					var data = await res.json();
+					// Cập nhật state từ server trả về
+					state.chitiet = data.chitiet;
+					renderBgInputs();
+					renderHang();
+					showToast('Bàn giao thành công!', 'ok');
+				} else {
+					var err = await res.json();
+					showToast('Lỗi: ' + (err.message || 'Không xác định'), 'err');
+				}
+			} catch (e) {
+				showToast('Lỗi kết nối server', 'err');
+			}
+		}
+
+		// ── HOÀN THÀNH
+		async function hoanThanh(buocQua) {
+			if (!buocQua && !confirm('Xác nhận hoàn thành nhập và đóng cửa?')) return;
+			if (!state.nhapId) { showToast('Lỗi: không có nhapId!', 'err'); return; }
+
+			// ✅ Hủy bất kỳ timer loadNhapHienTai nào đang pending
+			if (_loadTimer) { clearTimeout(_loadTimer); _loadTimer = null; }
+			state.dangHoanThanh = true;
+
+			try {
+				var res = await fetch('/NhanVienNhap/HoanThanh', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ nhapId: state.nhapId, buocQua: buocQua || false })
+				});
+
+				if (res.ok) {
+					showToast('Hoàn thành nhập!', 'ok');
+					applyNhapData(null);
+					state.dangHoanThanh = false;
+				} else {
+					state.dangHoanThanh = false;
+					var err = await res.json();
+					if (err.message && err.message.includes('còn hàng')) {
+						if (confirm(err.message)) hoanThanh(true);
+					} else {
+						showToast('Lỗi: ' + (err.message || 'Không xác định'), 'err');
+					}
+				}
+			} catch (e) {
+				state.dangHoanThanh = false;
+				showToast('Lỗi kết nối server', 'err');
+			}
+		}
+		// ── TOAST
+		function showToast(msg, type) {
+			var t = document.createElement('div');
+			t.className = 'toast ' + type;
+			t.textContent = msg;
+			document.body.appendChild(t);
+			setTimeout(function () { t.remove(); }, 3000);
+		}
+
+		// ── SIGNALR
+		// ── SIGNALR
+		var connection = new signalR.HubConnectionBuilder().withUrl('/signalserver').build();
+
+
+		// Thêm biến này vào đầu script
+		var _loadTimer = null
+				// ✅ Sửa ReceivedNhap — check cờ dangHoanThanh
+				// Thay toàn bộ listener ReceivedNhap trong CuaNhap.cshtml
+				// Sửa ReceivedNhap
+		connection.on('ReceivedNhap', function (x, id) {
+			console.log('SignalR ReceivedNhap:', x, 'id:', id, 'CUA_NHAP_ID:', CUA_NHAP_ID, 'dangHoanThanh:', state.dangHoanThanh);
+			if (id != CUA_NHAP_ID) return;
+
+			if (state.dangHoanThanh) {
+				console.log('→ Đang hoàn thành, bỏ qua SignalR này');
+				return;
+			}
+
+			if (x === null) {
+				applyNhapData(null);
+			} else {
+				// ✅ Hủy timer cũ trước khi tạo mới
+				if (_loadTimer) clearTimeout(_loadTimer);
+				_loadTimer = setTimeout(loadNhapHienTai, 800);
+			}
+		});
+
+		connection.on('ReceivedChitietNhap', function (ct, id) {
+			if (id != CUA_NHAP_ID) return;
+
+			if (state.dangHoanThanh) {
+				console.log('ReceivedChitietNhap → đang hoàn thành, bỏ qua');
+				return; // ✅ chặn luôn
+			}
+
+			if (!ct) {
+				loadNhapHienTai();
+				return;
+			}
+			state.chitiet = ct.map(function (c) {
+				return { id: c.id, donVi: c.donVi, chuaBG: c.chuaBG, daBG: c.daBG };
+			});
+			renderBgInputs();
+			renderHang();
+		});
+
+		connection.start().then(function () {
+			document.getElementById('sig-dot').className = 'dot on';
+			document.getElementById('sig-txt').textContent = 'Realtime';
+			loadNhapHienTai();
+		}).catch(function () {
+			document.getElementById('sig-dot').className = 'dot err';
+			document.getElementById('sig-txt').textContent = 'Mất kết nối';
+			loadNhapHienTai();
+		});
+
+		setInterval(function() {
+			if (!state.dangHoanThanh) loadNhapHienTai();
+		}, 30000);
+
+				// Wrap lại applyNhapData để trace caller
+		var _applyNhapData = applyNhapData;
+		applyNhapData = function(data) {
+			console.trace('applyNhapData called with data=' + (data ? data.trangThai : 'null'));
+			_applyNhapData(data);
+		};
+	</script>
+</body>
+</html>

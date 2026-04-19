@@ -1,0 +1,696 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutApi.cshtml";
+    ViewData["Title"] = "Báo cáo cuối ca";
+}
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --bg: #f0f4f8;
+        --surface: #ffffff;
+        --surface2: #f8fafc;
+        --border: #e2e8f0;
+        --border2: #cbd5e1;
+        --navy: #1e3a5f;
+        --navy2: #2d5a8e;
+        --green: #059669;
+        --green2: #10b981;
+        --red: #dc2626;
+        --gold: #d97706;
+        --blue: #2563eb;
+        --text: #334155;
+        --text2: #64748b;
+        --text3: #94a3b8;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Be Vietnam Pro', sans-serif;
+        min-height: 100vh;
+    }
+
+    .page {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .page-sub {
+        font-size: 13px;
+        color: var(--text2);
+        margin-top: 3px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .date-picker {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-radius: 8px;
+        padding: 8px 14px;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text);
+        outline: none;
+        cursor: pointer;
+    }
+
+    .btn {
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-primary {
+        background: var(--navy);
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background: var(--navy2);
+        }
+
+    .btn-excel {
+        background: #16a34a;
+        color: #fff;
+    }
+
+        .btn-excel:hover {
+            background: #15803d;
+        }
+
+        .btn-excel:disabled {
+            background: var(--border2);
+            cursor: not-allowed;
+        }
+
+    /* ── KPI CARDS ── */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .kpi-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+        border-top: 3px solid var(--border2);
+        transition: transform .15s;
+    }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .kpi-card.c-blue {
+            border-top-color: var(--blue);
+        }
+
+        .kpi-card.c-green {
+            border-top-color: var(--green);
+        }
+
+        .kpi-card.c-dgreen {
+            border-top-color: #047857;
+        }
+
+        .kpi-card.c-red {
+            border-top-color: var(--red);
+        }
+
+        .kpi-card.c-gold {
+            border-top-color: var(--gold);
+        }
+
+        .kpi-card.c-teal {
+            border-top-color: #0891b2;
+        }
+
+        .kpi-card.c-purple {
+            border-top-color: #7c3aed;
+        }
+
+    .kpi-n {
+        font-size: 28px;
+        font-weight: 700;
+        font-family: 'Share Tech Mono', monospace;
+        margin-bottom: 4px;
+    }
+
+    .kpi-card.c-blue .kpi-n {
+        color: var(--blue);
+    }
+
+    .kpi-card.c-green .kpi-n {
+        color: var(--green);
+    }
+
+    .kpi-card.c-dgreen .kpi-n {
+        color: #047857;
+    }
+
+    .kpi-card.c-red .kpi-n {
+        color: var(--red);
+    }
+
+    .kpi-card.c-gold .kpi-n {
+        color: var(--gold);
+    }
+
+    .kpi-card.c-teal .kpi-n {
+        color: #0891b2;
+    }
+
+    .kpi-card.c-purple .kpi-n {
+        color: #7c3aed;
+    }
+
+    .kpi-l {
+        font-size: 11px;
+        color: var(--text2);
+        font-weight: 500;
+    }
+
+    /* ── LAYOUT ── */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 16px;
+    }
+
+    /* ── PANEL ── */
+    .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .panel-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--navy);
+        letter-spacing: .3px;
+    }
+
+    .panel-count {
+        font-size: 11px;
+        color: var(--text2);
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2px 10px;
+    }
+
+    /* ── TABLE ── */
+    .table-wrap {
+        overflow-x: auto;
+        max-height: 480px;
+        overflow-y: auto;
+    }
+
+        .table-wrap::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: var(--border2);
+            border-radius: 3px;
+        }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .data-table thead th {
+            padding: 10px 14px;
+            background: var(--surface2);
+            color: var(--text2);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background .1s;
+        }
+
+            .data-table tbody tr:hover {
+                background: var(--surface2);
+            }
+
+            .data-table tbody tr.over {
+                background: #fff5f5;
+            }
+
+        .data-table td {
+            padding: 10px 14px;
+            vertical-align: middle;
+        }
+
+    /* Badges */
+    .badge {
+        display: inline-flex;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .b-0 {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .b-1 {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .b-2 {
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .b-3 {
+        background: #f0fdf4;
+        color: #166534;
+    }
+
+    .b-4 {
+        background: #f0fdf4;
+        color: #14532d;
+    }
+
+    .tag-over {
+        background: #fff1f2;
+        color: var(--red);
+        font-size: 10px;
+        padding: 1px 7px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    /* Tổng hàng hóa */
+    .hang-list {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hang-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .hang-dv {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--navy);
+    }
+
+    .hang-sl {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--green);
+    }
+
+    .hang-empty {
+        text-align: center;
+        padding: 24px;
+        color: var(--text3);
+        font-size: 12px;
+    }
+
+    /* Log bàn giao */
+    .log-list {
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+        .log-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .log-list::-webkit-scrollbar-thumb {
+            background: var(--border2);
+        }
+
+    .log-item {
+        padding: 8px 14px;
+        border-bottom: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 60px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .log-time {
+        color: var(--text2);
+        font-family: 'Share Tech Mono', monospace;
+    }
+
+    .log-info {
+        color: var(--text);
+    }
+
+    .log-sl {
+        font-weight: 700;
+        color: var(--green);
+        font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* Loading */
+    .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--text2);
+        font-size: 13px;
+    }
+
+    .spinner {
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--border);
+        border-top-color: var(--navy);
+        border-radius: 50%;
+        animation: spin .7s linear infinite;
+        margin: 0 auto 10px;
+    }
+    @@keyframes spin {
+        to
+
+    {
+        transform: rotate(360deg);
+    }
+
+    }
+</style>
+
+<div class="page">
+    <div class="page-header">
+        <div>
+            <div class="page-title">📊 Báo cáo cuối ca — Xuất kho</div>
+            <div class="page-sub">Tổng hợp hoạt động xuất kho theo ngày</div>
+        </div>
+        <div class="header-actions">
+            <input type="date" class="date-picker" id="inp-ngay" />
+            <button class="btn btn-primary" onclick="loadBaoCao()">🔍 Xem báo cáo</button>
+            <button class="btn btn-excel" id="btn-excel" onclick="xuatExcel()" disabled>
+                📥 Xuất Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi-card c-blue">
+            <div class="kpi-n" id="k-tong">--</div>
+            <div class="kpi-l">Tổng xe</div>
+        </div>
+        <div class="kpi-card c-green">
+            <div class="kpi-n" id="k-hoan">--</div>
+            <div class="kpi-l">Hoàn thành</div>
+        </div>
+        <div class="kpi-card c-dgreen">
+            <div class="kpi-n" id="k-roi">--</div>
+            <div class="kpi-l">Đã rời kho</div>
+        </div>
+        <div class="kpi-card c-red">
+            <div class="kpi-n" id="k-qua">--</div>
+            <div class="kpi-l">Quá giờ</div>
+        </div>
+        <div class="kpi-card c-gold">
+            <div class="kpi-n" id="k-tb">-- ph</div>
+            <div class="kpi-l">BG trung bình</div>
+        </div>
+        <div class="kpi-card c-teal">
+            <div class="kpi-n" id="k-nhanh">-- ph</div>
+            <div class="kpi-l">Nhanh nhất</div>
+        </div>
+        <div class="kpi-card c-purple">
+            <div class="kpi-n" id="k-cham">-- ph</div>
+            <div class="kpi-l">Chậm nhất</div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content-grid">
+        <!-- Bảng chi tiết -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Chi tiết từng xe</span>
+                <span class="panel-count" id="ct-count">0 phiếu</span>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Biển số</th>
+                            <th>Tài xế</th>
+                            <th>Cửa</th>
+                            <th>NV Xác nhận</th>
+                            <th>Trạng thái</th>
+                            <th>Giờ vào</th>
+                            <th>Giờ HT</th>
+                            <th>TG BG</th>
+                            <th>Quá giờ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ct-tbody">
+                        <tr>
+                            <td colspan="10" class="loading">
+                                <div>Chọn ngày và bấm "Xem báo cáo"</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Tổng hàng hóa -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Tổng hàng hóa xuất</span>
+                </div>
+                <div class="hang-list" id="hang-list">
+                    <div class="hang-empty">Chưa có dữ liệu</div>
+                </div>
+            </div>
+
+            <!-- Lịch sử bàn giao -->
+            <div class="panel" style="flex:1;">
+                <div class="panel-header">
+                    <span class="panel-title">Lịch sử bàn giao</span>
+                    <span class="panel-count" id="ls-count">0 lượt</span>
+                </div>
+                <div class="log-list" id="log-list">
+                    <div class="hang-empty" style="padding:24px;">Chưa có dữ liệu</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var baoCaoData = null;
+        var curNgay    = '';
+
+        // Set ngày mặc định hôm nay
+        var today = new Date();
+        document.getElementById('inp-ngay').value =
+            today.getFullYear() + '-' +
+            String(today.getMonth()+1).padStart(2,'0') + '-' +
+            String(today.getDate()).padStart(2,'0');
+
+        // Load ngay khi vào trang
+        loadBaoCao();
+
+        async function loadBaoCao() {
+            curNgay = document.getElementById('inp-ngay').value;
+            if (!curNgay) return;
+
+            setLoading(true);
+            try {
+                var [res1, res2] = await Promise.all([
+                    fetch('@Url.Action("GetBaoCaoXuat", "BaoCao")?ngay=' + curNgay),
+                    fetch('@Url.Action("GetLichSuBanGiao", "BaoCao")?ngay=' + curNgay)
+                ]);
+                baoCaoData = await res1.json();
+                var lichSu = await res2.json();
+
+                renderKPI(baoCaoData);
+                renderChiTiet(baoCaoData.chiTiet);
+                renderHangHoa(baoCaoData.tongHang);
+                renderLichSu(lichSu);
+
+                document.getElementById('btn-excel').disabled = false;
+            } catch(e) {
+                console.error(e);
+                alert('Lỗi tải báo cáo!');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        function renderKPI(d) {
+            document.getElementById('k-tong').textContent  = d.tongXe;
+            document.getElementById('k-hoan').textContent  = d.xeHoanThanh;
+            document.getElementById('k-roi').textContent   = d.xeDaRoi;
+            document.getElementById('k-qua').textContent   = d.xeQuaGio;
+            document.getElementById('k-tb').textContent    = d.kpiTrungBinh + ' ph';
+            document.getElementById('k-nhanh').textContent = d.kpiNhanh + ' ph';
+            document.getElementById('k-cham').textContent  = d.kpiCham + ' ph';
+        }
+
+        function renderChiTiet(list) {
+            document.getElementById('ct-count').textContent = list.length + ' phiếu';
+            var tbody = document.getElementById('ct-tbody');
+            if (!list.length) {
+                tbody.innerHTML = '<tr><td colspan="10" class="loading"><div>Không có dữ liệu</div></td></tr>';
+                return;
+            }
+
+            var ttMap = {0:'b-0',1:'b-1',2:'b-2',3:'b-3',4:'b-4'};
+            var ttLabel = {0:'Chờ vào',1:'Đang BG',2:'Quá giờ',3:'Hoàn thành',4:'Đã rời kho'};
+
+            tbody.innerHTML = list.map((x,i) => {
+                var fmt = dt => dt ? new Date(dt).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
+                var over = x.quaGio ? '<span class="tag-over">QUÁ GIỜ</span>' : '<span style="color:var(--text3)">—</span>';
+                var tgBG = x.tgBanGiaoPhut != null ? x.tgBanGiaoPhut + ' ph' : '--';
+                return `<tr class="${x.quaGio?'over':''}">
+                    <td style="color:var(--text2);">${i+1}</td>
+                    <td style="font-weight:700;font-family:'Share Tech Mono',monospace;">${x.bienSoXe}</td>
+                    <td>${x.tenTaiXe}</td>
+                    <td style="font-weight:600;color:var(--navy);">${x.tenCua}</td>
+                    <td style="color:var(--text2);">${x.tenNhanVien}</td>
+                    <td><span class="badge ${ttMap[x.trangThai]||'b-0'}">${ttLabel[x.trangThai]||'--'}</span></td>
+                    <td style="font-family:'Share Tech Mono',monospace;">${fmt(x.thoiGianVaoCua)}</td>
+                    <td style="font-family:'Share Tech Mono',monospace;">${fmt(x.thoiGianHoanThanh)}</td>
+                    <td style="font-weight:700;color:var(--navy);">${tgBG}</td>
+                    <td>${over}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderHangHoa(map) {
+            var el = document.getElementById('hang-list');
+            if (!map || !Object.keys(map).length) {
+                el.innerHTML = '<div class="hang-empty">Chưa có dữ liệu</div>';
+                return;
+            }
+            el.innerHTML = Object.entries(map).map(([dv, sl]) =>
+                `<div class="hang-row">
+                    <span class="hang-dv">${dv}</span>
+                    <span class="hang-sl">${Number(sl).toLocaleString()}</span>
+                </div>`
+            ).join('');
+        }
+
+        function renderLichSu(list) {
+            document.getElementById('ls-count').textContent = list.length + ' lượt';
+            var el = document.getElementById('log-list');
+            if (!list.length) {
+                el.innerHTML = '<div class="hang-empty" style="padding:24px;">Không có lịch sử</div>';
+                return;
+            }
+            el.innerHTML = list.map(l =>
+                `<div class="log-item">
+                    <span class="log-time">${l.thoiGian}</span>
+                    <span class="log-info">Phiếu #${l.phieuId} — ${l.donVi}<br>
+                        <span style="color:var(--text2);font-size:11px;">${l.tenNhanVien}</span>
+                    </span>
+                    <span class="log-sl">+${l.soBG}</span>
+                </div>`
+            ).join('');
+        }
+
+        function setLoading(on) {
+            if (on) {
+                document.getElementById('ct-tbody').innerHTML =
+                    '<tr><td colspan="10" class="loading"><div class="spinner"></div><div>Đang tải...</div></td></tr>';
+            }
+        }
+
+        function xuatExcel() {
+            if (!curNgay) return;
+            window.open('@Url.Action("XuatExcel", "BaoCao")?ngay=' + curNgay, '_blank');
+        }
+    </script>
+}

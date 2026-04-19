@@ -23,6 +23,8 @@ namespace LedApp.Controllers
         }
 
         // ✅ 1. VIEW DASHBOARD
+
+
         public async Task<IActionResult> Index()
         {
             try
@@ -49,7 +51,10 @@ namespace LedApp.Controllers
             }
         }
 
+
         // ✅ 2. REALTIME: Lấy dashboard mới nhất + push SignalR
+
+
         [HttpGet]
         public async Task<IActionResult> GetLatest()
         {
@@ -75,7 +80,10 @@ namespace LedApp.Controllers
             }
         }
 
+
         // ✅ 3. Force Refresh
+
+
         [HttpPost]
         public async Task<IActionResult> ForceRefresh()
         {
@@ -100,6 +108,8 @@ namespace LedApp.Controllers
         }
 
         // ✅ 4. Cập nhật trạng thái
+
+
         [HttpPost]
         public async Task<IActionResult> CapNhatTrangThai(int chuyenId, int trangThai)
         {
@@ -107,7 +117,7 @@ namespace LedApp.Controllers
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
                 var response = await client.PutAsJsonAsync(
-                    $"api/DanhSachXes/chuyen/{chuyenId}/trang-thai", trangThai); // ✅ Sửa: trangthai → trang-thai
+                    $"api/DanhSachXes/chuyen/{chuyenId}/trang-thai", trangThai); 
 
                 if (!response.IsSuccessStatusCode)
                     return StatusCode((int)response.StatusCode);
@@ -132,14 +142,17 @@ namespace LedApp.Controllers
             }
         }
 
+
         // ✅ 5. LỊCH SỬ XE - trả JSON + push SignalR
+
+
         [HttpGet("Xe/{xeId}/ChuyenXes")]
         public async Task<IActionResult> GetChuyenXeTheoXe(int xeId)
         {
             try
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
-                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); // ✅ Sửa: lichsu → lich-su
+                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); 
 
                 if (!response.IsSuccessStatusCode)
                     return NotFound($"Không tìm thấy xe {xeId}");
@@ -158,7 +171,9 @@ namespace LedApp.Controllers
             }
         }
 
+
         // ✅ 6. VIEW LỊCH SỬ XE
+
         public async Task<IActionResult> XeHistory(int xeId)
         {
             try
@@ -175,7 +190,7 @@ namespace LedApp.Controllers
                     ViewBag.MaChiNhanh = xe?.MaChiNhanh;
                 }
 
-                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); // ✅ Sửa: lichsu → lich-su
+                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); 
                 if (!response.IsSuccessStatusCode) return NotFound();
 
                 var json = await response.Content.ReadAsStringAsync();

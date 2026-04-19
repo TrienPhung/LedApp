@@ -5,19 +5,25 @@ using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Identity;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,QuanLy")]
     public class DieuDoXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _hubContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        public DieuDoXuatController(ApplicationDBContext context, IHubContext<SignalServer> hubContext)
+        public DieuDoXuatController(
+            ApplicationDBContext context,
+            IHubContext<SignalServer> hubContext,
+            UserManager<AppUser> userManager)
         {
             _context = context;
             _hubContext = hubContext;
+            _userManager = userManager;
         }
 
         // GET: /DieuDoXuat
@@ -43,14 +49,30 @@ namespace LedApp.Controllers
                 .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
                 .ToListAsync();
 
+            // ĐÚNG — lấy userId của những người có role TaiXe rồi loại ra
+            var taiXeUsers = await _userManager.GetUsersInRoleAsync(nameof(Quyen.TaiXe));
+            var taiXeIds = taiXeUsers.Select(u => u.Id).ToList();
+
             var nhanViens = await _context.nguoiDungs
-                .Where(u => u.Quyen != (int)Quyen.TaiXe)
+                .Where(n => n.UserId == null || !taiXeIds.Contains(n.UserId))
                 .ToListAsync();
 
             ViewBag.CuaXuats = cuaXuats;
             ViewBag.CuaXuatAll = cuaXuats;
             ViewBag.XeTrongBai = xeTrongBai;
             ViewBag.NhanViens = nhanViens;
+            // Trong Index() của DieuDoXuatController, thêm vào trước return View():
+            var currentUser = await _userManager.GetUserAsync(User);
+            ViewBag.UserEmail = currentUser?.Email ?? "";
+            ViewBag.UserName = currentUser?.UserName ?? User.Identity?.Name ?? "";
+            // Lấy FullName từ bảng nguoiDungs
+            // Lấy UserId của người đang đăng nhập
+            var userId = _userManager.GetUserId(User);
+            var nguoiDungHienTai = await _context.nguoiDungs
+                .FirstOrDefaultAsync(n => n.UserId == userId);
+
+            ViewBag.NguoiDungHienTaiId = nguoiDungHienTai?.Id ?? 0;
+            ViewBag.NguoiDungHienTaiTen = nguoiDungHienTai?.FullName ?? User.Identity?.Name ?? "";
             return View();
         }
 
@@ -69,8 +91,8 @@ namespace LedApp.Controllers
                     x.TrangThai,
                     x.GhiChu,
                     x.ThoiGianDuKienVe,
-                    TenTaiXe = x.TaiXe != null ? x.TaiXe.Name : "--",
-                    TelTaiXe = x.TaiXe != null ? x.TaiXe.Tels : "--"
+                    TenTaiXe = x.TaiXe != null ? x.TaiXe.FullName : "--",
+                    TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--"
                 })
                 .ToListAsync();
             return Json(xes);
@@ -95,8 +117,8 @@ namespace LedApp.Controllers
                     TenCua = x.CuaXuat != null ? x.CuaXuat.Ten : "--",
                     x.XeId,
                     BienSoXe = x.Xe != null ? x.Xe.BienSoXe : "--",
-                    TenTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.Name : "--",
-                    TenNhanVien = x.NhanVienXacNhan != null ? x.NhanVienXacNhan.Name : "--",
+                    TenTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.FullName : "--",
+                    TenNhanVien = x.NhanVienXacNhan != null ? x.NhanVienXacNhan.FullName : "--",
                     x.TrangThai,
                     x.ThoiGianPhanCong,
                     x.ThoiGianVaoCua,
@@ -125,8 +147,8 @@ namespace LedApp.Controllers
                     x.BienSoXe,
                     x.LoaiXe,
                     x.TaiTrong,
-                    TenTaiXe = x.TaiXe != null ? x.TaiXe.Name : "Chưa có tài xế",
-                    TelTaiXe = x.TaiXe != null ? x.TaiXe.Tels : "--"
+                    TenTaiXe = x.TaiXe != null ? x.TaiXe.FullName : "Chưa có tài xế",
+                    TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--"
                 })
                 .ToListAsync();
             return Json(xes);
@@ -151,7 +173,7 @@ namespace LedApp.Controllers
                 .ToListAsync();
 
             var cuaTrong = await _context.CuaXuats
-                .Where(c => !cuaDangDungIds.Contains(c.Id))
+                .Where(c => !cuaDangDungIds.Contains(c.Id) && c.IsActive)  // ← thêm && c.IsActive
                 .Select(c => new { c.Id, c.Ten })
                 .ToListAsync();
 
@@ -188,7 +210,7 @@ namespace LedApp.Controllers
                     CoXe = phieu != null,
                     XuatId = phieu?.Id,
                     BienSoXe = phieu?.Xe?.BienSoXe ?? "--",
-                    TenTaiXe = phieu?.Xe?.TaiXe?.Name ?? "--",
+                    TenTaiXe = phieu?.Xe?.TaiXe?.FullName ?? "--",
                     TrangThaiXuat = phieu?.TrangThai ?? -1,
                     ThoiGianVaoCua = phieu?.ThoiGianVaoCua,
                     ThoiGianGioiHan = phieu?.ThoiGianGioiHan,

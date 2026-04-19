@@ -1,9 +1,9 @@
 ﻿@model LedApp.Models.nguoiDungs
 @{
-    ViewData["Title"] = "Chi tiết người dùng";
+    ViewData["Title"] = "Chi tiết nhân viên";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Chi tiết người dùng</h1>
+<h1>Chi tiết nhân viên</h1>
 <hr />
 <div class="row">
     <div class="col-md-2 text-center mb-3">
@@ -12,47 +12,50 @@
     </div>
     <div class="col-md-10">
         <dl class="row">
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Username)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Username)</dd>
+            <dt class="col-sm-3">Họ tên</dt>
+            <dd class="col-sm-9">@Model.FullName</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Name)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Name)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Tels)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Tels)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Email)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(m => m.Email)</dd>
-
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Quyen)</dt>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NgaySinh)</dt>
+            <dd class="col-sm-9">@(Model.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.SoDienThoai)</dt>
+            <dd class="col-sm-9">@(Model.SoDienThoai ?? "—")</dd>
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GioiTinh)</dt>
             <dd class="col-sm-9">
-                @switch (Model.Quyen)
+                @switch (Model.GioiTinh)
                 {
-                    case 0:
-                        <span>Nhân viên</span>
+                    case LedApp.Models.GioiTinhEnum.Nam:
+                        <span class="badge bg-primary">Nam</span>
                         break;
-                    case 1:
-                        <span class="badge bg-primary">Quản lý</span>
+                    case LedApp.Models.GioiTinhEnum.Nu:
+                        <span class="badge bg-danger">Nữ</span>
                         break;
-                    case 2:
-                        <span class="badge bg-danger">Admin</span>
-                        break;
-                    case 3:
-                        <span class="badge bg-warning text-dark">Tài xế</span>
-                        break;
-                    case 4:
-                        <span class="badge bg-secondary">Bảo vệ</span>
+                    case LedApp.Models.GioiTinhEnum.Khac:
+                        <span class="badge bg-secondary">Khác</span>
                         break;
                     default:
-                        <span>@Model.Quyen</span>
+                        <span>—</span>
                         break;
+                }
+            </dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DiaChi)</dt>
+            <dd class="col-sm-9">@(Model.DiaChi ?? "—")</dd>
+
+            <dt class="col-sm-3">Tài khoản</dt>
+            <dd class="col-sm-9">
+                @if (Model.User != null)
+                {
+                    <span class="badge bg-success">@Model.User.UserName</span>
+                    <small class="text-muted ms-2">@Model.User.Email</small>
+                }
+                else
+                {
+                    <span class="badge bg-warning text-dark">Chưa có tài khoản</span>
                 }
             </dd>
         </dl>
     </div>
 </div>
 <hr />
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary btn-sm">Sửa</a>
-    <a asp-action="Index" class="btn btn-secondary btn-sm ms-2">Trở về</a>
-</div>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Sửa</a>
+<a asp-action="Index" class="btn btn-secondary btn-sm ms-2">Trở về</a>
