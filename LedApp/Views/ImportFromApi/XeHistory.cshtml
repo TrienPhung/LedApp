@@ -1,305 +1,367 @@
 ﻿@model List<LedApp.DTOs.ChuyenXeDto>
 @{
     ViewData["Title"] = "Lịch sử chuyến xe";
-    Layout = "~/Views/Shared/_LayoutApi.cshtml";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
     var tongChuyen = Model?.Count ?? 0;
     var hoanThanh = Model?.Count(c => c.TrangThai == 4) ?? 0;
     var dangChay = Model?.Count(c => c.TrangThai == 1
                                     || c.TrangThai == 2
                                     || c.TrangThai == 3) ?? 0;
 }
+
 <style>
-    body {
-        background: #0f172a;
-        color: #e2e8f0;
+    /* ===== LIGHT MODE (mặc định) ===== */
+    .wrap {
+        padding: 16px;
         font-family: Arial;
+        min-height: 100vh;
+        --bg-page: #f1f5f9;
+        --bg-card: #ffffff;
+        --bg-table: #ffffff;
+        --bg-hover: #f8fafc;
+        --bg-tag: #e2e8f0;
+        --bg-detail: #f0f4f8;
+        --bg-box: #e2e8f0;
+        --border: #e2e8f0;
+        --text: #1e293b;
+        --text-muted: #64748b;
+        --text-th: #94a3b8;
+    }
+
+    /* ===== DARK MODE ===== */
+    body.dark-mode .wrap {
+        --bg-page: #0f172a;
+        --bg-card: #1e293b;
+        --bg-table: #1e293b;
+        --bg-hover: #334155;
+        --bg-tag: #334155;
+        --bg-detail: #020617;
+        --bg-box: #334155;
+        --border: #334155;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-th: #94a3b8;
     }
 
     .wrap {
-        padding: 16px;
+        background: var(--bg-page);
+        color: var(--text);
     }
 
-    .top {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-bottom: 12px;
-    }
-
-    .back {
-        padding: 6px 10px;
-        border: 1px solid #3b82f6;
-        border-radius: 6px;
-        color: #3b82f6;
-        text-decoration: none;
-        font-size: 12px;
-    }
-
-    .title {
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .info {
-        display: flex;
-        gap: 12px;
-        background: #1e293b;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-        .info .main {
-            flex: 1;
+        /* ===== TOP BAR ===== */
+        .wrap .hist-top {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
-    .bien-so {
-        font-weight: bold;
-        font-size: 15px;
-    }
-
-    .meta {
-        font-size: 12px;
-        opacity: 0.6;
-        margin-top: 2px;
-    }
-
-    .stats {
-        display: flex;
-        gap: 10px;
-    }
-
-    .box {
-        background: #334155;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-align: center;
-        min-width: 70px;
-    }
-
-        .box .val {
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .box small {
-            font-size: 11px;
-            opacity: 0.6;
-        }
-
-    .green {
-        color: #4ade80;
-    }
-
-    .blue {
-        color: #60a5fa;
-    }
-
-    .toolbar {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-        align-items: center;
-    }
-
-        .toolbar select {
-            padding: 6px;
+        .wrap .hist-back {
+            padding: 6px 10px;
+            border: 1px solid #3b82f6;
             border-radius: 6px;
-            background: #1e293b;
+            color: #3b82f6;
+            text-decoration: none;
+            font-size: 12px;
+            background: transparent;
+        }
+
+            .wrap .hist-back:focus,
+            .wrap .hist-back:focus-visible {
+                outline: none !important;
+                box-shadow: none !important;
+            }
+
+        .wrap .hist-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text);
+        }
+
+        /* ===== INFO BOX ===== */
+        .wrap .hist-info {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+            .wrap .hist-info .info-main {
+                flex: 1;
+            }
+
+        .wrap .hist-bienso {
+            font-weight: bold;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .wrap .hist-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .wrap .hist-stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .wrap .hist-box {
+            background: var(--bg-box);
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 70px;
+        }
+
+            .wrap .hist-box .val {
+                font-weight: bold;
+                font-size: 16px;
+                color: var(--text);
+            }
+
+            .wrap .hist-box small {
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+        .wrap .val.green {
+            color: #10b981;
+        }
+
+        .wrap .val.blue {
+            color: #3b82f6;
+        }
+
+        /* ===== TOOLBAR ===== */
+        .wrap .hist-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+            .wrap .hist-toolbar select {
+                padding: 6px;
+                border-radius: 6px;
+                background: var(--bg-card);
+                color: var(--text);
+                border: 1px solid var(--border);
+                font-size: 12px;
+            }
+
+                .wrap .hist-toolbar select:focus {
+                    outline: none !important;
+                    box-shadow: none !important;
+                }
+
+            .wrap .hist-toolbar .toolbar-count {
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-left: auto;
+            }
+
+        /* ===== TABLE ===== */
+        .wrap .hist-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-table);
+            border-radius: 10px;
+            overflow: hidden;
+            table-layout: fixed;
+            border: 1px solid var(--border);
+        }
+
+            .wrap .hist-table th:nth-child(1), .wrap .hist-table td:nth-child(1) {
+                width: 80px;
+            }
+
+            .wrap .hist-table th:nth-child(2), .wrap .hist-table td:nth-child(2) {
+                width: 110px;
+            }
+
+            .wrap .hist-table th:nth-child(3), .wrap .hist-table td:nth-child(3) {
+                width: 100px;
+            }
+
+            .wrap .hist-table th:nth-child(4), .wrap .hist-table td:nth-child(4) {
+                width: 100px;
+            }
+
+            .wrap .hist-table th:nth-child(5), .wrap .hist-table td:nth-child(5) {
+                width: 100px;
+            }
+
+            .wrap .hist-table th:nth-child(6), .wrap .hist-table td:nth-child(6) {
+                width: 130px;
+            }
+
+            .wrap .hist-table th:nth-child(7), .wrap .hist-table td:nth-child(7) {
+                width: 100px;
+            }
+
+            .wrap .hist-table th:nth-child(8), .wrap .hist-table td:nth-child(8) {
+                width: 70px;
+            }
+
+            .wrap .hist-table td,
+            .wrap .hist-table th {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding: 8px 10px;
+                font-size: 13px;
+                color: var(--text);
+            }
+
+            .wrap .hist-table th {
+                color: var(--text-th);
+                border-bottom: 1px solid var(--border);
+                font-weight: 600;
+            }
+
+            .wrap .hist-table tr {
+                border-bottom: 1px solid var(--border);
+            }
+
+                .wrap .hist-table tr:hover {
+                    background: var(--bg-hover);
+                }
+
+        /* ===== TAGS & BADGES ===== */
+        .wrap .hang {
+            background: var(--bg-tag);
+            color: var(--text);
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 11px;
+            margin: 2px;
+            display: inline-block;
+        }
+
+        .wrap .tt-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #fff;
+        }
+
+        .wrap .tt-0 {
+            background: #64748b;
+        }
+
+        .wrap .tt-1 {
+            background: #3b82f6;
+        }
+
+        .wrap .tt-2 {
+            background: #22c55e;
+            color: #000;
+        }
+
+        .wrap .tt-3 {
+            background: #f97316;
+        }
+
+        .wrap .tt-4 {
+            background: #10b981;
+        }
+
+        .wrap .latest-tag {
+            background: #1d4ed8;
             color: white;
-            border: 1px solid #334155;
-            font-size: 12px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            vertical-align: middle;
         }
 
-        .toolbar .count {
-            font-size: 12px;
-            opacity: 0.5;
-            margin-left: auto;
+        /* ===== DETAIL ROW ===== */
+        .wrap .hist-detail {
+            display: none;
+            background: var(--bg-detail);
         }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #1e293b;
-        border-radius: 10px;
-        overflow: hidden;
-        table-layout: fixed;
-    }
+            .wrap .hist-detail.open {
+                display: table-row;
+            }
 
-    th:nth-child(1), td:nth-child(1) {
-        width: 80px;
-    }
-
-    th:nth-child(2), td:nth-child(2) {
-        width: 110px;
-    }
-
-    th:nth-child(3), td:nth-child(3) {
-        width: 100px;
-    }
-
-    th:nth-child(4), td:nth-child(4) {
-        width: 100px;
-    }
-
-    th:nth-child(5), td:nth-child(5) {
-        width: 100px;
-    }
-
-    th:nth-child(6), td:nth-child(6) {
-        width: 130px;
-    }
-
-    th:nth-child(7), td:nth-child(7) {
-        width: 100px;
-    }
-
-    th:nth-child(8), td:nth-child(8) {
-        width: 70px;
-    }
-
-    td, th {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    th, td {
-        padding: 8px 10px;
-        font-size: 13px;
-    }
-
-    th {
-        opacity: 0.6;
-        border-bottom: 1px solid #334155;
-    }
-
-    tr {
-        border-bottom: 1px solid #334155;
-    }
-
-        tr:hover {
-            background: #334155;
+        .wrap .detail-box {
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
         }
 
-    .hang {
-        background: #334155;
-        padding: 3px 6px;
-        border-radius: 5px;
-        font-size: 11px;
-        margin: 2px;
-        display: inline-block;
-    }
-
-    .badge {
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 11px;
-    }
-
-    .tt-0 {
-        background: #475569;
-    }
-
-    .tt-1 {
-        background: #3b82f6;
-    }
-
-    .tt-2 {
-        background: #22c55e;
-        color: #000;
-    }
-
-    .tt-3 {
-        background: #f97316;
-    }
-
-    .tt-4 {
-        background: #10b981;
-    }
-
-    .latest {
-        background: #1d4ed8;
-        color: white;
-        font-size: 10px;
-        padding: 2px 6px;
-        border-radius: 4px;
-        margin-left: 5px;
-        vertical-align: middle;
-    }
-
-    .detail {
-        display: none;
-        background: #020617;
-    }
-
-        .detail.open {
-            display: table-row;
+        .wrap .field label {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 2px;
         }
 
-    .detail-box {
-        padding: 12px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-    }
-
-    .field label {
-        font-size: 11px;
-        opacity: 0.5;
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    .field div {
-        font-size: 13px;
-    }
-
-    .btn {
-        border: 1px solid #3b82f6;
-        padding: 3px 8px;
-        border-radius: 6px;
-        font-size: 11px;
-        color: #3b82f6;
-        background: none;
-        cursor: pointer;
-    }
-
-        .btn:hover {
-            background: #1e3a5f;
+        .wrap .field div {
+            font-size: 13px;
+            color: var(--text);
         }
+
+        /* ===== BUTTON ===== */
+        .wrap .hist-btn {
+            border: 1px solid #3b82f6;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #3b82f6;
+            background: transparent;
+            cursor: pointer;
+        }
+
+            .wrap .hist-btn:hover {
+                background: rgba(59, 130, 246, 0.1);
+            }
+
+            .wrap .hist-btn:focus,
+            .wrap .hist-btn:focus-visible {
+                outline: none !important;
+                box-shadow: none !important;
+            }
 </style>
 
 <div class="wrap">
-    <div class="top">
-        <a href="@Url.Action("Index","ImportFromApi")" class="back">← Dashboard</a>
-        <div class="title">📋 Lịch sử chuyến xe</div>
+    <div class="hist-top">
+        <a href="@Url.Action("Index","ImportFromApi")" class="hist-back">← Dashboard</a>
+        <div class="hist-title">📋 Lịch sử chuyến xe</div>
     </div>
 
-    <div class="info">
-        <div class="main">
-            <div class="bien-so">@(ViewBag.BienSo ?? "—")</div>
-            <div class="meta">@(ViewBag.TenLaiXe ?? "—") &nbsp;·&nbsp; @(ViewBag.MaChiNhanh ?? "—")</div>
+    <div class="hist-info">
+        <div class="info-main">
+            <div class="hist-bienso">@(ViewBag.BienSo ?? "—")</div>
+            <div class="hist-meta">@(ViewBag.TenLaiXe ?? "—") &nbsp;·&nbsp; @(ViewBag.MaChiNhanh ?? "—")</div>
         </div>
-        <div class="stats">
-            <div class="box">
+        <div class="hist-stats">
+            <div class="hist-box">
                 <div class="val">@tongChuyen</div>
                 <small>Tổng</small>
             </div>
-            <div class="box">
+            <div class="hist-box">
                 <div class="val green">@hoanThanh</div>
                 <small>Xong</small>
             </div>
-            <div class="box">
+            <div class="hist-box">
                 <div class="val blue">@dangChay</div>
                 <small>Đang chạy</small>
             </div>
         </div>
     </div>
 
-    <div class="toolbar">
+    <div class="hist-toolbar">
         <select id="filter" onchange="filterRows()">
             <option value="">Tất cả</option>
             <option value="0">Chưa về</option>
@@ -312,10 +374,10 @@
             <option value="desc">Mới nhất trước</option>
             <option value="asc">Cũ nhất trước</option>
         </select>
-        <span class="count" id="count-label">@tongChuyen chuyến</span>
+        <span class="toolbar-count" id="count-label">@tongChuyen chuyến</span>
     </div>
 
-    <table id="table">
+    <table id="table" class="hist-table">
         <thead>
             <tr>
                 <th>Lần</th>
@@ -344,7 +406,7 @@
                             Lần @cx.LanThu
                             @if (cx.IsLatest)
                             {
-                                <span class="latest">Mới nhất</span>
+                                <span class="latest-tag">Mới nhất</span>
                             }
                         </td>
                         <td>@cx.MaChuyenApi</td>
@@ -365,13 +427,13 @@
                             }
                         </td>
                         <td>
-                            <span class="badge tt-@tt">@(tt < ttLabel.Length ? ttLabel[tt] : "--")</span>
+                            <span class="tt-badge tt-@tt">@(tt < ttLabel.Length ? ttLabel[tt] : "--")</span>
                         </td>
                         <td>
-                            <button class="btn" id="btn-@cx.Id" onclick="toggle(@cx.Id)">Chi tiết</button>
+                            <button class="hist-btn" id="btn-@cx.Id" onclick="toggle(@cx.Id)">Chi tiết</button>
                         </td>
                     </tr>
-                    <tr id="d-@cx.Id" class="detail">
+                    <tr id="d-@cx.Id" class="hist-detail">
                         <td colspan="8">
                             <div class="detail-box">
                                 <div class="field">
@@ -431,7 +493,7 @@
             const show = !v || r.dataset.tt === v;
             r.style.display = show ? '' : 'none';
             const dr = r.nextElementSibling;
-            if (dr && dr.classList.contains('detail')) {
+            if (dr && dr.classList.contains('hist-detail')) {
                 if (!show) dr.classList.remove('open');
                 dr.style.display = show ? '' : 'none';
             }

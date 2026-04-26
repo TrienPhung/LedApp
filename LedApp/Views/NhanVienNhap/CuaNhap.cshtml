@@ -3,6 +3,13 @@
 	Layout = null;
 	int cuaNhapId = ViewBag.CuaNhapId;
 	string tenCua = ViewBag.TenCua;
+
+	var userName = ViewBag.UserName as string ?? User.Identity?.Name ?? "User";
+	var userEmail = ViewBag.UserEmail as string ?? "";
+	var parts = userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+	var initials = (parts.Length >= 2
+		? $"{parts[0][0]}{parts[^1][0]}"
+		: userName.Length >= 2 ? userName[..2] : userName).ToUpper();
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -11,6 +18,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 	<title>@tenCua — Nhân Viên</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 	<style>
 		* {
 			box-sizing: border-box;
@@ -32,7 +40,6 @@
 		.hdr {
 			background: #0d1828;
 			border: 1px solid #1a3050;
-			border-top: 2px solid #0ea5e9;
 			border-radius: 8px;
 			padding: 10px 18px;
 			display: flex;
@@ -637,6 +644,327 @@
 				opacity: .5;
 				cursor: not-allowed;
 			}
+
+		/* ── THEME TOGGLE & USER DROPDOWN ── */
+		.theme-toggle {
+			width: 30px;
+			height: 30px;
+			background: #0a1520;
+			border: 1px solid #1a3050;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			font-size: 14px;
+			color: #4a6580;
+			transition: all .2s;
+			flex-shrink: 0;
+		}
+
+			.theme-toggle:hover {
+				border-color: #38bdf8;
+				color: #38bdf8;
+				background: rgba(56,189,248,.08);
+			}
+
+		.user-btn {
+			position: relative;
+		}
+
+		.user-avatar {
+			width: 30px;
+			height: 30px;
+			background: linear-gradient(135deg,#003a60,#00629e);
+			border: 2px solid #38bdf8;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 11px;
+			font-weight: 800;
+			color: #38bdf8;
+			cursor: pointer;
+			user-select: none;
+			flex-shrink: 0;
+			transition: border-color .2s, transform .15s;
+		}
+
+			.user-avatar:hover {
+				border-color: #f59e0b;
+				transform: scale(1.05);
+			}
+
+			.user-avatar.open {
+				border-color: #f59e0b;
+			}
+
+		.user-dropdown {
+			display: none;
+			position: absolute;
+			right: 0;
+			top: calc(100% + 10px);
+			width: 220px;
+			background: #050e1a;
+			border: 1px solid #1a3050;
+			border-radius: 10px;
+			z-index: 999;
+			box-shadow: 0 16px 40px rgba(0,0,0,.7);
+			overflow: hidden;
+			animation: dropIn .15s ease;
+		}
+
+			.user-dropdown.show {
+				display: block;
+			}
+
+		@@keyframes dropIn {
+			from {
+				opacity: 0;
+				transform: translateY(-6px) scale(.97)
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0) scale(1)
+			}
+		}
+
+		.ud-header {
+			padding: 12px 14px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			background: rgba(56,189,248,.04);
+			border-bottom: 1px solid rgba(255,255,255,.05);
+		}
+
+		.ud-avatar-lg {
+			width: 38px;
+			height: 38px;
+			flex-shrink: 0;
+			background: linear-gradient(135deg,#003a60,#00629e);
+			border: 2px solid #38bdf8;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 13px;
+			font-weight: 800;
+			color: #38bdf8;
+		}
+
+		.ud-name {
+			font-size: 12px;
+			font-weight: 700;
+			color: #e2f0ff;
+			max-width: 130px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.ud-role {
+			font-size: 10px;
+			color: #4a6580;
+			margin-top: 2px;
+			letter-spacing: .5px;
+		}
+
+		.ud-divider {
+			height: 1px;
+			background: rgba(255,255,255,.05);
+			margin: 0 12px;
+		}
+
+		.ud-item {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 9px 14px;
+			font-size: 12px;
+			font-weight: 600;
+			color: #6a8aa0;
+			cursor: pointer;
+			text-decoration: none;
+			background: transparent;
+			border: none;
+			width: 100%;
+			text-align: left;
+			font-family: 'Courier New', monospace;
+			transition: background .15s, color .15s;
+		}
+
+			.ud-item:hover {
+				background: rgba(56,189,248,.07);
+				color: #38bdf8;
+			}
+
+			.ud-item.danger {
+				color: #ef4444;
+			}
+
+				.ud-item.danger:hover {
+					background: rgba(239,68,68,.08);
+					color: #ef4444;
+				}
+
+			.ud-item i {
+				font-size: 14px;
+				width: 16px;
+				text-align: center;
+				flex-shrink: 0;
+			}
+
+		/* Light mode overrides */
+		body.light-mode {
+			background: #f0f4f8;
+			color: #334155;
+		}
+
+			body.light-mode .hdr,
+			body.light-mode .panel,
+			body.light-mode .action-zone {
+				background: #ffffff;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .hdr-gate {
+				color: #0f172a;
+			}
+
+			body.light-mode .hdr-sub,
+			body.light-mode .hdr-date {
+				color: #94a3b8;
+			}
+
+			body.light-mode .hdr-clock {
+				color: #d97706;
+			}
+
+			body.light-mode .sig {
+				background: #f1f5f9;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .panel-title {
+				color: #94a3b8;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .info-lbl {
+				color: #94a3b8;
+			}
+
+			body.light-mode .info-val {
+				color: #0f172a;
+			}
+
+			body.light-mode .info-row {
+				border-color: #f1f5f9;
+			}
+
+			body.light-mode .timer,
+			body.light-mode .xe-plate,
+			body.light-mode .bg-inp,
+			body.light-mode .bs-inp {
+				background: #f8fafc;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .xe-plate {
+				color: #d97706;
+			}
+
+			body.light-mode .hang-table th {
+				color: #94a3b8;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .hang-table td {
+				border-color: #f1f5f9;
+			}
+
+			body.light-mode .empty-note {
+				color: #94a3b8;
+			}
+
+			body.light-mode .theme-toggle {
+				background: #f1f5f9;
+				border-color: #e2e8f0;
+				color: #94a3b8;
+			}
+
+				body.light-mode .theme-toggle:hover {
+					border-color: #0ea5e9;
+					color: #0ea5e9;
+				}
+
+			body.light-mode .user-avatar {
+				background: linear-gradient(135deg,#e0f2fe,#bae6fd);
+				border-color: #0ea5e9;
+				color: #0369a1;
+			}
+
+			body.light-mode .user-dropdown {
+				background: #ffffff;
+				border-color: #e2e8f0;
+				box-shadow: 0 16px 40px rgba(0,0,0,.12);
+			}
+
+			body.light-mode .ud-header {
+				background: rgba(14,165,233,.04);
+				border-color: #f1f5f9;
+			}
+
+			body.light-mode .ud-avatar-lg {
+				background: linear-gradient(135deg,#e0f2fe,#bae6fd);
+				border-color: #0ea5e9;
+				color: #0369a1;
+			}
+
+			body.light-mode .ud-name {
+				color: #0f172a;
+			}
+
+			body.light-mode .ud-role {
+				color: #94a3b8;
+			}
+
+			body.light-mode .ud-divider {
+				background: #f1f5f9;
+			}
+
+			body.light-mode .ud-item {
+				color: #64748b;
+			}
+
+				body.light-mode .ud-item:hover {
+					background: rgba(14,165,233,.06);
+					color: #0ea5e9;
+				}
+
+				body.light-mode .ud-item.danger {
+					color: #ef4444;
+				}
+
+			body.light-mode .bg-inp-lbl,
+			body.light-mode .bg-inp-sub,
+			body.light-mode .bs-zone-title {
+				color: #94a3b8;
+			}
+
+			body.light-mode .bg-inp,
+			body.light-mode .bs-inp {
+				color: #0f172a;
+				border-color: #e2e8f0;
+			}
+
+			body.light-mode .ghi-chu {
+				background: #eff6ff;
+				border-color: #bfdbfe;
+				color: #1d4ed8;
+			}
 	</style>
 </head>
 <body>
@@ -651,7 +979,37 @@
 			<div class="hdr-date" id="dt-str"></div>
 		</div>
 		<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-			<div class="sig"><span class="dot" id="sig-dot"></span><span id="sig-txt">Đang kết nối...</span></div>
+			<div style="display:flex;align-items:center;gap:8px;">
+				<div class="sig"><span class="dot" id="sig-dot"></span><span id="sig-txt">Đang kết nối...</span></div>
+				<!-- Theme toggle -->
+				<button class="theme-toggle" onclick="toggleTheme()" title="Sáng/Tối">
+					<i class="bi bi-moon-fill" id="theme-ico"></i>
+				</button>
+				<!-- User dropdown -->
+				<div class="user-btn" id="user-btn">
+					<div class="user-avatar" id="user-avatar" onclick="toggleUserMenu()">@initials</div>
+					<div class="user-dropdown" id="user-dropdown">
+						<div class="ud-header">
+							<div class="ud-avatar-lg">@initials</div>
+							<div>
+								<div class="ud-name">@userName</div>
+								<div class="ud-role">@userEmail</div>
+							</div>
+						</div>
+						<div class="ud-divider"></div>
+						<a href="#" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
+						<a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a>
+						<div class="ud-divider"></div>
+						<form asp-area="Identity" asp-page="/Account/Logout"
+							  asp-route-returnUrl="@Url.Action("CuaNhap","NhanVienNhap",new{cuaNhapId})" method="post">
+							@Html.AntiForgeryToken()
+							<button type="submit" class="ud-item danger">
+								<i class="bi bi-box-arrow-right"></i> Đăng xuất
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
 			<div style="font-size:10px;color:#4a6580;">Cửa ID: <span style="color:#38bdf8;">@cuaNhapId</span></div>
 		</div>
 	</div>
@@ -763,7 +1121,7 @@
 				var m = Math.floor(diff / 60), s = diff % 60;
 				el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
 				el.className = 'timer-num ' + (diff > 600 ? 'ok' : diff > 180 ? 'warn' : 'over');
-				_daBooCanhBao = false; // reset nếu timer còn chạy
+				// _daBooCanhBao = false; reset nếu timer còn chạy
 			} else if (state.trangThai === 1 || state.trangThai === 2) {
 				el.textContent = 'QUÁ HẠN';
 				el.className = 'timer-num over';
@@ -787,16 +1145,23 @@
 					body: JSON.stringify({ nhapId: state.nhapId })
 				});
 				if (res.ok) {
-					state.trangThai = 2; // QuaThoiGian
+					state.trangThai = 2;
 					document.getElementById('tt-text').textContent = 'Quá thời gian';
-					console.log('Đã báo cảnh báo quá giờ nhapId=' + state.nhapId);
+					document.getElementById('status-strip').className = 'strip over';
+					document.getElementById('status-strip').textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
+					document.getElementById('btn-xuly').className = 'btn-xuly show';
+					document.getElementById('bg-form').className = 'bg-form show';
+					document.getElementById('bg-form').style.display = '';
+					// Chỉ render khi chưa có input
+					var hasInputs = document.getElementById('bg-inputs').children.length > 0;
+					if (!hasInputs) renderBgInputs();
 				}
 			} catch(e) {
 				console.error('baoCanhBaoQuaGio lỗi:', e);
 			}
 		}
 				// ── XỬ LÝ QUÁ GIỜ — cập nhật CanhBao sang DangXuLy
-				async function xuLyQuaGio() {
+		async function xuLyQuaGio() {
 			console.log('xuLyQuaGio state.nhapId =', state.nhapId);
 			if (!state.nhapId) return;
 
@@ -864,12 +1229,29 @@
 			document.getElementById('bg-inputs').innerHTML = state.chitiet.map(function (c, i) {
 				return '<div class="bg-inp-wrap">'
 					+ '<div class="bg-inp-lbl">' + c.donVi + '</div>'
-					+ '<div class="bg-inp-sub">Còn: ' + c.chuaBG.toLocaleString('vi-VN') + '</div>'
-					+ '<input type="number" class="bg-inp" id="inp-' + i + '" data-id="' + c.id + '" min="0" max="' + c.chuaBG + '" placeholder="0"/>'
+					+ '<div class="bg-inp-sub" id="sub-' + i + '">Còn: ' + c.chuaBG.toLocaleString('vi-VN') + '</div>'
+					+ '<input type="number" class="bg-inp" id="inp-' + i + '" data-id="' + c.id
+					+ '" min="0" max="' + c.chuaBG + '" placeholder="0"'
+					+ ' oninput="validateBgInp(this,' + i + ')"/>'
 					+ '</div>';
 			}).join('');
 		}
-
+		function validateBgInp(inp, i) {
+			var max = parseInt(inp.max) || 0;
+			var val = parseInt(inp.value) || 0;
+			if (val > max) {
+				inp.style.borderColor = '#ef4444';
+				inp.style.color = '#f87171';
+				var sub = document.getElementById('sub-' + i);
+				if (sub) sub.style.color = '#ef4444';
+				showToast('Vượt quá số lượng còn lại! Tối đa: ' + max.toLocaleString('vi-VN'), 'err');
+			} else {
+				inp.style.borderColor = '';
+				inp.style.color = '';
+				var sub = document.getElementById('sub-' + i);
+				if (sub) sub.style.color = '#f59e0b';
+			}
+		}
 		// ── LOAD DỮ LIỆU TỪ SERVER
 		async function loadNhapHienTai() {
 			try {
@@ -886,126 +1268,129 @@
 			}
 		}
 		function applyNhapData(data) {
+				if (!data) {
+					state = {
+						nhapId: null, bienSo: null, trangThai: -1, ghiChu: null,
+						thoiGianVaoCua: null, thoiGianGioiHan: null, chitiet: [],
+						dangHoanThanh: false
+					};
+					document.getElementById('xe-plate').textContent = 'Chờ xe vào...';
+					document.getElementById('xe-plate').className = 'xe-plate empty';
+					document.getElementById('gio-vao').textContent = '--:--';
+					document.getElementById('gio-han').textContent = '--:--';
+					document.getElementById('tt-text').textContent = 'Chờ xe';
+					document.getElementById('timer-num').textContent = '--:--';
+					document.getElementById('timer-num').className = 'timer-num ok';
+					document.getElementById('status-strip').className = 'strip wait';
+					document.getElementById('status-strip').textContent = 'Đang chờ xe vào...';
+					document.getElementById('ghi-chu-box').style.display = 'none';
+					document.getElementById('btn-xuly').className = 'btn-xuly';
 
-			if (!data) {
-				state = {
-					nhapId: null, bienSo: null, trangThai: -1, ghiChu: null,
-					thoiGianVaoCua: null, thoiGianGioiHan: null, chitiet: [],
-					dangHoanThanh: false
-				};
-				document.getElementById('xe-plate').textContent = 'Chờ xe vào...';
-				document.getElementById('xe-plate').className = 'xe-plate empty';
-				document.getElementById('gio-vao').textContent = '--:--';
-				document.getElementById('gio-han').textContent = '--:--';
-				document.getElementById('tt-text').textContent = 'Chờ xe';
-				document.getElementById('timer-num').textContent = '--:--';
-				document.getElementById('timer-num').className = 'timer-num ok';
-				document.getElementById('status-strip').className = 'strip wait';
-				document.getElementById('status-strip').textContent = 'Đang chờ xe vào...';
-				document.getElementById('ghi-chu-box').style.display = 'none';
-				document.getElementById('btn-xuly').className = 'btn-xuly';
 
+					// ✅ Xóa inline style + reset class
+					var bgForm = document.getElementById('bg-form');
+					bgForm.className = 'bg-form';
+					bgForm.style.display = 'none';
 
-				// ✅ Xóa inline style + reset class
-				var bgForm = document.getElementById('bg-form');
-				bgForm.className = 'bg-form';
-				bgForm.style.display = 'none';
+					var btnDone = document.getElementById('btn-done');
+					btnDone.className = 'btn-done';
+					btnDone.style.display = 'none';
 
-				var btnDone = document.getElementById('btn-done');
-				btnDone.className = 'btn-done';
-				btnDone.style.display = 'none';
+					var btnXacNhan = document.getElementById('btn-xacnhan');
+					btnXacNhan.style.display = '';
+					btnXacNhan.disabled = true;
+					btnXacNhan.textContent = 'XÁC NHẬN XE VÀO CỬA — BẮT ĐẦU BÀN GIAO';
 
-				var btnXacNhan = document.getElementById('btn-xacnhan');
-				btnXacNhan.style.display = '';
-				btnXacNhan.disabled = true;
-				btnXacNhan.textContent = 'XÁC NHẬN XE VÀO CỬA — BẮT ĐẦU BÀN GIAO';
+					document.getElementById('bs-check-zone').style.display = 'none';
 
+					renderHang();
+					return;
+				}
+
+				state.nhapId          = data.nhapId;
+				state.bienSo          = data.bienSoXe;
+				state.trangThai       = data.trangThai;
+				state.ghiChu          = data.ghiChu;
+				state.thoiGianVaoCua  = data.thoiGianVaoCua;
+				state.thoiGianGioiHan = data.thoiGianGioiHan;
+				state.chitiet         = data.chitiet || [];
+
+				document.getElementById('xe-plate').textContent = data.bienSoXe;
+				document.getElementById('xe-plate').className = 'xe-plate';
+
+				if (data.ghiChu) {
+					document.getElementById('ghi-chu-box').style.display = 'block';
+					document.getElementById('ghi-chu-text').textContent = 'Ghi chú: ' + data.ghiChu;
+				} else {
+					document.getElementById('ghi-chu-box').style.display = 'none';
+				}
+
+				if (data.thoiGianVaoCua) {
+					document.getElementById('gio-vao').textContent = fmt(new Date(data.thoiGianVaoCua));
+				} else {
+					document.getElementById('gio-vao').textContent = '--:--';
+				}
+
+				if (data.thoiGianGioiHan) {
+					document.getElementById('gio-han').textContent = fmt(new Date(data.thoiGianGioiHan));
+				} else {
+					document.getElementById('gio-han').textContent = '--:--';
+				}
+
+				// ✅ Reset hết trước, rồi mới set theo trangThai
 				document.getElementById('bs-check-zone').style.display = 'none';
+				document.getElementById('bg-form').className = 'bg-form';
+				document.getElementById('bg-form').style.display = 'none';
+				document.getElementById('btn-done').className = 'btn-done';
+				document.getElementById('btn-done').style.display = 'none';
+				document.getElementById('btn-xacnhan').style.display = '';
 
+				if (data.trangThai === 0) {
+					document.getElementById('tt-text').textContent = 'Đã phân công — chờ vào';
+					document.getElementById('status-strip').className = 'strip wait';
+					document.getElementById('status-strip').textContent = 'Đã phân công — chờ xe vào cửa';
+					document.getElementById('bs-check-zone').style.display = 'flex';
+					document.getElementById('bs-inp').value = '';
+					document.getElementById('bs-msg').textContent = '';
+					document.getElementById('bs-msg').className = 'bs-msg';
+					document.getElementById('bs-inp').className = 'bs-inp';
+					document.getElementById('btn-xacnhan').disabled = true;
+					document.getElementById('btn-baosai').className = 'btn-baosai';
+				}
+
+				if (data.trangThai === 1) {
+					document.getElementById('tt-text').textContent = 'Đang bàn giao';
+					document.getElementById('status-strip').className = 'strip going';
+					document.getElementById('status-strip').textContent = 'Đang bàn giao — timer đang chạy';
+					document.getElementById('bs-check-zone').style.display = 'none';
+					document.getElementById('bg-form').className = 'bg-form show';
+					document.getElementById('bg-form').style.display = '';
+					// Chỉ render khi chưa có input
+					var hasInputs = document.getElementById('bg-inputs').children.length > 0;
+					if (!hasInputs) renderBgInputs();
+				}
+
+				if (data.trangThai === 2) {
+					document.getElementById('tt-text').textContent = 'Quá thời gian';
+					document.getElementById('status-strip').className = 'strip over';
+					document.getElementById('status-strip').textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
+					document.getElementById('bs-check-zone').style.display = 'none';
+					document.getElementById('bg-form').className = 'bg-form show';
+					document.getElementById('bg-form').style.display = '';
+					document.getElementById('btn-xuly').className = 'btn-xuly show';
+					// Chỉ render khi chưa có input
+					var hasInputs2 = document.getElementById('bg-inputs').children.length > 0;
+					if (!hasInputs2) renderBgInputs();
+				}
 				renderHang();
-				return;
 			}
-
-			state.nhapId          = data.nhapId;
-			state.bienSo          = data.bienSoXe;
-			state.trangThai       = data.trangThai;
-			state.ghiChu          = data.ghiChu;
-			state.thoiGianVaoCua  = data.thoiGianVaoCua;
-			state.thoiGianGioiHan = data.thoiGianGioiHan;
-			state.chitiet         = data.chitiet || [];
-
-			document.getElementById('xe-plate').textContent = data.bienSoXe;
-			document.getElementById('xe-plate').className = 'xe-plate';
-
-			if (data.ghiChu) {
-				document.getElementById('ghi-chu-box').style.display = 'block';
-				document.getElementById('ghi-chu-text').textContent = 'Ghi chú: ' + data.ghiChu;
-			} else {
-				document.getElementById('ghi-chu-box').style.display = 'none';
-			}
-
-			if (data.thoiGianVaoCua) {
-				document.getElementById('gio-vao').textContent = fmt(new Date(data.thoiGianVaoCua));
-			} else {
-				document.getElementById('gio-vao').textContent = '--:--';
-			}
-
-			if (data.thoiGianGioiHan) {
-				document.getElementById('gio-han').textContent = fmt(new Date(data.thoiGianGioiHan));
-			} else {
-				document.getElementById('gio-han').textContent = '--:--';
-			}
-
-			// ✅ Reset hết trước, rồi mới set theo trangThai
-			document.getElementById('bs-check-zone').style.display = 'none';
-			document.getElementById('bg-form').className = 'bg-form';
-			document.getElementById('bg-form').style.display = 'none';
-			document.getElementById('btn-done').className = 'btn-done';
-			document.getElementById('btn-done').style.display = 'none';
-			document.getElementById('btn-xacnhan').style.display = '';
-
-			if (data.trangThai === 0) {
-				document.getElementById('tt-text').textContent = 'Đã phân công — chờ vào';
-				document.getElementById('status-strip').className = 'strip wait';
-				document.getElementById('status-strip').textContent = 'Đã phân công — chờ xe vào cửa';
-				document.getElementById('bs-check-zone').style.display = 'flex';
-				document.getElementById('bs-inp').value = '';
-				document.getElementById('bs-msg').textContent = '';
-				document.getElementById('bs-msg').className = 'bs-msg';
-				document.getElementById('bs-inp').className = 'bs-inp';
-				document.getElementById('btn-xacnhan').disabled = true;
-				document.getElementById('btn-baosai').className = 'btn-baosai';
-			}
-
-			if (data.trangThai === 1) {
-				document.getElementById('tt-text').textContent = 'Đang bàn giao';
-				document.getElementById('status-strip').className = 'strip going';
-				document.getElementById('status-strip').textContent = 'Đang bàn giao — timer đang chạy';
-				document.getElementById('bs-check-zone').style.display = 'none';
-				document.getElementById('bg-form').className = 'bg-form show';
-				document.getElementById('bg-form').style.display = '';
-				renderBgInputs();
-			}
-					// Thêm sau if (data.trangThai === 1)
-		if (data.trangThai === 2) { // QuaThoiGian
-			document.getElementById('tt-text').textContent = 'Quá thời gian';
-			document.getElementById('status-strip').className = 'strip over';
-			document.getElementById('status-strip').textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
-			document.getElementById('bs-check-zone').style.display = 'none';
-			document.getElementById('bg-form').className = 'bg-form show';
-			document.getElementById('bg-form').style.display = '';
-			document.getElementById('btn-xuly').className = 'btn-xuly show'; // ← hiện nút xử lý
-			renderBgInputs(); // vẫn cho bàn giao tiếp
-		}
-			renderHang();
-		}
 				// ── KIỂM TRA BIỂN SỐ REALTIME
-		   function onBienSoInput(val) {
-			val = val.trim().toUpperCase();
-			var msg      = document.getElementById('bs-msg');
-			var inp      = document.getElementById('bs-inp');
-			var btn      = document.getElementById('btn-xacnhan');
-			var btnBaoSai = document.getElementById('btn-baosai');
+			function onBienSoInput(val) {
+				val = val.trim().toUpperCase();
+				var msg      = document.getElementById('bs-msg');
+				var inp      = document.getElementById('bs-inp');
+				var btn      = document.getElementById('btn-xacnhan');
+				var btnBaoSai = document.getElementById('btn-baosai');
 
 			// Xóa hết → reset
 			if (!val) {
@@ -1123,12 +1508,20 @@
 		// ── XÁC NHẬN BÀN GIAO
 		async function xacNhanBanGiao() {
 			var items = [];
+			var coLoi = false;
+
 			state.chitiet.forEach(function (c, i) {
 				var inp = document.getElementById('inp-' + i);
 				var val = parseInt(inp?.value) || 0;
+				var max = parseInt(inp?.max) || 0;
+				if (val > max) {
+					coLoi = true;
+					inp.style.borderColor = '#ef4444';
+				}
 				if (val > 0) items.push({ chitietId: c.id, soLuong: val });
 			});
 
+			if (coLoi) { showToast('Có mục vượt quá số lượng còn lại!', 'err'); return; }
 			if (!items.length) { showToast('Vui lòng nhập số lượng bàn giao!', 'err'); return; }
 
 			try {
@@ -1198,13 +1591,15 @@
 		}
 
 		// ── SIGNALR
-		// ── SIGNALR
-		var connection = new signalR.HubConnectionBuilder().withUrl('/signalserver').build();
+		var connection = new signalR.HubConnectionBuilder()
+			.withUrl('/signalserver')
+			.withAutomaticReconnect([0, 1000, 2000, 5000, 10000])
+			.build();
 
 
 		// Thêm biến này vào đầu script
 		var _loadTimer = null
-				// ✅ Sửa ReceivedNhap — check cờ dangHoanThanh
+				// Sửa ReceivedNhap — check cờ dangHoanThanh
 				// Thay toàn bộ listener ReceivedNhap trong CuaNhap.cshtml
 				// Sửa ReceivedNhap
 		connection.on('ReceivedNhap', function (x, id) {
@@ -1221,26 +1616,27 @@
 			} else {
 				// ✅ Hủy timer cũ trước khi tạo mới
 				if (_loadTimer) clearTimeout(_loadTimer);
-				_loadTimer = setTimeout(loadNhapHienTai, 800);
+				_loadTimer = setTimeout(loadNhapHienTai, 100);
 			}
 		});
 
 		connection.on('ReceivedChitietNhap', function (ct, id) {
 			if (id != CUA_NHAP_ID) return;
+			if (state.dangHoanThanh) return;
+			if (!ct) { loadNhapHienTai(); return; }
 
-			if (state.dangHoanThanh) {
-				console.log('ReceivedChitietNhap → đang hoàn thành, bỏ qua');
-				return; // ✅ chặn luôn
-			}
-
-			if (!ct) {
-				loadNhapHienTai();
-				return;
-			}
 			state.chitiet = ct.map(function (c) {
 				return { id: c.id, donVi: c.donVi, chuaBG: c.chuaBG, daBG: c.daBG };
 			});
-			renderBgInputs();
+
+			// Chỉ cập nhật label và max, KHÔNG reset value input
+			state.chitiet.forEach(function(c, i) {
+				var sub = document.getElementById('sub-' + i);
+				var inp = document.getElementById('inp-' + i);
+				if (sub) sub.textContent = 'Còn: ' + c.chuaBG.toLocaleString('vi-VN');
+				if (inp) inp.max = c.chuaBG;
+			});
+
 			renderHang();
 		});
 
@@ -1253,17 +1649,56 @@
 			document.getElementById('sig-txt').textContent = 'Mất kết nối';
 			loadNhapHienTai();
 		});
+		connection.onreconnected(function() {
+			document.getElementById('sig-dot').className = 'dot on';
+			document.getElementById('sig-txt').textContent = 'Realtime';
+			loadNhapHienTai();
+		});
+
+		connection.onreconnecting(function() {
+			document.getElementById('sig-dot').className = 'dot err';
+			document.getElementById('sig-txt').textContent = 'Đang kết nối lại...';
+		});
 
 		setInterval(function() {
 			if (!state.dangHoanThanh) loadNhapHienTai();
 		}, 30000);
 
+
+
 				// Wrap lại applyNhapData để trace caller
 		var _applyNhapData = applyNhapData;
-		applyNhapData = function(data) {
+			applyNhapData = function(data) {
 			console.trace('applyNhapData called with data=' + (data ? data.trangThai : 'null'));
 			_applyNhapData(data);
 		};
+		// ── THEME ─────────────────────────────────────────────────────────────────
+		var isLight = localStorage.getItem('theme-cuanhap') === 'light';
+		function applyTheme() {
+			document.body.classList.toggle('light-mode', isLight);
+			document.getElementById('theme-ico').className = isLight ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+		}
+		function toggleTheme() {
+			isLight = !isLight;
+			localStorage.setItem('theme-cuanhap', isLight ? 'light' : 'dark');
+			applyTheme();
+		}
+		applyTheme();
+
+		// ── USER MENU ─────────────────────────────────────────────────────────────
+		function toggleUserMenu() {
+			var dd = document.getElementById('user-dropdown');
+			var av = document.getElementById('user-avatar');
+			var isOpen = dd.classList.contains('show');
+			dd.classList.toggle('show', !isOpen);
+			av.classList.toggle('open', !isOpen);
+		}
+		document.addEventListener('click', function(e) {
+			if (!e.target.closest('#user-btn')) {
+				document.getElementById('user-dropdown').classList.remove('show');
+				document.getElementById('user-avatar').classList.remove('open');
+			}
+		});
 	</script>
 </body>
 </html>

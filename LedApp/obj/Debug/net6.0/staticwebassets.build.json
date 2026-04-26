@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "DqAulazGjHGKBTJVhLlv3ad9ZPpPzk7u3PrfjvLnncQ=",
+  "Hash": "o25qKBTainsVoDF5LR/SQ9mHz5zCw3EVMu7RJEZG7WY=",
   "Source": "LedApp",
   "BasePath": "_content/LedApp",
   "Mode": "Default",
@@ -22774,8 +22774,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "k9y8lb88tj",
-      "Integrity": "iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o=",
+      "Fingerprint": "bccl5aa9i9",
+      "Integrity": "RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\nhapxuat.js"
@@ -24228,6 +24228,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\avatars\\0893507e-a80b-4d9d-8ac7-c18953d4a160.jpg"
+    },
+    {
+      "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png",
+      "SourceId": "LedApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\",
+      "BasePath": "_content/LedApp",
+      "RelativePath": "uploads/avatars/0d3f22e2-501d-47d1-9bd3-fec2ea53be04#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zmyf8319mg",
+      "Integrity": "5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\avatars\\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png"
     },
     {
       "Identity": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
@@ -110930,6 +110951,51 @@
       ]
     },
     {
+      "Route": "js/nhapxuat.bccl5aa9i9.js",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "22530"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 25 Apr 2026 10:05:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bccl5aa9i9"
+        },
+        {
+          "Name": "label",
+          "Value": "js/nhapxuat.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ="
+        }
+      ]
+    },
+    {
       "Route": "js/nhapxuat.js",
       "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
       "Selectors": [],
@@ -110940,7 +111006,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "19370"
+          "Value": "22530"
         },
         {
           "Name": "Content-Type",
@@ -110948,11 +111014,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o=\""
+          "Value": "\"RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sun, 12 Apr 2026 08:07:20 GMT"
+          "Value": "Sat, 25 Apr 2026 10:05:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -110962,52 +111028,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o="
-        }
-      ]
-    },
-    {
-      "Route": "js/nhapxuat.k9y8lb88tj.js",
-      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\js\\nhapxuat.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "19370"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sun, 12 Apr 2026 08:07:20 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "k9y8lb88tj"
-        },
-        {
-          "Name": "label",
-          "Value": "js/nhapxuat.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o="
+          "Value": "sha256-RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ="
         }
       ]
     },
@@ -111116,7 +111137,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 14 Apr 2026 15:36:23 GMT"
+          "Value": "Sun, 26 Apr 2026 11:56:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -111153,7 +111174,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 14 Apr 2026 15:36:23 GMT"
+          "Value": "Sun, 26 Apr 2026 11:56:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -111198,7 +111219,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 14 Apr 2026 15:36:23 GMT"
+          "Value": "Sun, 26 Apr 2026 11:56:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -111243,7 +111264,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 14 Apr 2026 15:36:23 GMT"
+          "Value": "Sun, 26 Apr 2026 11:56:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -116830,6 +116851,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-U8Yer7lYiqaPUJuvBF+rTn+C2sI/euqjeRCN+bAF/VQ="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "976910"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 20 Apr 2026 17:17:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/avatars/0d3f22e2-501d-47d1-9bd3-fec2ea53be04.zmyf8319mg.png",
+      "AssetFile": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "976910"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 20 Apr 2026 17:17:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zmyf8319mg"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/avatars/0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA="
         }
       ]
     },

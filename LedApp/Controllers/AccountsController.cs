@@ -200,6 +200,10 @@ namespace LedApp.Controllers
             await _userManager.RemoveFromRolesAsync(user, oldRoles);
             await _userManager.AddToRoleAsync(user, vm.Role!);
 
+
+            // được hưởng lợi, user bị kick ra khi admin sửa
+            await _userManager.UpdateSecurityStampAsync(user);
+
             TempData["Success"] = "Cập nhật tài khoản thành công!";
             return RedirectToAction(nameof(Index));
         }
@@ -222,7 +226,8 @@ namespace LedApp.Controllers
                 await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
                 TempData["Success"] = $"Đã khóa tài khoản '{user.UserName}'.";
             }
-
+            // được hưởng lợi, user bị kick ra khi admin sửa
+            await _userManager.UpdateSecurityStampAsync(user);
             return RedirectToAction(nameof(Index));
         }
 

@@ -23,6 +23,8 @@ namespace LedApp.Controllers
         // GET: /BaoVeXuat
         public IActionResult Index()
         {
+            ViewBag.UserName = User.Identity?.Name ?? "";
+            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
             return View();
         }
 
@@ -70,19 +72,30 @@ namespace LedApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetXeDangVanChuyen()
         {
+            // Trong GetXeDangVanChuyen, thêm join với Xuats để lấy thời gian
             var xes = await _context.DanhSachXes
                 .Include(x => x.TaiXe)
                 .Where(x => x.TrangThai == (int)TrangThaiXe.DangVanChuyen)
-                .OrderBy(x => x.ThoiGianDuKienVe)
+                .OrderBy(x => x.BienSoXe)
                 .Select(x => new
                 {
                     x.Id,
                     x.BienSoXe,
                     x.LoaiXe,
                     x.TaiTrong,
-                    x.ThoiGianDuKienVe,
                     TenTaiXe = x.TaiXe != null ? x.TaiXe.FullName : "--",
-                    TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--"
+                    TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--",
+                    // ── THÊM: lấy từ phiếu xuất gần nhất ──
+                    ThoiGianXuatPhat = _context.Xuats
+                        .Where(xuat => xuat.XeId == x.Id && xuat.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                        .OrderByDescending(xuat => xuat.ThoiGianXuatPhat)
+                        .Select(xuat => xuat.ThoiGianXuatPhat)
+                        .FirstOrDefault(),
+                    ThoiGianDuKienVeBai = _context.Xuats
+                        .Where(xuat => xuat.XeId == x.Id && xuat.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                        .OrderByDescending(xuat => xuat.ThoiGianXuatPhat)
+                        .Select(xuat => xuat.ThoiGianDuKienVeBai)
+                        .FirstOrDefault()
                 })
                 .ToListAsync();
 
@@ -109,6 +122,10 @@ namespace LedApp.Controllers
                 xuat.TrangThai = (int)TrangThaiXuat.DaXuatPhat;
                 xuat.ThoiGianXuatPhat = now;
 
+                // Lưu thời gian dự kiến về bãi vào phiếu xuất
+                if (req.ThoiGianDuKienVeBai.HasValue)
+                    xuat.ThoiGianDuKienVeBai = req.ThoiGianDuKienVeBai.Value;
+
                 if (xuat.XeId.HasValue)
                 {
                     var xe = await _context.DanhSachXes
@@ -117,8 +134,7 @@ namespace LedApp.Controllers
                     if (xe != null)
                     {
                         xe.TrangThai = (int)TrangThaiXe.DangVanChuyen;
-                        if (req.ThoiGianDuKienVe.HasValue)
-                            xe.ThoiGianDuKienVe = req.ThoiGianDuKienVe.Value;
+                        // XÓA: xe.ThoiGianDuKienVe không còn dùng nữa
                     }
                 }
 
@@ -152,11 +168,20 @@ namespace LedApp.Controllers
                     return BadRequest(new { message = "Xe không ở trạng thái đang vận chuyển!" });
 
                 xe.TrangThai = (int)TrangThaiXe.TrongBai;
-                xe.ThoiGianDuKienVe = null; // reset
+
+                // ── THÊM: Tìm phiếu xuất tương ứng và lưu ThoiGianVeBai ──
+                var now = DateTime.Now;
+                var xuat = await _context.Xuats
+                    .AsTracking()
+                    .Where(x => x.XeId == xe.Id && x.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                    .OrderByDescending(x => x.ThoiGianXuatPhat)
+                    .FirstOrDefaultAsync();
+
+                if (xuat != null)
+                    xuat.ThoiGianVeBai = now;
 
                 await _context.SaveChangesAsync();
 
-                // Push SignalR thông báo xe về bãi
                 await _hubContext.Clients.All.SendAsync("XeVeBai", new
                 {
                     XeId = xe.Id,
@@ -170,7 +195,80 @@ namespace LedApp.Controllers
                 return StatusCode(500, new { message = "Lỗi xác nhận về bãi!", inner = ex.Message });
             }
         }
+        // POST: /BaoVeXuat/NhanDienBienSo
+        // Python camera gọi vào đây để gửi kết quả nhận diện xe xuất
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> NhanDienBienSo([FromBody] NhanDienXuatRequest req)
+        {
+            if (string.IsNullOrWhiteSpace(req.BienSo))
+                return BadRequest(new { message = "Biển số trống!" });
 
+            var bienSoChuanHoa = req.BienSo.ToUpper()
+                .Replace(".", "").Replace("-", "").Trim();
+
+            var now = DateTime.Now;
+
+            // Tìm xe có phiếu xuất HoanThanh hôm nay khớp biển số
+            var today = DateTime.Today;
+            var xuat = await _context.Xuats
+                .AsNoTracking()
+                .Include(x => x.Xe)
+                .Include(x => x.CuaXuat)
+                .Where(x => x.ThoiGianPhanCong.Date == today
+                         && x.TrangThai == (int)TrangThaiXuat.HoanThanh
+                         && x.Xe != null)
+                .FirstOrDefaultAsync(x =>
+                    x.Xe!.BienSoXe.ToUpper().Replace(".", "").Replace("-", "") == bienSoChuanHoa);
+
+            KetQuaNhanDienXuat ketQua;
+
+            if (xuat != null)
+            {
+                ketQua = new KetQuaNhanDienXuat
+                {
+                    BienSo = req.BienSo,
+                    TimThay = true,
+                    XuatId = xuat.Id,
+                    TenCua = xuat.CuaXuat?.Ten ?? "--",
+                    TrangThai = xuat.TrangThai,
+                    TrangThaiText = "Chờ ra cổng",
+                    ThoiGian = now,
+                    Confidence = req.Confidence,
+                    ThongBao = $"✔ Xe {req.BienSo} — {xuat.CuaXuat?.Ten ?? "--"} — Chờ ra cổng"
+                };
+            }
+            else
+            {
+                ketQua = new KetQuaNhanDienXuat
+                {
+                    BienSo = req.BienSo,
+                    TimThay = false,
+                    XuatId = null,
+                    TenCua = "--",
+                    TrangThai = -1,
+                    TrangThaiText = "--",
+                    ThoiGian = now,
+                    Confidence = req.Confidence,
+                    ThongBao = $"✘ Xe {req.BienSo} không có trong danh sách chờ xuất!"
+                };
+            }
+
+            // Push SignalR — dùng event riêng "CameraXuatNhanDien" tránh nhầm với nhập
+            await _hubContext.Clients.All.SendAsync("CameraXuatNhanDien", ketQua);
+
+            return Ok(new { message = ketQua.ThongBao, data = ketQua });
+        }
+
+        // GET: /BaoVeXuat/Status  — Python ping để kiểm tra server online
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Status() => Ok(new
+        {
+            status = "online",
+            time = DateTime.Now,
+            message = "Cổng xuất sẵn sàng"
+        });
         // ── Helper: build và push tổng hợp xuất ──
         private async Task PushXuatUpdate()
         {
@@ -230,11 +328,35 @@ namespace LedApp.Controllers
     public class XacNhanRaCongRequest
     {
         public int XuatId { get; set; }
-        public DateTime? ThoiGianDuKienVe { get; set; }
+        public DateTime? ThoiGianDuKienVeBai { get; set; }
     }
 
     public class XacNhanVeBaiRequest
     {
         public int XeId { get; set; }
+    }
+    // ============================================================
+    // THÊM VÀO CUỐI FILE — Request / Response DTOs cho xuất
+    // ============================================================
+
+    public class NhanDienXuatRequest
+    {
+        public string BienSo { get; set; } = string.Empty;
+        public double Confidence { get; set; }
+        public string ThoiGian { get; set; } = string.Empty;
+        public string Nguon { get; set; } = "webcam_xuat";
+    }
+
+    public class KetQuaNhanDienXuat
+    {
+        public string BienSo { get; set; } = string.Empty;
+        public bool TimThay { get; set; }
+        public int? XuatId { get; set; }
+        public string TenCua { get; set; } = string.Empty;
+        public int TrangThai { get; set; }
+        public string TrangThaiText { get; set; } = string.Empty;
+        public DateTime ThoiGian { get; set; }
+        public double Confidence { get; set; }
+        public string ThongBao { get; set; } = string.Empty;
     }
 }

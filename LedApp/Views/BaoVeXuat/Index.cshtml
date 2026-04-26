@@ -1,5 +1,12 @@
 ﻿@{
     Layout = null;
+
+    var userName = ViewBag.UserName as string ?? User.Identity?.Name ?? "User";
+    var userEmail = ViewBag.UserEmail as string ?? "";
+    var parts = userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    var initials = (parts.Length >= 2
+        ? $"{parts[0][0]}{parts[^1][0]}"
+        : userName.Length >= 2 ? userName[..2] : userName).ToUpper();
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -7,6 +14,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Bảo vệ — Cổng xuất kho</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <style>
         @@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700;900&display=swap');
 
@@ -30,7 +38,6 @@
             --red: #ff3d3d;
             --blue: #00b4ff;
             --cyan: #00e5ff;
-            --purple: #b388ff;
             --orange: #ff9800;
             --text: #a0b8d0;
             --text2: #3a5f80;
@@ -68,45 +75,44 @@
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-rows: 72px 1fr 56px;
+            grid-template-rows: 72px 1fr 48px;
             height: 100vh;
-            padding: 14px;
-            gap: 12px;
+            padding: 10px;
+            gap: 8px;
         }
 
-        /* TOPBAR */
+        /* ── TOPBAR ── */
         .topbar {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
             background: var(--surface);
             border: 1px solid var(--border2);
-            border-top: 2px solid var(--green);
             border-radius: 8px;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
         .tb-brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .tb-icon {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             background: linear-gradient(135deg,#003a1a,#006633);
             border: 1px solid var(--green);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 0 16px rgba(0,230,118,.25);
+            font-size: 18px;
+            box-shadow: 0 0 14px rgba(0,230,118,.2);
         }
 
         .tb-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 4px;
             color: var(--green);
@@ -117,16 +123,16 @@
             font-size: 9px;
             color: var(--text2);
             letter-spacing: 2px;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .tb-clock {
             text-align: center;
             font-family: 'Share Tech Mono',monospace;
-            font-size: 32px;
+            font-size: 30px;
             color: var(--cyan);
-            letter-spacing: 6px;
-            text-shadow: 0 0 20px rgba(0,229,255,.4);
+            letter-spacing: 5px;
+            text-shadow: 0 0 18px rgba(0,229,255,.4);
         }
 
         .tb-date {
@@ -134,24 +140,24 @@
             color: var(--text2);
             text-align: center;
             letter-spacing: 2px;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
         .tb-right {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .conn-badge {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
             background: var(--surface2);
             border: 1px solid var(--border2);
             border-radius: 20px;
-            padding: 5px 14px;
+            padding: 4px 12px;
             font-size: 10px;
             color: var(--text2);
             letter-spacing: 1px;
@@ -179,12 +185,12 @@
             background: var(--surface2);
             border: 1px solid var(--border2);
             border-radius: 6px;
-            padding: 6px 14px;
+            padding: 5px 12px;
             text-align: center;
         }
 
             .stat-chip .n {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 700;
                 font-family: 'Share Tech Mono',monospace;
             }
@@ -207,17 +213,580 @@
             }
         }
 
-        /* TABS */
+        /* ── MAIN 4 COLUMNS ── */
         .main {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 300px 280px 380px 1fr;
+            gap: 8px;
             min-height: 0;
         }
 
-        .tabs {
+        /* ── COL 1: CAMERA ── */
+        .col-cam {
             display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .camera-wrap {
+            flex: 0 0 186px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cam-label {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 2;
+            background: rgba(0,0,0,.8);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--cyan);
+        }
+
+        .cam-status {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0,0,0,.8);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 9px;
+            color: var(--text2);
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,transparent,var(--green),transparent);
+            animation: scan 3s linear infinite;
+            opacity: .5;
+            z-index: 1;
+        }
+
+        @@keyframes scan {
+            0% {
+                top: 0;
+                opacity: .5
+            }
+
+            50% {
+                opacity: .2
+            }
+
+            100% {
+                top: 100%;
+                opacity: .5
+            }
+        }
+
+        .cam-corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            z-index: 2;
+        }
+
+            .cam-corner.tl {
+                top: 6px;
+                left: 6px;
+                border-top: 2px solid var(--green);
+                border-left: 2px solid var(--green);
+            }
+
+            .cam-corner.tr {
+                top: 6px;
+                right: 6px;
+                border-top: 2px solid var(--green);
+                border-right: 2px solid var(--green);
+            }
+
+            .cam-corner.bl {
+                bottom: 6px;
+                left: 6px;
+                border-bottom: 2px solid var(--green);
+                border-left: 2px solid var(--green);
+            }
+
+            .cam-corner.br {
+                bottom: 6px;
+                right: 6px;
+                border-bottom: 2px solid var(--green);
+                border-right: 2px solid var(--green);
+            }
+
+        .cam-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text2);
+        }
+
+        .cam-placeholder-icon {
+            font-size: 34px;
+            opacity: .3;
+        }
+
+        .cam-placeholder-text {
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        /* ── KẾT QUẢ NHẬN DIỆN ── */
+        .result-panel {
+            flex: 1;
+            min-height: 0;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .result-hdr {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .result-body {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .result-bienso {
+            font-family: 'Share Tech Mono',monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-align: center;
+            padding: 8px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+        }
+
+            .result-bienso.empty {
+                color: var(--text3);
+                font-size: 14px;
+                letter-spacing: 1px;
+                font-weight: 400;
+            }
+
+            .result-bienso.found {
+                border-color: var(--green);
+                color: var(--gold);
+            }
+
+            .result-bienso.notfound {
+                border-color: var(--red);
+                color: var(--red);
+            }
+
+        .result-conf {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text2);
+            font-family: 'Share Tech Mono',monospace;
+        }
+
+            .result-conf span {
+                color: var(--cyan);
+            }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-row-lbl {
+            color: var(--text2);
+        }
+
+        .result-row-val {
+            font-family: 'Share Tech Mono',monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .result-msg {
+            padding: 7px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .3px;
+            text-align: center;
+        }
+
+        .msg-found {
+            background: rgba(0,230,118,.1);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .msg-notfound {
+            background: rgba(255,61,61,.1);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        .msg-wait {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border2);
+        }
+
+        .stats-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
+        }
+
+        .stat-mini {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            padding: 8px;
+            text-align: center;
+        }
+
+            .stat-mini .n {
+                font-family: 'Share Tech Mono',monospace;
+                font-size: 20px;
+                font-weight: 700;
+            }
+
+            .stat-mini .l {
+                font-size: 8px;
+                color: var(--text2);
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin-top: 1px;
+            }
+
+        /* ── COL 2: LỊCH SỬ NHẬN DIỆN ── */
+        .col-log {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .log-panel {
+            flex: 1;
+            min-height: 0;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-header {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+            .log-body::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .log-body::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
+
+        .log-row {
+            display: grid;
+            grid-template-columns: 58px 1fr auto;
+            gap: 5px;
+            align-items: center;
+            padding: 5px 10px;
+            font-family: 'Share Tech Mono',monospace;
+            font-size: 10px;
+            border-bottom: 1px solid rgba(14,32,64,.5);
+            animation: fadeIn .3s ease;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-3px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .log-time {
+            color: var(--text2);
+            font-size: 9px;
+        }
+
+        .log-plate {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .log-badge {
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-found {
+            background: rgba(0,230,118,.12);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .badge-notfound {
+            background: rgba(255,61,61,.12);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        .history-mini {
+            flex: 0 0 auto;
+            max-height: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-mini-header {
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .history-mini-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+            .history-mini-body::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .history-mini-body::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
+
+        .hm-row {
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 6px;
+            align-items: center;
+            padding: 5px 10px;
+            border-bottom: 1px solid rgba(14,32,64,.5);
+            animation: fadeIn .3s ease;
+        }
+
+        .hm-time {
+            font-family: 'Share Tech Mono',monospace;
+            font-size: 9px;
+            color: var(--text2);
+        }
+
+        .hm-plate {
+            font-family: 'Share Tech Mono',monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+            .hm-plate.miss {
+                color: var(--red);
+            }
+
+        .hm-badge {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .hm-ok {
+            background: rgba(0,230,118,.12);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .hm-miss {
+            background: rgba(255,61,61,.12);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        .hm-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text3);
+            font-size: 10px;
+        }
+
+        /* ── COL 3: DANH SÁCH XE ── */
+        .col-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .list-hdr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 8px 14px;
+            flex-shrink: 0;
+        }
+
+        .list-hdr-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+            .list-hdr-title.green {
+                color: var(--green);
+            }
+
+            .list-hdr-title.orange {
+                color: var(--orange);
+            }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 7px 12px;
+            flex-shrink: 0;
+        }
+
+        .search-icon {
+            font-size: 13px;
+            color: var(--text2);
+            flex-shrink: 0;
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--gold);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+            .search-input::placeholder {
+                color: var(--text3);
+                font-size: 11px;
+                letter-spacing: 1px;
+                font-family: 'Barlow', sans-serif;
+                text-transform: none;
+            }
+
+        .search-clear {
+            background: none;
+            border: none;
+            color: var(--text2);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 2px;
+            line-height: 1;
+            display: none;
+        }
+
+            .search-clear:hover {
+                color: var(--red);
+            }
+
+        .search-result-count {
+            font-size: 9px;
+            color: var(--text2);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .tabs-row {
+            display: flex;
+            gap: 5px;
             flex-shrink: 0;
         }
 
@@ -225,8 +794,8 @@
             background: var(--surface);
             border: 1px solid var(--border2);
             border-radius: 6px 6px 0 0;
-            padding: 9px 22px;
-            font-size: 11px;
+            padding: 7px 16px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -243,14 +812,12 @@
 
             .tab-btn.active-ra {
                 color: var(--green);
-                border-color: var(--border2);
                 border-bottom-color: var(--green);
                 background: var(--surface2);
             }
 
             .tab-btn.active-ve {
                 color: var(--orange);
-                border-color: var(--border2);
                 border-bottom-color: var(--orange);
                 background: var(--surface2);
             }
@@ -259,95 +826,37 @@
             display: none;
             flex: 1;
             min-height: 0;
-        }
-
-            .tab-content.active {
-                display: grid;
-                grid-template-columns: 420px 1fr;
-                gap: 12px;
-            }
-
-        /* PANELS */
-        .list-panel {
+            overflow-y: auto;
             background: var(--surface);
             border: 1px solid var(--border2);
             border-radius: 0 8px 8px 8px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            padding: 8px;
         }
 
-        .list-header {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .list-title {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-            .list-title.green {
-                color: var(--green);
+            .tab-content.active {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
             }
 
-            .list-title.orange {
-                color: var(--orange);
+            .tab-content::-webkit-scrollbar {
+                width: 3px;
             }
 
-        .list-count {
-            font-family: 'Share Tech Mono',monospace;
-            font-size: 11px;
-            color: var(--text2);
-        }
-
-        .list-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-            .list-body::-webkit-scrollbar {
-                width: 4px;
-            }
-
-            .list-body::-webkit-scrollbar-thumb {
+            .tab-content::-webkit-scrollbar-thumb {
                 background: var(--border2);
-                border-radius: 2px;
             }
 
-        /* XE ITEMS */
         .xe-item {
             background: var(--surface2);
             border: 1px solid var(--border);
             border-left: 3px solid var(--border2);
             border-radius: 7px;
-            padding: 14px 16px;
-            margin-bottom: 8px;
+            padding: 11px 13px;
             cursor: pointer;
             transition: all .15s;
-            position: relative;
-            overflow: hidden;
+            flex-shrink: 0;
         }
-
-            .xe-item::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(90deg,rgba(0,230,118,.04),transparent);
-                opacity: 0;
-                transition: opacity .15s;
-            }
-
-            .xe-item.type-ve::before {
-                background: linear-gradient(90deg,rgba(255,152,0,.04),transparent);
-            }
 
             .xe-item:hover {
                 border-left-color: var(--green);
@@ -357,119 +866,139 @@
                 border-left-color: var(--orange);
             }
 
-            .xe-item:hover::before, .xe-item.selected::before {
-                opacity: 1;
-            }
-
             .xe-item.selected {
                 border-color: var(--green);
                 border-left-color: var(--green);
                 background: var(--surface3);
-                box-shadow: 0 0 20px rgba(0,230,118,.12);
+                box-shadow: 0 0 16px rgba(0,230,118,.1);
             }
 
             .xe-item.type-ve.selected {
                 border-color: var(--orange);
                 border-left-color: var(--orange);
-                box-shadow: 0 0 20px rgba(255,152,0,.12);
+                box-shadow: 0 0 16px rgba(255,152,0,.1);
             }
 
-        .xe-item-top {
+            .xe-item.highlight {
+                border-color: var(--gold) !important;
+                border-left-color: var(--gold) !important;
+                background: rgba(245,166,35,.06) !important;
+                box-shadow: 0 0 18px rgba(245,166,35,.2) !important;
+                animation: flashXe .8s ease;
+            }
+
+        @@keyframes flashXe {
+            0% {
+                box-shadow: 0 0 0 2px var(--gold)
+            }
+
+            100% {
+                box-shadow: 0 0 18px rgba(245,166,35,.2)
+            }
+        }
+
+        .xe-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .xe-bienso {
             font-family: 'Share Tech Mono',monospace;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--gold);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
-        .xe-cua-badge {
+        .xe-badge {
             background: rgba(0,230,118,.1);
             border: 1px solid rgba(0,230,118,.3);
             border-radius: 4px;
-            padding: 3px 10px;
-            font-size: 11px;
+            padding: 2px 8px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--green);
-            letter-spacing: 1px;
         }
 
-            .xe-cua-badge.orange {
+            .xe-badge.orange {
                 background: rgba(255,152,0,.1);
                 border-color: rgba(255,152,0,.3);
                 color: var(--orange);
             }
 
-        .xe-item-meta {
+        .xe-meta {
             font-size: 11px;
             color: var(--text2);
             display: flex;
-            gap: 14px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
-            .xe-item-meta span {
+            .xe-meta span {
                 color: var(--text);
             }
 
-        .xe-item-hang {
+        .xe-hang {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             flex-wrap: wrap;
-            margin-top: 8px;
+            margin-top: 5px;
         }
 
         .hang-chip {
             background: var(--surface);
             border: 1px solid var(--border2);
             border-radius: 4px;
-            padding: 2px 8px;
-            font-size: 10px;
+            padding: 1px 7px;
+            font-size: 9px;
             color: var(--gold2);
             font-family: 'Share Tech Mono',monospace;
         }
 
-        .xe-item-time {
-            font-size: 10px;
+        .xe-time {
+            font-size: 9px;
             color: var(--text2);
-            margin-top: 8px;
+            margin-top: 5px;
             font-family: 'Share Tech Mono',monospace;
         }
 
         .xe-empty {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 16px;
             color: var(--text3);
         }
 
         .xe-empty-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
+            font-size: 36px;
+            margin-bottom: 8px;
         }
 
         .xe-empty-text {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
         }
 
-        /* DETAIL PANEL */
+        /* ── COL 4: DETAIL ── */
+        .col-detail {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
         .detail-panel {
             background: var(--surface);
             border: 1px solid var(--border2);
             border-radius: 8px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        .detail-header {
-            padding: 14px 20px;
+        .detail-hdr {
+            padding: 12px 18px;
             border-bottom: 1px solid var(--border2);
             display: flex;
             justify-content: space-between;
@@ -487,12 +1016,20 @@
 
         .detail-body {
             flex: 1;
-            padding: 24px;
+            padding: 18px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 14px;
         }
+
+            .detail-body::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .detail-body::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
 
         .detail-placeholder {
             flex: 1;
@@ -500,23 +1037,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 12px;
             color: var(--text3);
         }
 
         .placeholder-icon {
-            font-size: 64px;
-            opacity: .4;
+            font-size: 56px;
+            opacity: .3;
         }
 
         .placeholder-text {
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 3px;
             text-transform: uppercase;
         }
 
         .placeholder-arrow {
-            font-size: 28px;
+            font-size: 22px;
             color: var(--border2);
             animation: arrow-pulse 2s ease-in-out infinite;
         }
@@ -528,46 +1065,46 @@
             }
 
             50% {
-                transform: translateX(-10px);
+                transform: translateX(-8px);
                 opacity: 1
             }
         }
 
         .detail-bienso {
             font-family: 'Share Tech Mono',monospace;
-            font-size: 52px;
+            font-size: 44px;
             font-weight: 700;
             color: var(--gold);
-            letter-spacing: 8px;
-            text-shadow: 0 0 40px rgba(245,166,35,.4);
+            letter-spacing: 6px;
+            text-shadow: 0 0 30px rgba(245,166,35,.4);
             text-align: center;
-            padding: 16px 0;
+            padding: 12px 0;
             border-bottom: 1px solid var(--border2);
         }
 
         .detail-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         .detail-field {
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 12px 16px;
+            padding: 10px 14px;
         }
 
         .detail-field-label {
-            font-size: 9px;
+            font-size: 8px;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text2);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .detail-field-value {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text);
         }
@@ -589,70 +1126,21 @@
                 color: var(--orange);
             }
 
-        .hang-table-wrap {
-            background: var(--surface2);
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .hang-table-title {
-            padding: 10px 14px;
-            font-size: 9px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text2);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .hang-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-            .hang-table th {
-                padding: 8px 14px;
-                font-size: 9px;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                color: var(--text2);
-                border-bottom: 1px solid var(--border);
-                text-align: left;
-                font-weight: 400;
-            }
-
-            .hang-table td {
-                padding: 10px 14px;
-                font-size: 14px;
-                font-weight: 600;
-                border-bottom: 1px solid var(--border);
-                font-family: 'Share Tech Mono',monospace;
-            }
-
-            .hang-table tr:last-child td {
-                border-bottom: none;
-            }
-
-            .hang-table td:first-child {
-                color: var(--text2);
-                font-family: 'Barlow',sans-serif;
-                font-size: 12px;
-                font-weight: 400;
-            }
-
-            .hang-table .da {
-                color: var(--green);
-            }
-
-            .hang-table .chua {
-                color: var(--gold2);
-            }
-
+        /* ── THỜI GIAN DỰ KIẾN ── */
         .dukien-section {
             background: var(--surface2);
             border: 1px solid var(--border2);
             border-radius: 6px;
-            padding: 16px 18px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dukien-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .dukien-label {
@@ -660,31 +1148,41 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text2);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-            .dukien-label::after {
-                content: 'tùy chọn';
-                font-size: 8px;
-                background: var(--border2);
-                color: var(--text2);
-                padding: 1px 6px;
-                border-radius: 3px;
-                letter-spacing: 1px;
+        .dukien-presets {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dkp-btn {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 9px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text2);
+            cursor: pointer;
+            transition: all .15s;
+            font-family: 'Barlow',sans-serif;
+        }
+
+            .dkp-btn:hover, .dkp-btn.active {
+                background: rgba(0,229,255,.08);
+                border-color: var(--cyan);
+                color: var(--cyan);
             }
 
         .dukien-input {
             background: var(--bg);
             border: 1px solid var(--border2);
             border-radius: 5px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             color: var(--gold);
-            font-size: 18px;
+            font-size: 15px;
             font-family: 'Share Tech Mono',monospace;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             width: 100%;
             outline: none;
             transition: border-color .15s;
@@ -692,30 +1190,89 @@
 
             .dukien-input:focus {
                 border-color: var(--gold);
-                box-shadow: 0 0 12px rgba(245,166,35,.15);
             }
 
-        .dukien-label.required::after {
-            content: 'bắt buộc';
-            background: rgba(255,152,0,.2);
-            color: var(--orange);
+        .dukien-hint {
+            font-size: 10px;
+            color: var(--text2);
+            font-family: 'Share Tech Mono',monospace;
         }
 
+            .dukien-hint span {
+                color: var(--orange);
+            }
+
+        /* ── BIỂN SỐ XÁC NHẬN ── */
+        .bienso-confirm-wrap {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .bienso-confirm-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text2);
+        }
+
+        .bienso-confirm-input {
+            background: var(--bg);
+            border: 1px solid var(--border2);
+            border-radius: 5px;
+            padding: 10px 14px;
+            color: var(--gold);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            width: 100%;
+            outline: none;
+            text-align: center;
+            transition: border-color .15s;
+        }
+
+            .bienso-confirm-input:focus {
+                border-color: var(--gold);
+                box-shadow: 0 0 10px rgba(245,166,35,.15);
+            }
+
+        .bienso-confirm-hint {
+            font-size: 9px;
+            color: var(--text3);
+            text-align: center;
+            letter-spacing: .5px;
+        }
+
+        .bienso-confirm-input.mismatch {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .bienso-confirm-input.match {
+            border-color: var(--green);
+        }
+
+        /* ── ACTION BUTTONS ── */
         .btn-action {
-            border-radius: 8px;
-            padding: 18px;
+            border-radius: 7px;
+            padding: 14px;
             width: 100%;
             font-family: 'Barlow',sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all .2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             border: 1px solid;
         }
 
@@ -723,12 +1280,12 @@
             background: linear-gradient(135deg,#003a1a,#006633);
             border-color: var(--green);
             color: var(--green);
-            box-shadow: 0 0 20px rgba(0,230,118,.15);
+            box-shadow: 0 0 16px rgba(0,230,118,.12);
         }
 
             .btn-green:hover:not(:disabled) {
                 background: linear-gradient(135deg,#005a28,#009944);
-                box-shadow: 0 0 35px rgba(0,230,118,.35);
+                box-shadow: 0 0 28px rgba(0,230,118,.3);
                 transform: translateY(-1px);
             }
 
@@ -736,12 +1293,12 @@
             background: linear-gradient(135deg,#3a1f00,#663300);
             border-color: var(--orange);
             color: var(--orange);
-            box-shadow: 0 0 20px rgba(255,152,0,.15);
+            box-shadow: 0 0 16px rgba(255,152,0,.12);
         }
 
             .btn-orange:hover:not(:disabled) {
                 background: linear-gradient(135deg,#5a3000,#995500);
-                box-shadow: 0 0 35px rgba(255,152,0,.35);
+                box-shadow: 0 0 28px rgba(255,152,0,.3);
                 transform: translateY(-1px);
             }
 
@@ -758,7 +1315,7 @@
         }
 
         .btn-icon {
-            font-size: 20px;
+            font-size: 16px;
         }
 
         /* FOOTER */
@@ -766,18 +1323,18 @@
             background: var(--surface);
             border: 1px solid var(--border2);
             border-radius: 6px;
-            padding: 0 20px;
+            padding: 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text2);
             letter-spacing: 1px;
         }
 
         .footer-log {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             align-items: center;
             font-family: 'Share Tech Mono',monospace;
         }
@@ -785,7 +1342,7 @@
         .log-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .log-dot {
@@ -794,6 +1351,341 @@
             border-radius: 50%;
             background: var(--green);
         }
+
+        /* ── THEME TOGGLE ── */
+        .theme-toggle {
+            width: 32px;
+            height: 32px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text2);
+            transition: all .2s;
+            flex-shrink: 0;
+        }
+
+            .theme-toggle:hover {
+                border-color: var(--green);
+                color: var(--green);
+                background: rgba(0,230,118,.08);
+            }
+
+        /* ── USER DROPDOWN ── */
+        .user-btn {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg,#003a1a,#006633);
+            border: 2px solid var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--green);
+            cursor: pointer;
+            user-select: none;
+            flex-shrink: 0;
+            font-family: 'Barlow',sans-serif;
+            transition: border-color .2s,transform .15s;
+        }
+
+            .user-avatar:hover {
+                border-color: var(--gold);
+                transform: scale(1.05);
+                color: var(--gold);
+            }
+
+            .user-avatar.open {
+                border-color: var(--gold);
+                color: var(--gold);
+            }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            width: 225px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            z-index: 999;
+            box-shadow: 0 16px 40px rgba(0,0,0,.8);
+            overflow: hidden;
+            animation: dropIn .15s ease;
+        }
+
+            .user-dropdown.show {
+                display: block;
+            }
+
+        @@keyframes dropIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px) scale(.97)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1)
+            }
+        }
+
+        .ud-header {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,230,118,.04);
+            border-bottom: 1px solid rgba(0,230,118,.1);
+        }
+
+        .ud-avatar-lg {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg,#003a1a,#006633);
+            border: 2px solid var(--green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--green);
+            font-family: 'Barlow',sans-serif;
+        }
+
+        .ud-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: 'Barlow',sans-serif;
+        }
+
+        .ud-role {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+            letter-spacing: .5px;
+        }
+
+        .ud-divider {
+            height: 1px;
+            background: rgba(255,255,255,.05);
+            margin: 0 12px;
+        }
+
+        .ud-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            cursor: pointer;
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: 'Barlow',sans-serif;
+            letter-spacing: .3px;
+            transition: background .15s,color .15s;
+        }
+
+            .ud-item:hover {
+                background: rgba(0,230,118,.06);
+                color: var(--green);
+            }
+
+            .ud-item.danger {
+                color: var(--red);
+            }
+
+                .ud-item.danger:hover {
+                    background: rgba(255,61,61,.08);
+                    color: var(--red);
+                }
+
+            .ud-item i {
+                font-size: 14px;
+                width: 16px;
+                text-align: center;
+                flex-shrink: 0;
+            }
+
+        .tb-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255,255,255,.06);
+            border-radius: 1px;
+            flex-shrink: 0;
+        }
+
+        /* ── LIGHT MODE ── */
+        body.light-mode {
+            --bg: #f0f4f0;
+            --surface: #ffffff;
+            --surface2: #f1f5f1;
+            --surface3: #e8f0e8;
+            --border: #d1e0d1;
+            --border2: #b8ceb8;
+            --text: #334155;
+            --text2: #6b8f6b;
+            --text3: #94a894;
+        }
+
+            body.light-mode::after {
+                opacity: 0;
+            }
+
+            body.light-mode::before {
+                opacity: 0.15;
+            }
+
+            body.light-mode .topbar {
+                background: #ffffff;
+                border-color: #b8ceb8;
+                border-top-color: var(--green);
+            }
+
+            body.light-mode .tb-clock {
+                color: #0369a1;
+                text-shadow: none;
+            }
+
+            body.light-mode .tb-date, body.light-mode .tb-sub {
+                color: #6b8f6b;
+            }
+
+            body.light-mode .tb-title {
+                color: var(--green);
+            }
+
+            body.light-mode .conn-badge {
+                background: #f1f5f1;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .stat-chip {
+                background: #f1f5f1;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .result-panel, body.light-mode .log-panel, body.light-mode .history-mini, body.light-mode .detail-panel {
+                background: #ffffff;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .theme-toggle {
+                background: #f1f5f1;
+                border-color: #b8ceb8;
+                color: #6b8f6b;
+            }
+
+                body.light-mode .theme-toggle:hover {
+                    border-color: var(--green);
+                    color: var(--green);
+                }
+
+            body.light-mode .user-dropdown {
+                background: #ffffff;
+                border-color: #b8ceb8;
+                box-shadow: 0 16px 40px rgba(0,0,0,.12);
+            }
+
+            body.light-mode .ud-header {
+                background: rgba(0,180,80,.04);
+                border-color: #d1e0d1;
+            }
+
+            body.light-mode .ud-name {
+                color: #0f172a;
+            }
+
+            body.light-mode .ud-item {
+                color: #4a7a4a;
+            }
+
+                body.light-mode .ud-item:hover {
+                    background: rgba(0,180,80,.06);
+                    color: var(--green);
+                }
+
+            body.light-mode .ud-divider {
+                background: #e8f0e8;
+            }
+
+            body.light-mode .tab-btn {
+                background: #ffffff;
+                border-color: #b8ceb8;
+                color: #6b8f6b;
+            }
+
+                body.light-mode .tab-btn:hover {
+                    background: #f1f5f1;
+                }
+
+            body.light-mode .footer {
+                background: #ffffff;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .xe-item {
+                background: #f8faf8;
+                border-color: #d1e0d1;
+            }
+
+            body.light-mode .search-box {
+                background: #ffffff;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .search-input {
+                color: #c77a00;
+            }
+
+            body.light-mode .bienso-confirm-wrap {
+                background: #f1f5f1;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .bienso-confirm-input {
+                background: #ffffff;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .dukien-section {
+                background: #f1f5f1;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .dukien-input {
+                background: #ffffff;
+                border-color: #b8ceb8;
+            }
+
+            body.light-mode .dkp-btn {
+                background: #ffffff;
+                border-color: #b8ceb8;
+                color: #6b8f6b;
+            }
     </style>
 </head>
 <body>
@@ -805,7 +1697,7 @@
                 <div class="tb-icon">🛡️</div>
                 <div>
                     <div class="tb-title">Bảo vệ cổng xuất</div>
-                    <div class="tb-sub">Security Gate — Outbound Verification</div>
+                    <div class="tb-sub">Security Gate — Outbound Verification + Camera AI</div>
                 </div>
             </div>
             <div>
@@ -813,124 +1705,224 @@
                 <div class="tb-date" id="date-str"></div>
             </div>
             <div class="tb-right">
-                <div class="stat-chip">
-                    <div class="n" id="stat-cho" style="color:var(--gold);">0</div>
-                    <div class="l">Chờ ra cổng</div>
-                </div>
-                <div class="stat-chip">
-                    <div class="n" id="stat-van" style="color:var(--orange);">0</div>
-                    <div class="l">Đang vận chuyển</div>
-                </div>
-                <div class="stat-chip">
-                    <div class="n" id="stat-da" style="color:var(--green);">0</div>
-                    <div class="l">Đã về bãi</div>
-                </div>
+                <div class="stat-chip"><div class="n" id="stat-cho" style="color:var(--gold);">0</div><div class="l">Chờ ra cổng</div></div>
+                <div class="stat-chip"><div class="n" id="stat-van" style="color:var(--orange);">0</div><div class="l">Đang vận chuyển</div></div>
+                <div class="stat-chip"><div class="n" id="stat-da" style="color:var(--green);">0</div><div class="l">Đã ra cổng</div></div>
                 <div class="conn-badge">
                     <span class="conn-dot" id="conn-dot"></span>
                     <span id="conn-text">Kết nối...</span>
                 </div>
+                <div class="conn-badge" id="py-badge">
+                    <span class="conn-dot" id="py-dot"></span>
+                    <span id="py-text">Python...</span>
+                </div>
+                <div class="tb-divider"></div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Sáng/Tối">
+                    <i class="bi bi-moon-fill" id="theme-ico"></i>
+                </button>
+                <div class="user-btn" id="user-btn">
+                    <div class="user-avatar" id="user-avatar" onclick="toggleUserMenu()">@initials</div>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <div class="ud-header">
+                            <div class="ud-avatar-lg">@initials</div>
+                            <div>
+                                <div class="ud-name">@userName</div>
+                                <div class="ud-role">@userEmail</div>
+                            </div>
+                        </div>
+                        <div class="ud-divider"></div>
+                        <a href="#" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
+                        <a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a>
+                        <div class="ud-divider"></div>
+                        <form asp-area="Identity" asp-page="/Account/Logout"
+                              asp-route-returnUrl="@Url.Action("Index","BaoVeXuat")" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="ud-item danger">
+                                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- MAIN -->
+        <!-- MAIN 4 COLUMNS -->
         <div class="main">
-            <!-- TABS -->
-            <div class="tabs">
-                <button class="tab-btn active-ra" id="tab-ra" onclick="switchTab('ra')">
-                    ✔ Xe ra cổng
-                    <span id="tab-ra-count" style="margin-left:6px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);border-radius:10px;padding:1px 8px;font-size:10px;color:var(--green);">0</span>
-                </button>
-                <button class="tab-btn" id="tab-ve" onclick="switchTab('ve')">
-                    🔄 Xe về bãi
-                    <span id="tab-ve-count" style="margin-left:6px;background:rgba(255,152,0,.15);border:1px solid rgba(255,152,0,.3);border-radius:10px;padding:1px 8px;font-size:10px;color:var(--orange);">0</span>
-                </button>
+
+            <!-- COL 1: CAMERA + KẾT QUẢ -->
+            <div class="col-cam">
+                <div class="camera-wrap">
+                    <div class="cam-corner tl"></div><div class="cam-corner tr"></div>
+                    <div class="cam-corner bl"></div><div class="cam-corner br"></div>
+                    <div class="scan-line"></div>
+                    <div class="cam-label">📷 CAM CỔNG XUẤT</div>
+                    <div class="cam-status"><span class="conn-dot on"></span><span>Python AI</span></div>
+                    <div class="cam-placeholder">
+                        <div class="cam-placeholder-icon">🎥</div>
+                        <div class="cam-placeholder-text">Camera đang xử lý</div>
+                        <div style="font-size:9px;color:var(--text3);margin-top:3px;">Kết quả hiển thị bên dưới</div>
+                    </div>
+                </div>
+                <div class="result-panel">
+                    <div class="result-hdr">Kết quả nhận diện</div>
+                    <div class="result-body">
+                        <div class="result-bienso empty" id="r-bienso">Chờ xe...</div>
+                        <div class="result-conf" id="r-conf"></div>
+                        <div class="result-row">
+                            <span class="result-row-lbl">Trạng thái</span>
+                            <span class="result-row-val" id="r-tt" style="color:var(--text2);">--</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-row-lbl">Cửa xuất</span>
+                            <span class="result-row-val" style="color:var(--cyan);" id="r-cua">--</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-row-lbl">Thời gian</span>
+                            <span class="result-row-val" id="r-time">--:--:--</span>
+                        </div>
+                        <div class="result-msg msg-wait" id="r-msg">Đang chờ nhận diện...</div>
+                        <div class="stats-mini">
+                            <div class="stat-mini"><div class="n" id="s-tong" style="color:var(--cyan);">0</div><div class="l">Tổng lượt</div></div>
+                            <div class="stat-mini"><div class="n" id="s-found" style="color:var(--green);">0</div><div class="l">Tìm thấy</div></div>
+                            <div class="stat-mini"><div class="n" id="s-miss" style="color:var(--red);">0</div><div class="l">Không thấy</div></div>
+                            <div class="stat-mini"><div class="n" id="s-conf" style="color:var(--gold);">--%</div><div class="l">Conf. TB</div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- TAB RA CỔNG -->
-            <div class="tab-content active" id="content-ra">
-                <div class="list-panel">
-                    <div class="list-header">
-                        <span class="list-title green">Xe chờ ra cổng</span>
-                        <span class="list-count" id="list-ra-count">0 xe</span>
+            <!-- COL 2: LỊCH SỬ NHẬN DIỆN -->
+            <div class="col-log">
+                <div class="log-panel">
+                    <div class="log-header">
+                        <span>Lịch sử nhận diện</span>
+                        <span id="log-count" style="color:var(--cyan);">0 lượt</span>
                     </div>
-                    <div class="list-body" id="list-ra-body">
+                    <div class="log-body" id="log-body">
+                        <div style="text-align:center;padding:16px;color:var(--text2);font-size:10px;">Chờ nhận diện...</div>
+                    </div>
+                </div>
+                <div class="history-mini">
+                    <div class="history-mini-header">
+                        <span>⏱ Gần nhất</span>
+                        <span id="hm-count" style="color:var(--cyan);">0</span>
+                    </div>
+                    <div class="history-mini-body" id="hm-body">
+                        <div class="hm-empty">Chờ nhận diện...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COL 3: SEARCH + DANH SÁCH XE -->
+            <div class="col-list">
+                <div class="list-hdr">
+                    <span class="list-hdr-title green" id="list-title">Xe chờ ra cổng</span>
+                    <span style="font-size:10px;color:var(--text2);" id="list-count">0 xe</span>
+                </div>
+                <div class="search-box">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="search-input" id="inp-search-bienso"
+                           placeholder="Nhập biển số để lọc..." maxlength="12"
+                           oninput="onSearchInput(this.value)"
+                           onkeydown="if(event.key==='Escape'){clearSearch();}" />
+                    <button class="search-clear" id="btn-search-clear" onclick="clearSearch()" title="Xóa">✕</button>
+                    <span class="search-result-count" id="search-result-count"></span>
+                </div>
+                <div class="tabs-row">
+                    <button class="tab-btn active-ra" id="tab-ra" onclick="switchTab('ra')">
+                        ✔ Xe ra cổng
+                        <span id="tab-ra-count" style="margin-left:5px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--green);">0</span>
+                    </button>
+                    <button class="tab-btn" id="tab-ve" onclick="switchTab('ve')">
+                        🔄 Xe về bãi
+                        <span id="tab-ve-count" style="margin-left:5px;background:rgba(255,152,0,.15);border:1px solid rgba(255,152,0,.3);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--orange);">0</span>
+                    </button>
+                </div>
+                <div class="tab-content active" id="content-ra">
+                    <div id="list-ra-body">
                         <div class="xe-empty"><div class="xe-empty-icon">🚛</div><div class="xe-empty-text">Đang tải...</div></div>
                     </div>
                 </div>
-                <div class="detail-panel">
-                    <div class="detail-header">
-                        <span class="detail-title">Chi tiết xe được chọn</span>
-                        <span id="detail-ra-status" style="font-size:10px;color:var(--text2);letter-spacing:1px;">— Chọn xe từ danh sách —</span>
+                <div class="tab-content" id="content-ve">
+                    <div id="list-ve-body">
+                        <div class="xe-empty"><div class="xe-empty-icon">🚛</div><div class="xe-empty-text">Đang tải...</div></div>
                     </div>
-                    <div class="detail-placeholder" id="detail-ra-placeholder">
+                </div>
+            </div>
+
+            <!-- COL 4: DETAIL -->
+            <div class="col-detail">
+                <div class="detail-panel">
+                    <div class="detail-hdr">
+                        <span class="detail-title">Chi tiết xe được chọn</span>
+                        <span id="detail-status" style="font-size:9px;color:var(--text2);letter-spacing:1px;">— Chọn xe —</span>
+                    </div>
+                    <div class="detail-placeholder" id="detail-placeholder">
                         <div class="placeholder-icon">🔍</div>
                         <div class="placeholder-arrow">←</div>
                         <div class="placeholder-text">Chọn xe để xem chi tiết</div>
                     </div>
-                    <div class="detail-body" id="detail-ra-body" style="display:none;">
-                        <div class="detail-bienso" id="ra-bienso">--</div>
+                    <div class="detail-body" id="detail-body" style="display:none;">
+                        <div class="detail-bienso" id="det-bienso">--</div>
                         <div class="detail-grid">
-                            <div class="detail-field"><div class="detail-field-label">Cửa xuất</div><div class="detail-field-value accent" id="ra-cua">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Loại xe</div><div class="detail-field-value" id="ra-loai">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Tài xế</div><div class="detail-field-value gold" id="ra-taixe">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">SĐT tài xế</div><div class="detail-field-value accent" id="ra-tel">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Giờ vào cửa</div><div class="detail-field-value accent" id="ra-giovao">--:--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Giờ hoàn thành BG</div><div class="detail-field-value green" id="ra-hoanthanh">--:--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">Cửa xuất</div><div class="detail-field-value accent" id="det-cua">--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">Loại xe</div><div class="detail-field-value" id="det-loai">--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">Tài xế</div><div class="detail-field-value gold" id="det-taixe">--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">SĐT tài xế</div><div class="detail-field-value accent" id="det-tel">--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">Giờ vào cửa</div><div class="detail-field-value accent" id="det-giovao">--:--</div></div>
+                            <div class="detail-field"><div class="detail-field-label">Giờ hoàn thành BG</div><div class="detail-field-value green" id="det-hoanthanh">--:--</div></div>
                         </div>
-                        <div class="hang-table-wrap">
-                            <div class="hang-table-title">Hàng hóa xuất</div>
-                            <table class="hang-table">
-                                <thead><tr><th>Đơn vị</th><th>Chưa BG</th><th>Đã BG</th></tr></thead>
-                                <tbody id="ra-hang"></tbody>
-                            </table>
-                        </div>
-                        <div class="dukien-section">
-                            <div class="dukien-label">Thời gian dự kiến xe về bãi</div>
-                            <input type="datetime-local" class="dukien-input" id="inp-dukien-ra" />
-                        </div>
-                        <button class="btn-action btn-green" id="btn-ra" onclick="xacNhanRaCong()">
-                            <span class="btn-icon">✔</span> Xác nhận cho xe ra cổng
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- TAB VỀ BÃI -->
-            <div class="tab-content" id="content-ve">
-                <div class="list-panel">
-                    <div class="list-header">
-                        <span class="list-title orange">Xe đang vận chuyển</span>
-                        <span class="list-count" id="list-ve-count">0 xe</span>
-                    </div>
-                    <div class="list-body" id="list-ve-body">
-                        <div class="xe-empty"><div class="xe-empty-icon">🚛</div><div class="xe-empty-text">Đang tải...</div></div>
-                    </div>
-                </div>
-                <div class="detail-panel">
-                    <div class="detail-header">
-                        <span class="detail-title">Chi tiết xe về bãi</span>
-                        <span id="detail-ve-status" style="font-size:10px;color:var(--text2);letter-spacing:1px;">— Chọn xe từ danh sách —</span>
-                    </div>
-                    <div class="detail-placeholder" id="detail-ve-placeholder">
-                        <div class="placeholder-icon">🔄</div>
-                        <div class="placeholder-arrow">←</div>
-                        <div class="placeholder-text">Chọn xe để xác nhận về bãi</div>
-                    </div>
-                    <div class="detail-body" id="detail-ve-body" style="display:none;">
-                        <div class="detail-bienso" id="ve-bienso">--</div>
-                        <div class="detail-grid">
-                            <div class="detail-field"><div class="detail-field-label">Loại xe</div><div class="detail-field-value" id="ve-loai">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Tải trọng</div><div class="detail-field-value gold" id="ve-taitrong">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">Tài xế</div><div class="detail-field-value gold" id="ve-taixe">--</div></div>
-                            <div class="detail-field"><div class="detail-field-label">SĐT tài xế</div><div class="detail-field-value accent" id="ve-tel">--</div></div>
-                            <div class="detail-field" style="grid-column:span 2;">
-                                <div class="detail-field-label">Dự kiến về bãi</div>
-                                <div class="detail-field-value orange" id="ve-dukien">--</div>
-                            </div>
+                        <!-- Hàng hóa gọn -->
+                        <div class="detail-field" style="grid-column:1/-1;">
+                            <div class="detail-field-label">📦 Hàng hóa đã bàn giao</div>
+                            <div class="detail-field-value" id="det-hang-chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;"></div>
                         </div>
-                        <button class="btn-action btn-orange" id="btn-ve" onclick="xacNhanVeBai()">
-                            <span class="btn-icon">🔄</span> Xác nhận xe đã vào bãi
-                        </button>
+
+                        <!-- Chỉ hiện khi tab ra cổng -->
+                        <div id="section-ra" style="display:flex;flex-direction:column;gap:10px;">
+                            <div class="dukien-section">
+                                <div class="dukien-top">
+                                    <span class="dukien-label">Dự kiến về bãi (tùy chọn)</span>
+                                    <div class="dukien-presets">
+                                        <button class="dkp-btn" onclick="setDuKienQuick(2,this)">+2h</button>
+                                        <button class="dkp-btn active" id="dkp-4" onclick="setDuKienQuick(4,this)">+4h</button>
+                                        <button class="dkp-btn" onclick="setDuKienQuick(6,this)">+6h</button>
+                                        <button class="dkp-btn" onclick="setDuKienQuick(8,this)">+8h</button>
+                                    </div>
+                                </div>
+                                <input type="datetime-local" class="dukien-input" id="inp-dukien" oninput="onDuKienManual()" />
+                                <div class="dukien-hint" id="dukien-hint"></div>
+                            </div>
+                            <div class="bienso-confirm-wrap">
+                                <div class="bienso-confirm-label">Xác nhận biển số xe ra cổng</div>
+                                <input type="text" class="bienso-confirm-input" id="inp-bienso-confirm"
+                                       placeholder="NHẬP BIỂN SỐ..." maxlength="12"
+                                       oninput="onBienSoConfirmInput(this.value)"
+                                       onkeydown="if(event.key==='Enter') xacNhanRaCong()" />
+                                <div class="bienso-confirm-hint" id="bienso-confirm-hint">Nhập lại biển số để xác nhận trước khi cho xe ra</div>
+                            </div>
+                                <button class="btn-action btn-green" id="btn-ra" onclick="xacNhanRaCong()">
+                                    <i class="bi bi-door-open" style="font-size:16px;"></i> Xác nhận cho xe ra cổng
+                                </button>
+                        </div>
+
+                        <!-- Chỉ hiện khi tab về bãi -->
+                        <div id="section-ve" style="display:none;flex-direction:column;gap:10px;">
+                            <div class="detail-grid">
+                                <div class="detail-field">
+                                    <div class="detail-field-label">🕐 Giờ xuất phát</div>
+                                    <div class="detail-field-value accent" id="det-xuatphat">--:--</div>
+                                </div>
+                                <div class="detail-field">
+                                    <div class="detail-field-label">📅 Dự kiến về bãi</div>
+                                    <div class="detail-field-value orange" id="det-dukien">--</div>
+                                </div>
+                            </div>
+                            <button class="btn-action btn-orange" id="btn-ve" onclick="xacNhanVeBai()">
+                                <i class="bi bi-sign-turn-right" style="font-size:16px;"></i> Xác nhận xe đã vào bãi
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -947,15 +1939,41 @@
 
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script>
-        var xeRaData   = [];
-        var xeVeData   = [];
-        var selectedRa = null;
-        var selectedVe = null;
-        var daSoRaCong = 0;
-        var daSoVeBai  = 0;
-        var activeTab  = 'ra';
+        // ── THEME ──
+        var isLight = localStorage.getItem('theme-baovexuat') === 'light';
+        function applyTheme() {
+            document.body.classList.toggle('light-mode', isLight);
+            document.getElementById('theme-ico').className = isLight ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+        }
+        function toggleTheme() {
+            isLight = !isLight;
+            localStorage.setItem('theme-baovexuat', isLight ? 'light' : 'dark');
+            applyTheme();
+        }
+        applyTheme();
 
-        // ĐỒNG HỒ
+        // ── USER MENU ──
+        function toggleUserMenu() {
+            var dd = document.getElementById('user-dropdown');
+            var av = document.getElementById('user-avatar');
+            var isOpen = dd.classList.contains('show');
+            dd.classList.toggle('show', !isOpen);
+            av.classList.toggle('open', !isOpen);
+        }
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#user-btn')) {
+                document.getElementById('user-dropdown').classList.remove('show');
+                document.getElementById('user-avatar').classList.remove('open');
+            }
+        });
+
+        var xeRaData = [], xeVeData = [];
+        var selectedId = null, activeTab = 'ra';
+        var daSoRaCong = 0;
+        var logData = [], confList = [], statTong = 0, statFound = 0, statMiss = 0;
+        var searchKeyword = '';
+
+        // ── CLOCK ──
         function tick() {
             var n = new Date();
             document.getElementById('clock').textContent    = n.toLocaleTimeString('vi-VN',{hour12:false});
@@ -964,34 +1982,137 @@
         }
         setInterval(tick,1000); tick();
 
-        function setDefaultDuKien() {
-            var d = new Date(Date.now() + 3*3600000);
+        // ── DỰ KIẾN VỀ BÃI: PRESET NHANH ──
+        function setDuKienQuick(hours, btn) {
+            document.querySelectorAll('.dkp-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            var d = new Date(Date.now() + hours * 3600000);
             var pad = s => String(s).padStart(2,'0');
-            document.getElementById('inp-dukien-ra').value =
+            document.getElementById('inp-dukien').value =
                 d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+            document.getElementById('dukien-hint').innerHTML =
+                'Dự kiến: <span>'+pad(d.getHours())+':'+pad(d.getMinutes())+' hôm nay (~'+hours+' giờ nữa)</span>';
+        }
+        function onDuKienManual() {
+            document.querySelectorAll('.dkp-btn').forEach(b => b.classList.remove('active'));
+            var val = document.getElementById('inp-dukien').value;
+            if (val) {
+                var d = new Date(val);
+                var pad = s => String(s).padStart(2,'0');
+                document.getElementById('dukien-hint').innerHTML =
+                    'Dự kiến: <span>'+pad(d.getHours())+':'+pad(d.getMinutes())+' ngày '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+'</span>';
+            }
+        }
+        function setDefaultDuKien() {
+            setDuKienQuick(4, document.getElementById('dkp-4'));
         }
 
-        // TABS
+        // ── Ô BIỂN SỐ XÁC NHẬN ──
+        function onBienSoConfirmInput(val) {
+            var inp = document.getElementById('inp-bienso-confirm');
+            var hint = document.getElementById('bienso-confirm-hint');
+            if (!selectedId || !val) {
+                inp.className = 'bienso-confirm-input';
+                hint.textContent = 'Nhập lại biển số để xác nhận trước khi cho xe ra';
+                return;
+            }
+            var data = activeTab === 'ra' ? xeRaData : xeVeData;
+            var xe = data.find(x => (x.id??x.Id) === selectedId);
+            if (!xe) return;
+            var bienSoXe = (xe.bienSoXe??xe.BienSoXe??'').replace(/[-. ]/g,'').toUpperCase();
+            var nhap = val.replace(/[-. ]/g,'').toUpperCase();
+            if (nhap === bienSoXe) {
+                inp.className = 'bienso-confirm-input match';
+               hint.innerHTML = '<span style="color:var(--green)"><i class="bi bi-shield-check"></i> Biển số khớp — sẵn sàng xác nhận</span>';
+            } else {
+                inp.className = 'bienso-confirm-input mismatch';
+                hint.innerHTML = '<span style="color:var(--red)">✘ Chưa khớp (xe: '+(xe.bienSoXe??xe.BienSoXe??'--')+')</span>';
+            }
+        }
+        function resetBienSoConfirm() {
+            var inp = document.getElementById('inp-bienso-confirm');
+            if (inp) {
+                inp.value = '';
+                inp.className = 'bienso-confirm-input';
+                document.getElementById('bienso-confirm-hint').textContent = 'Nhập lại biển số để xác nhận trước khi cho xe ra';
+            }
+        }
+
+        // ── SEARCH BOX ──
+        function onSearchInput(val) {
+            searchKeyword = val.replace(/[-. ]/g,'').toUpperCase();
+            document.getElementById('btn-search-clear').style.display = val ? 'block' : 'none';
+            if (activeTab === 'ra') renderRaList();
+            else renderVeList();
+        }
+        function clearSearch() {
+            document.getElementById('inp-search-bienso').value = '';
+            document.getElementById('btn-search-clear').style.display = 'none';
+            document.getElementById('search-result-count').textContent = '';
+            searchKeyword = '';
+            if (activeTab === 'ra') renderRaList();
+            else renderVeList();
+        }
+
+        // ── ÂM THANH BEEP ──
+        function playBeep(found) {
+            try {
+                var ctx = new (window.AudioContext||window.webkitAudioContext)();
+                var osc = ctx.createOscillator();
+                var gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                if (found) {
+                    osc.frequency.setValueAtTime(880, ctx.currentTime);
+                    osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.35);
+                } else {
+                    osc.frequency.setValueAtTime(330, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2);
+                }
+            } catch(e) {}
+        }
+
+        // ── TABS ──
         function switchTab(tab) {
             activeTab = tab;
+            clearSearch();
             document.getElementById('content-ra').classList.toggle('active', tab === 'ra');
             document.getElementById('content-ve').classList.toggle('active', tab === 've');
-            var btnRa = document.getElementById('tab-ra');
-            var btnVe = document.getElementById('tab-ve');
-            btnRa.className = 'tab-btn' + (tab==='ra' ? ' active-ra' : '');
-            btnVe.className = 'tab-btn' + (tab==='ve' ? ' active-ve' : '');
+            document.getElementById('tab-ra').className = 'tab-btn' + (tab==='ra' ? ' active-ra' : '');
+            document.getElementById('tab-ve').className = 'tab-btn' + (tab==='ve' ? ' active-ve' : '');
+            resetDetail();
+            if (tab==='ra') {
+                document.getElementById('list-title').textContent = 'Xe chờ ra cổng';
+                document.getElementById('list-title').className = 'list-hdr-title green';
+                document.getElementById('list-count').textContent = xeRaData.length + ' xe';
+            } else {
+                document.getElementById('list-title').textContent = 'Xe đang vận chuyển';
+                document.getElementById('list-title').className = 'list-hdr-title orange';
+                document.getElementById('list-count').textContent = xeVeData.length + ' xe';
+            }
         }
 
-        // SIGNALR
+        // ── SIGNALR ──
         var conn = new signalR.HubConnectionBuilder()
             .withUrl('/signalserver').withAutomaticReconnect().build();
 
+        conn.on('CameraXuatNhanDien', function(data) {
+            if (!data) return;
+            playBeep(data.timThay);
+            handleNhanDien(data);
+            if (data.timThay && data.bienSo) highlightXe(data.bienSo);
+        });
         conn.on('UpdateBangTongHopXuat', function() { loadRaData(); });
         conn.on('XeVeBai', function() { loadVeData(); });
 
         conn.start().then(function() {
             document.getElementById('conn-dot').classList.add('on');
             document.getElementById('conn-text').textContent = 'Realtime';
+            checkPythonStatus();
             loadRaData(); loadVeData();
         }).catch(function() {
             document.getElementById('conn-dot').classList.add('err');
@@ -999,7 +2120,7 @@
             loadRaData(); loadVeData();
         });
 
-        // LOAD DATA
+        // ── LOAD DATA ──
         async function loadRaData() {
             try {
                 var res = await fetch('/BaoVeXuat/GetXeChoXacNhan');
@@ -1008,9 +2129,10 @@
                 renderRaList();
                 document.getElementById('stat-cho').textContent = xeRaData.length;
                 document.getElementById('tab-ra-count').textContent = xeRaData.length;
-                if (selectedRa) {
-                    var still = xeRaData.find(x => (x.id??x.Id) === selectedRa);
-                    if (still) selectRa(selectedRa); else resetRaDetail();
+                if (activeTab === 'ra') document.getElementById('list-count').textContent = xeRaData.length + ' xe';
+                if (selectedId && activeTab === 'ra') {
+                    var still = xeRaData.find(x => (x.id??x.Id) === selectedId);
+                    if (still) selectItem(selectedId); else resetDetail();
                 }
             } catch(e) { console.error(e); }
         }
@@ -1023,135 +2145,236 @@
                 renderVeList();
                 document.getElementById('stat-van').textContent = xeVeData.length;
                 document.getElementById('tab-ve-count').textContent = xeVeData.length;
-                if (selectedVe) {
-                    var still = xeVeData.find(x => (x.id??x.Id) === selectedVe);
-                    if (still) selectVe(selectedVe); else resetVeDetail();
+                if (activeTab === 've') document.getElementById('list-count').textContent = xeVeData.length + ' xe';
+                if (selectedId && activeTab === 've') {
+                    var still = xeVeData.find(x => (x.id??x.Id) === selectedId);
+                    if (still) selectItem(selectedId); else resetDetail();
                 }
             } catch(e) { console.error(e); }
         }
 
         setInterval(function(){ loadRaData(); loadVeData(); }, 15000);
 
-        // RENDER RA
+        // ── RENDER ──
+        function filterList(list) {
+            if (!searchKeyword) return list;
+            return list.filter(function(x) {
+                var bs = (x.bienSoXe??x.BienSoXe??'').replace(/[-. ]/g,'').toUpperCase();
+                return bs.includes(searchKeyword);
+            });
+        }
+
         function renderRaList() {
             var body = document.getElementById('list-ra-body');
-            document.getElementById('list-ra-count').textContent = xeRaData.length + ' xe';
-            if (!xeRaData.length) {
-                body.innerHTML = '<div class="xe-empty"><div class="xe-empty-icon">✅</div><div class="xe-empty-text" style="color:var(--green);">Không có xe chờ xác nhận</div></div>';
+            var filtered = filterList(xeRaData);
+            if (searchKeyword) {
+                document.getElementById('search-result-count').textContent = filtered.length + '/' + xeRaData.length;
+            } else {
+                document.getElementById('search-result-count').textContent = '';
+            }
+            if (!filtered.length) {
+                body.innerHTML = searchKeyword
+                    ? '<div class="xe-empty"><div class="xe-empty-icon">🔍</div><div class="xe-empty-text" style="color:var(--text2);">Không tìm thấy</div></div>'
+                    : '<div class="xe-empty"><div class="xe-empty-icon">✅</div><div class="xe-empty-text" style="color:var(--green);">Không có xe chờ</div></div>';
                 return;
             }
-            body.innerHTML = xeRaData.map(function(x) {
-                var id       = x.id??x.Id;
-                var bienSo   = x.bienSoXe??x.BienSoXe??'--';
-                var tenCua   = x.tenCua??x.TenCua??'--';
+            body.innerHTML = filtered.map(function(x) {
+                var id = x.id??x.Id;
+                var bienSo = x.bienSoXe??x.BienSoXe??'--';
+                var tenCua = x.tenCua??x.TenCua??'--';
                 var tenTaiXe = x.tenTaiXe??x.TenTaiXe??'--';
-                var loaiXe   = x.loaiXe??x.LoaiXe??'--';
+                var loaiXe = x.loaiXe??x.LoaiXe??'--';
                 var hangHoas = x.hangHoas??x.HangHoas??[];
-                var ht       = x.thoiGianHoanThanh??x.ThoiGianHoanThanh;
-                var hangStr  = hangHoas.map(h => '<span class="hang-chip">'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')+'</span>').join('');
-                var htStr    = ht ? new Date(ht).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
-                var sel      = selectedRa===id ? ' selected' : '';
-                return '<div class="xe-item'+sel+'" onclick="selectRa('+id+')" id="xe-ra-'+id+'">' +
-                    '<div class="xe-item-top"><span class="xe-bienso">'+bienSo+'</span><span class="xe-cua-badge">'+tenCua+'</span></div>' +
-                    '<div class="xe-item-meta"><span>🚗 '+loaiXe+'</span><span>👤 <span>'+tenTaiXe+'</span></span></div>' +
-                    (hangStr?'<div class="xe-item-hang">'+hangStr+'</div>':'') +
-                    '<div class="xe-item-time">⏱ Hoàn thành: '+htStr+'</div></div>';
+                var ht = x.thoiGianHoanThanh??x.ThoiGianHoanThanh;
+                var hangStr = hangHoas.map(h => '<span class="hang-chip">'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')+'</span>').join('');
+                var htStr = ht ? new Date(ht).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
+                var sel = selectedId===id && activeTab==='ra' ? ' selected' : '';
+                return '<div class="xe-item'+sel+'" onclick="selectItem('+id+')" id="xe-ra-'+id+'">' +
+                    '<div class="xe-top"><span class="xe-bienso">'+bienSo+'</span><span class="xe-badge">'+tenCua+'</span></div>' +
+                    '<div class="xe-meta"><span>🚗 '+loaiXe+'</span><span>👤 <span>'+tenTaiXe+'</span></span></div>' +
+                    (hangStr?'<div class="xe-hang">'+hangStr+'</div>':'') +
+                    '<div class="xe-time">⏱ Hoàn thành: '+htStr+'</div></div>';
             }).join('');
         }
 
-        // RENDER VỀ
         function renderVeList() {
             var body = document.getElementById('list-ve-body');
-            document.getElementById('list-ve-count').textContent = xeVeData.length + ' xe';
-            if (!xeVeData.length) {
-                body.innerHTML = '<div class="xe-empty"><div class="xe-empty-icon">🏁</div><div class="xe-empty-text">Không có xe đang vận chuyển</div></div>';
+            var filtered = filterList(xeVeData);
+            if (searchKeyword) {
+                document.getElementById('search-result-count').textContent = filtered.length + '/' + xeVeData.length;
+            } else {
+                document.getElementById('search-result-count').textContent = '';
+            }
+            if (!filtered.length) {
+                body.innerHTML = searchKeyword
+                    ? '<div class="xe-empty"><div class="xe-empty-icon">🔍</div><div class="xe-empty-text" style="color:var(--text2);">Không tìm thấy</div></div>'
+                    : '<div class="xe-empty"><div class="xe-empty-icon">🏁</div><div class="xe-empty-text">Không có xe vận chuyển</div></div>';
                 return;
             }
-            body.innerHTML = xeVeData.map(function(x) {
-                var id       = x.id??x.Id;
-                var bienSo   = x.bienSoXe??x.BienSoXe??'--';
-                var loaiXe   = x.loaiXe??x.LoaiXe??'--';
+            body.innerHTML = filtered.map(function(x) {
+                var id = x.id??x.Id;
+                var bienSo = x.bienSoXe??x.BienSoXe??'--';
+                var loaiXe = x.loaiXe??x.LoaiXe??'--';
                 var tenTaiXe = x.tenTaiXe??x.TenTaiXe??'--';
-                var dk       = x.thoiGianDuKienVe??x.ThoiGianDuKienVe;
-                var dkStr    = dk ? new Date(dk).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'Chưa xác định';
-                var sel      = selectedVe===id ? ' selected' : '';
-                return '<div class="xe-item type-ve'+sel+'" onclick="selectVe('+id+')" id="xe-ve-'+id+'">' +
-                    '<div class="xe-item-top"><span class="xe-bienso">'+bienSo+'</span><span class="xe-cua-badge orange">Đang vận chuyển</span></div>' +
-                    '<div class="xe-item-meta"><span>🚗 '+loaiXe+'</span><span>👤 <span>'+tenTaiXe+'</span></span></div>' +
-                    '<div class="xe-item-time">📅 Dự kiến về: '+dkStr+'</div></div>';
+                // [FIX 1] Đúng tên field: thoiGianDuKienVeBai
+                var dk = x.thoiGianDuKienVeBai??x.ThoiGianDuKienVeBai;
+                var dkStr = dk ? new Date(dk).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'Chưa xác định';
+                var sel = selectedId===id && activeTab==='ve' ? ' selected type-ve' : ' type-ve';
+                return '<div class="xe-item'+sel+'" onclick="selectItem('+id+')" id="xe-ve-'+id+'">' +
+                    '<div class="xe-top"><span class="xe-bienso">'+bienSo+'</span><span class="xe-badge orange">Đang vận chuyển</span></div>' +
+                    '<div class="xe-meta"><span>🚗 '+loaiXe+'</span><span>👤 <span>'+tenTaiXe+'</span></span></div>' +
+                    '<div class="xe-time">📅 Dự kiến về: '+dkStr+'</div></div>';
             }).join('');
         }
 
-        // SELECT RA
-        function selectRa(id) {
-            selectedRa = id;
-            var x = xeRaData.find(xe => (xe.id??xe.Id)===id);
-            if (!x) return;
-            document.querySelectorAll('#list-ra-body .xe-item').forEach(el => el.classList.remove('selected'));
-            var item = document.getElementById('xe-ra-'+id);
-            if (item) item.classList.add('selected');
-            document.getElementById('detail-ra-placeholder').style.display = 'none';
-            document.getElementById('detail-ra-body').style.display = 'flex';
-            document.getElementById('detail-ra-status').textContent = 'Xe được chọn';
+        // ── SELECT ITEM ──
+        function selectItem(id) {
+            selectedId = id;
+            resetBienSoConfirm();
             var fmt = dt => { if(!dt) return '--:--'; var d=new Date(dt); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
-            document.getElementById('ra-bienso').textContent    = x.bienSoXe??x.BienSoXe??'--';
-            document.getElementById('ra-cua').textContent       = x.tenCua??x.TenCua??'--';
-            document.getElementById('ra-loai').textContent      = x.loaiXe??x.LoaiXe??'--';
-            document.getElementById('ra-taixe').textContent     = x.tenTaiXe??x.TenTaiXe??'--';
-            document.getElementById('ra-tel').textContent       = x.telTaiXe??x.TelTaiXe??'--';
-            document.getElementById('ra-giovao').textContent    = fmt(x.thoiGianVaoCua??x.ThoiGianVaoCua);
-            document.getElementById('ra-hoanthanh').textContent = fmt(x.thoiGianHoanThanh??x.ThoiGianHoanThanh);
-            var hangHoas = x.hangHoas??x.HangHoas??[];
-            document.getElementById('ra-hang').innerHTML = hangHoas.length
-                ? hangHoas.map(h => '<tr><td>'+(h.donVi??h.DonVi??'--')+'</td><td class="chua">'+(h.chuaBG??h.ChuaBG??0)+'</td><td class="da">'+(h.daBG??h.DaBG??0)+'</td></tr>').join('')
-                : '<tr><td colspan="3" style="text-align:center;color:var(--text3);padding:16px;">Không có dữ liệu</td></tr>';
-            setDefaultDuKien();
+
+            if (activeTab === 'ra') {
+                var x = xeRaData.find(xe => (xe.id??xe.Id)===id);
+                if (!x) return;
+                document.querySelectorAll('#list-ra-body .xe-item').forEach(el => el.classList.remove('selected'));
+                var item = document.getElementById('xe-ra-'+id);
+                if (item) item.classList.add('selected');
+
+                // Hiện lại tất cả field cho tab ra cổng
+                document.getElementById('det-cua').closest('.detail-field').style.display = '';
+                document.getElementById('det-giovao').closest('.detail-field').style.display = '';
+                document.getElementById('det-hoanthanh').closest('.detail-field').style.display = '';
+                document.getElementById('det-hang-chips').closest('.detail-field').style.display = '';
+
+                showDetail();
+                document.getElementById('det-bienso').textContent    = x.bienSoXe??x.BienSoXe??'--';
+                document.getElementById('det-cua').textContent       = x.tenCua??x.TenCua??'--';
+                document.getElementById('det-loai').textContent      = x.loaiXe??x.LoaiXe??'--';
+                document.getElementById('det-taixe').textContent     = x.tenTaiXe??x.TenTaiXe??'--';
+                document.getElementById('det-tel').textContent       = x.telTaiXe??x.TelTaiXe??'--';
+                document.getElementById('det-giovao').textContent    = fmt(x.thoiGianVaoCua??x.ThoiGianVaoCua);
+                document.getElementById('det-hoanthanh').textContent = fmt(x.thoiGianHoanThanh??x.ThoiGianHoanThanh);
+
+                var hangs = x.hangHoas??x.HangHoas??[];
+                document.getElementById('det-hang-chips').innerHTML = hangs.length
+                    ? hangs.map(h =>
+                        '<span style="background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);border-radius:5px;padding:4px 10px;font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--green);">' +
+                        '<i class="bi bi-box-seam"></i> '+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--') +
+                        '</span>'
+                      ).join('')
+                    : '<span style="color:var(--text3);font-size:11px;">Không có dữ liệu</span>';
+
+                document.getElementById('section-ra').style.display = 'flex';
+                document.getElementById('section-ve').style.display = 'none';
+                setDefaultDuKien();
+
+                var bsVal = x.bienSoXe??x.BienSoXe??'';
+                document.getElementById('inp-bienso-confirm').value = bsVal;
+                onBienSoConfirmInput(bsVal);
+                document.getElementById('detail-status').textContent = 'Xe được chọn — Tab ra cổng';
+
+            } else {
+                var x2 = xeVeData.find(xe => (xe.id??xe.Id)===id);
+                if (!x2) return;
+                document.querySelectorAll('#list-ve-body .xe-item').forEach(el => el.classList.remove('selected'));
+                var item2 = document.getElementById('xe-ve-'+id);
+                if (item2) item2.classList.add('selected');
+
+                showDetail();
+                document.getElementById('det-bienso').textContent = x2.bienSoXe??x2.BienSoXe??'--';
+
+                // Ẩn field không cần cho tab về bãi
+                document.getElementById('det-cua').closest('.detail-field').style.display = 'none';
+                document.getElementById('det-giovao').closest('.detail-field').style.display = 'none';
+                document.getElementById('det-hoanthanh').closest('.detail-field').style.display = 'none';
+
+                // Chỉ hiện loại xe, tài xế, SĐT
+                document.getElementById('det-loai').closest('.detail-field').style.display = '';
+                document.getElementById('det-taixe').closest('.detail-field').style.display = '';
+                document.getElementById('det-tel').closest('.detail-field').style.display = '';
+                document.getElementById('det-loai').textContent  = x2.loaiXe??x2.LoaiXe??'--';
+                document.getElementById('det-taixe').textContent = x2.tenTaiXe??x2.TenTaiXe??'--';
+                document.getElementById('det-tel').textContent   = x2.telTaiXe??x2.TelTaiXe??'--';
+
+                // Ẩn chip hàng hóa
+                document.getElementById('det-hang-chips').innerHTML = '';
+                document.getElementById('det-hang-chips').closest('.detail-field').style.display = 'none';
+
+                // [FIX 1] Đúng tên field
+                var dk = x2.thoiGianDuKienVeBai??x2.ThoiGianDuKienVeBai;
+                var xp = x2.thoiGianXuatPhat??x2.ThoiGianXuatPhat;
+                document.getElementById('det-dukien').textContent = dk
+                    ? new Date(dk).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
+                    : 'Chưa xác định';
+                document.getElementById('det-xuatphat').textContent = xp
+                    ? new Date(xp).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})
+                    : '--:--';
+
+                document.getElementById('section-ra').style.display = 'none';
+                document.getElementById('section-ve').style.display = 'flex';
+                document.getElementById('detail-status').textContent = 'Xe được chọn — Tab về bãi';
+            }
         }
 
-        function resetRaDetail() {
-            selectedRa = null;
-            document.getElementById('detail-ra-placeholder').style.display = 'flex';
-            document.getElementById('detail-ra-body').style.display = 'none';
-            document.getElementById('detail-ra-status').textContent = '— Chọn xe từ danh sách —';
-            document.querySelectorAll('#list-ra-body .xe-item').forEach(el => el.classList.remove('selected'));
+        // [FIX 4] Thêm scrollTop = 0
+        function showDetail() {
+            document.getElementById('detail-placeholder').style.display = 'none';
+            document.getElementById('detail-body').style.display = 'flex';
+            document.getElementById('detail-body').scrollTop = 0;
         }
 
-        // SELECT VỀ
-        function selectVe(id) {
-            selectedVe = id;
-            var x = xeVeData.find(xe => (xe.id??xe.Id)===id);
-            if (!x) return;
-            document.querySelectorAll('#list-ve-body .xe-item').forEach(el => el.classList.remove('selected'));
-            var item = document.getElementById('xe-ve-'+id);
-            if (item) item.classList.add('selected');
-            document.getElementById('detail-ve-placeholder').style.display = 'none';
-            document.getElementById('detail-ve-body').style.display = 'flex';
-            document.getElementById('detail-ve-status').textContent = 'Xe được chọn';
-            var dk = x.thoiGianDuKienVe??x.ThoiGianDuKienVe;
-            var dkStr = dk ? new Date(dk).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'Chưa xác định';
-            document.getElementById('ve-bienso').textContent  = x.bienSoXe??x.BienSoXe??'--';
-            document.getElementById('ve-loai').textContent    = x.loaiXe??x.LoaiXe??'--';
-            document.getElementById('ve-taitrong').textContent= (x.taiTrong??x.TaiTrong??0)+' tấn';
-            document.getElementById('ve-taixe').textContent   = x.tenTaiXe??x.TenTaiXe??'--';
-            document.getElementById('ve-tel').textContent     = x.telTaiXe??x.TelTaiXe??'--';
-            document.getElementById('ve-dukien').textContent  = dkStr;
+        function resetDetail() {
+            selectedId = null;
+            document.getElementById('detail-placeholder').style.display = 'flex';
+            document.getElementById('detail-body').style.display = 'none';
+            document.getElementById('detail-status').textContent = '— Chọn xe —';
+            document.querySelectorAll('.xe-item').forEach(el => el.classList.remove('selected'));
+            resetBienSoConfirm();
         }
 
-        function resetVeDetail() {
-            selectedVe = null;
-            document.getElementById('detail-ve-placeholder').style.display = 'flex';
-            document.getElementById('detail-ve-body').style.display = 'none';
-            document.getElementById('detail-ve-status').textContent = '— Chọn xe từ danh sách —';
-            document.querySelectorAll('#list-ve-body .xe-item').forEach(el => el.classList.remove('selected'));
+        // ── HIGHLIGHT KHI CAMERA NHẬN DIỆN ──
+        function highlightXe(bienSo) {
+            var norm = bienSo.replace(/[-. ]/g,'').toUpperCase();
+            document.querySelectorAll('.xe-item').forEach(el => el.classList.remove('highlight'));
+            var foundInRa = false;
+            xeRaData.forEach(function(x) {
+                var bs = (x.bienSoXe??x.BienSoXe??'').replace(/[-. ]/g,'').toUpperCase();
+                if (bs === norm) {
+                    foundInRa = true;
+                    if (activeTab !== 'ra') switchTab('ra');
+                    var el = document.getElementById('xe-ra-'+(x.id??x.Id));
+                    if (el) { el.classList.add('highlight'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); selectItem(x.id??x.Id); }
+                }
+            });
+            if (!foundInRa) {
+                xeVeData.forEach(function(x) {
+                    var bs = (x.bienSoXe??x.BienSoXe??'').replace(/[-. ]/g,'').toUpperCase();
+                    if (bs === norm) {
+                        if (activeTab !== 've') switchTab('ve');
+                        var el = document.getElementById('xe-ve-'+(x.id??x.Id));
+                        if (el) { el.classList.add('highlight'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); selectItem(x.id??x.Id); }
+                    }
+                });
+            }
         }
 
-        // XÁC NHẬN RA CỔNG
+        // ── XÁC NHẬN RA CỔNG ──
         async function xacNhanRaCong() {
-            if (!selectedRa) return;
-            var x = xeRaData.find(xe => (xe.id??xe.Id)===selectedRa);
+            if (!selectedId) return;
+            var x = xeRaData.find(xe => (xe.id??xe.Id)===selectedId);
             var bienSo = x ? (x.bienSoXe??x.BienSoXe??'--') : '--';
-            if (!confirm('Xác nhận cho xe '+bienSo+' ra cổng?\nXe sẽ chuyển sang trạng thái Đang vận chuyển.')) return;
-            var inp = document.getElementById('inp-dukien-ra').value;
+            var inpConfirm = document.getElementById('inp-bienso-confirm').value.trim();
+            if (inpConfirm) {
+                var nhap = inpConfirm.replace(/[-. ]/g,'').toUpperCase();
+                var bsNorm = bienSo.replace(/[-. ]/g,'').toUpperCase();
+                if (nhap !== bsNorm) {
+                    alert('⚠️ Biển số nhập không khớp!\nXe: ' + bienSo + '\nNhập: ' + inpConfirm.toUpperCase());
+                    document.getElementById('inp-bienso-confirm').focus();
+                    return;
+                }
+            }
+            if (!confirm('Xác nhận cho xe ' + bienSo + ' ra cổng?')) return;
+            var inp = document.getElementById('inp-dukien').value;
             var thoiGianDuKienVe = inp ? new Date(inp).toISOString() : null;
             var btn = document.getElementById('btn-ra');
             btn.disabled = true;
@@ -1159,63 +2382,123 @@
             try {
                 var res = await fetch('/BaoVeXuat/XacNhanRaCong', {
                     method:'POST', headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({ xuatId: selectedRa, thoiGianDuKienVe: thoiGianDuKienVe })
+                    body: JSON.stringify({ xuatId: selectedId, thoiGianDuKienVeBai: thoiGianDuKienVe })
                 });
                 var data = await res.json();
                 if (res.ok) {
                     var now = new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
-                    addLog('✔ '+bienSo+' ra cổng lúc '+now);
+                    addFooterLog('✔ ' + bienSo + ' ra cổng lúc ' + now);
                     daSoRaCong++;
                     document.getElementById('stat-da').textContent = daSoRaCong;
-                    resetRaDetail();
-                    await loadRaData();
-                    await loadVeData();
-                } else {
-                    alert('❌ '+(data.message||'Lỗi xác nhận!'));
-                }
-            } catch(e) { alert('❌ Lỗi kết nối server'); }
-            finally {
-                btn.disabled = false;
-                btn.innerHTML = '<span class="btn-icon">✔</span> Xác nhận cho xe ra cổng';
-            }
+                    resetDetail();
+                    await loadRaData(); await loadVeData();
+                } else { alert('❌ '+(data.message||'Lỗi!')); }
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+            btn.disabled = false;
+           btn.innerHTML = '<i class="bi bi-door-open" style="font-size:16px;"></i> Xác nhận cho xe ra cổng';
         }
 
-        // XÁC NHẬN VỀ BÃI
+        // ── XÁC NHẬN VỀ BÃI ──
         async function xacNhanVeBai() {
-            if (!selectedVe) return;
-            var x = xeVeData.find(xe => (xe.id??xe.Id)===selectedVe);
+            if (!selectedId) return;
+            var x = xeVeData.find(xe => (xe.id??xe.Id)===selectedId);
             var bienSo = x ? (x.bienSoXe??x.BienSoXe??'--') : '--';
-            if (!confirm('Xác nhận xe '+bienSo+' đã vào bãi?\nXe sẽ chuyển sang trạng thái Trong bãi.')) return;
+            if (!confirm('Xác nhận xe ' + bienSo + ' đã vào bãi?')) return;
             var btn = document.getElementById('btn-ve');
             btn.disabled = true;
             btn.innerHTML = '<span class="btn-icon">⏳</span> Đang xử lý...';
             try {
                 var res = await fetch('/BaoVeXuat/XacNhanVeBai', {
                     method:'POST', headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({ xeId: selectedVe })
+                    body: JSON.stringify({ xeId: selectedId })
                 });
                 var data = await res.json();
                 if (res.ok) {
                     var now = new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
-                    addLog('🔄 '+bienSo+' về bãi lúc '+now);
-                    daSoVeBai++;
-                    document.getElementById('stat-da').textContent = daSoRaCong + daSoVeBai;
-                    resetVeDetail();
+                    addFooterLog('🔄 ' + bienSo + ' về bãi lúc ' + now);
+                    resetDetail();
                     await loadVeData();
-                } else {
-                    alert('❌ '+(data.message||'Lỗi xác nhận về bãi!'));
-                }
-            } catch(e) { alert('❌ Lỗi kết nối server'); }
-            finally {
-                btn.disabled = false;
-                btn.innerHTML = '<span class="btn-icon">🔄</span> Xác nhận xe đã vào bãi';
-            }
+                } else { alert('❌ '+(data.message||'Lỗi!')); }
+            } catch(e) { alert('❌ Lỗi kết nối'); }
+            btn.disabled = false;
+            // [FIX 3] Đúng icon 🏁
+           btn.innerHTML = '<i class="bi bi-sign-turn-right" style="font-size:16px;"></i> Xác nhận xe đã vào bãi';
         }
 
-        function addLog(msg) {
-            var log = document.getElementById('footer-log');
-            log.innerHTML = '<div class="log-item"><div class="log-dot"></div><span>'+msg+'</span></div>';
+        // ── XỬ LÝ KẾT QUẢ NHẬN DIỆN CAMERA ──
+        function handleNhanDien(data) {
+            var bienSo   = data.bienSo || '--';
+            var timThay  = data.timThay || false;
+            var tenCua   = data.tenCua || '--';
+            var thongBao = data.thongBao || '--';
+            var conf     = data.confidence || 0;
+            var thoiGian = data.thoiGian
+                ? new Date(data.thoiGian).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+                : '--:--:--';
+            var ttText = data.trangThaiText || '--';
+            var rBienso = document.getElementById('r-bienso');
+            rBienso.textContent = bienSo;
+            rBienso.className   = 'result-bienso ' + (timThay ? 'found' : 'notfound');
+            document.getElementById('r-conf').innerHTML = 'Confidence: <span>' + (conf*100).toFixed(0) + '%</span>';
+            document.getElementById('r-tt').textContent   = ttText;
+            document.getElementById('r-cua').textContent  = tenCua;
+            document.getElementById('r-time').textContent = thoiGian;
+            var msgEl = document.getElementById('r-msg');
+            msgEl.textContent = thongBao;
+            msgEl.className   = 'result-msg ' + (timThay ? 'msg-found' : 'msg-notfound');
+            statTong++; confList.push(conf);
+            if (timThay) statFound++; else statMiss++;
+            document.getElementById('s-tong').textContent = statTong;
+            document.getElementById('s-found').textContent = statFound;
+            document.getElementById('s-miss').textContent  = statMiss;
+            var avg = confList.reduce(function(a,b){return a+b;},0) / confList.length;
+            document.getElementById('s-conf').textContent  = (avg*100).toFixed(0) + '%';
+            addLog(thoiGian, bienSo, thongBao, timThay);
         }
+
+        function addLog(time, plate, msg, timThay) {
+            var body = document.getElementById('log-body');
+            if (body.querySelector('div[style]')) body.innerHTML = '';
+            var row = document.createElement('div');
+            row.className = 'log-row';
+            row.innerHTML =
+                '<span class="log-time">' + time + '</span>' +
+                '<span class="log-plate">' + plate + '</span>' +
+                '<span class="log-badge ' + (timThay ? 'badge-found' : 'badge-notfound') + '">' + (timThay ? 'OK' : 'MISS') + '</span>';
+            body.insertBefore(row, body.firstChild);
+            while (body.children.length > 60) body.removeChild(body.lastChild);
+            logData.unshift({time, plate, msg, timThay});
+            document.getElementById('log-count').textContent = logData.length + ' lượt';
+            var hmBody = document.getElementById('hm-body');
+            if (hmBody.querySelector('.hm-empty')) hmBody.innerHTML = '';
+            var hmRow = document.createElement('div');
+            hmRow.className = 'hm-row';
+            hmRow.innerHTML =
+                '<span class="hm-time">' + time + '</span>' +
+                '<span class="hm-plate ' + (timThay ? '' : 'miss') + '">' + plate + '</span>' +
+                '<span class="hm-badge ' + (timThay ? 'hm-ok' : 'hm-miss') + '">' + (timThay ? '✔ CÓ' : '✘ KHÔNG') + '</span>';
+            hmBody.insertBefore(hmRow, hmBody.firstChild);
+            while (hmBody.children.length > 8) hmBody.removeChild(hmBody.lastChild);
+            document.getElementById('hm-count').textContent = logData.length;
+        }
+
+        function addFooterLog(msg) {
+            document.getElementById('footer-log').innerHTML =
+                '<div class="log-item"><div class="log-dot"></div><span>'+msg+'</span></div>';
+        }
+
+        // ── PYTHON STATUS ──
+        async function checkPythonStatus() {
+            try {
+                var res = await fetch('/BaoVeXuat/Status', { signal: AbortSignal.timeout(2000) });
+                if (res.ok) {
+                    document.getElementById('py-dot').classList.add('on');
+                    document.getElementById('py-text').textContent = 'Camera Online';
+                    document.getElementById('py-badge').style.borderColor = 'var(--green)';
+                }
+            } catch(e) { document.getElementById('py-text').textContent = 'Chờ camera...'; }
+        }
+        setInterval(checkPythonStatus, 10000);
     </script>
 </body>
 </html>

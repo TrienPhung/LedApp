@@ -1,0 +1,1347 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Trạm Bảo Vệ — Camera AI</title>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #020509;
+            --surface: #050c14;
+            --surface2: #081018;
+            --border: #0a1e30;
+            --border2: #0f2d47;
+            --green: #00e676;
+            --gold: #f5a623;
+            --red: #ff3d3d;
+            --blue: #00b4ff;
+            --cyan: #00e5ff;
+            --text: #90a8be;
+            --text2: #2a4a60;
+            --orange: #ff8c42;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image: linear-gradient(rgba(0,180,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,180,255,.03) 1px, transparent 1px);
+                background-size: 50px 50px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+        .screen {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-rows: 64px 1fr 44px;
+            height: 100vh;
+            padding: 10px;
+            gap: 8px;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 0 18px;
+        }
+
+        .tb-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tb-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg,#001a2e,#003a60);
+            border: 1px solid var(--cyan);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .tb-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--cyan);
+            text-transform: uppercase;
+        }
+
+        .tb-sub {
+            font-size: 9px;
+            color: var(--text2);
+            letter-spacing: 2px;
+            margin-top: 1px;
+        }
+
+        .tb-clock {
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 28px;
+            color: var(--cyan);
+            letter-spacing: 5px;
+        }
+
+        .tb-date {
+            font-size: 9px;
+            color: var(--text2);
+            text-align: center;
+            letter-spacing: 2px;
+            margin-top: 1px;
+        }
+
+        .tb-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .conn-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10px;
+            color: var(--text2);
+            letter-spacing: 1px;
+        }
+
+        .conn-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--text2);
+            flex-shrink: 0;
+        }
+
+            .conn-dot.on {
+                background: var(--green);
+                animation: pulse 2s infinite;
+            }
+
+            .conn-dot.err {
+                background: var(--red);
+            }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* MAIN */
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 340px 300px;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        /* COL LEFT */
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .camera-wrap {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .cam-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            background: rgba(0,0,0,.75);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 10px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--cyan);
+        }
+
+        .cam-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0,0,0,.75);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 3px 10px;
+            font-size: 9px;
+            color: var(--text2);
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            animation: scan 3s linear infinite;
+            opacity: .5;
+            z-index: 1;
+        }
+
+        @@keyframes scan {
+            0% {
+                top: 0;
+                opacity: .5
+            }
+
+            50% {
+                opacity: .2
+            }
+
+            100% {
+                top: 100%;
+                opacity: .5
+            }
+        }
+
+        .cam-corner {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            z-index: 2;
+        }
+
+            .cam-corner.tl {
+                top: 7px;
+                left: 7px;
+                border-top: 2px solid var(--cyan);
+                border-left: 2px solid var(--cyan);
+            }
+
+            .cam-corner.tr {
+                top: 7px;
+                right: 7px;
+                border-top: 2px solid var(--cyan);
+                border-right: 2px solid var(--cyan);
+            }
+
+            .cam-corner.bl {
+                bottom: 7px;
+                left: 7px;
+                border-bottom: 2px solid var(--cyan);
+                border-left: 2px solid var(--cyan);
+            }
+
+            .cam-corner.br {
+                bottom: 7px;
+                right: 7px;
+                border-bottom: 2px solid var(--cyan);
+                border-right: 2px solid var(--cyan);
+            }
+
+        .cam-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text2);
+        }
+
+        .cam-placeholder-icon {
+            font-size: 40px;
+            opacity: .3;
+        }
+
+        .cam-placeholder-text {
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        .log-panel {
+            height: 120px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .log-header {
+            padding: 6px 12px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+            .log-body::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .log-body::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
+
+        .log-row {
+            display: grid;
+            grid-template-columns: 65px 110px 1fr auto;
+            gap: 6px;
+            align-items: center;
+            padding: 3px 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            border-bottom: 1px solid rgba(10,30,48,.5);
+            animation: fadeIn .3s ease;
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .log-time {
+            color: var(--text2);
+        }
+
+        .log-plate {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .log-msg {
+            color: var(--text);
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .log-badge {
+            padding: 1px 7px;
+            border-radius: 3px;
+            font-size: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-found {
+            background: rgba(0,230,118,.12);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .badge-notfound {
+            background: rgba(255,61,61,.12);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        /* COL MID */
+        .col-mid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 16px;
+            flex-shrink: 0;
+            transition: border-color .3s;
+        }
+
+            .result-card.found {
+                border-color: var(--green);
+            }
+
+            .result-card.notfound {
+                border-color: var(--red);
+            }
+
+        .result-label {
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--text2);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .result-bienso {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-align: center;
+            padding: 8px 0;
+        }
+
+            .result-bienso.empty {
+                color: var(--text2);
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+
+        .result-conf {
+            text-align: center;
+            margin-top: 3px;
+            font-size: 10px;
+            color: var(--text2);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+            .result-conf span {
+                color: var(--cyan);
+            }
+
+        .result-divider {
+            border-top: 1px solid var(--border2);
+            margin: 10px 0;
+        }
+
+        .result-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .rf-label {
+            color: var(--text2);
+        }
+
+        .rf-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+            .rf-value.green {
+                color: var(--green);
+            }
+
+            .rf-value.gold {
+                color: var(--gold);
+            }
+
+            .rf-value.cyan {
+                color: var(--cyan);
+            }
+
+            .rf-value.red {
+                color: var(--red);
+            }
+
+        .result-msg {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-align: center;
+        }
+
+        .msg-found {
+            background: rgba(0,230,118,.1);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .msg-notfound {
+            background: rgba(255,61,61,.1);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        .msg-wait {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 10px 12px;
+            text-align: center;
+        }
+
+        .stat-n {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stat-l {
+            font-size: 9px;
+            color: var(--text2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .history-mini {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .history-mini-header {
+            padding: 7px 12px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .history-mini-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+            .history-mini-body::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .history-mini-body::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
+
+        .hm-row {
+            display: grid;
+            grid-template-columns: 55px 1fr auto;
+            gap: 8px;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 1px solid rgba(10,30,48,.5);
+            transition: background .15s;
+            animation: fadeIn .3s ease;
+        }
+
+            .hm-row:hover {
+                background: var(--surface2);
+            }
+
+        .hm-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--text2);
+        }
+
+        .hm-plate {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+            .hm-plate.miss {
+                color: var(--red);
+            }
+
+        .hm-badge {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .hm-ok {
+            background: rgba(0,230,118,.12);
+            color: var(--green);
+            border: 1px solid rgba(0,230,118,.2);
+        }
+
+        .hm-miss {
+            background: rgba(255,61,61,.12);
+            color: var(--red);
+            border: 1px solid rgba(255,61,61,.2);
+        }
+
+        .hm-empty {
+            text-align: center;
+            padding: 30px 16px;
+            color: var(--text2);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* COL RIGHT */
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--orange);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .xe-count-badge {
+            background: rgba(255,140,66,.15);
+            border: 1px solid rgba(255,140,66,.3);
+            border-radius: 4px;
+            padding: 2px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--orange);
+            font-weight: 700;
+        }
+
+        .xe-list {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-height: 0;
+        }
+
+            .xe-list::-webkit-scrollbar {
+                width: 3px;
+            }
+
+            .xe-list::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
+
+        .xe-item {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 8px 10px;
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+        }
+
+            .xe-item:hover {
+                border-color: var(--cyan);
+                background: #0a1520;
+            }
+
+            .xe-item.highlight {
+                border-left-color: var(--gold);
+                background: rgba(245,166,35,.06);
+                animation: flashXe .8s ease;
+            }
+
+        @@keyframes flashXe {
+            0% {
+                background: rgba(245,166,35,.2)
+            }
+
+            100% {
+                background: rgba(245,166,35,.06)
+            }
+        }
+
+        .xe-bienso {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .xe-meta {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        .xe-time {
+            display: inline-block;
+            margin-top: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--cyan);
+            background: rgba(0,229,255,.07);
+            border: 1px solid rgba(0,229,255,.15);
+            padding: 1px 7px;
+            border-radius: 3px;
+        }
+
+        .xe-hanghoa {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-top: 4px;
+        }
+
+        .xe-hang {
+            background: rgba(0,180,255,.08);
+            border: 1px solid rgba(0,180,255,.15);
+            font-size: 9px;
+            color: var(--blue);
+            padding: 1px 7px;
+            border-radius: 3px;
+        }
+
+        .xe-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text2);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .xe-empty-icon {
+            font-size: 32px;
+            opacity: .3;
+        }
+
+        .manual-panel {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 12px;
+            flex-shrink: 0;
+        }
+
+        .manual-title {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text2);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .manual-title::before {
+                content: '';
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                background: var(--orange);
+                border-radius: 50%;
+            }
+
+        .manual-input-wrap {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .manual-input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            color: var(--gold);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+            .manual-input:focus {
+                border-color: var(--cyan);
+            }
+
+            .manual-input::placeholder {
+                color: var(--text2);
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+
+        .manual-hint {
+            font-size: 10px;
+            color: var(--text2);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .btn-xacnhan {
+            width: 100%;
+            background: linear-gradient(135deg, #14532d, #166534);
+            border: 1px solid rgba(0,230,118,.3);
+            border-radius: 6px;
+            color: var(--green);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .2s;
+        }
+
+            .btn-xacnhan:hover {
+                background: linear-gradient(135deg, #166534, #15803d);
+                border-color: var(--green);
+            }
+
+            .btn-xacnhan:active {
+                transform: scale(.98);
+            }
+
+            .btn-xacnhan:disabled {
+                background: var(--surface2);
+                color: var(--text2);
+                border-color: var(--border2);
+                cursor: not-allowed;
+            }
+
+            .btn-xacnhan .btn-ico {
+                font-size: 15px;
+            }
+
+        .toast {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+            white-space: nowrap;
+        }
+
+            .toast.show {
+                opacity: 1;
+            }
+
+            .toast.success {
+                border-color: var(--green);
+                color: var(--green);
+            }
+
+            .toast.error {
+                border-color: var(--red);
+                color: var(--red);
+            }
+
+        .footer {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 0 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9px;
+            color: var(--text2);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="tb-brand">
+                <div class="tb-icon">🛡️</div>
+                <div>
+                    <div class="tb-title">Trạm bảo vệ — Camera AI</div>
+                    <div class="tb-sub">License Plate Recognition — Security Gate</div>
+                </div>
+            </div>
+            <div>
+                <div class="tb-clock" id="clock">--:--:--</div>
+                <div class="tb-date" id="date-str"></div>
+            </div>
+            <div class="tb-right">
+                <div class="conn-badge">
+                    <span class="conn-dot" id="conn-dot"></span>
+                    <span id="conn-text">SignalR...</span>
+                </div>
+                <div class="conn-badge" id="py-badge">
+                    <span class="conn-dot" id="py-dot"></span>
+                    <span id="py-text">Python...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main">
+
+            <!-- COL LEFT: Camera + Log -->
+            <div class="col-left">
+                <div class="camera-wrap">
+                    <div class="cam-corner tl"></div>
+                    <div class="cam-corner tr"></div>
+                    <div class="cam-corner bl"></div>
+                    <div class="cam-corner br"></div>
+                    <div class="scan-line"></div>
+                    <div class="cam-label">📷 WEBCAM FEED</div>
+                    <div class="cam-status">
+                        <span class="conn-dot on"></span>
+                        <span>Python service xử lý</span>
+                    </div>
+                    <div class="cam-placeholder">
+                        <div class="cam-placeholder-icon">🎥</div>
+                        <div class="cam-placeholder-text">Camera đang chạy trong Python</div>
+                        <div style="font-size:10px;color:var(--text2);margin-top:4px;">
+                            Kết quả nhận diện hiển thị real-time bên phải →
+                        </div>
+                    </div>
+                </div>
+
+                <div class="log-panel">
+                    <div class="log-header">
+                        <span>Lịch sử nhận diện</span>
+                        <span id="log-count" style="color:var(--cyan);">0 lượt</span>
+                    </div>
+                    <div class="log-body" id="log-body">
+                        <div style="text-align:center;padding:16px;color:var(--text2);font-size:10px;">Chờ nhận diện...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COL MID: Kết quả nhận diện -->
+            <div class="col-mid">
+                <div class="result-card" id="result-card">
+                    <div class="result-label">Kết quả nhận diện mới nhất</div>
+                    <div class="result-bienso empty" id="r-bienso">Chờ xe...</div>
+                    <div class="result-conf" id="r-conf"></div>
+                    <div class="result-divider"></div>
+                    <div class="result-field"><span class="rf-label">Loại phiếu</span><span class="rf-value cyan" id="r-loai">--</span></div>
+                    <div class="result-field"><span class="rf-label">Mã chuyến</span><span class="rf-value gold" id="r-cua">--</span></div>
+                    <div class="result-field"><span class="rf-label">Trạng thái</span><span class="rf-value green" id="r-tt">--</span></div>
+                    <div class="result-field"><span class="rf-label">Thời gian</span><span class="rf-value" id="r-time" style="color:var(--text);">--:--:--</span></div>
+                    <div class="result-msg msg-wait" id="r-msg">Đang chờ nhận diện...</div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box"><div class="stat-n" id="s-tong" style="color:var(--cyan);">0</div><div class="stat-l">Tổng lượt</div></div>
+                    <div class="stat-box"><div class="stat-n" id="s-found" style="color:var(--green);">0</div><div class="stat-l">Tìm thấy</div></div>
+                    <div class="stat-box"><div class="stat-n" id="s-notfound" style="color:var(--red);">0</div><div class="stat-l">Không tìm thấy</div></div>
+                    <div class="stat-box"><div class="stat-n" id="s-conf" style="color:var(--gold);">--%</div><div class="stat-l">Confidence TB</div></div>
+                </div>
+
+                <div class="history-mini">
+                    <div class="history-mini-header">
+                        <span>⏱ Lịch sử gần nhất</span>
+                        <span id="hm-count" style="color:var(--cyan);">0 lượt</span>
+                    </div>
+                    <div class="history-mini-body" id="hm-body">
+                        <div class="hm-empty">Chờ nhận diện...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COL RIGHT: Xe đang chờ + Manual -->
+            <div class="col-right">
+                <div class="section-header">
+                    <span class="section-title">🚛 Xe đang chờ vào bãi</span>
+                    <span class="xe-count-badge" id="xe-count">0</span>
+                </div>
+
+                <div class="xe-list" id="xe-list">
+                    <div class="xe-empty">
+                        <div class="xe-empty-icon">✅</div>
+                        <span>Không có xe đang chờ</span>
+                    </div>
+                </div>
+
+                <div class="manual-panel">
+                    <div class="manual-title">Nhập thủ công biển số</div>
+                    <div class="manual-input-wrap">
+                        <input type="text" id="manual-bienso" class="manual-input"
+                               placeholder="VD: 29H-12345" maxlength="12"
+                               autocomplete="off" autocapitalize="characters" />
+                    </div>
+                    <div class="manual-hint" id="manual-hint">Nhập biển số rồi bấm xác nhận</div>
+                    <button class="btn-xacnhan" id="btn-xacnhan" onclick="xacNhanThuCong()">
+                        <span class="btn-ico">✔</span>
+                        <span>Xác nhận vào bãi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span>© Hệ thống Camera — Nhận diện biển số AI | Trạm bảo vệ</span>
+            <span id="footer-time"></span>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        var logData = [], statTong = 0, statFound = 0, statNotFound = 0;
+        var confList = [], xeList = [];
+
+        // ĐỒNG HỒ
+        function tick() {
+            var n = new Date();
+            document.getElementById('clock').textContent      = n.toLocaleTimeString('vi-VN',{hour12:false});
+            document.getElementById('date-str').textContent   = n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+            document.getElementById('footer-time').textContent = 'Cập nhật: ' + n.toLocaleTimeString('vi-VN');
+        }
+        setInterval(tick, 1000); tick();
+
+        // TOAST
+        function showToast(msg, type) {
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + (type || '');
+            setTimeout(function(){ t.className = 'toast'; }, 3000);
+        }
+
+        // SIGNALR
+        var conn = new signalR.HubConnectionBuilder()
+            .withUrl('/signalserver')
+            .withAutomaticReconnect()
+            .build();
+
+        // Nhận kết quả từ camera Python
+        conn.on('CameraNhanDien', function(data) {
+            if (!data) return;
+            handleNhanDien(data);
+            if (data.timThay && data.bienSo) highlightXe(data.bienSo);
+        });
+
+        // Xe xác nhận vào bãi → xóa khỏi danh sách
+        conn.on('TrangThaiXeUpdated', function(chuyenId, trangThai) {
+            if (trangThai === 2) removeXeFromList(chuyenId);
+        });
+
+        conn.start().then(function() {
+            document.getElementById('conn-dot').classList.add('on');
+            document.getElementById('conn-text').textContent = 'SignalR';
+            checkPythonStatus();
+            loadDanhSachXe();
+        }).catch(function() {
+            document.getElementById('conn-dot').classList.add('err');
+            document.getElementById('conn-text').textContent = 'Mất kết nối';
+            loadDanhSachXe();
+        });
+
+        // DANH SÁCH XE
+        async function loadDanhSachXe() {
+            try {
+                var res = await fetch('@Url.Action("GetDanhSachXe", "BaoVeNhap")', { signal: AbortSignal.timeout(5000) });
+                if (!res.ok) return;
+                xeList = await res.json() || [];
+                console.log('hangHoas mẫu:', xeList[0]?.hangHoas); // ← thêm dòng này
+                renderXeList();
+            } catch(e) { console.warn('loadDanhSachXe:', e.message); }
+        }
+        setInterval(loadDanhSachXe, 30000);
+
+        function renderXeList() {
+            var el = document.getElementById('xe-list');
+            document.getElementById('xe-count').textContent = xeList.length;
+            if (!xeList.length) {
+                el.innerHTML = '<div class="xe-empty"><div class="xe-empty-icon">✅</div><span>Không có xe đang chờ</span></div>';
+                return;
+            }
+            el.innerHTML = xeList.map(function(xe) {
+                var ngay = xe.ngayDuKien ? new Date(xe.ngayDuKien) : null;
+                var timeStr = ngay
+                    ? ngay.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + ' ' + ngay.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})
+                    : '--';
+                var hangs = (xe.hangHoas || []).map(function(h){
+                    return '<span class="xe-hang">📦 ' + h.SoLuong + ' ' + h.DonVi + '</span>';
+                }).join('');
+                return '<div class="xe-item" id="xe-item-' + xe.chuyenId + '" data-chuyen-id="' + xe.chuyenId + '" data-bien-so="' + xe.bienSo + '" onclick="chonXe(this)">' +
+                    '<div class="xe-bienso">' + xe.bienSo + '</div>' +
+                    '<div class="xe-meta">👤 ' + (xe.tenLaiXe||'--') + ' &nbsp;|&nbsp; 🏢 ' + (xe.maChiNhanh||'--') + '</div>' +
+                    '<div><span class="xe-time">🕐 DK về: ' + timeStr + '</span></div>' +
+                    (hangs ? '<div class="xe-hanghoa">' + hangs + '</div>' : '') +
+                '</div>';
+            }).join('');
+        }
+
+        function highlightXe(bienSo) {
+            var norm = bienSo.replace(/[-. ]/g,'').toUpperCase();
+            document.querySelectorAll('.xe-item').forEach(function(item) {
+                var bs = (item.dataset.bienSo||'').replace(/[-. ]/g,'').toUpperCase();
+                if (bs === norm) {
+                    item.classList.add('highlight');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    document.getElementById('manual-bienso').value = item.dataset.bienSo;
+                    document.getElementById('manual-hint').textContent = 'Camera nhận diện — kiểm tra và xác nhận';
+                    document.getElementById('manual-hint').style.color = 'var(--gold)';
+                }
+            });
+        }
+
+        function removeXeFromList(chuyenId) {
+            xeList = xeList.filter(function(x){ return x.chuyenId !== chuyenId; });
+            renderXeList();
+        }
+
+        function chonXe(el) {
+            document.getElementById('manual-bienso').value = el.dataset.bienSo;
+            document.getElementById('manual-hint').textContent = 'Đã chọn: ' + el.dataset.bienSo + ' — bấm xác nhận để vào bãi';
+            document.getElementById('manual-hint').style.color = 'var(--cyan)';
+            document.querySelectorAll('.xe-item').forEach(function(i){ i.classList.remove('highlight'); });
+            el.classList.add('highlight');
+        }
+
+        // XÁC NHẬN THỦ CÔNG
+        async function xacNhanThuCong() {
+            var input  = document.getElementById('manual-bienso');
+            var btn    = document.getElementById('btn-xacnhan');
+            var bienSo = input.value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+
+            if (!bienSo) { showToast('Vui lòng nhập biển số xe!', 'error'); input.focus(); return; }
+
+            var found = xeList.find(function(x){
+                return x.bienSo.replace(/[-. ]/g,'').toUpperCase() === bienSo;
+            });
+
+            if (!found) { showToast('Biển số ' + bienSo + ' không có trong danh sách!', 'error'); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-ico">⏳</span><span>Đang xử lý...</span>';
+
+            try {
+                var res = await fetch('@Url.Action("XacNhanVaoBai", "BaoVeNhap")', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chuyenId: found.chuyenId, bienSo: found.bienSo })
+                });
+                if (res.ok) {
+                    showToast('✔ Xe ' + found.bienSo + ' đã vào bãi!', 'success');
+                    removeXeFromList(found.chuyenId);
+                    input.value = '';
+                    document.getElementById('manual-hint').textContent = 'Nhập biển số rồi bấm xác nhận';
+                    document.getElementById('manual-hint').style.color = '';
+                } else {
+                    showToast('Xác nhận thất bại, thử lại!', 'error');
+                }
+            } catch(e) { showToast('Lỗi kết nối server!', 'error'); }
+
+            btn.disabled = false;
+            btn.innerHTML = '<span class="btn-ico">✔</span><span>Xác nhận vào bãi</span>';
+        }
+
+        // Enter xác nhận nhanh + tìm kiếm khi gõ
+        document.getElementById('manual-bienso').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { xacNhanThuCong(); return; }
+            var val = this.value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+            document.querySelectorAll('.xe-item').forEach(function(item) {
+                var bs = (item.dataset.bienSo||'').replace(/[-. ]/g,'').toUpperCase();
+                item.classList.toggle('highlight', val.length >= 3 && bs.includes(val));
+            });
+        });
+
+        // PYTHON STATUS
+        async function checkPythonStatus() {
+            try {
+                var res = await fetch('@Url.Action("Status", "BaoVeNhap")', { signal: AbortSignal.timeout(2000) });
+                if (res.ok) {
+                    document.getElementById('py-dot').classList.add('on');
+                    document.getElementById('py-text').textContent = 'API Online';
+                    document.getElementById('py-badge').style.borderColor = 'var(--green)';
+                }
+            } catch(e) { document.getElementById('py-text').textContent = 'Chờ Python...'; }
+        }
+        setInterval(checkPythonStatus, 10000);
+
+        // XỬ LÝ KẾT QUẢ NHẬN DIỆN
+        function handleNhanDien(data) {
+            var bienSo   = data.bienSo    || '--';
+            var timThay  = data.timThay   || false;
+            var loai     = data.loaiPhieu || '--';
+            var tenCua   = data.tenCua    || '--';
+            var thongBao = data.thongBao  || '--';
+            var conf     = data.confidence || 0;
+            var thoiGian = data.thoiGian
+                ? new Date(data.thoiGian).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
+                : '--:--:--';
+
+            var ttMap = {0:'Chưa về',1:'Đang về',2:'Đã đến',3:'Đang nhập hàng',4:'Hoàn thành'};
+            var ttText = loai === 'XE' ? (ttMap[data.trangThai]||'--') : '--';
+
+            document.getElementById('result-card').className = 'result-card ' + (timThay ? 'found' : 'notfound');
+            document.getElementById('r-bienso').textContent  = bienSo;
+            document.getElementById('r-bienso').className    = 'result-bienso';
+            document.getElementById('r-conf').innerHTML      = 'Confidence: <span>' + (conf*100).toFixed(0) + '%</span>';
+            document.getElementById('r-loai').textContent    = loai === '--' ? '--' : ('Xe nhập' + (data.phieuId ? ' #'+data.phieuId : ''));
+            document.getElementById('r-cua').textContent     = tenCua;
+            document.getElementById('r-tt').textContent      = ttText;
+            document.getElementById('r-time').textContent    = thoiGian;
+
+            var msgEl = document.getElementById('r-msg');
+            msgEl.textContent = thongBao;
+            msgEl.className   = 'result-msg ' + (timThay ? 'msg-found' : 'msg-notfound');
+
+            statTong++; confList.push(conf);
+            if (timThay) statFound++; else statNotFound++;
+
+            document.getElementById('s-tong').textContent     = statTong;
+            document.getElementById('s-found').textContent    = statFound;
+            document.getElementById('s-notfound').textContent = statNotFound;
+            var avg = confList.reduce(function(a,b){return a+b;},0) / confList.length;
+            document.getElementById('s-conf').textContent     = (avg*100).toFixed(0) + '%';
+
+            addLog(thoiGian, bienSo, thongBao, timThay);
+        }
+
+        function addLog(time, plate, msg, timThay) {
+            // Log trái
+            var body = document.getElementById('log-body');
+            if (body.querySelector('div[style]')) body.innerHTML = '';
+            var row = document.createElement('div');
+            row.className = 'log-row';
+            row.innerHTML =
+                '<span class="log-time">'  + time  + '</span>' +
+                '<span class="log-plate">' + plate + '</span>' +
+                '<span class="log-msg">'   + msg   + '</span>' +
+                '<span class="log-badge '  + (timThay ? 'badge-found' : 'badge-notfound') + '">' + (timThay ? 'OK' : 'MISS') + '</span>';
+            body.insertBefore(row, body.firstChild);
+            while (body.children.length > 50) body.removeChild(body.lastChild);
+            logData.unshift({time, plate, msg, timThay});
+            document.getElementById('log-count').textContent = logData.length + ' lượt';
+
+            // History mini giữa
+            var hmBody = document.getElementById('hm-body');
+            if (hmBody.querySelector('.hm-empty')) hmBody.innerHTML = '';
+            var hmRow = document.createElement('div');
+            hmRow.className = 'hm-row';
+            hmRow.innerHTML =
+                '<span class="hm-time">' + time + '</span>' +
+                '<span class="hm-plate ' + (timThay ? '' : 'miss') + '">' + plate + '</span>' +
+                '<span class="hm-badge ' + (timThay ? 'hm-ok' : 'hm-miss') + '">' + (timThay ? '✔ CÓ' : '✘ KHÔNG') + '</span>';
+            hmBody.insertBefore(hmRow, hmBody.firstChild);
+            while (hmBody.children.length > 8) hmBody.removeChild(hmBody.lastChild);
+            document.getElementById('hm-count').textContent = logData.length + ' lượt';
+        }
+    </script>
+</body>
+</html>

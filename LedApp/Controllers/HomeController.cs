@@ -23,7 +23,7 @@ namespace LedApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
         public IActionResult cuaxuat(int id)
         {

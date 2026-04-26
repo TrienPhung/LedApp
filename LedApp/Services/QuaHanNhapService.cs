@@ -22,12 +22,14 @@ namespace LedApp.Services
             _logger = logger;
         }
 
+        // QuaHanNhapService.cs
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
                 await KiemTraQuaHan();
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken); // kiểm tra mỗi 1 phút
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
         }
 
@@ -40,19 +42,20 @@ namespace LedApp.Services
 
                 var now = DateTime.Now;
 
-                // Lấy các phiếu đang bàn giao đã quá giờ giới hạn
+                // ✅ Buffer 30 giây — chỉ xử lý xe đã quá giờ ít nhất 30 giây
+                // Tránh conflict với client timer đang đếm ngược
+                var nguong = now.AddSeconds(-30);
+
                 var quaHans = await db.Nhaps
                     .Where(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao
                              && n.ThoiGianGioiHan != null
-                             && n.ThoiGianGioiHan < now)
+                             && n.ThoiGianGioiHan < nguong) // ← nguong thay vì now
                     .ToListAsync();
 
                 foreach (var nhap in quaHans)
                 {
-                    // ✅ Update TrangThai → QuaThoiGian
                     nhap.TrangThai = (int)TrangThaiNhap.QuaThoiGian;
 
-                    // ✅ Kiểm tra đã có CanhBao QuaHan chưa (tránh insert 2 lần)
                     var daCoCanh = await db.CanhBaos
                         .AnyAsync(c => c.PhieuId == nhap.Id
                                     && c.LoaiCanhBao == "QuaHanNhap"
@@ -60,7 +63,7 @@ namespace LedApp.Services
 
                     if (!daCoCanh)
                     {
-                        var canhBao = new CanhBao
+                        db.CanhBaos.Add(new CanhBao
                         {
                             LoaiPhieu = "NHAP",
                             PhieuId = nhap.Id,
@@ -68,8 +71,7 @@ namespace LedApp.Services
                             ThoiGian = now,
                             GhiChu = $"Xe:{nhap.BienSoXe}|Cua:{nhap.CuaNhapId}|GioiHan:{nhap.ThoiGianGioiHan:HH:mm}",
                             TrangThai = (int)TrangThaiCanhBao.ChuaXuLy
-                        };
-                        db.CanhBaos.Add(canhBao);
+                        });
 
                         _logger.LogWarning(
                             "Quá hạn nhập: nhapId={Id} bienSo={BienSo} cuaNhapId={CuaNhapId}",
@@ -81,12 +83,10 @@ namespace LedApp.Services
                 {
                     await db.SaveChangesAsync();
 
-                    // SignalR → cập nhật badge chuông điều độ
                     var chuaXuLy = await db.CanhBaos
                         .CountAsync(c => c.TrangThai == (int)TrangThaiCanhBao.ChuaXuLy);
                     await _hubContext.Clients.All.SendAsync("UpdateCanhBaoBadge", chuaXuLy);
 
-                    // SignalR → cập nhật từng cửa bị quá hạn
                     foreach (var nhap in quaHans)
                     {
                         await _hubContext.Clients.All.SendAsync("ReceivedNhap", new
@@ -94,9 +94,12 @@ namespace LedApp.Services
                             bienSoXe = nhap.BienSoXe,
                             thoiGianVaoCua = nhap.ThoiGianVaoCua,
                             thoiGianGioiHan = nhap.ThoiGianGioiHan,
-                            trangThai = nhap.TrangThai  // = 2 (QuaThoiGian)
+                            trangThai = nhap.TrangThai
                         }, nhap.CuaNhapId);
                     }
+
+                    // ✅ Push để DieuDoNhap reload bảng
+                    await _hubContext.Clients.All.SendAsync("TrangThaiXeUpdated", 0, 2, (string?)null, (string?)null);
                 }
             }
             catch (Exception ex)

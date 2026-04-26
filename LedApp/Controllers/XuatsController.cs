@@ -10,6 +10,7 @@ using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using LedApp.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace LedApp.Controllers
 {
@@ -18,11 +19,25 @@ namespace LedApp.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _hubContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        public XuatsController(ApplicationDBContext context, IHubContext<SignalServer> hubContext)
+        public XuatsController(ApplicationDBContext context, IHubContext<SignalServer> hubContext, UserManager<AppUser> userManager)
         {
             _context = context;
             _hubContext = hubContext;
+            _userManager = userManager;
+        }
+
+        // Thêm vào cuối controller, trước XuatExists
+        private async Task<List<nguoiDungs>> GetDanhSachQuanLy()
+        {
+            var userIds = (await _userManager.GetUsersInRoleAsync("QuanLy"))
+                .Select(u => u.Id).ToHashSet();
+
+            return _context.nguoiDungs
+                .AsEnumerable()
+                .Where(nv => nv.UserId != null && userIds.Contains(nv.UserId))
+                .ToList();
         }
 
         // GET: Xuats
@@ -51,20 +66,27 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats/Create
-        public IActionResult Create()
+        // GET: Create
+        public async Task<IActionResult> Create()
         {
             ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten");
+
+            // Thêm AsNoTracking() để đảm bảo lấy dữ liệu mới nhất
             ViewData["XeId"] = new SelectList(
-                _context.DanhSachXes.Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai),
+                await _context.DanhSachXes
+                    .AsNoTracking()
+                    .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
+                    .ToListAsync(),
                 "Id", "BienSoXe");
-            ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "Name");
+
+            ViewData["NhanVienXacNhanId"] = new SelectList(
+                await GetDanhSachQuanLy(), "Id", "FullName");
             return View();
         }
 
-        // POST: Xuats/Create
         [HttpPost]
         public async Task<IActionResult> Create(
-            [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,NhanVienXacNhanId,GhiChu")] Xuat xuat)
+            [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,ThoiGianGioiHan,DiaDiemGiao,NhanVienXacNhanId,GhiChu")] Xuat xuat)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -75,10 +97,13 @@ namespace LedApp.Controllers
 
                 if (xuat.XeId.HasValue)
                 {
-                    var xe = await _context.DanhSachXes.FindAsync(xuat.XeId.Value);
+                    var xe = await _context.DanhSachXes
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.Id == xuat.XeId.Value);
                     if (xe != null)
                     {
                         xe.TrangThai = (int)TrangThaiXe.DangPhanCong;
+                        _context.Entry(xe).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
                     }
                 }
@@ -90,47 +115,88 @@ namespace LedApp.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                TempData["Error"] = ex.Message;
                 ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten", xuat.CuaXuatId);
                 ViewData["XeId"] = new SelectList(
                     _context.DanhSachXes.Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai),
                     "Id", "BienSoXe", xuat.XeId);
-                ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "Name", xuat.NhanVienXacNhanId);
+                ViewData["NhanVienXacNhanId"] = new SelectList(
+                    await GetDanhSachQuanLy(), "Id", "FullName", xuat.NhanVienXacNhanId);
                 return View(xuat);
             }
         }
 
         // GET: Xuats/Edit/5
+        // GET: Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
-
             var xuat = await _context.Xuats.FindAsync(id);
             if (xuat == null) return NotFound();
 
+            var danhSachXe = _context.DanhSachXes.Where(x =>
+                x.TrangThai == (int)TrangThaiXe.TrongBai || x.Id == xuat.XeId);
+
             ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten", xuat.CuaXuatId);
-            ViewData["XeId"] = new SelectList(_context.DanhSachXes, "Id", "BienSoXe", xuat.XeId);
-            ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "Name", xuat.NhanVienXacNhanId);
+            ViewData["XeId"] = new SelectList(danhSachXe, "Id", "BienSoXe", xuat.XeId);
+            ViewData["NhanVienXacNhanId"] = new SelectList(
+                await GetDanhSachQuanLy(), "Id", "FullName", xuat.NhanVienXacNhanId);
             return View(xuat);
         }
 
         // POST: Xuats/Edit/5
         [HttpPost]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,ThoiGianXuatPhat,NhanVienXacNhanId,TrangThai,GhiChu")] Xuat xuat)
+            [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,ThoiGianVaoCua,ThoiGianGioiHan," +
+          "ThoiGianHoanThanh,ThoiGianXuatPhat,ThoiGianDuKienVeBai,ThoiGianVeBai," +
+          "DiaDiemGiao,NhanVienXacNhanId,TrangThai,GhiChu")] Xuat xuat)
         {
             if (id != xuat.Id) return NotFound();
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                // Lấy bản ghi cũ để so sánh XeId
+                var xuatCu = await _context.Xuats.AsNoTracking()
+                                 .FirstOrDefaultAsync(x => x.Id == id);
+
+                // Xe bị thay → trả xe cũ về TrongBai
+                if (xuatCu?.XeId != null && xuatCu.XeId != xuat.XeId)
+                {
+                    var xeCu = await _context.DanhSachXes.AsTracking()
+                                   .FirstOrDefaultAsync(x => x.Id == xuatCu.XeId.Value);
+                    if (xeCu != null)
+                    {
+                        xeCu.TrangThai = (int)TrangThaiXe.TrongBai;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                // Xe mới được gán → cập nhật trạng thái xe mới
+                if (xuat.XeId.HasValue && xuat.XeId != xuatCu?.XeId)
+                {
+                    var xeMoi = await _context.DanhSachXes.AsTracking()
+                                    .FirstOrDefaultAsync(x => x.Id == xuat.XeId.Value);
+                    if (xeMoi != null)
+                    {
+                        xeMoi.TrangThai = (int)TrangThaiXe.DangPhanCong;
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
                 _context.Update(xuat);
                 await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
                 await PushTongHopXuat();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch
             {
+                await transaction.RollbackAsync();
                 ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten", xuat.CuaXuatId);
                 ViewData["XeId"] = new SelectList(_context.DanhSachXes, "Id", "BienSoXe", xuat.XeId);
-                ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "Name", xuat.NhanVienXacNhanId);
+                ViewData["NhanVienXacNhanId"] = new SelectList(
+                    await GetDanhSachQuanLy(), "Id", "FullName", xuat.NhanVienXacNhanId);
                 return View(xuat);
             }
         }
@@ -160,7 +226,7 @@ namespace LedApp.Controllers
                 var xuat = await _context.Xuats.FindAsync(id);
                 if (xuat != null)
                 {
-                    // ← LẤY XeId TRƯỚC KHI XÓA
+                    //  LẤY XeId TRƯỚC KHI XÓA
                     var xeId = xuat.XeId;
                     var trangThaiXuat = xuat.TrangThai;
                     // Xóa ChitietXuat trước
@@ -170,16 +236,23 @@ namespace LedApp.Controllers
                     _context.Xuats.Remove(xuat);
                     await _context.SaveChangesAsync();
 
-                    // ← CẬP NHẬT XE SAU KHI XÓA XONG
+                    //  CẬP NHẬT XE SAU KHI XÓA XONG
                     if (xeId.HasValue && trangThaiXuat != (int)TrangThaiXuat.DaXuatPhat)
                     {
-                        var xe = await _context.DanhSachXes
-                            .AsTracking()
-                            .FirstOrDefaultAsync(x => x.Id == xeId.Value);
-                        if (xe != null)
+                        var conPhieuKhac = await _context.Xuats
+                            .AnyAsync(x => x.XeId == xeId.Value && x.Id != id);
+
+                        if (!conPhieuKhac)
                         {
-                            xe.TrangThai = (int)TrangThaiXe.TrongBai;
-                            await _context.SaveChangesAsync();
+                            var xe = await _context.DanhSachXes
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(x => x.Id == xeId.Value);
+                            if (xe != null)
+                            {
+                                xe.TrangThai = (int)TrangThaiXe.TrongBai;
+                                _context.Entry(xe).State = EntityState.Modified;
+                                await _context.SaveChangesAsync();
+                            }
                         }
                     }
                 }

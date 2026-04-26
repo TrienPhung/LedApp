@@ -1089,6 +1089,7 @@ wwwroot\lib\microsoft\signalr\signalr.min.js
 wwwroot\uploads\avatars\05c4aa06-e106-4455-8f75-0303dceb9ae5.jpeg
 wwwroot\uploads\avatars\071481c9-1c9f-487d-b3b6-9875fee55a41.jpg
 wwwroot\uploads\avatars\0893507e-a80b-4d9d-8ac7-c18953d4a160.jpg
+wwwroot\uploads\avatars\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png
 wwwroot\uploads\avatars\10566877-cec5-4508-9275-6692a160bea7.jpeg
 wwwroot\uploads\avatars\189b8ddf-32ee-4cc0-957a-e18fedbf2e13.jpeg
 wwwroot\uploads\avatars\233bb593-be97-4e7e-86c9-a800f65952c5.jpg

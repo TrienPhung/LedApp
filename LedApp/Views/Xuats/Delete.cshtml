@@ -15,6 +15,12 @@
     <dd class="col-sm-9">@Model.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</dd>
     <dt class="col-sm-3">Thời gian xuất phát</dt>
     <dd class="col-sm-9">@(Model.ThoiGianXuatPhat?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
+    <dt class="col-sm-3">Địa điểm giao</dt>
+    <dd class="col-sm-9">@(Model.DiaDiemGiao ?? "—")</dd>
+    <dt class="col-sm-3">TG dự kiến về bãi</dt>
+    <dd class="col-sm-9">@(Model.ThoiGianDuKienVeBai?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
+    <dt class="col-sm-3">TG thực tế về bãi</dt>
+    <dd class="col-sm-9">@(Model.ThoiGianVeBai?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
     <dt class="col-sm-3">Trạng thái</dt>
     <dd class="col-sm-9">
         @switch (Model.TrangThai)
@@ -37,7 +43,7 @@
         }
     </dd>
     <dt class="col-sm-3">Nhân viên xác nhận</dt>
-    @* <dd class="col-sm-9">@(Model.NhanVienXacNhan?.Name ?? "—")</dd> *@
+    <dd class="col-sm-9">@(Model.NhanVienXacNhan?.FullName ?? "—")</dd>
     <dt class="col-sm-3">Ghi chú</dt>
     <dd class="col-sm-9">@(Model.GhiChu ?? "—")</dd>
 </dl>

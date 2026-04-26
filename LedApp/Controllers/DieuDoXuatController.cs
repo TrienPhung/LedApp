@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "Admin,QuanLy")]
+    [Authorize(Roles = "QuanLy")]
     public class DieuDoXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -61,10 +61,12 @@ namespace LedApp.Controllers
             ViewBag.CuaXuatAll = cuaXuats;
             ViewBag.XeTrongBai = xeTrongBai;
             ViewBag.NhanViens = nhanViens;
+
             // Trong Index() của DieuDoXuatController, thêm vào trước return View():
-            var currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.UserEmail = currentUser?.Email ?? "";
-            ViewBag.UserName = currentUser?.UserName ?? User.Identity?.Name ?? "";
+            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+            ViewBag.UserName = User.Identity?.Name ?? "";
+
+
             // Lấy FullName từ bảng nguoiDungs
             // Lấy UserId của người đang đăng nhập
             var userId = _userManager.GetUserId(User);
@@ -90,7 +92,6 @@ namespace LedApp.Controllers
                     x.TaiTrong,
                     x.TrangThai,
                     x.GhiChu,
-                    x.ThoiGianDuKienVe,
                     TenTaiXe = x.TaiXe != null ? x.TaiXe.FullName : "--",
                     TelTaiXe = x.TaiXe != null ? x.TaiXe.SoDienThoai : "--"
                 })
@@ -120,12 +121,13 @@ namespace LedApp.Controllers
                     TenTaiXe = x.Xe != null && x.Xe.TaiXe != null ? x.Xe.TaiXe.FullName : "--",
                     TenNhanVien = x.NhanVienXacNhan != null ? x.NhanVienXacNhan.FullName : "--",
                     x.TrangThai,
-                    x.ThoiGianPhanCong,
+                    ThoiGianPhanCong = x.ThoiGianPhanCong.ToString("yyyy-MM-ddTHH:mm"),
                     x.ThoiGianVaoCua,
                     x.ThoiGianGioiHan,
                     x.ThoiGianHoanThanh,
                     x.ThoiGianXuatPhat,
                     x.GhiChu,
+                    x.DiaDiemGiao,  
                     HangHoas = x.ChitietXuats != null
                         ? x.ChitietXuats.Select(c => new { c.Id, c.DonVi, c.ChuaBG, c.DaBG }).ToList<object>()
                         : new List<object>()
@@ -242,10 +244,22 @@ namespace LedApp.Controllers
                     return BadRequest(new { message = "Xe không ở trạng thái Trong bãi!" });
 
                 var today = DateTime.Today;
+
+                var trangThaiDangDung = new[]
+                {
+                    (int)TrangThaiXuat.DaPhanCong,   // 0
+                    (int)TrangThaiXuat.DangBanGiao,  // 1
+                    (int)TrangThaiXuat.QuaThoiGian   // 2
+                    // KHÔNG bao gồm HoanThanh(3) và DaXuatPhat(4)
+                    // vì xe đã xong việc trong kho, cửa thực tế đã trống
+                };
+
                 var cuaDangDung = await _context.Xuats.AnyAsync(x =>
                     x.CuaXuatId == req.CuaXuatId
                     && x.ThoiGianPhanCong.Date == today
-                    && x.TrangThai != (int)TrangThaiXuat.DaXuatPhat);
+                    && trangThaiDangDung.Contains(x.TrangThai));
+
+
                 if (cuaDangDung)
                     return BadRequest(new { message = "Cửa xuất này đang có xe, chọn cửa khác!" });
 
@@ -256,6 +270,7 @@ namespace LedApp.Controllers
                     ThoiGianPhanCong = req.ThoiGianPhanCong ?? DateTime.Now,
                     NhanVienXacNhanId = req.NhanVienXacNhanId,
                     GhiChu = req.GhiChu,
+                    DiaDiemGiao = req.DiaDiemGiao,
                     TrangThai = (int)TrangThaiXuat.DaPhanCong
                 };
                 _context.Xuats.Add(xuat);
@@ -284,6 +299,15 @@ namespace LedApp.Controllers
                 // Dùng IHubContext — không share DbContext với Hub
                 var tongHopData = await BuildTongHopXuatData();
                 await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", tongHopData);
+
+                // Push để màn hình nhân viên tại cửa đó nhận phiếu mới ngay lập tức
+                await _hubContext.Clients.All.SendAsync("ReceivedXuat", new
+                {
+                    bienSoXe = xe.BienSoXe,
+                    trangThai = (int)TrangThaiXuat.DaPhanCong,
+                    thoiGianVaoCua = (DateTime?)null,
+                    thoiGianGioiHan = (DateTime?)null
+                }, req.CuaXuatId);
 
                 return Ok(new { success = true, xuatId = xuat.Id });
             }
@@ -322,11 +346,12 @@ namespace LedApp.Controllers
                 if (xeId.HasValue)
                 {
                     var xe = await _context.DanhSachXes
-                        .AsTracking()
+                        .AsNoTracking()
                         .FirstOrDefaultAsync(x => x.Id == xeId.Value);
                     if (xe != null)
                     {
                         xe.TrangThai = (int)TrangThaiXe.TrongBai;
+                        _context.Entry(xe).State = EntityState.Modified;
                         await _context.SaveChangesAsync();
                     }
                 }
@@ -336,6 +361,9 @@ namespace LedApp.Controllers
                 // Dùng IHubContext — không share DbContext với Hub
                 var tongHopData = await BuildTongHopXuatData();
                 await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", tongHopData);
+
+                // Push null → màn hình nhân viên tại cửa đó tự reset về trống ngay
+                await _hubContext.Clients.All.SendAsync("ReceivedXuat", null, xuat.CuaXuatId);
 
                 return Ok(new { success = true });
             }
@@ -400,6 +428,64 @@ namespace LedApp.Controllers
                 }).ToList()
             };
         }
+        // POST: /DieuDoXuat/SuaPhanCong
+        [HttpPost]
+        public async Task<IActionResult> SuaPhanCong([FromBody] SuaPhanCongRequest req)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var xuat = await _context.Xuats
+                    .AsTracking()
+                    .Include(x => x.ChitietXuats)
+                    .FirstOrDefaultAsync(x => x.Id == req.XuatId);
+
+                if (xuat == null)
+                    return NotFound(new { message = "Phiếu không tồn tại!" });
+                if (xuat.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                    return BadRequest(new { message = "Xe đã xuất phát, không thể sửa!" });
+
+                // Cập nhật thông tin chính
+                if (req.ThoiGianPhanCong.HasValue)
+                    xuat.ThoiGianPhanCong = req.ThoiGianPhanCong.Value;
+                if (req.DiaDiemGiao != null)
+                    xuat.DiaDiemGiao = req.DiaDiemGiao;
+                if (req.GhiChu != null)
+                    xuat.GhiChu = req.GhiChu;
+
+                // Xóa hàng hóa cũ, thêm mới
+                if (xuat.ChitietXuats != null && xuat.ChitietXuats.Any())
+                    _context.ChitietXuats.RemoveRange(xuat.ChitietXuats);
+
+                if (req.HangHoas != null)
+                {
+                    foreach (var h in req.HangHoas)
+                    {
+                        if (string.IsNullOrEmpty(h.DonVi) || h.SoLuong <= 0) continue;
+                        _context.ChitietXuats.Add(new ChitietXuat
+                        {
+                            XuatId = xuat.Id,
+                            DonVi = h.DonVi,
+                            ChuaBG = h.SoLuong,
+                            DaBG = 0
+                        });
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                var tongHopData = await BuildTongHopXuatData();
+                await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", tongHopData);
+
+                return Ok(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = "Lỗi sửa phiếu!", inner = ex.Message });
+            }
+        }
     }
 
     // ── DTOs ──
@@ -411,6 +497,7 @@ namespace LedApp.Controllers
         public int? NhanVienXacNhanId { get; set; }
         public string? GhiChu { get; set; }
         public List<HangHoaInput>? HangHoas { get; set; }
+        public string? DiaDiemGiao { get; set; }
     }
 
     public class HangHoaInput
@@ -422,5 +509,20 @@ namespace LedApp.Controllers
     public class XuatHuyRequest
     {
         public int XuatId { get; set; }
+    }
+    public class SuaPhanCongRequest
+    {
+        public int XuatId { get; set; }
+        public DateTime? ThoiGianPhanCong { get; set; }
+        public string? DiaDiemGiao { get; set; }
+        public string? GhiChu { get; set; }
+        public List<SuaHangHoaInput>? HangHoas { get; set; }
+    }
+
+    public class SuaHangHoaInput
+    {
+        public int Id { get; set; }
+        public string DonVi { get; set; } = string.Empty;
+        public long SoLuong { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "NhanVien")]
     public class NhanVienNhapController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -43,6 +43,11 @@ namespace LedApp.Controllers
             if (cua == null) return NotFound();
             ViewBag.CuaNhapId = cuaNhapId;
             ViewBag.TenCua = cua.Ten;
+
+            // Đọc từ Claims — không cần inject thêm gì
+            ViewBag.UserName = User.Identity?.Name ?? "";
+            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+
             return View();
         }
 
@@ -129,7 +134,7 @@ namespace LedApp.Controllers
                     trangThai = nhap.TrangThai
                 }, nhap.CuaNhapId);
 
-                await _hubContext.Clients.All.SendAsync("TrangThaiXeUpdated", 0, 3, (string?)null, (string?)null);
+                await _hubContext.Clients.All.SendAsync("ReloadDashboard"); // ← báo cả 2 màn hình reload
 
                 return Ok(new
                 {
@@ -221,7 +226,7 @@ namespace LedApp.Controllers
                     .ToListAsync();
 
                 await _hubContext.Clients.All.SendAsync("ReceivedChitietNhap", chitietMoi, nhap.CuaNhapId);
-
+                await _hubContext.Clients.All.SendAsync("CapNhatChitietCua", nhap.CuaNhapId);
                 _logger.LogInformation("Bàn giao nhapId={Id}", req.NhapId);
 
                 return Ok(new { success = true, chitiet = chitietMoi });
@@ -315,7 +320,7 @@ namespace LedApp.Controllers
                 var bienSo = nhapInfo.BienSoXe;
                 var cuaNhapId = nhapInfo.CuaNhapId;
 
-                _ = Task.Run(() => CapNhatTrangThaiChuyenViettel(bienSo, 4));
+                await CapNhatTrangThaiChuyenViettel(bienSo, 4);
 
                 await _hubContext.Clients.All.SendAsync("ReceivedNhap", null, cuaNhapId);
                 await _hubContext.Clients.All.SendAsync("ReceivedChitietNhap", null, cuaNhapId);
@@ -381,49 +386,68 @@ namespace LedApp.Controllers
         {
             try
             {
-                var nhap = await _context.Nhaps.FindAsync(req.NhapId);
+                // ← Dùng AsNoTracking + FirstOrDefaultAsync thay vì FindAsync
+                var nhap = await _context.Nhaps
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(n => n.Id == req.NhapId);
+
                 if (nhap == null)
                     return NotFound(new { message = "Không tìm thấy phiếu nhập" });
 
-                if (nhap.TrangThai != (int)TrangThaiNhap.DangBanGiao)
-                    return Ok(new { success = true, message = "Đã xử lý trước đó" });
-
-                nhap.TrangThai = (int)TrangThaiNhap.QuaThoiGian;
-
-                var daCoCanh = await _context.CanhBaos
-                    .AnyAsync(c => c.PhieuId == nhap.Id
-                                && c.LoaiCanhBao == "QuaHanNhap"
-                                && c.LoaiPhieu == "NHAP");
-
-                if (!daCoCanh)
+                if (nhap.TrangThai == (int)TrangThaiNhap.DangBanGiao)
                 {
-                    _context.CanhBaos.Add(new CanhBao
+                    // ← Dùng Raw SQL thay vì EF tracking để tránh conflict
+                    int rows = await _context.Database.ExecuteSqlRawAsync(
+                        @"UPDATE Nhap SET TrangThai = {0} WHERE Id = {1} AND TrangThai = {2}",
+                        (int)TrangThaiNhap.QuaThoiGian,
+                        req.NhapId,
+                        (int)TrangThaiNhap.DangBanGiao
+                    );
+
+                    if (rows > 0) // chỉ thêm cảnh báo nếu update thành công
                     {
-                        LoaiPhieu = "NHAP",
-                        PhieuId = nhap.Id,
-                        LoaiCanhBao = "QuaHanNhap",
-                        ThoiGian = DateTime.Now,
-                        GhiChu = $"Xe:{nhap.BienSoXe}|Cua:{nhap.CuaNhapId}|GioiHan:{nhap.ThoiGianGioiHan:HH:mm}",
-                        TrangThai = (int)TrangThaiCanhBao.ChuaXuLy
-                    });
+                        var daCoCanh = await _context.CanhBaos
+                            .AnyAsync(c => c.PhieuId == nhap.Id
+                                        && c.LoaiCanhBao == "QuaHanNhap"
+                                        && c.LoaiPhieu == "NHAP");
+
+                        if (!daCoCanh)
+                        {
+                            _context.CanhBaos.Add(new CanhBao
+                            {
+                                LoaiPhieu = "NHAP",
+                                PhieuId = nhap.Id,
+                                LoaiCanhBao = "QuaHanNhap",
+                                ThoiGian = DateTime.Now,
+                                GhiChu = $"Xe:{nhap.BienSoXe}|Cua:{nhap.CuaNhapId}|GioiHan:{nhap.ThoiGianGioiHan:HH:mm}",
+                                TrangThai = (int)TrangThaiCanhBao.ChuaXuLy
+                            });
+                            await _context.SaveChangesAsync();
+                        }
+
+                        var chuaXuLy = await _context.CanhBaos
+                            .CountAsync(c => c.TrangThai == (int)TrangThaiCanhBao.ChuaXuLy);
+                        await _hubContext.Clients.All.SendAsync("UpdateCanhBaoBadge", chuaXuLy);
+                    }
+                    // Nếu rows = 0 → background service đã update trước → không sao
                 }
 
-                await _context.SaveChangesAsync();
+                // Reload nhap sau khi update để lấy trangThai mới nhất
+                var nhapMoi = await _context.Nhaps
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(n => n.Id == req.NhapId);
 
-                var chuaXuLy = await _context.CanhBaos
-                    .CountAsync(c => c.TrangThai == (int)TrangThaiCanhBao.ChuaXuLy);
-                await _hubContext.Clients.All.SendAsync("UpdateCanhBaoBadge", chuaXuLy);
-
+                // LUÔN push SignalR
                 await _hubContext.Clients.All.SendAsync("ReceivedNhap", new
                 {
-                    bienSoXe = nhap.BienSoXe,
-                    thoiGianVaoCua = nhap.ThoiGianVaoCua,
-                    thoiGianGioiHan = nhap.ThoiGianGioiHan,
-                    trangThai = nhap.TrangThai
-                }, nhap.CuaNhapId);
+                    bienSoXe = nhapMoi?.BienSoXe ?? nhap.BienSoXe,
+                    thoiGianVaoCua = nhapMoi?.ThoiGianVaoCua ?? nhap.ThoiGianVaoCua,
+                    thoiGianGioiHan = nhapMoi?.ThoiGianGioiHan ?? nhap.ThoiGianGioiHan,
+                    trangThai = nhapMoi?.TrangThai ?? nhap.TrangThai
+                }, nhapMoi?.CuaNhapId ?? nhap.CuaNhapId);
 
-                _logger.LogWarning("QuaHanNhap (client báo): nhapId={Id} bienSo={BienSo} cuaNhapId={CuaNhapId}",
-                    nhap.Id, nhap.BienSoXe, nhap.CuaNhapId);
+                await _hubContext.Clients.All.SendAsync("TrangThaiXeUpdated", 0,
+                    nhapMoi?.TrangThai ?? nhap.TrangThai, (string?)null, (string?)null);
 
                 return Ok(new { success = true });
             }
@@ -481,15 +505,33 @@ namespace LedApp.Controllers
                 var chuyenId = xe?.ChuyenHienTai?.Id;
                 if (chuyenId == null) return;
 
-                var content = new StringContent(trangThai.ToString(), System.Text.Encoding.UTF8, "application/json");
-                await client.PutAsync($"api/DanhSachXes/chuyen/{chuyenId}/trang-thai", content);
+                var content = new StringContent(trangThai.ToString(),
+                    System.Text.Encoding.UTF8, "application/json");
+                var putResp = await client.PutAsync(
+                    $"api/DanhSachXes/chuyen/{chuyenId}/trangthai", content);
+
+                if (putResp.IsSuccessStatusCode)
+                {
+                    // ← Push SignalR để dashboard Viettel reload ngay
+                    await _hubContext.Clients.All.SendAsync("ReloadDashboard");
+                    _logger.LogInformation(
+                        "Đã cập nhật trạng thái chuyến {ChuyenId} xe {BienSo} → {TrangThai}",
+                        chuyenId, bienSo, trangThai);
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        "PUT trạng thái chuyến thất bại: {Status} xe {BienSo}",
+                        putResp.StatusCode, bienSo);
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Không cập nhật được trạng thái chuyến Viettel cho xe {BienSo}", bienSo);
+                _logger.LogWarning(ex,
+                    "Không cập nhật được trạng thái chuyến Viettel cho xe {BienSo}", bienSo);
             }
         }
-    }
+    }       
 
     public class XuLyCanhBaoRequest { public int NhapId { get; set; } }
     public class BaoCanhBaoQuaGioRequest { public int NhapId { get; set; } }

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "QuanLy")]
     public class DieuDoNhapController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -35,7 +35,8 @@ namespace LedApp.Controllers
         {
             // Lấy danh sách cửa nhập
             ViewBag.CuaNhaps = await _context.CuaNhaps.ToListAsync();
-
+            ViewBag.UserName = User.Identity?.Name ?? "";
+            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
             // Lấy dashboard từ API Viettel
             try
             {
@@ -311,7 +312,7 @@ namespace LedApp.Controllers
                 //    .ToListAsync();
                 var daPhanList = await _context.Nhaps
                     .Where(n => n.TrangThai != (int)TrangThaiNhap.HoanThanh)
-                    .Select(n => new { n.BienSoXe, n.CuaNhapId, NhapId = n.Id, n.TrangThai })
+                    .Select(n => new { n.BienSoXe, n.CuaNhapId, NhapId = n.Id, n.TrangThai, n.ThoiGianGioiHan })
                     .ToListAsync();
                 var bienSoDaPhan = daPhanList.Select(x => x.BienSoXe).ToList();
 
@@ -334,7 +335,9 @@ namespace LedApp.Controllers
                     daPhanCong = bienSoDaPhan.Contains(x.BienSo),
                     cuaNhapId = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.CuaNhapId,
                     nhapId = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.NhapId,  // ✅ thêm
-                    trangThaiNhap = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.TrangThai  // ← thêm dòng này
+                    trangThaiNhap = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.TrangThai,  // ← thêm dòng này
+                        thoiGianGioiHan = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.ThoiGianGioiHan  // ← thêm
+
                 });
                 return Ok(result);
             }
@@ -434,6 +437,27 @@ namespace LedApp.Controllers
                 _logger.LogError(ex, "Lỗi CapNhatTrangThaiCanhBao");
                 return StatusCode(500, new { message = ex.Message });
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetChitietCua()
+        {
+            var chitiets = await _context.Nhaps
+                .Where(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao
+                         || n.TrangThai == (int)TrangThaiNhap.QuaThoiGian)
+                .Include(n => n.ChitietNhaps)
+                .Select(n => new
+                {
+                    cuaNhapId = n.CuaNhapId,
+                    chitiet = n.ChitietNhaps.Select(c => new
+                    {
+                        donVi = c.DonVi,
+                        chuaBG = c.ChuaBG,
+                        daBG = c.DaBG
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(chitiets);
         }
 
 

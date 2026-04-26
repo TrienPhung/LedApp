@@ -465,13 +465,33 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a href="@Url.Action("index","Administrator")" class="sidebar-link">
-                                        <i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span>
+                                    <a href="@Url.Action("Index", "Dashboard")" class="sidebar-link">
+                                        <i class="mdi mdi-view-dashboard"></i>
+                                        <span class="hide-menu">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="@Url.Action("Index","BaoCao")" class="sidebar-link">
+                                        <i class="mdi mdi-chart-bar"></i>
+                                        <span class="hide-menu">Báo cáo thống kê</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-
+                        <!-- VẬN CHUYỂN VIETTEL -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <span class="hide-menu">Vận chuyển Viettel</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="@Url.Action("Index","ImportFromApi")" class="sidebar-link">
+                                        <i class="mdi mdi-truck-delivery"></i>
+                                        <span class="hide-menu">Theo dõi xe </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- NHẬP KHO -->
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">

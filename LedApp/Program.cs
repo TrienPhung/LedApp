@@ -36,6 +36,15 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
     .AddEntityFrameworkStores<ApplicationDBContext>();
 
 
+// Kiểm tra SecurityStamp mỗi request
+// → Admin sửa thông tin/role/khóa tài khoản có hiệu lực ngay lập tức
+// → Phù hợp hệ thống nội bộ ít user, bảo mật quan trọng hơn performance
+// → Mặc định là 30 phút (TimeSpan.FromMinutes(30))
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.Zero;
+});
+
 //add SignalR
 
 builder.Services.AddSignalR();
@@ -93,8 +102,10 @@ app.MapAreaControllerRoute(
     pattern: "admin/{controller=Trangchu}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Administrator}/{action=Index}/{id?}");
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+// Nếu dùng route riêng
+//app.MapControllerRoute("tongtrungtam", "tongtrungtam",
+//    new { controller = "TongTrungTam", action = "Index" });
 //Ki?ch hoa?t SubscribeTableDependency
 app.UseSqlTableDependency<SubscribeChitietXuatTableDependency>(connectionString);
 app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);        // ? thêm m?i

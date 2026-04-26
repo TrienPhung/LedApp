@@ -55,7 +55,7 @@ namespace LedApp.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(
-            [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,ThoiGianDuKienVe,TaiXeId")] DanhSachXe xe)
+            [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,TaiXeId")] DanhSachXe xe)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace LedApp.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id,
-            [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,ThoiGianDuKienVe,TaiXeId")] DanhSachXe xe)
+            [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,TaiXeId")] DanhSachXe xe)
         {
             if (id != xe.Id) return NotFound();
 

@@ -18390,8 +18390,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>k9y8lb88tj</Fingerprint>
-      <Integrity>iN82LyxhtEudIfzwnuGP93Ts/1q/zmAgrsaw2ShXM5o=</Integrity>
+      <Fingerprint>bccl5aa9i9</Fingerprint>
+      <Integrity>RWEpyIog3/GMlI1oGujivEZYnLcIYROKv1mKMX5b7fQ=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\nhapxuat.js'))</OriginalItemSpec>
@@ -19655,6 +19655,24 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\avatars\0893507e-a80b-4d9d-8ac7-c18953d4a160.jpg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\avatars\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LedApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LedApp</BasePath>
+      <RelativePath>uploads/avatars/0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>zmyf8319mg</Fingerprint>
+      <Integrity>5V6CxzlE6lbJUl8Rgswv2NAGF9rUipfEa0cEdVGONbA=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\avatars\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\uploads\avatars\10566877-cec5-4508-9275-6692a160bea7.jpeg'))">
       <SourceType>Package</SourceType>

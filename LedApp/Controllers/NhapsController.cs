@@ -152,9 +152,19 @@ namespace LedApp.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var nhap = await _context.Nhaps.FindAsync(id);
-            if (nhap != null) _context.Nhaps.Remove(nhap);
-            await _context.SaveChangesAsync();
+            var nhap = await _context.Nhaps
+                .Include(n => n.ChitietNhaps) // ← THÊM: load chitiet theo
+                .FirstOrDefaultAsync(n => n.Id == id);
+
+            if (nhap != null)
+            {
+                // Xóa chitiet trước
+                _context.ChitietNhaps.RemoveRange(nhap.ChitietNhaps);
+                // Rồi mới xóa phiếu nhập
+                _context.Nhaps.Remove(nhap);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -3,6 +3,10 @@
     ViewData["Title"] = "Quản lý phiếu xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+@if (TempData["Debug"] != null)
+{
+    <div class="alert alert-warning">@TempData["Debug"]</div>
+}
 <h1>Quản lý phiếu xuất</h1>
 @if (TempData["Error"] != null)
 {
@@ -20,6 +24,7 @@
             <th>Biển số xe</th>
             <th>Thời gian phân công</th>
             <th>Thời gian vào cửa</th>
+            <th>Thời gian giới hạn</th>
             <th>Thời gian hoàn thành</th>
             <th>Thời gian xuất phát</th>
             <th>Trạng thái</th>
@@ -34,9 +39,10 @@
                 <td>@(item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}")</td>
                 <td>@(item.Xe?.BienSoXe ?? "—")</td>
                 <td>@item.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>@(item.ThoiGianVaoCua?.ToString("HH:mm") ?? "—")</td>
-                <td>@(item.ThoiGianHoanThanh?.ToString("HH:mm") ?? "—")</td>
-                <td>@(item.ThoiGianXuatPhat?.ToString("HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianVaoCua?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianGioiHan?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianHoanThanh?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                <td>@(item.ThoiGianXuatPhat?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
                 <td>
                     @switch (item.TrangThai)
                     {
@@ -66,7 +72,7 @@
         }
         @if (!Model.Any())
         {
-            <tr><td colspan="9" class="text-center text-muted">Chưa có phiếu xuất nào.</td></tr>
+            <tr><td colspan="10" class="text-center text-muted">Chưa có phiếu xuất nào.</td></tr>
         }
     </tbody>
 </table>

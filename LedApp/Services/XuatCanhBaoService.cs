@@ -37,14 +37,13 @@ namespace LedApp.Services
         {
             try
             {
-                // Dùng scope vì DbContext không phải singleton
                 using var scope = _scopeFactory.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-
                 var now = DateTime.Now;
                 var today = DateTime.Today;
 
-                // Tìm phiếu đang bàn giao và đã quá giờ giới hạn
+                // Tìm phiếu quá giờ nhưng CHƯA được nhân viên báo
+                // (tức là vẫn còn TrangThai = DangBanGiao, chưa chuyển sang QuaThoiGian)
                 var phieuQuaGio = await context.Xuats
                     .Where(x => x.ThoiGianPhanCong.Date == today
                              && x.TrangThai == (int)TrangThaiXuat.DangBanGiao
@@ -56,40 +55,46 @@ namespace LedApp.Services
 
                 foreach (var xuat in phieuQuaGio)
                 {
+                    // Kiểm tra đã có CanhBao chưa — tránh duplicate
+                    var daCoCanh = await context.CanhBaos
+                        .AnyAsync(c => c.PhieuId == xuat.Id
+                                    && c.LoaiPhieu == "XUAT"
+                                    && c.LoaiCanhBao == "QuaHanXuat");
+                    if (daCoCanh) continue; // nhân viên đã báo rồi, bỏ qua
+
+                    // Backup: nhân viên mất kết nối, background tự xử lý
                     xuat.TrangThai = (int)TrangThaiXuat.QuaThoiGian;
 
                     context.CanhBaos.Add(new CanhBao
                     {
                         LoaiPhieu = "XUAT",
                         PhieuId = xuat.Id,
-                        LoaiCanhBao = "QuaThoiGian",
+                        LoaiCanhBao = "QuaHanXuat", // dùng cùng tên với nhân viên
                         ThoiGian = now,
-                        GhiChu = $"Xe quá thời gian xuất tại cửa {xuat.CuaXuatId}"
+                        GhiChu = $"Xe:{xuat.XeId}|Cua:{xuat.CuaXuatId}|GioiHan:{xuat.ThoiGianGioiHan:HH:mm}",
+                        TrangThai = (int)TrangThaiCanhBao.ChuaXuLy
                     });
-                }
 
-                await context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
 
-                // Push SignalR cảnh báo đỏ cho từng phiếu
-                foreach (var xuat in phieuQuaGio)
-                {
-                    await _hubContext.Clients.All.SendAsync("CanhBaoDo", new
+                    // Push SignalR đồng bộ tất cả màn hình
+                    await _hubContext.Clients.All.SendAsync("ReceivedXuat", new
                     {
-                        LoaiPhieu = "XUAT",
-                        PhieuId = xuat.Id,
-                        CuaXuatId = xuat.CuaXuatId,
-                        LoaiCanhBao = "QuaThoiGian",
-                        ThoiGian = now
-                    });
+                        bienSoXe = (string?)null,
+                        trangThai = (int)TrangThaiXuat.QuaThoiGian,
+                        thoiGianVaoCua = xuat.ThoiGianVaoCua,
+                        thoiGianGioiHan = xuat.ThoiGianGioiHan
+                    }, xuat.CuaXuatId);
 
-                    _logger.LogWarning(
-                        "Phiếu xuất #{Id} cửa {CuaId} quá thời gian!",
+                    await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", (object?)null);
+
+                    var chuaXuLy = await context.CanhBaos
+                        .CountAsync(c => c.TrangThai == (int)TrangThaiCanhBao.ChuaXuLy);
+                    await _hubContext.Clients.All.SendAsync("UpdateCanhBaoBadge", chuaXuLy);
+
+                    _logger.LogWarning("Backup: Phiếu #{Id} cửa {CuaId} quá giờ, background tự xử lý",
                         xuat.Id, xuat.CuaXuatId);
                 }
-
-                // Push cập nhật bảng tổng hợp
-                await _hubContext.Clients.All.SendAsync("UpdateBangTongHopXuat", new { });
-
             }
             catch (Exception ex)
             {

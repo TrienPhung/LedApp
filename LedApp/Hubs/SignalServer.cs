@@ -309,5 +309,14 @@ namespace LedApp.Hubs
                 Console.WriteLine("Lỗi SendTongHopNhapFull: " + ex.Message);
             }
         }
+        public async Task SendTrangThaiXe(int xeId, string trangThai)
+        {
+            await Clients.All.SendAsync("TrangThaiXeUpdated", xeId, trangThai);
+        }
+        // Thêm vào cuối class SignalServer
+        public async Task ReloadDashboard()
+        {
+            await Clients.All.SendAsync("ReloadDashboard");
+        }
     }
 }

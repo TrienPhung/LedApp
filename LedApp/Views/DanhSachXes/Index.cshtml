@@ -20,7 +20,6 @@
             <th>Tải trọng</th>
             <th>Trạng thái</th>
             <th>Tài xế</th>
-            <th>Thời gian dự kiến về</th>
             <th>Ghi chú</th>
             <th></th>
         </tr>
@@ -50,7 +49,6 @@
                     }
                 </td>
                 <td>@item.TaiXe?.FullName</td>
-                <td>@(item.ThoiGianDuKienVe.HasValue ? item.ThoiGianDuKienVe.Value.ToString("dd/MM/yyyy HH:mm") : "—")</td>
                 <td>@item.GhiChu</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Sửa</a>

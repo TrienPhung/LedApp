@@ -1,13 +1,15 @@
 ﻿using LedApp.DTOs;
 using LedApp.Hubs;
+using LedApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "BaoVe")]
     public class BaoVeNhapController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -23,8 +25,12 @@ namespace LedApp.Controllers
             _hubContext = hubContext;
             _logger = logger;
         }
-
-        public IActionResult Index() => View();
+        public IActionResult Index()
+        {
+            ViewBag.UserName = User.Identity?.Name ?? "";
+            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+            return View();
+        }
 
         // ✅ Python gọi vào đây để gửi kết quả nhận diện
         // Bỏ [Authorize] riêng cho action này vì Python không login được
@@ -92,7 +98,7 @@ namespace LedApp.Controllers
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
                 var response = await client.PutAsJsonAsync(
-                    $"api/DanhSachXes/chuyen/{request.ChuyenId}/trang-thai", 2);
+                    $"api/DanhSachXes/chuyen/{request.ChuyenId}/trangthai", 2);
 
                 if (!response.IsSuccessStatusCode)
                     return StatusCode((int)response.StatusCode, new { message = "Cập nhật trạng thái thất bại" });

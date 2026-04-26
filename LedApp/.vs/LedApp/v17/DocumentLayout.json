@@ -3,72 +3,24 @@
   "WorkspaceRootPath": "E:\\CodeLVTN\\LedApp\\LedApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\dtos\\chuyenxedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:dtos\\chuyenxedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\assets\\images\\logo.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\assets\\images\\logo.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\assets\\images\\logo-text.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\assets\\images\\logo-text.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dieudoxuat\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dieudoxuat\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\wwwroot\\admin\\assets\\images\\logo-icon.png||{177559E0-D141-11D0-92DF-00A0C9138C45}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:wwwroot\\admin\\assets\\images\\logo-icon.png||{177559E0-D141-11D0-92DF-00A0C9138C45}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\camera\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\camera\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\baovenhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\baovenhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\dtos\\hanghoaitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:dtos\\hanghoaitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\baovenhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\baovenhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\cameracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\cameracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\baovexuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\baovexuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\canhbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\canhbaoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\camera\\indextest.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\camera\\indextest.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\camera\\index1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\camera\\index1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\cuaxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\cuaxuats\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dieudonhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dieudonhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -78,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -86,208 +38,68 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "logo.png - PNG [178x24, 32 bit, PNG]",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo.png",
-              "RelativeDocumentMoniker": "wwwroot\\admin\\assets\\images\\logo.png",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo.png - PNG [178x24, 32 bit, PNG]",
-              "RelativeToolTip": "wwwroot\\admin\\assets\\images\\logo.png - PNG [178x24, 32 bit, PNG]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-04-18T19:05:28.316Z",
-              "EditorCaption": " - PNG [178x24, 32 bit, PNG]"
+              "DocumentIndex": 0,
+              "Title": "DieuDoXuatController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DieuDoXuatController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
+              "RelativeToolTip": "Controllers\\DieuDoXuatController.cs",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAIAAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T12:00:13.918Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ChuyenXeDto.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\ChuyenXeDto.cs",
-              "RelativeDocumentMoniker": "DTOs\\ChuyenXeDto.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\ChuyenXeDto.cs",
-              "RelativeToolTip": "DTOs\\ChuyenXeDto.cs",
+              "Title": "NhanVienNhapController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienNhapController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NhanVienNhapController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienNhapController.cs",
+              "RelativeToolTip": "Controllers\\NhanVienNhapController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T12:00:06.587Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NhanVienXuatController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienXuatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NhanVienXuatController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienXuatController.cs",
+              "RelativeToolTip": "Controllers\\NhanVienXuatController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T18:04:40.788Z"
+              "WhenOpened": "2026-04-26T12:00:04.386Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\BaoVeNhap\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\BaoVeNhap\\Index.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\BaoVeNhap\\Index.cshtml",
-              "RelativeToolTip": "Views\\BaoVeNhap\\Index.cshtml",
-              "ViewState": "AgIAAOIEAAAAAAAAAAAowPMEAABzAAAAAAAAAA==",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\DieuDoXuat\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
+              "RelativeToolTip": "Views\\DieuDoXuat\\Index.cshtml",
+              "ViewState": "AgIAACgHAAAAAAAAAAAgwCQHAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-18T09:15:16.479Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_Layout1.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout1.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout1.cshtml",
-              "ViewState": "AgIAAPEAAAAAAAAAAAAcwAIBAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-17T18:08:25.605Z",
+              "WhenOpened": "2026-04-26T11:59:44.71Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "logo-icon.png - PNG [30x23, 32 bit, PNG]",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo-icon.png",
-              "RelativeDocumentMoniker": "wwwroot\\admin\\assets\\images\\logo-icon.png",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo-icon.png - PNG [30x23, 32 bit, PNG]",
-              "RelativeToolTip": "wwwroot\\admin\\assets\\images\\logo-icon.png - PNG [30x23, 32 bit, PNG]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-04-18T19:05:43.014Z",
-              "EditorCaption": " - PNG [30x23, 32 bit, PNG]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "logo-text.png - PNG [152x28, 32 bit, PNG]",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo-text.png",
-              "RelativeDocumentMoniker": "wwwroot\\admin\\assets\\images\\logo-text.png",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\admin\\assets\\images\\logo-text.png - PNG [152x28, 32 bit, PNG]",
-              "RelativeToolTip": "wwwroot\\admin\\assets\\images\\logo-text.png - PNG [152x28, 32 bit, PNG]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-04-18T19:05:44.907Z",
-              "EditorCaption": " - PNG [152x28, 32 bit, PNG]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "BaoVeXuatController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoVeXuatController.cs",
-              "RelativeDocumentMoniker": "Controllers\\BaoVeXuatController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoVeXuatController.cs",
-              "RelativeToolTip": "Controllers\\BaoVeXuatController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T17:38:24.578Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BaoVeNhapController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoVeNhapController.cs",
-              "RelativeDocumentMoniker": "Controllers\\BaoVeNhapController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoVeNhapController.cs",
-              "RelativeToolTip": "Controllers\\BaoVeNhapController.cs",
-              "ViewState": "AgIAAMQAAAAAAAAAAAAcwMoAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T09:15:07.002Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-18T18:28:57.277Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "HangHoaItemDto.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\HangHoaItemDto.cs",
-              "RelativeDocumentMoniker": "DTOs\\HangHoaItemDto.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\HangHoaItemDto.cs",
-              "RelativeToolTip": "DTOs\\HangHoaItemDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T18:04:42.61Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Camera\\Index.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\Index.cshtml",
-              "RelativeToolTip": "Views\\Camera\\Index.cshtml",
-              "ViewState": "AgIAADAFAAAAAAAAAAAcwDQFAABfAAAAAAAAAA==",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\DieuDoNhap\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
+              "RelativeToolTip": "Views\\DieuDoNhap\\Index.cshtml",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAAACIAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-18T08:45:12.491Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "CameraController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CameraController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CameraController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CameraController.cs",
-              "RelativeToolTip": "Controllers\\CameraController.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAcwH4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T09:14:54.653Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "CanhBaosController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CanhBaosController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CanhBaosController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\CanhBaosController.cs",
-              "RelativeToolTip": "Controllers\\CanhBaosController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T09:14:53.245Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IndexTest.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\IndexTest.cshtml",
-              "RelativeDocumentMoniker": "Views\\Camera\\IndexTest.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\IndexTest.cshtml",
-              "RelativeToolTip": "Views\\Camera\\IndexTest.cshtml",
-              "ViewState": "AgIAAHkDAAAAAAAAAAAcwIQDAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-18T08:57:09.376Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Index1.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\Index1.cshtml",
-              "RelativeDocumentMoniker": "Views\\Camera\\Index1.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Camera\\Index1.cshtml",
-              "RelativeToolTip": "Views\\Camera\\Index1.cshtml",
-              "ViewState": "AgIAACEFAAAAAAAAAAAcwC8FAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-18T08:47:10.763Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Delete.cshtml",
-              "RelativeDocumentMoniker": "Views\\CuaXuats\\Delete.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\CuaXuats\\Delete.cshtml",
-              "RelativeToolTip": "Views\\CuaXuats\\Delete.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-17T18:40:11.398Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ChitietNhap.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
-              "RelativeDocumentMoniker": "Models\\ChitietNhap.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
-              "RelativeToolTip": "Models\\ChitietNhap.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-17T18:40:05.707Z"
+              "WhenOpened": "2026-04-26T11:58:33.398Z",
+              "EditorCaption": ""
             }
           ]
         }

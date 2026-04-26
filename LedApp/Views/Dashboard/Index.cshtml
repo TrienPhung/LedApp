@@ -1,0 +1,703 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .db-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 4px 0 20px;
+    }
+
+    .stat-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e8edf2;
+        border-radius: 12px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: box-shadow .2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .stat-card.blue::before {
+            background: #3b82f6;
+        }
+
+        .stat-card.green::before {
+            background: #22c55e;
+        }
+
+        .stat-card.orange::before {
+            background: #f59e0b;
+        }
+
+        .stat-card.red::before {
+            background: #ef4444;
+        }
+
+        .stat-card.purple::before {
+            background: #8b5cf6;
+        }
+
+        .stat-card.cyan::before {
+            background: #06b6d4;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,.08);
+        }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+        .stat-icon.blue {
+            background: #eff6ff;
+        }
+
+        .stat-icon.green {
+            background: #f0fdf4;
+        }
+
+        .stat-icon.orange {
+            background: #fffbeb;
+        }
+
+        .stat-icon.red {
+            background: #fef2f2;
+        }
+
+        .stat-icon.purple {
+            background: #f5f3ff;
+        }
+
+        .stat-icon.cyan {
+            background: #ecfeff;
+        }
+
+    .stat-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .stat-num {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    .stat-sub {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 14px;
+    }
+
+    .panel {
+        background: #fff;
+        border: 1px solid #e8edf2;
+        border-radius: 12px;
+        padding: 18px 20px;
+    }
+
+    .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .panel-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        letter-spacing: .3px;
+    }
+
+    .panel-badge {
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .badge-blue {
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+    .badge-green {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    .badge-orange {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+    .badge-red {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    /* KPI */
+    .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .kpi-box {
+        background: #f8fafc;
+        border: 1px solid #e8edf2;
+        border-radius: 10px;
+        padding: 14px 16px;
+        text-align: center;
+    }
+
+    .kpi-num {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .kpi-lbl {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    .kpi-sub {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    /* Cửa nhập */
+    .cua-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cua-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border-left: 3px solid #e2e8f0;
+    }
+
+        .cua-item.active-nhap {
+            border-left-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .cua-item.active-bang {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .cua-item.active-qua {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+    .cua-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .cua-plate {
+        font-size: 12px;
+        color: #3b82f6;
+        font-weight: 700;
+        margin-top: 2px;
+    }
+
+    .cua-empty {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 2px;
+    }
+
+    .cua-badge {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    .cb-wait {
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+    .cb-going {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    .cb-over {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .cb-idle {
+        background: #f1f5f9;
+        color: #94a3b8;
+    }
+
+    /* Chart */
+    .chart-wrap {
+        position: relative;
+        height: 200px;
+    }
+
+    /* Progress */
+    .prog-item {
+        margin-bottom: 14px;
+    }
+
+    .prog-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .prog-lbl {
+        color: #475569;
+        font-weight: 600;
+    }
+
+    .prog-val {
+        color: #94a3b8;
+    }
+
+    .prog-track {
+        height: 8px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .prog-bar {
+        height: 100%;
+        border-radius: 4px;
+        transition: width .8s ease;
+    }
+
+        .prog-bar.blue {
+            background: #3b82f6;
+        }
+
+        .prog-bar.green {
+            background: #22c55e;
+        }
+
+        .prog-bar.orange {
+            background: #f59e0b;
+        }
+
+        .prog-bar.red {
+            background: #ef4444;
+        }
+
+    /* Refresh */
+    .refresh-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 11px;
+        color: #94a3b8;
+        padding: 0 2px;
+    }
+
+    .btn-refresh {
+        background: none;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 11px;
+        color: #64748b;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-refresh:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+    /* dark mode */
+    body.dark-mode .stat-card,
+    body.dark-mode .panel,
+    body.dark-mode .kpi-box {
+        background: #1a1a27 !important;
+        border-color: #2a2a3d !important;
+    }
+
+    body.dark-mode .stat-num, body.dark-mode .panel-title, body.dark-mode .cua-name {
+        color: #e0e0e0 !important;
+    }
+
+    body.dark-mode .kpi-box {
+        background: #222235 !important;
+    }
+
+    body.dark-mode .cua-item {
+        background: #222235 !important;
+    }
+
+    body.dark-mode .prog-track {
+        background: #2a2a3d !important;
+    }
+
+    body.dark-mode .btn-refresh {
+        border-color: #2a2a3d;
+        color: #888;
+    }
+</style>
+
+<div class="db-wrap">
+
+    <!-- REFRESH BAR -->
+    <div class="refresh-bar">
+        <span>📊 Dashboard — Dữ liệu từ DB — Cập nhật lúc <span id="cap-nhat">--:--:--</span></span>
+        <button class="btn-refresh" onclick="loadStats()">⟳ Làm mới</button>
+    </div>
+
+    <!-- ROW 1: STAT CARDS nhập/xuất hôm nay -->
+    <div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">
+            📋 Phiếu hôm nay
+        </div>
+        <div class="stat-row">
+            <div class="stat-card blue">
+                <div class="stat-icon blue">📥</div>
+                <div class="stat-info">
+                    <div class="stat-num" id="nhap-tong">--</div>
+                    <div class="stat-label">Tổng phiếu nhập</div>
+                    <div class="stat-sub" id="nhap-sub"></div>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon green">✅</div>
+                <div class="stat-info">
+                    <div class="stat-num" id="nhap-hoanthanh">--</div>
+                    <div class="stat-label">Nhập hoàn thành</div>
+                    <div class="stat-sub" id="nhap-ht-sub"></div>
+                </div>
+            </div>
+            <div class="stat-card cyan">
+                <div class="stat-icon cyan">📤</div>
+                <div class="stat-info">
+                    <div class="stat-num" id="xuat-tong">--</div>
+                    <div class="stat-label">Tổng phiếu xuất</div>
+                    <div class="stat-sub" id="xuat-sub"></div>
+                </div>
+            </div>
+            <div class="stat-card red">
+                <div class="stat-icon red">⚠️</div>
+                <div class="stat-info">
+                    <div class="stat-num" id="canhbao-tong">--</div>
+                    <div class="stat-label">Cảnh báo chưa xử lý</div>
+                    <div class="stat-sub" id="canhbao-sub"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 2: KPI + Tích lũy -->
+    <div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">
+            📊 Chỉ số hôm nay & tích lũy
+        </div>
+        <div class="kpi-row">
+            <div class="kpi-box">
+                <div class="kpi-num" id="kpi-nhap-tb" style="color:#3b82f6;">--</div>
+                <div class="kpi-lbl">KPI nhập TB (phút)</div>
+                <div class="kpi-sub">Thời gian bàn giao nhập</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-num" id="kpi-xuat-tb" style="color:#22c55e;">--</div>
+                <div class="kpi-lbl">KPI xuất TB (phút)</div>
+                <div class="kpi-sub">Thời gian bàn giao xuất</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-num" id="tich-luy-nhap" style="color:#8b5cf6;">--</div>
+                <div class="kpi-lbl">Tổng nhập tích lũy</div>
+                <div class="kpi-sub">Tất cả thời gian</div>
+            </div>
+            <div class="kpi-box">
+                <div class="kpi-num" id="tich-luy-xuat" style="color:#f59e0b;">--</div>
+                <div class="kpi-lbl">Tổng xuất tích lũy</div>
+                <div class="kpi-sub">Tất cả thời gian</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 3: Biểu đồ + Cửa nhập -->
+    <div class="grid-3">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title">📈 Lượt bàn giao theo giờ hôm nay</div>
+                <div style="display:flex;gap:12px;font-size:11px;">
+                    <span style="color:#3b82f6;">● Nhập</span>
+                    <span style="color:#22c55e;">● Xuất</span>
+                </div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-banhgiao"></canvas></div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title">🚪 Trạng thái cửa nhập</div>
+                <span class="panel-badge badge-blue" id="cua-active-count">--</span>
+            </div>
+            <div class="cua-list" id="cua-list">
+                <div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px;">Đang tải...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 4: Tiến độ -->
+    <div class="grid-2">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title">📥 Tiến độ nhập hôm nay</div>
+                <span class="panel-badge badge-blue" id="nhap-pct-badge">--%</span>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">✅ Hoàn thành</span><span class="prog-val" id="nhap-prog-ht">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar green" id="nhap-bar-ht" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">📦 Đang bàn giao</span><span class="prog-val" id="nhap-prog-dang">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar blue" id="nhap-bar-dang" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">⏰ Chờ vào cửa</span><span class="prog-val" id="nhap-prog-cho">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar orange" id="nhap-bar-cho" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">🔴 Quá giờ</span><span class="prog-val" id="nhap-prog-qua">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar red" id="nhap-bar-qua" style="width:0%"></div></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title">📤 Tiến độ xuất hôm nay</div>
+                <span class="panel-badge badge-green" id="xuat-pct-badge">--%</span>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">✅ Hoàn thành</span><span class="prog-val" id="xuat-prog-ht">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar green" id="xuat-bar-ht" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">📦 Đang bàn giao</span><span class="prog-val" id="xuat-prog-dang">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar blue" id="xuat-bar-dang" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">⏰ Chờ vào cửa</span><span class="prog-val" id="xuat-prog-cho">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar orange" id="xuat-bar-cho" style="width:0%"></div></div>
+            </div>
+            <div class="prog-item">
+                <div class="prog-head"><span class="prog-lbl">🔴 Quá giờ</span><span class="prog-val" id="xuat-prog-qua">0/0</span></div>
+                <div class="prog-track"><div class="prog-bar red" id="xuat-bar-qua" style="width:0%"></div></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        var chart = null;
+
+        async function loadStats() {
+            try {
+                var res = await fetch('@Url.Action("GetStats", "Dashboard")');
+                if (!res.ok) return;
+                var d = await res.json();
+                applyStats(d);
+            } catch(e) { console.error('loadStats:', e); }
+        }
+
+        function applyStats(d) {
+            var now = new Date(d.capNhat);
+            document.getElementById('cap-nhat').textContent = now.toLocaleTimeString('vi-VN',{hour12:false});
+
+            // NHẬP
+            var nh = d.nhap, nhT = nh.tongSo || 0;
+            document.getElementById('nhap-tong').textContent      = nhT;
+            document.getElementById('nhap-hoanthanh').textContent = nh.hoanThanh || 0;
+            document.getElementById('nhap-sub').textContent       = (nh.dangNhap||0) + ' đang nhập · ' + (nh.quaGio||0) + ' quá giờ';
+            document.getElementById('nhap-ht-sub').textContent    = nhT > 0 ? Math.round((nh.hoanThanh||0)/nhT*100) + '% hoàn thành' : '';
+
+            var nhPct = nhT > 0 ? Math.round((nh.hoanThanh||0)/nhT*100) : 0;
+            document.getElementById('nhap-pct-badge').textContent = nhPct + '%';
+            setBar('nhap-bar-ht',   'nhap-prog-ht',   nh.hoanThanh||0, nhT);
+            setBar('nhap-bar-dang', 'nhap-prog-dang',  nh.dangNhap||0,  nhT);
+            setBar('nhap-bar-cho',  'nhap-prog-cho',   nh.phanCong||0,  nhT);
+            setBar('nhap-bar-qua',  'nhap-prog-qua',   nh.quaGio||0,    nhT);
+
+            // XUẤT
+            var xu = d.xuat, xuT = xu.tongSo || 0;
+            document.getElementById('xuat-tong').textContent = xuT;
+            document.getElementById('xuat-sub').textContent  = (xu.dangXuat||0) + ' đang xuất · ' + (xu.quaGio||0) + ' quá giờ';
+
+            var xuPct = xuT > 0 ? Math.round((xu.hoanThanh||0)/xuT*100) : 0;
+            document.getElementById('xuat-pct-badge').textContent = xuPct + '%';
+            setBar('xuat-bar-ht',   'xuat-prog-ht',   xu.hoanThanh||0, xuT);
+            setBar('xuat-bar-dang', 'xuat-prog-dang',  xu.dangXuat||0,  xuT);
+            setBar('xuat-bar-cho',  'xuat-prog-cho',   xu.phanCong||0,  xuT);
+            setBar('xuat-bar-qua',  'xuat-prog-qua',   xu.quaGio||0,    xuT);
+
+            // CẢNH BÁO
+            document.getElementById('canhbao-tong').textContent = d.canhBao.tongChuaXuLy || 0;
+            document.getElementById('canhbao-sub').textContent  = (d.canhBao.quaGio||0) + ' quá giờ nhập';
+
+            // KPI + TÍCH LŨY
+            document.getElementById('kpi-nhap-tb').textContent   = d.kpi.nhapTb + ' ph';
+            document.getElementById('kpi-xuat-tb').textContent   = d.kpi.xuatTb + ' ph';
+            document.getElementById('tich-luy-nhap').textContent = d.tichLuy.tongNhap;
+            document.getElementById('tich-luy-xuat').textContent = d.tichLuy.tongXuat;
+
+            // CỬA NHẬP
+            renderCuaList(d.cuaNhap || []);
+
+            // BIỂU ĐỒ
+            renderChart(d.chart);
+        }
+
+        function setBar(barId, valId, val, tong) {
+            var pct = tong > 0 ? Math.min(Math.round(val/tong*100), 100) : 0;
+            document.getElementById(barId).style.width = pct + '%';
+            document.getElementById(valId).textContent = val + '/' + tong;
+        }
+
+        function renderCuaList(cuas) {
+            var el = document.getElementById('cua-list');
+            var active = cuas.filter(function(c){ return c.nhapHienTai; }).length;
+            document.getElementById('cua-active-count').textContent = active + ' đang hoạt động';
+
+            if (!cuas.length) {
+                el.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px;">Chưa có cửa nhập</div>';
+                return;
+            }
+
+            var ttMap  = {0:'Chờ vào', 1:'Đang bàn giao', 2:'Quá giờ', 3:'Hoàn thành'};
+            var clsMap = {0:'cb-wait', 1:'cb-going', 2:'cb-over', 3:'cb-idle'};
+            var cardMap = {0:'active-nhap', 1:'active-bang', 2:'active-qua', 3:'idle'};
+
+            el.innerHTML = cuas.map(function(c) {
+                var nh = c.nhapHienTai;
+                var cardCls  = nh ? (cardMap[nh.trangThai]||'idle') : 'idle';
+                var badgeCls = nh ? (clsMap[nh.trangThai]||'cb-idle') : 'cb-idle';
+                var ttTxt    = nh ? (ttMap[nh.trangThai]||'--') : 'Trống';
+                var gioHan   = '';
+                if (nh && nh.thoiGianGioiHan) {
+                    var dt = new Date(nh.thoiGianGioiHan);
+                    gioHan = ' · hạn ' + dt.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+                }
+                return '<div class="cua-item ' + cardCls + '">' +
+                    '<div>' +
+                        '<div class="cua-name">' + c.ten + '</div>' +
+                        (nh ? '<div class="cua-plate">' + nh.bienSoXe + gioHan + '</div>'
+                            : '<div class="cua-empty">Không có xe</div>') +
+                    '</div>' +
+                    '<span class="cua-badge ' + badgeCls + '">' + ttTxt + '</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderChart(data) {
+            var labels = [];
+            for (var i = 0; i < 24; i++) labels.push(i + 'h');
+
+            var isDark = document.body.classList.contains('dark-mode');
+            var gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
+            var tickColor = isDark ? '#666' : '#94a3b8';
+
+            var ctx = document.getElementById('chart-banhgiao').getContext('2d');
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label:'Nhập', data: data.nhap, backgroundColor:'rgba(59,130,246,0.7)', borderRadius:4 },
+                        { label:'Xuất', data: data.xuat, backgroundColor:'rgba(34,197,94,0.7)',  borderRadius:4 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
+                        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        loadStats();
+        setInterval(loadStats, 30000);
+    </script>
+}

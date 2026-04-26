@@ -11,15 +11,20 @@ function setReloadInterval(reloadTime) {
 
 function loadTable() {
     getSoLuong();
-    for (var i = 1; i <= cuaxuatsl; i++) {
-        InvokeXeXuat(i);
-        Invokexuat(i);
+    if (document.URL.indexOf("cuanhap") === -1) { // ✅ THÊM
+        for (var i = 1; i <= cuaxuatsl; i++) {
+            InvokeXeXuat(i);
+            Invokexuat(i);
+        }
     }
     InvokeTongHopXuatFull();
     InvokeTongHopNhap();
 }
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/signalserver").build();
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl("/signalserver")
+    .withAutomaticReconnect([0, 1000, 2000, 5000, 10000])
+    .build();
 
 connection.start().then(function () {
     console.log('connected to hub');
@@ -33,24 +38,11 @@ connection.start().then(function () {
 
     if (url.indexOf("cuaxuat") !== -1 && isFinite(id) && id !== '') {
         var cuaId = parseInt(id, 10);
-        // Gọi ngay lập tức
         InvokeXeXuat(cuaId);
         Invokexuat(cuaId);
-        // Gọi lại sau 500ms phòng lần đầu chưa kịp render
-        setTimeout(function () {
-            InvokeXeXuat(cuaId);
-            Invokexuat(cuaId);
-        }, 500);
-        // Gọi lại sau 2s phòng server còn warm up
-        setTimeout(function () {
-            InvokeXeXuat(cuaId);
-            Invokexuat(cuaId);
-        }, 2000);
-        // Poll định kỳ 15s
-        setInterval(function () {
-            InvokeXeXuat(cuaId);
-            Invokexuat(cuaId);
-        }, 15000);
+        setTimeout(function () { InvokeXeXuat(cuaId); Invokexuat(cuaId); }, 500);
+        setTimeout(function () { InvokeXeXuat(cuaId); Invokexuat(cuaId); }, 2000);
+        setInterval(function () { InvokeXeXuat(cuaId); Invokexuat(cuaId); }, 15000);
     }
 
     if (url.indexOf("cuanhap") !== -1 && isFinite(id) && id !== '') {
@@ -63,7 +55,68 @@ connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
 });
+connection.onreconnected(function () {
+    console.log('SignalR reconnected');
+    getSoLuong();
+    InvokeTongHopXuatFull();
+    InvokeTongHopNhap();
 
+    // Invoke lại tất cả cửa
+    for (var i = 1; i <= cuaxuatsl; i++) {
+        InvokeXeXuat(i);
+        Invokexuat(i);
+    }
+
+    // ← THÊM: Nếu đang xem trang cuaxuat cụ thể thì invoke lại cửa đó
+    var url = document.URL;
+    var id = url.substring(url.lastIndexOf('/') + 1);
+    if (url.indexOf("cuaxuat") !== -1 && isFinite(id) && id !== '') {
+        var cuaId = parseInt(id, 10);
+        InvokeXeXuat(cuaId);
+        Invokexuat(cuaId);
+    }
+
+    // ← THÊM: Nếu đang xem trang cuanhap cụ thể thì invoke lại
+    if (url.indexOf("cuanhap") !== -1 && isFinite(id) && id !== '') {
+        var nhapId = parseInt(id, 10);
+        InvokeNhap(nhapId);
+        InvokeChitietNhap(nhapId);
+    }
+});
+connection.onreconnecting(function () {
+    console.log('SignalR reconnecting...');
+});
+
+//connection.start().then(function () {
+//    console.log('connected to hub');
+
+//    // Trả về Promise, đợi ReceivedCuaXuatSL về hẳn rồi mới chạy tiếp
+//    return new Promise(function (resolve) {
+//        connection.on("ReceivedCuaXuatSL", function (sl) {
+//            console.log("[DEBUG] ReceivedCuaXuatSL nhận được:", sl, "| kiểu:", typeof sl);
+//            cuaxuatsl = sl;
+//            // Trigger ngay
+//            for (var i = 1; i <= cuaxuatsl; i++) {
+//                InvokeXeXuat(i);
+//                Invokexuat(i);
+//            }
+//            resolve(); // báo xong
+//        });
+//        getSoLuong(); // gọi sau khi đã đăng ký listener
+//    });
+
+//}).then(function () {
+//    // Chạy sau khi đã có cuaxuatsl chắc chắn
+//    InvokeTongHopXuatFull();
+//    InvokeTongHopNhap();
+
+//    var url = document.URL;
+//    var id = url.substring(url.lastIndexOf('/') + 1);
+//    // ... phần còn lại giữ nguyên
+
+//}).catch(function (err) {
+//    return console.error(err.toString());
+//});
 // ==================== TỔNG HỢP XUẤT ====================
 
 function getSoLuong() {
@@ -75,8 +128,12 @@ function getSoLuong() {
 connection.on("ReceivedCuaXuatSL", function (sl) {
     console.log("[DEBUG] ReceivedCuaXuatSL nhận được:", sl, "| kiểu:", typeof sl);
     cuaxuatsl = sl;
+    // Trigger ngay sau khi biết số cửa
+    for (var i = 1; i <= cuaxuatsl; i++) {
+        InvokeXeXuat(i);
+        Invokexuat(i);
+    }
 });
-
 function InvokeTongHopXuatFull() {
     connection.invoke("SendTongHopXuatFull").catch(function (err) {
         console.log("Lỗi gọi SendTongHopXuatFull: " + err.toString());
@@ -160,6 +217,7 @@ function InvokeXeXuat(id) {
 }
 
 connection.on("Receivedxexuat", function (xes, id) {
+    if (document.URL.indexOf("cuanhap") !== -1) return; // ✅ THÊM
     BindXetoTable(xes, id);
 });
 
@@ -215,6 +273,7 @@ function Invokexuat(id) {
 }
 
 connection.on("Receivedxuat", function (x, id) {
+    if (document.URL.indexOf("cuanhap") !== -1) return; // ✅ THÊM
     BindxuattoTable(x, id);
 });
 
@@ -340,7 +399,23 @@ function InvokeChitietNhap(id) {
 connection.on("ReceivedChitietNhap", function (ct, id) {
     BindChitiettoTable(ct, id);
 });
-
+// Cập nhật bảng hàng hóa led5 khi nhân viên xuất bàn giao
+connection.on("ReceivedChitietXuat", function (ct, cuaId) {
+    if (document.URL.indexOf("cuanhap") !== -1) return;
+    if (!cuaId) return;
+    if (!ct || ct.length === 0) {
+        BindXetoTable(null, cuaId);
+        return;
+    }
+    var mapped = ct.map(function (c) {
+        return {
+            donVi: c.donVi ?? c.DonVi ?? '--',
+            chuaBG: c.chuaBG ?? c.ChuaBG ?? 0,
+            daBG: c.daBG ?? c.DaBG ?? 0
+        };
+    });
+    BindXetoTable(mapped, cuaId);
+});
 function BindChitiettoTable(ct, id) {
     var leid = "#led8_" + id;
     $(leid).empty();
@@ -513,17 +588,30 @@ async function reloadCuaDropdown() {
 //    //}
 //});
 connection.on("UpdateBangTongHopXuat", function (data) {
-    if (!data) return;
+    // Nếu data null hoặc rỗng (push từ CanhBaoService) → tự fetch lại
+    if (!data || typeof data !== 'object' || Object.keys(data).length === 0
+        || data.choXuatXe === undefined) {
+        InvokeTongHopXuatFull();
+        reloadXeDropdown();  
+        reloadCuaDropdown(); 
+        if (cuaxuatsl > 0) {
+            for (var i = 1; i <= cuaxuatsl; i++) {
+                InvokeXeXuat(i);
+                Invokexuat(i);
+            }
+        }
+        return;
+    }
+
     BindTongHopXuattoTable(data);
     reloadXeDropdown();
     reloadCuaDropdown();
 
-    // Nếu đang ở màn hình cửa xuất → cập nhật ngay real-time
-    var url = document.URL;
-    var id = url.substring(url.lastIndexOf('/') + 1);
-    if (url.indexOf("cuaxuat") !== -1 && isFinite(id) && id !== '') {
-        var cuaId = parseInt(id, 10);
-        InvokeXeXuat(cuaId);
-        Invokexuat(cuaId);
+    // Loop TẤT CẢ cửa xuất thay vì chỉ khi URL có "cuaxuat"
+    if (cuaxuatsl > 0) {
+        for (var j = 1; j <= cuaxuatsl; j++) {
+            InvokeXeXuat(j);
+            Invokexuat(j);
+        }
     }
 });

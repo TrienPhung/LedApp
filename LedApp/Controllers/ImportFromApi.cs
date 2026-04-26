@@ -22,68 +22,8 @@ namespace LedApp.Controllers
             _logger = logger;
         }
 
-        // ✅ 1. VIEW DASHBOARD
 
-
-        public async Task<IActionResult> Index()
-        {
-            try
-            {
-                var client = _httpClientFactory.CreateClient("ViettelApi");
-                var response = await client.GetAsync("api/DanhSachXes/dashboard");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    _logger.LogWarning("Dashboard API trả về {StatusCode}", response.StatusCode);
-                    return View(new List<DanhSachXeDto>());
-                }
-
-                var json = await response.Content.ReadAsStringAsync();
-                var dataList = JsonConvert.DeserializeObject<List<DanhSachXeDto>>(json)
-                               ?? new List<DanhSachXeDto>();
-
-                return View(dataList);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Lỗi khi gọi dashboard API");
-                return View(new List<DanhSachXeDto>());
-            }
-        }
-
-
-        // ✅ 2. REALTIME: Lấy dashboard mới nhất + push SignalR
-
-
-        [HttpGet]
-        public async Task<IActionResult> GetLatest()
-        {
-            try
-            {
-                var client = _httpClientFactory.CreateClient("ViettelApi");
-                var response = await client.GetAsync("api/DanhSachXes/dashboard");
-
-                if (!response.IsSuccessStatusCode)
-                    return StatusCode((int)response.StatusCode, "API lỗi");
-
-                var json = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<DanhSachXeDto>>(json)
-                           ?? new List<DanhSachXeDto>();
-
-                await _hubContext.Clients.All.SendAsync("ReceiveDashboard", data);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Lỗi khi GetLatest");
-                return StatusCode(500, "Lỗi server");
-            }
-        }
-
-
-        // ✅ 3. Force Refresh
-
-
+        // ImportFromApi.cs - thêm action này
         [HttpPost]
         public async Task<IActionResult> ForceRefresh()
         {
@@ -106,10 +46,6 @@ namespace LedApp.Controllers
                 return StatusCode(500);
             }
         }
-
-        // ✅ 4. Cập nhật trạng thái
-
-
         [HttpPost]
         public async Task<IActionResult> CapNhatTrangThai(int chuyenId, int trangThai)
         {
@@ -117,7 +53,7 @@ namespace LedApp.Controllers
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
                 var response = await client.PutAsJsonAsync(
-                    $"api/DanhSachXes/chuyen/{chuyenId}/trang-thai", trangThai); 
+                    $"api/DanhSachXes/chuyen/{chuyenId}/trangthai", trangThai);
 
                 if (!response.IsSuccessStatusCode)
                     return StatusCode((int)response.StatusCode);
@@ -125,13 +61,19 @@ namespace LedApp.Controllers
                 var json = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<dynamic>(json);
 
+                // Ép kiểu rõ ràng trước khi truyền vào SendAsync
                 int id = (int)result.chuyenId;
                 int tt = (int)result.trangThai;
                 string thoiGianDen = result.thoiGianDen?.ToString();
                 string thoiGianHoanThanh = result.thoiGianHoanThanh?.ToString();
 
+                // Phát sự kiện realtime qua SignalR
                 await _hubContext.Clients.All.SendAsync("TrangThaiXeUpdated",
-                    id, tt, thoiGianDen, thoiGianHoanThanh);
+                    id,
+                    tt,
+                    thoiGianDen,
+                    thoiGianHoanThanh
+                );
 
                 return Ok(result);
             }
@@ -143,16 +85,72 @@ namespace LedApp.Controllers
         }
 
 
-        // ✅ 5. LỊCH SỬ XE - trả JSON + push SignalR
 
 
+        // ✅ 1. VIEW DASHBOARD
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("ViettelApi");
+                var response = await client.GetAsync("api/DanhSachXes/dashboard");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("Dashboard API trả về {StatusCode}", response.StatusCode);
+                    return View(new List<DanhSachXeDto>());
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var dataList = JsonConvert.DeserializeObject<List<DanhSachXeDto>>(json)
+                               ?? new List<DanhSachXeDto>();
+                // 🔥 sắp xếp theo ngày dự kiến giảm dần
+                dataList = dataList
+                    .OrderByDescending(x => x.ChuyenHienTai?.NgayDuKien)//sua cho nay
+                    .ToList();
+
+                return View(dataList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi khi gọi dashboard API");
+                return View(new List<DanhSachXeDto>());
+            }
+        }
+
+        // ✅ 2. REALTIME: Lấy dashboard mới nhất + push SignalR
+        [HttpGet]
+        public async Task<IActionResult> GetLatest()
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("ViettelApi");
+                var response = await client.GetAsync("api/DanhSachXes/dashboard");
+
+                if (!response.IsSuccessStatusCode)
+                    return StatusCode((int)response.StatusCode, "API lỗi");
+
+                var json = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<List<DanhSachXeDto>>(json)
+                           ?? new List<DanhSachXeDto>();
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Lỗi khi GetLatest");
+                return StatusCode(500, "Lỗi server");
+            }
+        }
+
+        // ✅ 3. LỊCH SỬ XE - trả JSON + push SignalR
         [HttpGet("Xe/{xeId}/ChuyenXes")]
         public async Task<IActionResult> GetChuyenXeTheoXe(int xeId)
         {
             try
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
-                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); 
+                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su");
 
                 if (!response.IsSuccessStatusCode)
                     return NotFound($"Không tìm thấy xe {xeId}");
@@ -161,7 +159,9 @@ namespace LedApp.Controllers
                 var chuyenXes = JsonConvert.DeserializeObject<List<ChuyenXeDto>>(json)
                                 ?? new List<ChuyenXeDto>();
 
+                // 🔥 Push realtime
                 await _hubContext.Clients.All.SendAsync("XeHistoryUpdated", xeId, chuyenXes);
+
                 return Ok(chuyenXes);
             }
             catch (Exception ex)
@@ -171,15 +171,14 @@ namespace LedApp.Controllers
             }
         }
 
-
-        // ✅ 6. VIEW LỊCH SỬ XE
-
+        // ✅ 4. VIEW LỊCH SỬ XE
         public async Task<IActionResult> XeHistory(int xeId)
         {
             try
             {
                 var client = _httpClientFactory.CreateClient("ViettelApi");
 
+                // Lấy thông tin xe (để hiển thị header)
                 var xeRes = await client.GetAsync($"api/DanhSachXes/{xeId}");
                 if (xeRes.IsSuccessStatusCode)
                 {
@@ -190,7 +189,8 @@ namespace LedApp.Controllers
                     ViewBag.MaChiNhanh = xe?.MaChiNhanh;
                 }
 
-                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su"); 
+                // Lấy lịch sử chuyến
+                var response = await client.GetAsync($"api/DanhSachXes/{xeId}/lich-su");
                 if (!response.IsSuccessStatusCode) return NotFound();
 
                 var json = await response.Content.ReadAsStringAsync();
@@ -204,6 +204,13 @@ namespace LedApp.Controllers
                 _logger.LogError(ex, "Lỗi khi load lịch sử xe {XeId}", xeId);
                 return View(new List<ChuyenXeDto>());
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Notify()
+        {
+            Console.WriteLine("✅ Notify được gọi!"); // thêm dòng này
+            await _hubContext.Clients.All.SendAsync("ReloadDashboard");
+            return Ok();
         }
     }
 }

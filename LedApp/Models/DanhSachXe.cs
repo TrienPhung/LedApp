@@ -27,10 +27,6 @@ namespace LedApp.Models
         [DisplayName("Ghi chú")]
         public string? GhiChu { get; set; }
 
-        [DisplayName("Thời gian dự kiến về")]
-        public DateTime? ThoiGianDuKienVe { get; set; }
-
-
         // ← THÊM MỚI: FK trỏ vào bảng nguoiDungs
         [ForeignKey(nameof(TaiXe))]
         [DisplayName("Tài xế")]
