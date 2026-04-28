@@ -408,6 +408,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW1wb3J0RnJvbUFwaVxYZUhpc3RvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/CodeLVTN/LedApp/LedApp/Views/LedBoard/Nhap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVkQm9hcmRcTmhhcC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CodeLVTN/LedApp/LedApp/Views/LedBoard/Xuat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVkQm9hcmRcWHVhdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/CodeLVTN/LedApp/LedApp/Views/LichSuBanGiaos/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljaFN1QmFuR2lhb3NcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -426,6 +434,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/CodeLVTN/LedApp/LedApp/Views/LichSuBanGiaos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGljaFN1QmFuR2lhb3NcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CodeLVTN/LedApp/LedApp/Views/Nav/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmF2XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/CodeLVTN/LedApp/LedApp/Views/nguoiDungs/Create.cshtml]

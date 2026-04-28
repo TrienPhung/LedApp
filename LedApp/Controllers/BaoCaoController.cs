@@ -38,16 +38,19 @@ namespace LedApp.Controllers
                 var nhaps = await _context.Nhaps
                     .AsNoTracking()
                     .Include(n => n.ChitietNhaps)
+                    .Include(n => n.CuaNhap)
                     .Where(n => n.ThoiGianPhanCong >= from && n.ThoiGianPhanCong < to)
                     .ToListAsync();
 
                 var tongNhap = nhaps.Count;
                 var nhapHoanThanh = nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh);
-                var nhapQuaGio = nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian
-                                               || (n.TrangThai == (int)TrangThaiNhap.HoanThanh
-                                                   && n.ThoiGianHoanThanh > n.ThoiGianGioiHan));
+                var nhapQuaGio = nhaps.Count(n =>
+                    n.TrangThai == (int)TrangThaiNhap.QuaThoiGian ||
+                    (n.TrangThai == (int)TrangThaiNhap.HoanThanh &&
+                     n.ThoiGianHoanThanh.HasValue && n.ThoiGianGioiHan.HasValue &&
+                     n.ThoiGianHoanThanh > n.ThoiGianGioiHan));
 
-                // KPI thời gian bàn giao nhập (phút)
+                // KPI nhập (phút: ThoiGianVaoCua → ThoiGianHoanThanh)
                 var nhapCoTG = nhaps
                     .Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
                     .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes)
@@ -60,18 +63,21 @@ namespace LedApp.Controllers
                 var xuats = await _context.Xuats
                     .AsNoTracking()
                     .Include(x => x.ChitietXuats)
+                    .Include(x => x.CuaXuat)
+                    .Include(x => x.Xe)
                     .Where(x => x.ThoiGianPhanCong >= from && x.ThoiGianPhanCong < to)
                     .ToListAsync();
 
                 var tongXuat = xuats.Count;
-                var xuatHoanThanh = xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
-                                                  || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat);
-                var xuatQuaGio = xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian
-                                               || (x.ThoiGianHoanThanh.HasValue
-                                                   && x.ThoiGianGioiHan.HasValue
-                                                   && x.ThoiGianHoanThanh > x.ThoiGianGioiHan));
+                var xuatHoanThanh = xuats.Count(x =>
+                    x.TrangThai == (int)TrangThaiXuat.HoanThanh ||
+                    x.TrangThai == (int)TrangThaiXuat.DaXuatPhat);
+                var xuatQuaGio = xuats.Count(x =>
+                    x.TrangThai == (int)TrangThaiXuat.QuaThoiGian ||
+                    (x.ThoiGianHoanThanh.HasValue && x.ThoiGianGioiHan.HasValue &&
+                     x.ThoiGianHoanThanh > x.ThoiGianGioiHan));
 
-                // KPI thời gian bàn giao xuất (phút)
+                // KPI xuất
                 var xuatCoTG = xuats
                     .Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
                     .Select(x => (x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes)
@@ -80,32 +86,34 @@ namespace LedApp.Controllers
                 var kpiXuatMin = xuatCoTG.Any() ? Math.Round(xuatCoTG.Min(), 1) : 0;
                 var kpiXuatMax = xuatCoTG.Any() ? Math.Round(xuatCoTG.Max(), 1) : 0;
 
-                // ── 3. XE HAY QUÁ HẠN ──
-                var xeQuaHan = await _context.CanhBaos
+                // ── 3. XE HAY QUÁ HẠN (từ bảng CanhBao) ──
+                // CanhBao.GhiChu lưu dạng "Xe:29H-12345|Cua:1|GioiHan:..."
+                var canhBaos = await _context.CanhBaos
                     .AsNoTracking()
                     .Where(c => c.LoaiCanhBao == "QuaHanNhap"
                              && c.ThoiGian >= from && c.ThoiGian < to)
-                    .GroupBy(c => c.GhiChu)
-                    .Select(g => new
-                    {
-                        GhiChu = g.Key,
-                        SoLan = g.Count(),
-                        LanCuoi = g.Max(x => x.ThoiGian)
-                    })
-                    .OrderByDescending(g => g.SoLan)
-                    .Take(10)
                     .ToListAsync();
 
-                // Parse biển số từ GhiChu: "Xe:29H-12345|Cua:1|GioiHan:..."
-                var xeQuaHanList = xeQuaHan.Select(x =>
-                {
-                    var parts = (x.GhiChu ?? "").Split('|');
-                    var bienSo = parts.FirstOrDefault(p => p.StartsWith("Xe:"))?.Replace("Xe:", "") ?? "--";
-                    var cua = parts.FirstOrDefault(p => p.StartsWith("Cua:"))?.Replace("Cua:", "") ?? "--";
-                    return new { BienSo = bienSo, Cua = cua, SoLan = x.SoLan, LanCuoi = x.LanCuoi };
-                }).ToList();
+                var xeQuaHanList = canhBaos
+                    .GroupBy(c => c.GhiChu)
+                    .Select(g =>
+                    {
+                        var parts = (g.Key ?? "").Split('|');
+                        var bienSo = parts.FirstOrDefault(p => p.StartsWith("Xe:"))?.Replace("Xe:", "") ?? "--";
+                        var cua = parts.FirstOrDefault(p => p.StartsWith("Cua:"))?.Replace("Cua:", "") ?? "--";
+                        return new
+                        {
+                            bienSo,
+                            cua,
+                            soLan = g.Count(),
+                            lanCuoi = g.Max(x => x.ThoiGian)
+                        };
+                    })
+                    .OrderByDescending(x => x.soLan)
+                    .Take(10)
+                    .ToList();
 
-                // ── 4. BIỂU ĐỒ NHẬP/XUẤT THEO NGÀY ──
+                // ── 4. BIỂU ĐỒ NHẬP/XUẤT THEO NGÀY (từ LichSuBanGiao) ──
                 var lichSu = await _context.LichSuBanGiaos
                     .AsNoTracking()
                     .Where(l => l.ThoiGian >= from && l.ThoiGian < to)
@@ -114,23 +122,19 @@ namespace LedApp.Controllers
                     {
                         Ngay = g.Key.Date,
                         Loai = g.Key.LoaiPhieu,
-                        SoLuot = g.Count(),
-                        TongBG = g.Sum(x => x.SoBG)
+                        SoLuot = g.Count()
                     })
                     .OrderBy(g => g.Ngay)
                     .ToListAsync();
 
-                // Tạo danh sách ngày
-                var days = new List<object>();
+                var chartData = new List<object>();
                 for (var d = from.Date; d < to.Date; d = d.AddDays(1))
                 {
-                    var nhapDay = lichSu.Where(l => l.Ngay == d && l.Loai == "NHAP").Sum(l => l.SoLuot);
-                    var xuatDay = lichSu.Where(l => l.Ngay == d && l.Loai == "XUAT").Sum(l => l.SoLuot);
-                    days.Add(new
+                    chartData.Add(new
                     {
-                        Ngay = d.ToString("dd/MM"),
-                        Nhap = nhapDay,
-                        Xuat = xuatDay
+                        ngay = d.ToString("dd/MM"),
+                        nhap = lichSu.Where(l => l.Ngay == d && l.Loai == "NHAP").Sum(l => l.SoLuot),
+                        xuat = lichSu.Where(l => l.Ngay == d && l.Loai == "XUAT").Sum(l => l.SoLuot)
                     });
                 }
 
@@ -139,13 +143,13 @@ namespace LedApp.Controllers
                     .GroupBy(n => n.ThoiGianPhanCong.Date)
                     .Select(g => new
                     {
-                        Ngay = g.Key.ToString("dd/MM/yyyy"),
-                        TongSo = g.Count(),
-                        HoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh),
-                        QuaGio = g.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian),
-                        DangNhap = g.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao),
+                        ngay = g.Key.ToString("dd/MM/yyyy"),
+                        tongSo = g.Count(),
+                        hoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh),
+                        quaGio = g.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian),
+                        dangNhap = g.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao)
                     })
-                    .OrderBy(g => g.Ngay)
+                    .OrderByDescending(g => g.ngay)
                     .ToList();
 
                 // ── 6. CHI TIẾT XUẤT theo ngày ──
@@ -153,14 +157,41 @@ namespace LedApp.Controllers
                     .GroupBy(x => x.ThoiGianPhanCong.Date)
                     .Select(g => new
                     {
-                        Ngay = g.Key.ToString("dd/MM/yyyy"),
-                        TongSo = g.Count(),
-                        HoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
-                                              || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat),
-                        QuaGio = g.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian),
-                        DangXuat = g.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao),
+                        ngay = g.Key.ToString("dd/MM/yyyy"),
+                        tongSo = g.Count(),
+                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
+                                               || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat),
+                        quaGio = g.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian),
+                        dangXuat = g.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao)
                     })
-                    .OrderBy(g => g.Ngay)
+                    .OrderByDescending(g => g.ngay)
+                    .ToList();
+
+                // ── 7. TOP CỬA NHẬP (cho chart Revenue by Category kiểu Apex) ──
+                var topCuaNhap = nhaps
+                    .GroupBy(n => n.CuaNhap?.Ten ?? "Không rõ")
+                    .Select(g => new
+                    {
+                        ten = g.Key,
+                        soPhieu = g.Count(),
+                        hoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh)
+                    })
+                    .OrderByDescending(g => g.soPhieu)
+                    .Take(5)
+                    .ToList();
+
+                // ── 8. TOP CỬA XUẤT ──
+                var topCuaXuat = xuats
+                    .GroupBy(x => x.CuaXuat?.Ten ?? "Không rõ")
+                    .Select(g => new
+                    {
+                        ten = g.Key,
+                        soPhieu = g.Count(),
+                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
+                                              || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                    })
+                    .OrderByDescending(g => g.soPhieu)
+                    .Take(5)
                     .ToList();
 
                 return Ok(new
@@ -172,9 +203,11 @@ namespace LedApp.Controllers
                         tongNhap,
                         nhapHoanThanh,
                         nhapQuaGio,
+                        nhapDangXuLy = nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao),
                         tongXuat,
                         xuatHoanThanh,
                         xuatQuaGio,
+                        xuatDangXuLy = xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao),
                         kpi = new
                         {
                             nhapTb = kpiNhapTb,
@@ -182,13 +215,15 @@ namespace LedApp.Controllers
                             nhapMax = kpiNhapMax,
                             xuatTb = kpiXuatTb,
                             xuatMin = kpiXuatMin,
-                            xuatMax = kpiXuatMax,
+                            xuatMax = kpiXuatMax
                         }
                     },
-                    xeQuaHan = xeQuaHanList,
-                    chart = days,
-                    chitietNhap = chitietNhap,
-                    chitietXuat = chitietXuat,
+                    chart = chartData,
+                    topCuaNhap,
+                    topCuaXuat,
+                    chitietNhap,
+                    chitietXuat,
+                    xeQuaHan = xeQuaHanList
                 });
             }
             catch (Exception ex)
@@ -219,6 +254,7 @@ namespace LedApp.Controllers
             var xuats = await _context.Xuats
                 .AsNoTracking()
                 .Include(x => x.CuaXuat)
+                .Include(x => x.Xe)
                 .Where(x => x.ThoiGianPhanCong >= from && x.ThoiGianPhanCong < to)
                 .OrderByDescending(x => x.ThoiGianPhanCong)
                 .ToListAsync();
@@ -249,22 +285,35 @@ namespace LedApp.Controllers
                 ws1.Cell(3, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             }
 
+            var nhapKpi = nhaps
+                .Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
+                .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes)
+                .DefaultIfEmpty(0).ToList();
+            var xuatKpi = xuats
+                .Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
+                .Select(x => (x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes)
+                .DefaultIfEmpty(0).ToList();
+
             var rows1 = new[]
             {
-                new[] { "Tổng phiếu", nhaps.Count.ToString(), xuats.Count.ToString() },
+                new[] { "Tổng phiếu",
+                    nhaps.Count.ToString(),
+                    xuats.Count.ToString() },
                 new[] { "Hoàn thành",
                     nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh).ToString(),
                     xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat).ToString() },
                 new[] { "Quá giờ",
                     nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian).ToString(),
                     xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian).ToString() },
-                new[] { "KPI TB (phút)",
-                    Math.Round(nhaps.Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
-                        .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes)
-                        .DefaultIfEmpty(0).Average(), 1).ToString(),
-                    Math.Round(xuats.Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
-                        .Select(x => (x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes)
-                        .DefaultIfEmpty(0).Average(), 1).ToString() },
+                new[] { "KPI Trung bình (phút)",
+                    Math.Round(nhapKpi.Average(), 1).ToString(),
+                    Math.Round(xuatKpi.Average(), 1).ToString() },
+                new[] { "KPI Nhanh nhất (phút)",
+                    Math.Round(nhapKpi.Min(), 1).ToString(),
+                    Math.Round(xuatKpi.Min(), 1).ToString() },
+                new[] { "KPI Chậm nhất (phút)",
+                    Math.Round(nhapKpi.Max(), 1).ToString(),
+                    Math.Round(xuatKpi.Max(), 1).ToString() },
             };
 
             for (int r = 0; r < rows1.Length; r++)
@@ -273,7 +322,6 @@ namespace LedApp.Controllers
                     ws1.Cell(r + 4, c + 1).Value = rows1[r][c];
                     if (c > 0) ws1.Cell(r + 4, c + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                 }
-
             ws1.Columns().AdjustToContents();
 
             // ── Sheet 2: Chi tiết nhập ──
@@ -289,14 +337,17 @@ namespace LedApp.Controllers
 
             var ttNhapMap = new Dictionary<int, string>
             {
-                {0,"Chờ vào"}, {1,"Đang bàn giao"}, {2,"Quá giờ"}, {3,"Hoàn thành"}
+                { (int)TrangThaiNhap.DaPhanCong,  "Đã phân công" },
+                { (int)TrangThaiNhap.DangBanGiao, "Đang bàn giao" },
+                { (int)TrangThaiNhap.QuaThoiGian, "Quá giờ" },
+                { (int)TrangThaiNhap.HoanThanh,   "Hoàn thành" }
             };
 
             for (int i = 0; i < nhaps.Count; i++)
             {
                 var n = nhaps[i];
                 double tgBG = (n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
-                    ? Math.Round((n.ThoiGianHoanThanh.Value - n.ThoiGianVaoCua.Value).TotalMinutes, 1) : 0;
+                    ? Math.Round((n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
 
                 ws2.Cell(i + 2, 1).Value = i + 1;
                 ws2.Cell(i + 2, 2).Value = n.BienSoXe;
@@ -305,7 +356,7 @@ namespace LedApp.Controllers
                 ws2.Cell(i + 2, 5).Value = n.ThoiGianVaoCua?.ToString("HH:mm") ?? "--";
                 ws2.Cell(i + 2, 6).Value = n.ThoiGianGioiHan?.ToString("HH:mm") ?? "--";
                 ws2.Cell(i + 2, 7).Value = n.ThoiGianHoanThanh?.ToString("HH:mm") ?? "--";
-                ws2.Cell(i + 2, 8).Value = tgBG > 0 ? tgBG : "--";
+                ws2.Cell(i + 2, 8).Value = tgBG > 0 ? tgBG.ToString() : "--";
                 ws2.Cell(i + 2, 9).Value = ttNhapMap.GetValueOrDefault(n.TrangThai, "--");
 
                 if (n.TrangThai == (int)TrangThaiNhap.QuaThoiGian)
@@ -317,7 +368,7 @@ namespace LedApp.Controllers
 
             // ── Sheet 3: Chi tiết xuất ──
             var ws3 = wb.Worksheets.Add("Chi tiết xuất");
-            var hdXuat = new[] { "STT", "Cửa xuất", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG bàn giao (phút)", "Trạng thái" };
+            var hdXuat = new[] { "STT", "Biển số xe", "Cửa xuất", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG bàn giao (phút)", "Trạng thái" };
             for (int i = 0; i < hdXuat.Length; i++)
             {
                 ws3.Cell(1, i + 1).Value = hdXuat[i];
@@ -328,23 +379,28 @@ namespace LedApp.Controllers
 
             var ttXuatMap = new Dictionary<int, string>
             {
-                {0,"Chờ vào"}, {1,"Đang bàn giao"}, {2,"Quá giờ"}, {3,"Hoàn thành"}, {4,"Đã xuất phát"}
+                { (int)TrangThaiXuat.DaPhanCong,  "Đã phân công" },
+                { (int)TrangThaiXuat.DangBanGiao, "Đang bàn giao" },
+                { (int)TrangThaiXuat.QuaThoiGian, "Quá giờ" },
+                { (int)TrangThaiXuat.HoanThanh,   "Hoàn thành" },
+                { (int)TrangThaiXuat.DaXuatPhat,  "Đã xuất phát" }
             };
 
             for (int i = 0; i < xuats.Count; i++)
             {
                 var x = xuats[i];
                 double tgBG = (x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
-                    ? Math.Round((x.ThoiGianHoanThanh.Value - x.ThoiGianVaoCua.Value).TotalMinutes, 1) : 0;
+                    ? Math.Round((x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
 
                 ws3.Cell(i + 2, 1).Value = i + 1;
-                ws3.Cell(i + 2, 2).Value = x.CuaXuat?.Ten ?? "--";
-                ws3.Cell(i + 2, 3).Value = x.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm");
-                ws3.Cell(i + 2, 4).Value = x.ThoiGianVaoCua?.ToString("HH:mm") ?? "--";
-                ws3.Cell(i + 2, 5).Value = x.ThoiGianGioiHan?.ToString("HH:mm") ?? "--";
-                ws3.Cell(i + 2, 6).Value = x.ThoiGianHoanThanh?.ToString("HH:mm") ?? "--";
-                ws3.Cell(i + 2, 7).Value = tgBG > 0 ? tgBG : "--";
-                ws3.Cell(i + 2, 8).Value = ttXuatMap.GetValueOrDefault(x.TrangThai, "--");
+                ws3.Cell(i + 2, 2).Value = x.Xe?.BienSoXe ?? "--";
+                ws3.Cell(i + 2, 3).Value = x.CuaXuat?.Ten ?? "--";
+                ws3.Cell(i + 2, 4).Value = x.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm");
+                ws3.Cell(i + 2, 5).Value = x.ThoiGianVaoCua?.ToString("HH:mm") ?? "--";
+                ws3.Cell(i + 2, 6).Value = x.ThoiGianGioiHan?.ToString("HH:mm") ?? "--";
+                ws3.Cell(i + 2, 7).Value = x.ThoiGianHoanThanh?.ToString("HH:mm") ?? "--";
+                ws3.Cell(i + 2, 8).Value = tgBG > 0 ? tgBG.ToString() : "--";
+                ws3.Cell(i + 2, 9).Value = ttXuatMap.GetValueOrDefault(x.TrangThai, "--");
 
                 if (x.TrangThai == (int)TrangThaiXuat.QuaThoiGian)
                     ws3.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");

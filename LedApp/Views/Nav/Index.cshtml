@@ -1,0 +1,1212 @@
+﻿@{
+    Layout = null;
+}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<LedApp.Models.AppUser> SignInManager
+@inject UserManager<LedApp.Models.AppUser> UserManager
+@{
+    var userName = UserManager.GetUserName(User) ?? "User";
+    var user = await UserManager.GetUserAsync(User);
+    var email = user?.Email ?? "";
+    var initials = string.IsNullOrEmpty(userName) ? "?" :
+        new string(userName.Where(char.IsLetter).Take(2).ToArray()).ToUpper();
+}
+
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>HỆ THỐNG KHO — ĐIỀU HƯỚNG</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ===== DARK THEME (default) ===== */
+        [data-theme="dark"] {
+            --bg: #060a0f;
+            --surface: #0a1520;
+            --surface2: #0d1a2a;
+            --surface3: #111f30;
+            --border: #1a3a5c;
+            --border-hover: #2a5a8c;
+            --green: #22c55e;
+            --gold: #f59e0b;
+            --red: #ef4444;
+            --blue: #38bdf8;
+            --purple: #a78bfa;
+            --text: #c8dce8;
+            --text-dim: #4a6a8a;
+            --text-muted: #2a4a6a;
+            --header-bg: #071018;
+            --footer-bg: #060a0f;
+            --card-bg: #0a1520;
+            --card-bg-hover: #0d1c2e;
+            --badge-bg: #0d1a2a;
+            --shadow: 0 4px 24px rgba(0,0,0,.4);
+            --toggle-bg: #1a3a5c;
+            --toggle-icon-color: #38bdf8;
+            --scan-line: rgba(34,197,94,.004);
+            --glow-green: rgba(34,197,94,.04);
+            --glow-blue: rgba(56,189,248,.04);
+        }
+
+        /* ===== LIGHT THEME ===== */
+        [data-theme="light"] {
+            --bg: #f0f4f8;
+            --surface: #ffffff;
+            --surface2: #f7fafc;
+            --surface3: #edf2f7;
+            --border: #d0dce8;
+            --border-hover: #93b8d4;
+            --green: #16a34a;
+            --gold: #d97706;
+            --red: #dc2626;
+            --blue: #0284c7;
+            --purple: #7c3aed;
+            --text: #1e3a4f;
+            --text-dim: #6b8fa8;
+            --text-muted: #9bb8ca;
+            --header-bg: #ffffff;
+            --footer-bg: #e8eff5;
+            --card-bg: #ffffff;
+            --card-bg-hover: #f0f7ff;
+            --badge-bg: #edf2f7;
+            --shadow: 0 4px 16px rgba(0,60,120,.08);
+            --toggle-bg: #e2ecf5;
+            --toggle-icon-color: #d97706;
+            --scan-line: transparent;
+            --glow-green: rgba(22,163,74,.03);
+            --glow-blue: rgba(2,132,199,.03);
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'DM Sans',sans-serif;
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+            transition: background .3s, color .3s;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: radial-gradient(ellipse 80% 50% at 20% 20%, var(--glow-green) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, var(--glow-blue) 0%, transparent 60%);
+                pointer-events: none;
+                z-index: 0;
+                transition: background .3s;
+            }
+
+            body::after {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: repeating-linear-gradient(0deg,transparent,transparent 3px,var(--scan-line) 3px,var(--scan-line) 4px);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+        /* ===== HEADER ===== */
+        .hdr {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 0 48px;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background .3s, border-color .3s;
+            box-shadow: var(--shadow);
+        }
+
+        .hdr-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hdr-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg,var(--green),#16a34a);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 16px rgba(34,197,94,.2);
+        }
+
+        .hdr-title {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .hdr-sub {
+            font-family: 'DM Sans',sans-serif;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--toggle-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all .25s;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .theme-toggle:hover {
+                border-color: var(--border-hover);
+                transform: scale(1.05);
+                box-shadow: 0 0 12px rgba(56,189,248,.15);
+            }
+
+            .theme-toggle .bi {
+                font-size: 18px;
+                color: var(--toggle-icon-color);
+                transition: all .3s;
+                position: absolute;
+            }
+
+            .theme-toggle .bi-sun-fill {
+                opacity: 0;
+                transform: rotate(-90deg) scale(.5);
+            }
+
+            .theme-toggle .bi-moon-stars-fill {
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+
+        [data-theme="light"] .theme-toggle .bi-sun-fill {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        [data-theme="light"] .theme-toggle .bi-moon-stars-fill {
+            opacity: 0;
+            transform: rotate(90deg) scale(.5);
+        }
+
+        /* ===== USER DROPDOWN ===== */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg,var(--green),#0d9488);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            transition: all .2s;
+            user-select: none;
+            letter-spacing: .5px;
+        }
+
+            .user-avatar:hover {
+                border-color: var(--green);
+                box-shadow: 0 0 14px rgba(34,197,94,.25);
+                transform: scale(1.04);
+            }
+
+            .user-avatar.open {
+                border-color: var(--green);
+                box-shadow: 0 0 14px rgba(34,197,94,.3);
+            }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 240px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.3);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-8px) scale(.97);
+            pointer-events: none;
+            transition: all .2s cubic-bezier(.4,0,.2,1);
+            z-index: 200;
+        }
+
+            .user-dropdown.open {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                pointer-events: all;
+            }
+
+        .ud-profile {
+            padding: 16px 18px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ud-avatar-big {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg,var(--green),#0d9488);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .ud-name {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ud-email {
+            font-family: 'DM Sans',sans-serif;
+            font-size: 10px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ud-role {
+            display: inline-block;
+            margin-top: 5px;
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(34,197,94,.12);
+            color: var(--green);
+            border: 1px solid rgba(34,197,94,.2);
+        }
+
+        .ud-menu {
+            padding: 6px;
+        }
+
+        .ud-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .15s;
+            text-decoration: none;
+            color: var(--text);
+            font-family: 'DM Sans',sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+            .ud-item:hover {
+                background: var(--surface2);
+            }
+
+            .ud-item .bi {
+                font-size: 15px;
+                color: var(--text-dim);
+                transition: color .15s;
+            }
+
+            .ud-item:hover .bi {
+                color: var(--text);
+            }
+
+        .ud-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
+            opacity: .6;
+        }
+
+        .ud-item-logout {
+            color: var(--red);
+        }
+
+            .ud-item-logout .bi {
+                color: var(--red);
+                opacity: .7;
+            }
+
+            .ud-item-logout:hover {
+                background: rgba(239,68,68,.08);
+            }
+
+                .ud-item-logout:hover .bi {
+                    color: var(--red);
+                    opacity: 1;
+                }
+
+        .hdr-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hdr-clock {
+            font-family: 'JetBrains Mono',monospace;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+
+        .hdr-date {
+            font-family: 'DM Sans',sans-serif;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: .5px;
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            position: relative;
+            z-index: 1;
+            padding: 36px 48px 60px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ===== SECTION LABEL ===== */
+        .section-label {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 3px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color .3s, border-color .3s;
+        }
+
+            .section-label .sl-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+
+        /* ===== GRID ===== */
+        .grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 36px;
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4,1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .grid-5 {
+            grid-template-columns: repeat(5,1fr);
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            transition: all .2s ease;
+            position: relative;
+            overflow: hidden;
+            color: var(--text);
+        }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                transition: opacity .2s;
+                border-radius: 10px;
+            }
+
+            .card:hover {
+                transform: translateY(-2px);
+                border-color: var(--card-color,var(--border));
+                background: var(--card-bg-hover);
+                box-shadow: var(--shadow);
+            }
+
+                .card:hover::before {
+                    opacity: 1;
+                }
+
+            .card:active {
+                transform: translateY(0);
+            }
+
+        .card-green {
+            --card-color: var(--green);
+        }
+
+            .card-green::before {
+                background: radial-gradient(ellipse at top left,rgba(34,197,94,.07),transparent 60%);
+            }
+
+            .card-green:hover .card-icon {
+                color: var(--green);
+            }
+
+            .card-green:hover .card-name {
+                color: var(--green);
+            }
+
+            .card-green:hover {
+                box-shadow: 0 4px 20px rgba(34,197,94,.12);
+            }
+
+        .card-gold {
+            --card-color: var(--gold);
+        }
+
+            .card-gold::before {
+                background: radial-gradient(ellipse at top left,rgba(245,158,11,.07),transparent 60%);
+            }
+
+            .card-gold:hover .card-icon {
+                color: var(--gold);
+            }
+
+            .card-gold:hover .card-name {
+                color: var(--gold);
+            }
+
+            .card-gold:hover {
+                box-shadow: 0 4px 20px rgba(245,158,11,.12);
+            }
+
+        .card-blue {
+            --card-color: var(--blue);
+        }
+
+            .card-blue::before {
+                background: radial-gradient(ellipse at top left,rgba(56,189,248,.07),transparent 60%);
+            }
+
+            .card-blue:hover .card-icon {
+                color: var(--blue);
+            }
+
+            .card-blue:hover .card-name {
+                color: var(--blue);
+            }
+
+            .card-blue:hover {
+                box-shadow: 0 4px 20px rgba(56,189,248,.12);
+            }
+
+        .card-red {
+            --card-color: var(--red);
+        }
+
+            .card-red::before {
+                background: radial-gradient(ellipse at top left,rgba(239,68,68,.07),transparent 60%);
+            }
+
+            .card-red:hover .card-icon {
+                color: var(--red);
+            }
+
+            .card-red:hover .card-name {
+                color: var(--red);
+            }
+
+            .card-red:hover {
+                box-shadow: 0 4px 20px rgba(239,68,68,.12);
+            }
+
+        .card-purple {
+            --card-color: var(--purple);
+        }
+
+            .card-purple::before {
+                background: radial-gradient(ellipse at top left,rgba(167,139,250,.07),transparent 60%);
+            }
+
+            .card-purple:hover .card-icon {
+                color: var(--purple);
+            }
+
+            .card-purple:hover .card-name {
+                color: var(--purple);
+            }
+
+            .card-purple:hover {
+                box-shadow: 0 4px 20px rgba(167,139,250,.12);
+            }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .card-icon {
+            font-size: 26px;
+            transition: color .2s;
+            line-height: 1;
+        }
+
+        .card-badge {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            background: var(--badge-bg);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            transition: background .3s, color .3s, border-color .3s;
+        }
+
+        .card-name {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 1px;
+            transition: color .2s;
+            line-height: 1.2;
+        }
+
+        .card-desc {
+            font-family: 'DM Sans',sans-serif;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: .3px;
+            line-height: 1.6;
+            font-weight: 400;
+            transition: color .3s;
+        }
+
+        .card-url {
+            font-family: 'JetBrains Mono',monospace;
+            font-size: 9px;
+            color: var(--text-muted);
+            letter-spacing: .5px;
+            margin-top: 2px;
+            transition: color .3s;
+        }
+
+        .card-arrow {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            font-size: 14px;
+            color: var(--text-dim);
+            transition: all .2s;
+            opacity: 0;
+        }
+
+        .card:hover .card-arrow {
+            opacity: 1;
+            right: 12px;
+            color: var(--card-color,var(--text-dim));
+        }
+
+        .card-big {
+            grid-column: span 2;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            padding: 22px 26px;
+        }
+
+            .card-big .card-icon {
+                font-size: 44px;
+            }
+
+            .card-big .card-name {
+                font-size: 20px;
+            }
+
+            .card-big .card-desc {
+                font-size: 12px;
+            }
+
+        .cua-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .cua-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cua-group-label {
+            font-family: 'Space Grotesk',sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            font-weight: 600;
+            padding: 6px 10px;
+            background: var(--surface2);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: background .3s, color .3s, border-color .3s;
+        }
+
+        .cua-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-sm {
+            flex: 1;
+            padding: 12px 12px;
+            gap: 5px;
+        }
+
+            .card-sm .card-icon {
+                font-size: 16px;
+            }
+
+            .card-sm .card-name {
+                font-size: 13px;
+                letter-spacing: .5px;
+                font-family: 'Space Grotesk',sans-serif;
+            }
+
+            .card-sm .card-desc {
+                font-size: 9px;
+            }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0 28px;
+            opacity: .5;
+            transition: background .3s;
+        }
+
+        /* FOOTER */
+        .footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            background: var(--footer-bg);
+            padding: 12px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'DM Sans',sans-serif;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: .5px;
+            transition: background .3s, border-color .3s, color .3s;
+        }
+
+        .footer-clock {
+            font-family: 'JetBrains Mono',monospace;
+            font-size: 10px;
+        }
+
+        .footer-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        @@media(max-width:1200px) {
+            .grid-4 {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .grid-5 {
+                grid-template-columns: repeat(3,1fr);
+            }
+        }
+
+        @@media(max-width:768px) {
+            .hdr {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .hdr-title {
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+
+            .hdr-clock {
+                font-size: 20px;
+            }
+
+            .main {
+                padding: 20px 16px 40px;
+            }
+
+            .grid-4, .grid-3, .grid-2, .grid-5 {
+                grid-template-columns: 1fr;
+            }
+
+            .cua-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-big {
+                flex-direction: column;
+                grid-column: span 1;
+            }
+
+            .footer {
+                padding: 10px 16px;
+                font-size: 9px;
+            }
+
+          
+        }
+
+        .card-locked {
+            opacity: .5;
+            filter: grayscale(.6);
+            cursor: not-allowed !important;
+        }
+
+        .card-locked:hover {
+                transform: none !important;
+                box-shadow: none !important;
+                border-color: var(--border) !important;
+                background: var(--card-bg) !important;
+        }
+
+        .card-locked::before {
+                display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hdr">
+        <div class="hdr-left">
+            <div class="hdr-icon">🏭</div>
+            <div>
+                <div class="hdr-title">VIETTEL POST WMS</div>
+                <div class="hdr-sub">WAREHOUSE MANAGEMENT SYSTEM — NAVIGATION</div>
+            </div>
+        </div>
+        <div class="hdr-right">
+            <button class="theme-toggle" id="themeToggle" title="Chuyển giao diện sáng/tối" onclick="toggleTheme()">
+                <i class="bi bi-moon-stars-fill"></i>
+                <i class="bi bi-sun-fill"></i>
+            </button>
+            <div>
+                <div class="hdr-clock" id="clk">--:--:--</div>
+                <div class="hdr-date" id="dt"></div>
+            </div>
+            <!-- User Dropdown -->
+            <div class="user-menu" id="userMenu">
+                <div class="user-avatar" id="userAvatarBtn" onclick="toggleUserMenu()" title="Tài khoản">
+                    @initials
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="ud-profile">
+                        <div class="ud-avatar-big">@initials</div>
+                        <div style="overflow:hidden;">
+                            <div class="ud-name">@userName</div>
+                            <div class="ud-email">@email</div>
+                            <span class="ud-role">NHÂN VIÊN KHO</span>
+                        </div>
+                    </div>
+                    <div class="ud-menu">
+                        <a class="ud-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="bi bi-person-circle"></i>
+                            Hồ sơ cá nhân
+                        </a>
+                        <a class="ud-item" href="/Dashboard">
+                            <i class="bi bi-speedometer2"></i>
+                            Trang quản trị
+                        </a>
+                        <div class="ud-divider"></div>
+                        <form asp-area="Identity" asp-page="/Account/Logout"
+                              asp-route-returnUrl="@Url.Action("Index", "Nav")">
+                            <button type="submit" class="ud-item ud-item-logout">
+                                <i class="bi bi-box-arrow-right"></i>
+                                Đăng xuất
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- TỔNG QUAN HỆ THỐNG -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--blue)"></span>
+            TỔNG QUAN HỆ THỐNG
+        </div>
+        <div class="grid grid-2" style="margin-bottom:36px;">
+            <a class="card card-blue card-big" href="/TongTrungTam" target="_blank">
+                <div class="card-icon">🖥️</div>
+                <div>
+                    <div class="card-name">TRUNG TÂM ĐIỀU HÀNH</div>
+                    <div class="card-desc">Tổng quan toàn bộ hoạt động kho — nhập xuất, cảnh báo, trạng thái cửa realtime</div>
+                    <div class="card-url">/TongTrungTam</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+            <div class="grid grid-2" style="margin-bottom:0;">
+                <a class="card card-green" href="/Home/tonghopnhap" target="_blank">
+                    <div class="card-top"><div class="card-icon">📥</div><div class="card-badge">TỔNG HỢP</div></div>
+                    <div class="card-name">TỔNG HỢP NHẬP</div>
+                    <div class="card-desc">Thống kê xe, hàng hóa khu vực nhập</div>
+                    <div class="card-url">/Home/tonghopnhap</div>
+                    <div class="card-arrow">→</div>
+                </a>
+                <a class="card card-gold" href="/Home/tonghopxuat" target="_blank">
+                    <div class="card-top"><div class="card-icon">📤</div><div class="card-badge">TỔNG HỢP</div></div>
+                    <div class="card-name">TỔNG HỢP XUẤT</div>
+                    <div class="card-desc">Thống kê xe, hàng hóa khu vực xuất</div>
+                    <div class="card-url">/Home/tonghopxuat</div>
+                    <div class="card-arrow">→</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- LED BOARDS -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--green)"></span>
+            BẢNG LED — MÀN HÌNH BÃI XE
+        </div>
+        <div class="grid grid-2" style="margin-bottom:36px;">
+            <a class="card card-green" href="/LedBoard/Nhap" target="_blank">
+                <div class="card-top"><div class="card-icon">🚚</div><div class="card-badge">LED BOARD</div></div>
+                <div class="card-name">CỔNG NHẬP KHO</div>
+                <div class="card-desc">Bảng LED điều hướng tài xế — biển số, cửa vào, trạng thái realtime</div>
+                <div class="card-url">/LedBoard/Nhap</div>
+                <div class="card-arrow">→</div>
+            </a>
+            <a class="card card-gold" href="/LedBoard/Xuat" target="_blank">
+                <div class="card-top"><div class="card-icon">🚛</div><div class="card-badge">LED BOARD</div></div>
+                <div class="card-name">CỔNG XUẤT KHO</div>
+                <div class="card-desc">Bảng LED điều hướng tài xế — biển số, cửa xuất, địa điểm giao</div>
+                <div class="card-url">/LedBoard/Xuat</div>
+                <div class="card-arrow">→</div>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ĐIỀU ĐỘ -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--gold)"></span>
+            ĐIỀU ĐỘ PHÂN CÔNG
+        </div>
+        <div class="grid grid-2" style="margin-bottom:36px;">
+            <a class="card card-green" href="/DieuDoNhap" target="_blank">
+                <div class="card-top"><div class="card-icon">⚡</div><div class="card-badge">ĐIỀU ĐỘ</div></div>
+                <div class="card-name">ĐIỀU ĐỘ NHẬP</div>
+                <div class="card-desc">Phân công cửa nhập, quản lý hàng đợi xe vào kho</div>
+                <div class="card-url">/DieuDoNhap</div>
+                <div class="card-arrow">→</div>
+            </a>
+            <a class="card card-gold" href="/DieuDoXuat" target="_blank">
+                <div class="card-top"><div class="card-icon">⚡</div><div class="card-badge">ĐIỀU ĐỘ</div></div>
+                <div class="card-name">ĐIỀU ĐỘ XUẤT</div>
+                <div class="card-desc">Tạo phiếu xuất, phân công cửa xuất, quản lý hàng hóa</div>
+                <div class="card-url">/DieuDoXuat</div>
+                <div class="card-arrow">→</div>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- BẢO VỆ CAMERA -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--blue)"></span>
+            TRẠM BẢO VỆ — CAMERA AI
+        </div>
+        <div class="grid grid-2" style="margin-bottom:36px;">
+            <a class="card card-green" href="/BaoVeNhap" target="_blank">
+                <div class="card-top"><div class="card-icon">📷</div><div class="card-badge">CAMERA AI</div></div>
+                <div class="card-name">BẢO VỆ CỔNG NHẬP</div>
+                <div class="card-desc">Nhận diện biển số AI, xác nhận xe vào bãi, lịch sử nhận diện</div>
+                <div class="card-url">/BaoVeNhap</div>
+                <div class="card-arrow">→</div>
+            </a>
+            <a class="card card-gold" href="/BaoVeXuat" target="_blank">
+                <div class="card-top"><div class="card-icon">📷</div><div class="card-badge">CAMERA AI</div></div>
+                <div class="card-name">BẢO VỆ CỔNG XUẤT</div>
+                <div class="card-desc">Xác nhận xe ra cổng, kiểm tra biển số, camera realtime</div>
+                <div class="card-url">/BaoVeXuat</div>
+                <div class="card-arrow">→</div>
+            </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- NHÂN VIÊN TẠI CỬA -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--purple)"></span>
+            NHÂN VIÊN TẠI CỬA — BOOTH
+        </div>
+        <div class="cua-grid" style="margin-bottom:36px;">
+            <div class="cua-group">
+                <div class="cua-group-label">🔽 CỬA NHẬP</div>
+                <div class="cua-row">
+                    @foreach (var cua in ViewBag.CuaNhaps as List<LedApp.Models.CuaNhap> ?? new())
+                    {
+                        <a class="card card-green card-sm @(!cua.IsActive ? "card-locked" : "")"
+                           href="/NhanVienNhap/CuaNhap?cuaNhapId=@cua.Id" target="_blank">
+                            <div class="card-icon">🚪</div>
+                            <div class="card-name">@cua.Ten</div>
+                            <div class="card-desc">
+                                @if (!cua.IsActive)
+                                {
+                                    <span style="color:var(--red);font-size:9px;letter-spacing:1px;">🔒 ĐÃ KHÓA</span>
+                                }
+                                else
+                                {
+                                    <span>Cửa nhập</span>
+                                }
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="cua-group">
+                <div class="cua-group-label">🔼 CỬA XUẤT</div>
+                <div class="cua-row">
+                    @foreach (var cua in ViewBag.CuaXuats as List<LedApp.Models.CuaXuat> ?? new())
+                    {
+                        <a class="card card-gold card-sm @(!cua.IsActive ? "card-locked" : "")"
+                           href="/NhanVienXuat/CuaXuat?cuaXuatId=@cua.Id" target="_blank">
+                            <div class="card-icon">🚪</div>
+                            <div class="card-name">@cua.Ten</div>
+                            <div class="card-desc">
+                                @if (!cua.IsActive)
+                                {
+                                    <span style="color:var(--red);font-size:9px;letter-spacing:1px;">🔒 ĐÃ KHÓA</span>
+                                }
+                                else
+                                {
+                                    <span>Cửa xuất</span>
+                                }
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- MÀN HÌNH TẠI CỬA NHẬP -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--red)"></span>
+            MÀN HÌNH TẠI CỬA NHẬP
+        </div>
+        <div class="grid grid-5" style="margin-bottom:36px;">
+            @foreach (var cua in ViewBag.CuaNhaps as List<LedApp.Models.CuaNhap> ?? new())
+            {
+                <a class="card card-purple @(!cua.IsActive ? "card-locked" : "")"
+                   href="/Home/cuanhap/@cua.Id" target="_blank">
+                    <div class="card-top">
+                        <div class="card-icon">📺</div>
+                        <div class="card-badge" style="@(!cua.IsActive ? "color:var(--red);border-color:var(--red);opacity:.7;" : "")">
+                            @(!cua.IsActive ? "KHÓA" : "MÀN HÌNH")
+                        </div>
+                    </div>
+                    <div class="card-name">CỬA @cua.Ten</div>
+                    <div class="card-desc">
+                        @if (!cua.IsActive)
+                        {
+                            <span style="color:var(--red);opacity:.6;">Cửa đang khóa</span>
+                        }
+                        else
+                        {
+                            <span>Màn hình tại cửa nhập @cua.Ten</span>
+                        }
+                    </div>
+                    <div class="card-arrow">→</div>
+                </a>
+            }
+        </div>
+
+        <!-- MÀN HÌNH TẠI CỬA XUẤT -->
+        <div class="section-label">
+            <span class="sl-dot" style="background:var(--red)"></span>
+            MÀN HÌNH TẠI CỬA XUẤT
+        </div>
+        <div class="grid grid-5" style="margin-bottom:36px;">
+            @foreach (var cua in ViewBag.CuaXuats as List<LedApp.Models.CuaXuat> ?? new())
+            {
+                <a class="card card-purple @(!cua.IsActive ? "card-locked" : "")"
+                   href="/Home/cuaxuat/@cua.Id" target="_blank">
+                    <div class="card-top">
+                        <div class="card-icon">📺</div>
+                        <div class="card-badge" style="@(!cua.IsActive ? "color:var(--red);border-color:var(--red);opacity:.7;" : "")">
+                            @(!cua.IsActive ? "KHÓA" : "MÀN HÌNH")
+                        </div>
+                    </div>
+                    <div class="card-name">CỬA @cua.Ten</div>
+                    <div class="card-desc">
+                        @if (!cua.IsActive)
+                        {
+                            <span style="color:var(--red);opacity:.6;">Cửa đang khóa</span>
+                        }
+                        else
+                        {
+                            <span>Màn hình tại cửa xuất @cua.Ten</span>
+                        }
+                    </div>
+                    <div class="card-arrow">→</div>
+                </a>
+            }
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <span><span class="footer-dot"></span>VIETTEL POST — HỆ THỐNG QUẢN LÝ KHO REALTIME</span>
+        <span class="footer-clock" id="footer-time">--:--:--</span>
+    </div>
+
+    <script>
+        // Clock
+        function tick(){
+          var n=new Date();
+          document.getElementById('clk').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
+          document.getElementById('dt').textContent=n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+          document.getElementById('footer-time').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
+        }
+        setInterval(tick,1000);tick();
+
+        // Theme toggle
+        function toggleTheme(){
+          var html=document.documentElement;
+          var next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+          html.setAttribute('data-theme',next);
+          try{localStorage.setItem('wms-theme',next);}catch(e){}
+        }
+        (function(){
+          try{var s=localStorage.getItem('wms-theme');if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}
+        })();
+
+        // User dropdown
+        function toggleUserMenu(){
+          var btn=document.getElementById('userAvatarBtn');
+          var dd=document.getElementById('userDropdown');
+          var open=dd.classList.toggle('open');
+          btn.classList.toggle('open',open);
+        }
+        document.addEventListener('click',function(e){
+          var menu=document.getElementById('userMenu');
+          if(menu&&!menu.contains(e.target)){
+            document.getElementById('userDropdown').classList.remove('open');
+            document.getElementById('userAvatarBtn').classList.remove('open');
+          }
+        });
+                // Chặn click card bị khóa
+        document.querySelectorAll('.card-locked').forEach(function(el){
+            el.addEventListener('click', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>

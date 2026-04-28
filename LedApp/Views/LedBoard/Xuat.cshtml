@@ -1,0 +1,1115 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>CỔNG XUẤT KHO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #060a0f;
+            --surface: #0a1020;
+            --surface2: #0d1a2a;
+            --border: #0d1a28;
+            --border2: #1a3a5c;
+            --gold: #f59e0b;
+            --gold2: #fbbf24;
+            --gold-dim: #0a0800;
+            --green: #22c55e;
+            --green-dim: #061a08;
+            --red: #ef4444;
+            --red-dim: #1a0808;
+            --red-border: #4a1010;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+            --text: #8ab0c8;
+            --text-dim: #4a6a8a;
+            --text-dark: #2a4a6a;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+            body::after {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(245,158,11,.005) 3px, rgba(245,158,11,.005) 4px);
+                pointer-events: none;
+                z-index: 9999;
+            }
+
+        .screen {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        .hdr {
+            background: var(--surface);
+            border-bottom: 3px solid var(--gold);
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            height: 88px;
+            flex-shrink: 0;
+        }
+
+        .hdr-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hdr-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gold);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .hdr-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 8px;
+        }
+
+        .hdr-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            margin-top: 3px;
+        }
+
+        .hdr-clock {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--gold2);
+            letter-spacing: 6px;
+            text-align: center;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .hdr-date {
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .hdr-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .sig-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        .sig-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-dim);
+        }
+
+            .sig-dot.on {
+                background: var(--gold);
+                animation: blink 2s infinite;
+            }
+
+            .sig-dot.err {
+                background: var(--red);
+            }
+
+        @@keyframes blink {
+            0%, 100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* ── BANNER ── */
+        .banner-wrap {
+            background: #04080d;
+            border-bottom: 2px solid #1a3a5c;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .banner-label {
+            padding: 7px 44px 0;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            font-family: 'Barlow Condensed', sans-serif;
+            min-height: 20px;
+        }
+
+            .banner-label .bl-status {
+                color: var(--gold);
+            }
+
+            .banner-label .bl-over {
+                color: var(--red);
+            }
+
+            .banner-label .bl-driver {
+                color: var(--gold2);
+            }
+
+            .banner-label .bl-gate {
+                color: var(--gold);
+            }
+
+        .load-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            min-height: 90px;
+            padding: 8px 60px;
+            overflow: hidden;
+        }
+
+        .load-plate {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--gold2);
+            letter-spacing: 4px;
+            flex-shrink: 0;
+        }
+
+        .load-arrow {
+            flex: 1;
+            height: 30px;
+            position: relative;
+            margin: 0 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .load-dots {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            position: absolute;
+            left: 0;
+            right: 50px;
+        }
+
+        .load-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+
+            .load-dot:nth-child(1) {
+                animation: dotf 1.8s 0.00s infinite
+            }
+
+            .load-dot:nth-child(2) {
+                animation: dotf 1.8s 0.15s infinite
+            }
+
+            .load-dot:nth-child(3) {
+                animation: dotf 1.8s 0.30s infinite
+            }
+
+            .load-dot:nth-child(4) {
+                animation: dotf 1.8s 0.45s infinite
+            }
+
+            .load-dot:nth-child(5) {
+                animation: dotf 1.8s 0.60s infinite
+            }
+
+            .load-dot:nth-child(6) {
+                animation: dotf 1.8s 0.75s infinite
+            }
+
+            .load-dot:nth-child(7) {
+                animation: dotf 1.8s 0.90s infinite
+            }
+
+            .load-dot:nth-child(8) {
+                animation: dotf 1.8s 1.05s infinite
+            }
+
+        @@keyframes dotf {
+            0%, 100% {
+                opacity: .15;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.5)
+            }
+        }
+
+        .load-arr {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: -2px;
+            animation: arrMove 1.8s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        @@keyframes arrMove {
+            0% {
+                left: 0;
+                opacity: 0
+            }
+
+            10% {
+                opacity: 1
+            }
+
+            80% {
+                opacity: 1
+            }
+
+            100% {
+                left: calc(100% - 60px);
+                opacity: 0
+            }
+        }
+
+        .load-gate {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: 3px;
+            flex-shrink: 0;
+            animation: gatePulse 2s ease-in-out infinite;
+        }
+
+        @@keyframes gatePulse {
+            0%, 100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .55
+            }
+        }
+
+        .banner-sub {
+            padding: 0 44px 7px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            font-family: 'Barlow Condensed', sans-serif;
+            min-height: 18px;
+        }
+
+            .banner-sub .bs-idx {
+                color: var(--gold2);
+            }
+
+        /* ── TABLE HEADER — 8 cột ── */
+        .tbl-head {
+            display: grid;
+            grid-template-columns: 110px 190px 170px 1fr 110px 110px 180px 110px;
+            background: var(--surface);
+            border-bottom: 2px solid var(--border2);
+            flex-shrink: 0;
+            padding: 0 40px 0 43px;
+        }
+
+        .th {
+            padding: 11px 12px;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ── ROWS ── */
+        .tbl-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 110px 190px 170px 1fr 110px 110px 180px 110px;
+            border-bottom: 1px solid var(--border);
+            border-left: 4px solid transparent;
+            align-items: center;
+            min-height: 78px;
+            padding: 0 40px 0 36px;
+            transition: background .3s;
+        }
+
+            .row.r-pending {
+                border-left-color: var(--gold);
+                background: #0a0800;
+                opacity: .85;
+            }
+
+            .row.r-wait {
+                border-left-color: #1a5a2a;
+                background: #060e08;
+            }
+
+            .row.r-active {
+                border-left-color: var(--gold);
+                background: #080f1a;
+            }
+
+            .row.r-over {
+                border-left-color: var(--red);
+                background: var(--red-dim);
+                animation: rowpulse 2s infinite;
+            }
+
+            .row.r-done {
+                border-left-color: #0f3a6a;
+                background: #040810;
+                opacity: .5;
+            }
+
+            .row.r-roi {
+                border-left-color: #2a1a4a;
+                background: #040408;
+                opacity: .35;
+            }
+
+        @@keyframes rowpulse {
+            0%, 100% {
+                background: var(--red-dim)
+            }
+
+            50% {
+                background: #2a0a0a
+            }
+        }
+
+        .td {
+            padding: 10px 12px;
+        }
+
+        /* CỬA */
+        .cua {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .cua-gold {
+            color: var(--gold);
+        }
+
+        .cua-red {
+            color: var(--red);
+            animation: blink .6s step-start infinite;
+        }
+
+        .cua-done {
+            color: #2a6a4a;
+        }
+
+        .cua-dim {
+            color: var(--text-dark);
+        }
+
+        /* XE */
+        .bienso {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold2);
+            letter-spacing: 3px;
+        }
+
+        .tailai {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 3px;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            font-family: 'Barlow Condensed', sans-serif;
+            white-space: nowrap;
+        }
+
+        .bdot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .b-pending {
+            background: #1a1000;
+            color: var(--gold);
+            border: 1px solid #4a3000;
+        }
+
+            .b-pending .bdot {
+                background: var(--gold);
+                animation: blink 1s infinite;
+            }
+
+        .b-wait {
+            background: #081828;
+            color: #4a8ab0;
+            border: 1px solid #1a3a5c;
+        }
+
+            .b-wait .bdot {
+                background: #4a6a8a;
+            }
+
+        .b-active {
+            background: #1a1400;
+            color: var(--gold2);
+            border: 1px solid #3a2a00;
+        }
+
+            .b-active .bdot {
+                background: var(--gold);
+                animation: blink 1.5s infinite;
+            }
+
+        .b-over {
+            background: #2a0808;
+            color: #ff8a80;
+            border: 1px solid #4a1010;
+        }
+
+            .b-over .bdot {
+                background: var(--red);
+                animation: blink .7s infinite;
+            }
+
+        .b-done {
+            background: #061a08;
+            color: var(--green);
+            border: 1px solid #0f3a1a;
+        }
+
+            .b-done .bdot {
+                background: var(--green);
+            }
+
+        .b-roi {
+            background: #180d28;
+            color: var(--purple);
+            border: 1px solid #2a1a4a;
+        }
+
+            .b-roi .bdot {
+                background: var(--purple);
+            }
+
+        /* TIMER */
+        .timer {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tok {
+            color: var(--green);
+        }
+
+        .twarn {
+            color: var(--gold);
+        }
+
+        .tover {
+            color: var(--red);
+        }
+
+        .tdash {
+            color: var(--text-dim);
+        }
+
+        .giovao {
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+
+            .giovao.dim {
+                color: var(--text-dim);
+            }
+
+        .dest-cell {
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .empty-msg {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 80px;
+            color: var(--text-dim);
+            font-size: 14px;
+            letter-spacing: 3px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        .led-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: inline-block;
+            margin-right: 6px;
+            animation: blink 2s infinite;
+        }
+
+        /* TICKER */
+        .ticker {
+            background: #0a1020;
+            border-top: 1px solid #1a3a5c;
+            padding: 7px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .ticker-inner {
+            display: inline-block;
+            animation: scrolltick 40s linear infinite;
+            font-size: 12px;
+            color: #4a6a8a;
+            letter-spacing: 2px;
+        }
+
+        @@keyframes scrolltick {
+            0% {
+                transform: translateX(100vw)
+            }
+
+            100% {
+                transform: translateX(-100%)
+            }
+        }
+
+        .ticker-inner .tg {
+            color: var(--gold);
+            margin: 0 10px;
+        }
+
+        /* FLIP */
+        .flip-char {
+            display: inline-block;
+            position: relative;
+            width: .62em;
+            height: 1.1em;
+            perspective: 300px;
+            vertical-align: middle;
+            overflow: hidden;
+        }
+
+        .fc-front, .fc-back {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            transform-origin: bottom center;
+        }
+
+        .fc-front {
+            transform: rotateX(0deg);
+        }
+
+        .fc-back {
+            transform: rotateX(-90deg);
+        }
+
+        @@keyframes flipDown {
+            0% {
+                transform: rotateX(0deg)
+            }
+
+            50%, 100% {
+                transform: rotateX(-90deg)
+            }
+        }
+
+        @@keyframes flipUp {
+            0%, 50% {
+                transform: rotateX(90deg)
+            }
+
+            100% {
+                transform: rotateX(0deg)
+            }
+        }
+
+        .flip-char.flipping .fc-front {
+            animation: flipDown .22s ease-in forwards;
+        }
+
+        .flip-char.flipping .fc-back {
+            animation: flipUp .22s ease-out .11s forwards;
+        }
+
+        .flip-char::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background: rgba(0,0,0,.5);
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+
+        <!-- HEADER -->
+        <div class="hdr">
+            <div class="hdr-left">
+                <div class="hdr-icon">🚛</div>
+                <div>
+                    <div class="hdr-title">CỔNG XUẤT KHO</div>
+                    <div class="hdr-sub">OUTBOUND GATE — REALTIME DISPLAY</div>
+                </div>
+            </div>
+            <div>
+                <div class="hdr-clock" id="clk">--:--:--</div>
+                <div class="hdr-date" id="dt"></div>
+            </div>
+            <div class="hdr-right">
+                <div class="sig-wrap">
+                    <span class="sig-dot" id="sig-dot"></span>
+                    <span id="sig-txt">Kết nối...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BANNER -->
+        <div class="banner-wrap" id="banner-wrap">
+            <div class="banner-label" id="banner-label">TRẠNG THÁI: —</div>
+            <div class="load-row">
+                <div class="load-plate" id="banner-plate">-- --- ---.--</div>
+                <div class="load-arrow">
+                    <div class="load-dots">
+                        <div class="load-dot"></div><div class="load-dot"></div>
+                        <div class="load-dot"></div><div class="load-dot"></div>
+                        <div class="load-dot"></div><div class="load-dot"></div>
+                        <div class="load-dot"></div><div class="load-dot"></div>
+                    </div>
+                    <div class="load-arr">════►</div>
+                </div>
+                <div class="load-gate" id="banner-gate">X--</div>
+            </div>
+            <div class="banner-sub" id="banner-sub"></div>
+        </div>
+
+        <!-- TABLE HEADER — 8 cột -->
+        <div class="tbl-head">
+            <div class="th">Cửa xuất</div>
+            <div class="th">Biển số xe</div>
+            <div class="th">Tài xế</div>
+            <div class="th">Địa điểm giao</div>
+            <div class="th">Giờ phân công</div>
+            <div class="th">Giờ vào cửa</div>
+            <div class="th">Trạng thái</div>
+            <div class="th">Còn lại / Giờ vào</div>
+        </div>
+
+        <div class="tbl-body" id="tbl-body"></div>
+
+        <div class="footer">
+            <span><span class="led-dot"></span>REALTIME — CẬP NHẬT TỰ ĐỘNG</span>
+            <span id="footer-time">Cập nhật: --:--:--</span>
+        </div>
+
+        <div class="ticker">
+            <span class="ticker-inner">
+                ▸ Xe vào đúng cửa được phân công
+                <span class="tg">►</span> Kiểm tra hàng hóa trước khi xuất phát
+                <span class="tg">►</span> Xuất phát đúng giờ quy định
+                <span class="tg">►</span> Không đỗ xe chắn lối đi
+                <span class="tg">►</span> Liên hệ điều độ nếu cần thay đổi
+                <span class="tg">►</span> Driver: Proceed to assigned gate and verify cargo before departure
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </div>
+
+    </div>
+    <script>
+        var timerMap  = {};
+        var prevSig   = {};
+        var bannerRows = [];
+        var bannerIdx  = 0;
+
+        // ── FLIP
+        function flipInText(el, newText, charDelay) {
+            var old  = (el.textContent || '').toUpperCase();
+            var padN = newText.toUpperCase().padEnd(Math.max(old.length, newText.length), ' ');
+            var padO = old.padEnd(padN.length, ' ');
+            var html = '';
+            for (var i = 0; i < padN.length; i++) {
+                html += '<span class="flip-char" data-from="' + padO[i] + '" data-to="' + padN[i] + '" data-idx="' + i + '">' +
+                        '<span class="fc-front">' + padO[i] + '</span>' +
+                        '<span class="fc-back">'  + padN[i] + '</span></span>';
+            }
+            el.innerHTML = html;
+            el.querySelectorAll('.flip-char').forEach(function(ch) {
+                if (ch.dataset.from === ch.dataset.to) return;
+                var idx = parseInt(ch.dataset.idx);
+                setTimeout(function() {
+                    ch.classList.add('flipping');
+                    setTimeout(function() {
+                        ch.querySelector('.fc-front').textContent = ch.dataset.to;
+                        ch.classList.remove('flipping');
+                    }, 240);
+                }, idx * charDelay);
+            });
+            setTimeout(function() { el.textContent = newText; }, padN.length * charDelay + 300);
+        }
+
+        function fmt(d) {
+            if (!d) return '--:--';
+            var dt = new Date(d);
+            return String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0');
+        }
+
+        // ── ĐỒNG HỒ
+        function tick() {
+            var n = new Date();
+            document.getElementById('clk').textContent = n.toLocaleTimeString('vi-VN', { hour12: false });
+            document.getElementById('dt').textContent  = n.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+            document.getElementById('footer-time').textContent = 'Cập nhật: ' + n.toLocaleTimeString('vi-VN', { hour12: false });
+            updateTimers();
+        }
+        setInterval(tick, 1000); tick();
+
+        // ── TIMER ĐẾM NGƯỢC
+        function updateTimers() {
+            Object.keys(timerMap).forEach(function(key) {
+                var el = document.getElementById(key);
+                if (!el) return;
+                var diff = Math.floor((new Date(timerMap[key]) - new Date()) / 1000);
+                if (diff > 0) {
+                    var m = Math.floor(diff / 60), s = diff % 60;
+                    el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+                    el.className   = 'timer ' + (diff > 600 ? 'tok' : diff > 180 ? 'twarn' : 'tover');
+                } else {
+                    el.textContent = 'QUÁ HẠN';
+                    el.className   = 'timer tover';
+                }
+            });
+        }
+
+        // ── BANNER — hiện xe ĐANG XUẤT HÀNG (tt=1) và QUÁ GIỜ (tt=2), rotate nếu nhiều
+        // Sửa thành:
+        function updateBanner(rows) {
+            bannerRows = (rows || []).filter(function(r) {
+                return (r.trangThai === 0 || r.trangThai === 1 || r.trangThai === 2)
+                    && r.bienSoXe && r.bienSoXe.trim();
+            });
+            // tt=2 (quá giờ) lên trước, tt=0 (vào cửa ngay) lên thứ 2, tt=1 sau
+            bannerRows.sort(function(a, b) {
+                var order = { 2: 0, 0: 1, 1: 2 };
+                return (order[a.trangThai] ?? 9) - (order[b.trangThai] ?? 9);
+            });
+            if (bannerIdx >= bannerRows.length) bannerIdx = 0;
+            renderBanner();
+        }
+
+        function renderBanner() {
+            var plateEl = document.getElementById('banner-plate');
+            var gateEl  = document.getElementById('banner-gate');
+            var labelEl = document.getElementById('banner-label');
+            var subEl   = document.getElementById('banner-sub');
+
+            if (!bannerRows.length) {
+                if (plateEl.textContent.trim() !== '-- --- ---.--') flipInText(plateEl, '-- --- ---.--', 40);
+                if (gateEl.textContent.trim()  !== 'X--')           flipInText(gateEl,  'X--',           40);
+                labelEl.innerHTML = 'TRẠNG THÁI: <span class="bl-status">CHỜ PHÂN CÔNG</span>';
+                subEl.innerHTML   = '';
+                return;
+            }
+
+            var r  = bannerRows[bannerIdx];
+            var tt = r.trangThai;
+            flipInText(plateEl, r.bienSoXe,  50);
+            flipInText(gateEl,  r.tenCua,    50);
+
+            var statusTxt, statusCls;
+              if      (tt === 2) { statusTxt = 'QUÁ GIỜ XUẤT';   statusCls = 'bl-over';   }
+              else if (tt === 0) { statusTxt = 'VÀO CỬA NGAY';   statusCls = 'bl-gate';   }
+              else               { statusTxt = 'ĐANG XUẤT HÀNG'; statusCls = 'bl-status'; }
+
+              labelEl.innerHTML =
+                  'TRẠNG THÁI: <span class="' + statusCls + '">' + statusTxt + '</span>'
+                  + (r.tenLaiXe ? ' — tài xế <span class="bl-driver">' + r.tenLaiXe + '</span>' : '')
+                  + ' → vào cửa <span class="bl-gate">' + r.tenCua + '</span>';
+
+            subEl.innerHTML = bannerRows.length > 1
+                ? '<span class="bs-idx">' + (bannerIdx + 1) + ' / ' + bannerRows.length + '</span> xe đang xuất hàng — tự động chuyển'
+                : '';
+        }
+
+        // Rotate mỗi 4 giây
+        setInterval(function() {
+            if (bannerRows.length > 1) {
+                bannerIdx = (bannerIdx + 1) % bannerRows.length;
+                renderBanner();
+            }
+        }, 4000);
+
+        // ── BADGE
+        function getBadge(tt) {
+            if (tt === -2) return '<span class="badge b-pending"><span class="bdot"></span>CHỜ PHÂN CÔNG</span>';
+            if (tt ===  0) return '<span class="badge b-wait"><span class="bdot"></span>CHỜ XUẤT</span>';
+            if (tt ===  1) return '<span class="badge b-active"><span class="bdot"></span>ĐANG XUẤT HÀNG</span>';
+            if (tt ===  2) return '<span class="badge b-over"><span class="bdot"></span>QUÁ GIỜ XUẤT</span>';
+            if (tt ===  3) return '<span class="badge b-done"><span class="bdot"></span>HOÀN THÀNH</span>';
+            if (tt ===  4) return '<span class="badge b-roi"><span class="bdot"></span>ĐÃ RỜI KHO</span>';
+            return '';
+        }
+
+        function getRowClass(tt) {
+            if (tt === -2) return 'row r-pending';
+            if (tt ===  0) return 'row r-wait';
+            if (tt ===  1) return 'row r-active';
+            if (tt ===  2) return 'row r-over';
+            if (tt ===  3) return 'row r-done';
+            if (tt ===  4) return 'row r-roi';
+            return 'row';
+        }
+
+        function getCuaClass(tt) {
+            if (tt === 2)           return 'cua cua-red';
+            if (tt === 3 || tt === 4) return 'cua cua-done';
+            if (tt === -2)          return 'cua cua-dim';
+            return 'cua cua-gold';
+        }
+
+        // ── RENDER TABLE
+        function renderTable(rows) {
+            timerMap = {};
+            var tbody = document.getElementById('tbl-body');
+
+            if (!rows || !rows.length) {
+                tbody.innerHTML = '<div class="row r-wait"><div class="td empty-msg">KHÔNG CÓ XE NÀO — ĐANG CHỜ PHÂN CÔNG</div></div>';
+                prevSig = {};
+                updateBanner([]);
+                return;
+            }
+
+            // Priority sort: 2 > 1 > 0 > -2 > 3 > 4
+            var priority = { 2:0, 1:1, 0:2, '-2':3, 3:4, 4:5 };
+            rows.sort(function(a, b) {
+                var pa = priority[String(a.trangThai)] !== undefined ? priority[String(a.trangThai)] : 6;
+                var pb = priority[String(b.trangThai)] !== undefined ? priority[String(b.trangThai)] : 6;
+                return pa !== pb ? pa - pb : (a.thoiGianPhanCong||'').localeCompare(b.thoiGianPhanCong||'');
+            });
+
+            var newIds = rows.map(function(r) { return String(r.xuatId); });
+
+            var existing = {};
+            tbody.querySelectorAll('.row[data-id]').forEach(function(r) { existing[r.dataset.id] = r; });
+            Object.keys(existing).forEach(function(id) {
+                if (newIds.indexOf(id) < 0) existing[id].remove();
+            });
+
+            rows.forEach(function(r, idx) {
+                var id  = String(r.xuatId);
+                var tt  = r.trangThai;
+                var sig = id + '|' + tt + '|' + (r.bienSoXe || '') + '|' + (r.thoiGianVaoCua || '') + '|' + (r.thoiGianGioiHan || '');
+                var isNew     = !existing[id];
+                var hasChange = prevSig[id] !== sig;
+                prevSig[id]   = sig;
+
+                // Đăng ký timer cho xe đang xuất và quá giờ
+                if (r.thoiGianGioiHan && (tt === 1 || tt === 2)) {
+                    timerMap['tm-' + r.xuatId] = r.thoiGianGioiHan;
+                }
+
+                // Cột cuối: timer nếu đang xuất/quá giờ, giờ vào cửa nếu có, dash nếu không
+                var timerOrTime;
+                if (tt === 1 || tt === 2) {
+                    timerOrTime = '<span class="timer tdash" id="tm-' + r.xuatId + '">--:--</span>';
+                } else if (r.thoiGianVaoCua) {
+                    timerOrTime = '<span class="giovao">' + fmt(r.thoiGianVaoCua) + '</span>';
+                } else {
+                    timerOrTime = '<span class="timer tdash">—</span>';
+                }
+
+                var tenCuaHtml = r.tenCua && r.tenCua !== '—'
+                    ? '<span class="' + getCuaClass(tt) + '">' + r.tenCua + '</span>'
+                    : '<span class="cua cua-dim">—</span>';
+
+                if (isNew) {
+                    var row = document.createElement('div');
+                    row.className  = getRowClass(tt);
+                    row.dataset.id = id;
+                    row.innerHTML =
+                        '<div class="td">' + tenCuaHtml + '</div>' +
+                        '<div class="td"><div class="bienso" id="bs-' + id + '">' + (r.bienSoXe || '--') + '</div></div>' +
+                        '<div class="td"><div class="tailai">' + (r.tenLaiXe || '<span style="color:var(--text-dark);font-style:italic;">—</span>') + '</div></div>' +
+                        '<div class="td"><div class="dest-cell">' + (r.diaDiem || '<span style="color:var(--text-dark);font-style:italic;font-size:11px;">—</span>') + '</div></div>' +
+                        '<div class="td"><span class="giovao' + (r.thoiGianPhanCong ? '' : ' dim') + '">' + fmt(r.thoiGianPhanCong) + '</span></div>' +
+                        '<div class="td"><span class="giovao' + (r.thoiGianVaoCua   ? '' : ' dim') + '">' + fmt(r.thoiGianVaoCua)   + '</span></div>' +
+                        '<div class="td" id="bdg-' + id + '">' + getBadge(tt) + '</div>' +
+                        '<div class="td">' + timerOrTime + '</div>';
+
+                    var allRows  = tbody.querySelectorAll('.row[data-id]');
+                    var inserted = false;
+                    for (var i = 0; i < allRows.length; i++) {
+                        if (newIds.indexOf(allRows[i].dataset.id) > idx) {
+                            tbody.insertBefore(row, allRows[i]);
+                            inserted = true; break;
+                        }
+                    }
+                    if (!inserted) tbody.appendChild(row);
+
+                    setTimeout(function(rowEl, bs) {
+                        var bsEl = rowEl.querySelector('.bienso');
+                        if (bsEl) flipInText(bsEl, bs, 80);
+                    }, idx * 120, row, r.bienSoXe || '--');
+
+                } else if (hasChange) {
+                    var row = existing[id];
+                    row.className = getRowClass(tt);
+                    var cuaTd = row.querySelector('.td:first-child');
+                    if (cuaTd) cuaTd.innerHTML = tenCuaHtml;
+                    var bdgEl = document.getElementById('bdg-' + id);
+                    if (bdgEl) bdgEl.innerHTML = getBadge(tt);
+                    var bsEl = document.getElementById('bs-' + id);
+                    if (bsEl && bsEl.textContent.trim() !== (r.bienSoXe || '--')) flipInText(bsEl, r.bienSoXe || '--', 60);
+                    var lastTd = row.querySelector('.td:last-child');
+                    if (lastTd) lastTd.innerHTML = timerOrTime;
+                }
+            });
+
+            updateTimers();
+            updateBanner(rows);
+        }
+
+        // ── SIGNALR
+        var conn = new signalR.HubConnectionBuilder()
+            .withUrl('/signalserver')
+            .withAutomaticReconnect()
+            .build();
+
+        conn.on('UpdateBangTongHopXuat', function() { loadData(); });
+        conn.on('ReceivedXuat',          function() { loadData(); });
+        conn.on('TrangThaiXeUpdated',    function() { loadData(); });
+        conn.on('ReloadDashboard',       function() { loadData(); });
+
+        conn.start()
+            .then(function() {
+                document.getElementById('sig-dot').className = 'sig-dot on';
+                document.getElementById('sig-txt').textContent = 'Realtime';
+                loadData();
+            })
+            .catch(function() {
+                document.getElementById('sig-dot').className = 'sig-dot err';
+                document.getElementById('sig-txt').textContent = 'Mất kết nối';
+                loadData();
+            });
+
+        conn.onreconnected(function() {
+            document.getElementById('sig-dot').className = 'sig-dot on';
+            document.getElementById('sig-txt').textContent = 'Realtime';
+            loadData();
+        });
+        conn.onreconnecting(function() {
+            document.getElementById('sig-dot').className = 'sig-dot err';
+            document.getElementById('sig-txt').textContent = 'Đang kết nối lại...';
+        });
+
+        async function loadData() {
+            try {
+                var res  = await fetch('/LedBoard/GetXuatBoard');
+                if (!res.ok) return;
+                var data = await res.json();
+                renderTable(data);
+            } catch(e) { console.error('loadData error:', e); }
+        }
+
+        setInterval(loadData, 30000);
+    </script>
+</body>
+</html>

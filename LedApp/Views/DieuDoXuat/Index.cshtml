@@ -1828,6 +1828,7 @@
 
         function suaPhieu(id) {
             var p = phieuData.find(x => (x.id ?? x.Id) === id); if (!p) return;
+          
             var hangHoas = p.hangHoas ?? p.HangHoas ?? [];
             var curDiaDiem = p.diaDiemGiao ?? p.DiaDiemGiao ?? '';
             document.getElementById('modal-title').textContent = 'SỬA PHIẾU #' + id;
@@ -1840,7 +1841,7 @@
                 '</div>' +
                 '<div style="margin-bottom:10px;">' +
                     '<div style="font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:4px;">THỜI GIAN PHÂN CÔNG</div>' +
-                    '<input type="datetime-local" id="sua-tgpc" class="form-control" value="'+( p.thoiGianPhanCong ?? '')+'" />' +
+                    '<input type="datetime-local" id="sua-tgpc" class="form-control" value="'+(p.thoiGianPhanCong ?? p.ThoiGianPhanCong ?? '')+'" />' +
                 '</div>' +
                 '<div style="margin-bottom:10px;">' +
                     '<div style="font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:4px;">ĐỊA ĐIỂM GIAO HÀNG</div>' +

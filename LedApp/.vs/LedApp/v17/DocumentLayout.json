@@ -3,24 +3,176 @@
   "WorkspaceRootPath": "E:\\CodeLVTN\\LedApp\\LedApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\baocao\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\baocao\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\baocaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\baocaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\administratorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\canhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\canhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cauhinh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cauhinh.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\chitietnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\chitietxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\chitietxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cuanhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cuanhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\cuaxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\cuaxuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\lichsubangiao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\lichsubangiao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\nguoidungs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\nguoidungs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\xuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\xuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\nhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\nhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\ledboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\ledboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\ledboard\\xuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\ledboard\\xuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\importfromapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\importfromapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dieudoxuat\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dieudoxuat\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\ledboard\\nhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\ledboard\\nhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\nav\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\nav\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\navcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\navcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\administrator\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\administrator\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\administrator\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\administrator\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\shared\\_layout1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\home\\manhinh.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\home\\manhinh.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\xuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\xuats\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\xuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\xuatscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\trangthaixe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\trangthaixe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\trangthaixuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\trangthaixuat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\trangthainhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\trangthainhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\views\\dieudonhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:views\\dieudonhap\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\dtos\\danhsachxedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:dtos\\danhsachxedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\trangthaicanhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\trangthaicanhbao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\models\\trangthaihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:models\\trangthaihelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanviennhapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\dieudoxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|e:\\codelvtn\\ledapp\\ledapp\\controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72736F8F-2E45-4079-8148-9DA91EBCDB73}|LedApp.csproj|solutionrelative:controllers\\nhanvienxuatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +182,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,33 +190,542 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DieuDoXuatController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
-              "RelativeDocumentMoniker": "Controllers\\DieuDoXuatController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
-              "RelativeToolTip": "Controllers\\DieuDoXuatController.cs",
-              "ViewState": "AgIAAIEAAAAAAAAAAAAAAIAAAAAdAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AdministratorController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\AdministratorController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdministratorController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\AdministratorController.cs",
+              "RelativeToolTip": "Controllers\\AdministratorController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAswB8AAABRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T12:00:13.918Z",
+              "WhenOpened": "2026-04-28T17:28:09.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AppUser.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\AppUser.cs",
+              "RelativeDocumentMoniker": "Models\\AppUser.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\AppUser.cs",
+              "RelativeToolTip": "Models\\AppUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T17:31:40.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Xuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Xuat.cs",
+              "RelativeDocumentMoniker": "Models\\Xuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Xuat.cs",
+              "RelativeToolTip": "Models\\Xuat.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAADwvzAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T11:59:14.097Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "nguoiDungs.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\nguoiDungs.cs",
+              "RelativeDocumentMoniker": "Models\\nguoiDungs.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\nguoiDungs.cs",
+              "RelativeToolTip": "Models\\nguoiDungs.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAADwvzkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:42.817Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LichSuBanGiao.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\LichSuBanGiao.cs",
+              "RelativeDocumentMoniker": "Models\\LichSuBanGiao.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\LichSuBanGiao.cs",
+              "RelativeToolTip": "Models\\LichSuBanGiao.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAADwvysAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:35.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CuaNhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaNhap.cs",
+              "RelativeDocumentMoniker": "Models\\CuaNhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaNhap.cs",
+              "RelativeToolTip": "Models\\CuaNhap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:29.678Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "BaoCaoController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoCaoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BaoCaoController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\BaoCaoController.cs",
+              "RelativeToolTip": "Controllers\\BaoCaoController.cs",
+              "ViewState": "AgIAAJoBAAAAAAAAAAAswK0BAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T17:28:09.811Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\BaoCao\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\BaoCao\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\BaoCao\\Index.cshtml",
+              "RelativeToolTip": "Views\\BaoCao\\Index.cshtml",
+              "ViewState": "AgIAAO4DAAAAAAAAAAAswAUEAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T17:28:20.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DanhSachXe.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\DanhSachXe.cs",
+              "RelativeDocumentMoniker": "Models\\DanhSachXe.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\DanhSachXe.cs",
+              "RelativeToolTip": "Models\\DanhSachXe.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAADwvycAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T11:33:51.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CuaXuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaXuat.cs",
+              "RelativeDocumentMoniker": "Models\\CuaXuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CuaXuat.cs",
+              "RelativeToolTip": "Models\\CuaXuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:25.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CanhBao.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CanhBao.cs",
+              "RelativeDocumentMoniker": "Models\\CanhBao.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CanhBao.cs",
+              "RelativeToolTip": "Models\\CanhBao.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAADwvyEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T17:31:36.33Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ChitietXuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietXuat.cs",
+              "RelativeDocumentMoniker": "Models\\ChitietXuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietXuat.cs",
+              "RelativeToolTip": "Models\\ChitietXuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvx4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:21.829Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ChitietNhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
+              "RelativeDocumentMoniker": "Models\\ChitietNhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\ChitietNhap.cs",
+              "RelativeToolTip": "Models\\ChitietNhap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:18.36Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CauHinh.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CauHinh.cs",
+              "RelativeDocumentMoniker": "Models\\CauHinh.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\CauHinh.cs",
+              "RelativeToolTip": "Models\\CauHinh.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T16:34:17.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Nhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Nhap.cs",
+              "RelativeDocumentMoniker": "Models\\Nhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\Nhap.cs",
+              "RelativeToolTip": "Models\\Nhap.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAADwvzIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T05:58:40.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "LedBoardController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\LedBoardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\LedBoardController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\LedBoardController.cs",
+              "RelativeToolTip": "Controllers\\LedBoardController.cs",
+              "ViewState": "AgIAALAAAAAAAAAAAADwv84AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T20:24:54.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "Controllers\\DashboardController.cs",
+              "ViewState": "AgIAABgBAAAAAAAAAADwvy0BAABPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T20:42:30.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAAKECAAAAAAAAAADwv78CAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T16:26:16.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Xuat.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\LedBoard\\Xuat.cshtml",
+              "RelativeDocumentMoniker": "Views\\LedBoard\\Xuat.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\LedBoard\\Xuat.cshtml",
+              "RelativeToolTip": "Views\\LedBoard\\Xuat.cshtml",
+              "ViewState": "AgIAAD0EAAAAAAAAAADwv1sEAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T20:26:22.308Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Nhap.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\LedBoard\\Nhap.cshtml",
+              "RelativeDocumentMoniker": "Views\\LedBoard\\Nhap.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\LedBoard\\Nhap.cshtml",
+              "RelativeToolTip": "Views\\LedBoard\\Nhap.cshtml",
+              "ViewState": "AgIAAGIEAAAAAAAAAADwv4AEAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T20:26:09.426Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\DieuDoXuat\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
+              "RelativeToolTip": "Views\\DieuDoXuat\\Index.cshtml",
+              "ViewState": "AgIAABsGAAAAAAAAAAAAwB4GAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T11:59:44.71Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ImportFromApi.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ImportFromApi.cs",
+              "RelativeDocumentMoniker": "Controllers\\ImportFromApi.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\ImportFromApi.cs",
+              "RelativeToolTip": "Controllers\\ImportFromApi.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAmwNIAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T11:30:45.555Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Xuats\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Xuats\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Xuats\\Index.cshtml",
+              "RelativeToolTip": "Views\\Xuats\\Index.cshtml",
+              "ViewState": "AgIAAE8GAAAAAAAAAAAUwG0GAABqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-27T20:08:16.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAGMAAAAAAAAAAADwv4EAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T07:04:58.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "ApplicationDBContext.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Data\\ApplicationDBContext.cs",
+              "RelativeDocumentMoniker": "Data\\ApplicationDBContext.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Data\\ApplicationDBContext.cs",
+              "RelativeToolTip": "Data\\ApplicationDBContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T07:15:10.508Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAADwvxkAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T11:22:43.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nav\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Nav\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Nav\\Index.cshtml",
+              "RelativeToolTip": "Views\\Nav\\Index.cshtml",
+              "ViewState": "AgIAAJoEAAAAAAAAAADwv6cEAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T11:34:54.903Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "NavController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NavController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NavController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NavController.cs",
+              "RelativeToolTip": "Controllers\\NavController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T11:33:43.768Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Administrator\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Index.cshtml",
+              "RelativeToolTip": "Views\\Administrator\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T11:45:53.806Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Administrator\\Login.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Administrator\\Login.cshtml",
+              "RelativeToolTip": "Views\\Administrator\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T11:45:59.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "TrangThaiXuat.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiXuat.cs",
+              "RelativeDocumentMoniker": "Models\\TrangThaiXuat.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiXuat.cs",
+              "RelativeToolTip": "Models\\TrangThaiXuat.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T11:33:39.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "TrangThaiXe.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiXe.cs",
+              "RelativeDocumentMoniker": "Models\\TrangThaiXe.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiXe.cs",
+              "RelativeToolTip": "Models\\TrangThaiXe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T11:33:33.7Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "TrangThaiNhap.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiNhap.cs",
+              "RelativeDocumentMoniker": "Models\\TrangThaiNhap.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiNhap.cs",
+              "RelativeToolTip": "Models\\TrangThaiNhap.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T21:11:12.551Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "_Layout1.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout1.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Shared\\_Layout1.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout1.cshtml",
+              "ViewState": "AgIAAPUCAAAAAAAAAADwvxMDAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-27T20:16:18.173Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ManHinh.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\ManHinh.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\ManHinh.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\Home\\ManHinh.cshtml",
+              "RelativeToolTip": "Views\\Home\\ManHinh.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-28T11:15:46.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "XuatsController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\XuatsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\XuatsController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\XuatsController.cs",
+              "RelativeToolTip": "Controllers\\XuatsController.cs",
+              "ViewState": "AgIAADIBAAAAAAAAAAAmwEsBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T12:04:04.144Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "TrangThaiHelper.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiHelper.cs",
+              "RelativeDocumentMoniker": "Models\\TrangThaiHelper.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiHelper.cs",
+              "RelativeToolTip": "Models\\TrangThaiHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T21:11:15.071Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\DieuDoNhap\\Index.cshtml",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
+              "RelativeToolTip": "Views\\DieuDoNhap\\Index.cshtml",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAAAJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-04-26T11:58:33.398Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "TrangThaiCanhBao.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiCanhBao.cs",
+              "RelativeDocumentMoniker": "Models\\TrangThaiCanhBao.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Models\\TrangThaiCanhBao.cs",
+              "RelativeToolTip": "Models\\TrangThaiCanhBao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T21:11:26.206Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "DanhSachXeDto.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\DanhSachXeDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\DanhSachXeDto.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\DTOs\\DanhSachXeDto.cs",
+              "RelativeToolTip": "DTOs\\DanhSachXeDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T05:27:55.883Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "DieuDoXuatController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DieuDoXuatController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\DieuDoXuatController.cs",
+              "RelativeToolTip": "Controllers\\DieuDoXuatController.cs",
+              "ViewState": "AgIAAPYBAAAAAAAAAAAmwA8CAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T12:00:13.918Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
               "Title": "NhanVienNhapController.cs",
               "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienNhapController.cs",
               "RelativeDocumentMoniker": "Controllers\\NhanVienNhapController.cs",
               "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienNhapController.cs",
               "RelativeToolTip": "Controllers\\NhanVienNhapController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA4AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T12:00:06.587Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-26T12:00:06.587Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 42,
               "Title": "NhanVienXuatController.cs",
               "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Controllers\\NhanVienXuatController.cs",
               "RelativeDocumentMoniker": "Controllers\\NhanVienXuatController.cs",
@@ -72,34 +733,7 @@
               "RelativeToolTip": "Controllers\\NhanVienXuatController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T12:00:04.386Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\DieuDoXuat\\Index.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoXuat\\Index.cshtml",
-              "RelativeToolTip": "Views\\DieuDoXuat\\Index.cshtml",
-              "ViewState": "AgIAACgHAAAAAAAAAAAgwCQHAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-26T11:59:44.71Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\DieuDoNhap\\Index.cshtml",
-              "ToolTip": "E:\\CodeLVTN\\LedApp\\LedApp\\Views\\DieuDoNhap\\Index.cshtml",
-              "RelativeToolTip": "Views\\DieuDoNhap\\Index.cshtml",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAAACIAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-26T11:58:33.398Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-26T12:00:04.386Z"
             }
           ]
         }
