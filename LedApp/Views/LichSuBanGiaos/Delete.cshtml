@@ -18,7 +18,7 @@
     <dt class="col-sm-2">@Html.DisplayNameFor(m => m.SoBG)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(m => m.SoBG)</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(m => m.NhanVienId)</dt>
-    @* <dd class="col-sm-10">@(Model.NhanVien?.Name ?? Model.NhanVienId.ToString())</dd> *@
+    <dd class="col-sm-10">@(Model.NhanVien?.FullName ?? Model.NhanVienId.ToString())</dd>
     <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ThoiGian)</dt>
     <dd class="col-sm-10">@Html.DisplayFor(m => m.ThoiGian)</dd>
 </dl>

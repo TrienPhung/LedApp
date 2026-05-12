@@ -1016,6 +1016,7 @@ wwwroot\admin\lib\jquery-validation\LICENSE.md
 wwwroot\admin\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 wwwroot\admin\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 wwwroot\admin\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\css\permission.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\images\background.jpg
@@ -1090,9 +1091,11 @@ wwwroot\uploads\avatars\05c4aa06-e106-4455-8f75-0303dceb9ae5.jpeg
 wwwroot\uploads\avatars\071481c9-1c9f-487d-b3b6-9875fee55a41.jpg
 wwwroot\uploads\avatars\0893507e-a80b-4d9d-8ac7-c18953d4a160.jpg
 wwwroot\uploads\avatars\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png
+wwwroot\uploads\avatars\0efbe373-d511-41b9-a494-05f0abffb8cb.jpeg
 wwwroot\uploads\avatars\10566877-cec5-4508-9275-6692a160bea7.jpeg
 wwwroot\uploads\avatars\189b8ddf-32ee-4cc0-957a-e18fedbf2e13.jpeg
 wwwroot\uploads\avatars\233bb593-be97-4e7e-86c9-a800f65952c5.jpg
+wwwroot\uploads\avatars\3ab5557c-8d1f-47af-b5d8-185f1cbea92b.png
 wwwroot\uploads\avatars\3abdae6e-0bec-4fbe-aa70-aa2a42ebc33b.jpeg
 wwwroot\uploads\avatars\3e5ed187-ad3a-4041-b30d-4514e03a1913.jpeg
 wwwroot\uploads\avatars\42fc6589-a98b-49e0-bb38-019f65aa3361.gif
@@ -1119,7 +1122,9 @@ wwwroot\uploads\avatars\b1364d4c-d634-47ba-a06b-1bbecab5f40e.gif
 wwwroot\uploads\avatars\b378115d-433b-45f1-9c3c-c61b0561847c.jpeg
 wwwroot\uploads\avatars\b5d4075d-ee33-4608-a000-47ff27bdb079.jpeg
 wwwroot\uploads\avatars\bc7450aa-9192-4547-a14c-1cd20feaf706.jpeg
+wwwroot\uploads\avatars\c9e9a775-e87c-44c1-9a2a-69cb0bd10e7f.png
 wwwroot\uploads\avatars\cfbdd519-5424-48a3-8414-83f585655d82.jpg
+wwwroot\uploads\avatars\d15a5d89-dfcd-43b3-abf5-12c346e01753.png
 wwwroot\uploads\avatars\e0b58718-6d76-409c-b228-79995f442079.jpeg
 wwwroot\uploads\avatars\e196a848-2b82-47ce-af01-888998c2185e.png
 wwwroot\uploads\avatars\e91a2909-b790-4293-bf24-f20c7862648c.png

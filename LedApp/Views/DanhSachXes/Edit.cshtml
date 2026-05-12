@@ -1,60 +1,408 @@
 ﻿@model LedApp.Models.DanhSachXe
 @{
-    ViewData["Title"] = "Sửa thông tin xe";
+    ViewData["Title"] = "Sửa xe " + Model.BienSoXe;
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Sửa thông tin xe</h1>
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="BienSoXe" class="control-label"></label>
-                <input asp-for="BienSoXe" class="form-control" />
-                <span asp-validation-for="BienSoXe" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LoaiXe" class="control-label"></label>
-                <input asp-for="LoaiXe" class="form-control" />
-                <span asp-validation-for="LoaiXe" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TaiTrong" class="control-label"></label>
-                <input asp-for="TaiTrong" class="form-control" />
-                <span asp-validation-for="TaiTrong" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TrangThai" class="control-label"></label>
-                <select asp-for="TrangThai" class="form-control">
-                    <option value="0">Trong bãi</option>
-                    <option value="1">Đang phân công</option>
-                    <option value="2">Đang vận chuyển</option>
-                    <option value="3">Bảo trì</option>
-                </select>
-                <span asp-validation-for="TrangThai" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TaiXeId" class="control-label"></label>
-                <select asp-for="TaiXeId" class="form-control" asp-items="ViewBag.TaiXeId">
-                    <option value="">-- Chọn tài xế --</option>
-                </select>
-                <span asp-validation-for="TaiXeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GhiChu" class="control-label"></label>
-                <input asp-for="GhiChu" class="form-control" />
-                <span asp-validation-for="GhiChu" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
-            </div>
-        </form>
+
+<style>
+    :root {
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-green: #16a34a;
+        --ap-green-dark: #15803d;
+        --ap-red: #dc2626;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .ed-wrap {
+        padding: 0 0 40px;
+    }
+
+    .ed-bc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .ed-bc a {
+            color: var(--ap-text-2);
+            text-decoration: none;
+        }
+
+            .ed-bc a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .ed-bc .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .ed-bc .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+            }
+
+        .ed-bc .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    .ed-header {
+        margin-bottom: 24px;
+    }
+
+        .ed-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ap-text-1);
+            margin: 0 0 4px;
+            letter-spacing: -.3px;
+        }
+
+        .ed-header p {
+            font-size: 13px;
+            color: var(--ap-text-2);
+            margin: 0;
+        }
+
+    .ed-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    @@media(max-width:860px) {
+        .ed-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .ap-panel {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .ap-panel:last-child {
+            margin-bottom: 0;
+        }
+
+    .ap-panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+    .ap-panel-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+        margin: 0 0 2px;
+    }
+
+    .ap-panel-sub {
+        font-size: 12px;
+        color: var(--ap-text-2);
+        margin: 0;
+    }
+
+    .ap-panel-body {
+        padding: 20px;
+    }
+
+    .f-group {
+        margin-bottom: 18px;
+    }
+
+        .f-group:last-child {
+            margin-bottom: 0;
+        }
+
+    .f-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ap-text-1);
+        margin-bottom: 6px;
+    }
+
+    .f-input, .f-select, .f-textarea {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13.5px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+
+        .f-input:focus, .f-select:focus, .f-textarea:focus {
+            border-color: var(--ap-green);
+            box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+        }
+
+        .f-input::placeholder {
+            color: var(--ap-text-3);
+        }
+
+    .f-textarea {
+        resize: vertical;
+        min-height: 72px;
+    }
+
+    .f-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+    }
+
+    .f-hint {
+        font-size: 11.5px;
+        color: var(--ap-text-3);
+        margin-top: 4px;
+    }
+
+    .f-error {
+        font-size: 12px;
+        color: var(--ap-red);
+        margin-top: 4px;
+        display: block;
+    }
+
+    .f-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+
+    @@media(max-width:600px) {
+        .f-row-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .btn-save {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+        padding: 11px 16px;
+        background: var(--ap-green);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+        margin-bottom: 8px;
+        font-family: inherit;
+    }
+
+        .btn-save:hover {
+            background: var(--ap-green-dark);
+        }
+
+        .btn-save svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-cancel-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 16px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-2);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all .15s;
+        box-sizing: border-box;
+    }
+
+        .btn-cancel-link:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+            text-decoration: none;
+        }
+
+    .px-alert {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    body.dark-mode .ap-panel {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .f-input, body.dark-mode .f-select, body.dark-mode .f-textarea {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-1) !important;
+    }
+
+    body.dark-mode .btn-cancel-link {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-2) !important;
+    }
+
+        body.dark-mode .btn-cancel-link:hover {
+            background: rgba(255,255,255,.05) !important;
+        }
+</style>
+
+<div class="ed-wrap">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="px-alert">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="ed-bc">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="DanhSachXes" asp-action="Index">Danh sách xe</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Details" asp-route-id="@Model.Id">@Model.BienSoXe</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Sửa</span>
     </div>
+
+    <div class="ed-header">
+        <h1>Sửa xe @Model.BienSoXe</h1>
+        <p>Cập nhật thông tin phương tiện bên dưới.</p>
+    </div>
+
+    <form asp-action="Edit" id="editForm">
+        <div asp-validation-summary="ModelOnly" class="f-error" style="margin-bottom:16px;padding:12px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="ed-grid">
+            <div>
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Thông tin xe</div>
+                        <div class="ap-panel-sub">Cập nhật thông tin và lưu thay đổi.</div>
+                    </div>
+                    <div class="ap-panel-body">
+                        <div class="f-row-2">
+                            <div class="f-group">
+                                <label class="f-label">Biển số xe</label>
+                                <input asp-for="BienSoXe" class="f-input" placeholder="VD: 29A-12345" />
+                                <span asp-validation-for="BienSoXe" class="f-error"></span>
+                            </div>
+                            <div class="f-group">
+                                <label class="f-label">Loại xe</label>
+                                <input asp-for="LoaiXe" class="f-input" placeholder="VD: Xe tải, Container..." />
+                                <span asp-validation-for="LoaiXe" class="f-error"></span>
+                            </div>
+                        </div>
+                        <div class="f-row-2">
+                            <div class="f-group">
+                                <label class="f-label">Tải trọng (tấn)</label>
+                                <input asp-for="TaiTrong" class="f-input" type="number" step="0.1" min="0" />
+                                <span asp-validation-for="TaiTrong" class="f-error"></span>
+                            </div>
+                            <div class="f-group">
+                                <label class="f-label">Tài xế</label>
+                                <select asp-for="TaiXeId" class="f-select" asp-items="ViewBag.TaiXeId">
+                                    <option value="">— Chưa phân công —</option>
+                                </select>
+                                <span asp-validation-for="TaiXeId" class="f-error"></span>
+                            </div>
+                        </div>
+                        <div class="f-group" style="margin-bottom:0;">
+                            <label class="f-label">Ghi chú</label>
+                            <textarea asp-for="GhiChu" class="f-textarea" placeholder="Ghi chú thêm..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Trạng thái</div>
+                    </div>
+                    <div class="ap-panel-body">
+                        <div class="f-group" style="margin-bottom:0;">
+                            <label class="f-label">Trạng thái hiện tại</label>
+                            <select asp-for="TrangThai" class="f-select">
+                                <option value="0">Trong bãi</option>
+                                <option value="1">Đang phân công</option>
+                                <option value="2">Đang vận chuyển</option>
+                                <option value="3">Bảo trì</option>
+                            </select>
+                            <div class="f-hint">Lưu ý: Không nên thay đổi thủ công nếu xe đang trong quy trình xuất kho.</div>
+                            <span asp-validation-for="TrangThai" class="f-error"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ap-panel">
+                    <div class="ap-panel-body">
+                        <button type="submit" class="btn-save">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
+                            Lưu thay đổi
+                        </button>
+                        <a asp-action="Index" class="btn-cancel-link">Hủy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

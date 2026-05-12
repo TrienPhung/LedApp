@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "QuanLy")]
+    [Authorize(Policy = "DieuDoNhap.View")]
     public class DieuDoNhapController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -77,15 +77,21 @@ namespace LedApp.Controllers
                                 && n.TrangThai != (int)TrangThaiNhap.HoanThanh);
                 if (exists)
                     return BadRequest(new { message = $"Xe {req.BienSo} đã được phân công rồi" });
+                // Lấy UserId người đang đăng nhập
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var nguoiDung = userId != null
+                    ? await _context.nguoiDungs.FirstOrDefaultAsync(n => n.UserId == userId)
+                    : null;
 
                 var nhap = new Nhap
                 {
                     CuaNhapId = req.CuaNhapId,
                     BienSoXe = req.BienSo,
-                    ThoiGianPhanCong = DateTime.Now,
+                    ThoiGianPhanCong = req.ThoiGianPhanCong ?? DateTime.Now,
                     ThoiGianVaoBai = req.ThoiGianVaoBai,
                     ThoiGianGioiHan = req.ThoiGianGioiHan,
                     GhiChu = req.GhiChu,
+                    NhanVienXacNhanId = nguoiDung?.Id,
                     TrangThai = (int)TrangThaiNhap.DaPhanCong
                 };
                 _context.Nhaps.Add(nhap);
@@ -186,7 +192,7 @@ namespace LedApp.Controllers
                         DonVi = kv.Key,
                         SapVe = kv.Value.SapVe,
                         DaVe = kv.Value.DaVe,
-                        ChuaVao = chuaVaoHangMap.GetValueOrDefault(kv.Key, 0L) // ✅ số thật
+                        ChuaVao = chuaVaoHangMap.GetValueOrDefault(kv.Key, 0L) 
                     }).ToList()
                 };
 
@@ -197,76 +203,6 @@ namespace LedApp.Controllers
                 _logger.LogError(ex, "Lỗi PushTongHopNhap");
             }
         }
-        //// POST: /DieuDo/PhanCong
-        //[HttpPost]
-        //public async Task<IActionResult> PhanCong([FromBody] PhanCongRequest req)
-        //{
-        //    try
-        //    {
-        //        // Kiểm tra cửa nhập tồn tại
-        //        var cua = await _context.CuaNhaps.FindAsync(req.CuaNhapId);
-        //        if (cua == null)
-        //            return BadRequest(new { message = "Cửa nhập không tồn tại" });
-
-        //        // Kiểm tra xe đã được phân công chưa (tránh duplicate)
-        //        var exists = await _context.Nhaps
-        //            .AnyAsync(n => n.BienSoXe == req.BienSo
-        //                        && n.TrangThai != (int)TrangThaiNhap.HoanThanh);
-        //        if (exists)
-        //            return BadRequest(new { message = $"Xe {req.BienSo} đã được phân công rồi" });
-
-        //        // INSERT Nhap
-        //        var nhap = new Nhap
-        //        {
-        //            CuaNhapId = req.CuaNhapId,
-        //            BienSoXe = req.BienSo,
-        //            ThoiGianPhanCong = DateTime.Now,
-        //            ThoiGianVaoBai = req.ThoiGianVaoBai,  // ← thêm
-        //            ThoiGianGioiHan = req.ThoiGianGioiHan,
-        //            GhiChu = req.GhiChu,                  // ← thêm luôn
-        //            TrangThai = (int)TrangThaiNhap.DaPhanCong
-        //        };
-        //        _context.Nhaps.Add(nhap);
-        //        await _context.SaveChangesAsync();
-
-        //        // INSERT ChitietNhap — copy từ HangHoas API
-        //        foreach (var h in req.HangHoas)
-        //        {
-        //            _context.ChitietNhaps.Add(new ChitietNhap
-        //            {
-        //                NhapId = nhap.Id,
-        //                DonVi = h.DonVi,
-        //                ChuaBG = h.SoLuong,
-        //                DaBG = 0
-        //            });
-        //        }
-        //        await _context.SaveChangesAsync();
-
-        //        // SignalR broadcast → cập nhật bảng LED tổng hợp
-        //        await _hubContext.Clients.All.SendAsync("SendTongHopNhapFull");
-
-        //        _logger.LogInformation("Phân công thành công: {BienSo} → Cửa {CuaNhapId}", req.BienSo, req.CuaNhapId);
-
-        //        return Ok(new
-        //        {
-        //            success = true,
-        //            nhapId = nhap.Id,
-        //            message = $"Đã phân công xe {req.BienSo} vào {cua.Ten}"
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Lỗi PhanCong");
-        //        // ← Sửa dòng này để trả về inner exception
-        //        return StatusCode(500, new
-        //        {
-        //            message = ex.Message,
-        //            inner = ex.InnerException?.Message,
-        //            inner2 = ex.InnerException?.InnerException?.Message
-        //        });
-        //    }
-        //}
-
         // GET: /DieuDo/GetXeList — AJAX refresh
         [HttpGet]
         public async Task<IActionResult> GetXeList()
@@ -281,38 +217,9 @@ namespace LedApp.Controllers
                 var json = await response.Content.ReadAsStringAsync();
                 var xes = JsonConvert.DeserializeObject<List<DanhSachXeDto>>(json)
                           ?? new List<DanhSachXeDto>();
-
-                // Gắn thêm trạng thái đã phân công từ DB
-                //var bienSoDaPhan = await _context.Nhaps
-                //    .Where(n => n.TrangThai != (int)TrangThaiNhap.HoanThanh)
-                //    .Select(n => n.BienSoXe)
-                //    .ToListAsync();
-
-                //var result = xes.Select(x => new
-                //{
-                //    id = x.Id,
-                //    bienSo = x.BienSo,
-                //    tenLaiXe = x.TenLaiXe,
-                //    maChiNhanh = x.MaChiNhanh,
-                //    chuyenHienTai = x.ChuyenHienTai == null ? null : new
-                //    {
-                //        id = x.ChuyenHienTai.Id,
-                //        trangThai = x.ChuyenHienTai.TrangThai,
-                //        ngayDuKien = x.ChuyenHienTai.NgayDuKien,
-                //        maChuyenApi = x.ChuyenHienTai.MaChuyenApi,
-                //        lanThu = x.ChuyenHienTai.LanThu,
-                //        hangHoas = x.ChuyenHienTai.HangHoas
-                //    },
-                //    daPhanCong = bienSoDaPhan.Contains(x.BienSo)
-                //});
-                // Lấy các xe đã phân công kèm cửa
-                //var daPhanList = await _context.Nhaps
-                //    .Where(n => n.TrangThai != (int)TrangThaiNhap.HoanThanh)
-                //    .Select(n => new { n.BienSoXe, n.CuaNhapId })
-                //    .ToListAsync();
                 var daPhanList = await _context.Nhaps
                     .Where(n => n.TrangThai != (int)TrangThaiNhap.HoanThanh)
-                    .Select(n => new { n.BienSoXe, n.CuaNhapId, NhapId = n.Id, n.TrangThai, n.ThoiGianGioiHan })
+                    .Select(n => new { n.BienSoXe, n.CuaNhapId, NhapId = n.Id, n.TrangThai, n.ThoiGianGioiHan, n.ThoiGianPhanCong })
                     .ToListAsync();
                 var bienSoDaPhan = daPhanList.Select(x => x.BienSoXe).ToList();
 
@@ -336,7 +243,8 @@ namespace LedApp.Controllers
                     cuaNhapId = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.CuaNhapId,
                     nhapId = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.NhapId,  // ✅ thêm
                     trangThaiNhap = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.TrangThai,  // ← thêm dòng này
-                        thoiGianGioiHan = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.ThoiGianGioiHan  // ← thêm
+                    thoiGianGioiHan = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.ThoiGianGioiHan,  // ← thêm
+                    thoiGianPhanCong = daPhanList.FirstOrDefault(d => d.BienSoXe == x.BienSo)?.ThoiGianPhanCong // ✅ THÊM
 
                 });
                 return Ok(result);
@@ -371,7 +279,11 @@ namespace LedApp.Controllers
                 await _context.SaveChangesAsync();
 
                 // SignalR → cập nhật panel cửa về trống
-                await _hubContext.Clients.All.SendAsync("SendTongHopNhapFull");
+                // ✅ Mới — push cả 2: reset màn hình nhân viên + cập nhật bảng tổng hợp
+                var cuaNhapId = nhap.CuaNhapId;
+                await _hubContext.Clients.All.SendAsync("ReceivedNhap", (object?)null, cuaNhapId);
+                await _hubContext.Clients.All.SendAsync("ReceivedChitietNhap", (object?)null, cuaNhapId);
+                await PushTongHopNhap();
 
                 _logger.LogInformation("Huỷ phân công nhapId={Id} bienSo={BienSo}", nhap.Id, nhap.BienSoXe);
 
@@ -477,7 +389,8 @@ namespace LedApp.Controllers
     {
         public string BienSo { get; set; } = "";
         public int CuaNhapId { get; set; }
-        public DateTime? ThoiGianVaoBai { get; set; }  // ← thêm
+        public DateTime? ThoiGianPhanCong { get; set; }
+        public DateTime? ThoiGianVaoBai { get; set; }  
         public DateTime? ThoiGianGioiHan { get; set; }
         public string? GhiChu { get; set; }
         public List<HangHoaItemDto> HangHoas { get; set; } = new();

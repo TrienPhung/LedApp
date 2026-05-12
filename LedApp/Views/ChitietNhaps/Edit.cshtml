@@ -3,48 +3,362 @@
     ViewData["Title"] = "Sửa chi tiết nhập";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Sửa chi tiết nhập</h1>
-<h4>Chi tiết dữ liệu sửa</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="NhapId" />
 
-           
-            <div class="form-group">
-                <label class="control-label">Biển số xe</label>
-                <input value="@Model.Nhap?.BienSoXe" class="form-control" readonly />
-            </div>
-            <div class="form-group">
-                <label class="control-label">Cửa nhập</label>
-                <input value="@Model.Nhap?.CuaNhap?.Ten" class="form-control" readonly />
-            </div>
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-           
-            <div class="form-group">
-                <label asp-for="DonVi" class="control-label"></label>
-                <input asp-for="DonVi" class="form-control" />
-                <span asp-validation-for="DonVi" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ChuaBG" class="control-label"></label>
-                <input asp-for="ChuaBG" class="form-control" />
-                <span asp-validation-for="ChuaBG" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DaBG" class="control-label"></label>
-                <input asp-for="DaBG" class="form-control" />
-                <span asp-validation-for="DaBG" class="text-danger"></span>
-            </div>
+    .ex-page {
+        padding: 24px 24px 80px;
+        max-width: 860px;
+    }
 
-            <div class="form-group">
-                <input type="submit" value="Lưu sửa" class="btn btn-primary" />
-            </div>
-        </form>
+    .ex-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .ex-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .ex-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .ex-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .ex-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .ex-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .ex-header {
+        margin-bottom: 24px;
+    }
+
+        .ex-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .ex-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .ex-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .ex-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .ex-card-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 3px;
+        }
+
+        .ex-card-header p {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+    .ex-card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .ex-form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .ex-form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .ex-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .ex-input, .ex-select {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 10px 14px;
+        width: 100%;
+        outline: none;
+        transition: border-color .15s,box-shadow .15s;
+    }
+
+        .ex-input:focus, .ex-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .ex-input[readonly] {
+            background: #f9fafb;
+            color: #6b7280;
+            cursor: default;
+        }
+
+    .ex-error {
+        font-size: 0.76rem;
+        color: #ef4444;
+        font-weight: 500;
+    }
+
+    .ex-divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 0;
+    }
+
+    .ex-card-footer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 20px 24px;
+    }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+        .btn-save svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+    .ex-validation-box {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #dc2626;
+        font-size: 0.82rem;
+    }
+
+        .ex-validation-box ul {
+            margin: 4px 0 0;
+            padding-left: 16px;
+        }
+
+    body.dark-mode .ex-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .ex-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .ex-breadcrumb, body.dark-mode .ex-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .ex-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .ex-card-header {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .ex-card-header h2 {
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .ex-card-header p {
+            color: #9ca3af !important;
+        }
+
+    body.dark-mode .ex-divider {
+        background: #2e3248 !important;
+    }
+
+    body.dark-mode .ex-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .ex-input, body.dark-mode .ex-select {
+        background: #141720 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+        body.dark-mode .ex-input[readonly] {
+            background: #22263a !important;
+            color: #6b7280 !important;
+        }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="ex-page">
+    <div class="ex-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="ChitietNhaps" asp-action="Index">Chi tiết nhập</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Details" asp-route-id="@Model?.Id">#@Model?.Id</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Edit</span>
+    </div>
+
+    <div class="ex-header">
+        <h1>Edit #@Model?.Id</h1>
+        <p>Cập nhật thông tin chi tiết nhập.</p>
+    </div>
+
+    <div class="ex-card">
+        <div class="ex-card-header">
+            <h2>Chi tiết nhập</h2>
+            <p>Chỉnh sửa các trường bên dưới và lưu để cập nhật.</p>
+        </div>
+        <div class="ex-card-body">
+            <form asp-action="Edit" id="editForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="NhapId" />
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="ex-validation-box">
+                        <strong>Vui lòng kiểm tra lại:</strong>
+                        <ul>
+                            @foreach (var state in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in state.Errors)
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <div class="ex-form-group">
+                    <label class="ex-label">Biển số xe</label>
+                    <input value="@Model?.Nhap?.BienSoXe" class="ex-input" readonly />
+                </div>
+                <div class="ex-form-group">
+                    <label class="ex-label">Cửa nhập</label>
+                    <input value="@Model?.Nhap?.CuaNhap?.Ten" class="ex-input" readonly />
+                </div>
+                <div class="ex-form-group">
+                    <label asp-for="DonVi" class="ex-label">Đơn vị</label>
+                    <input asp-for="DonVi" class="ex-input" placeholder="VD: Tải, Kiện, Đơn hàng..." />
+                    <span asp-validation-for="DonVi" class="ex-error"></span>
+                </div>
+                <div class="ex-form-row">
+                    <div class="ex-form-group">
+                        <label asp-for="ChuaBG" class="ex-label">Chưa bàn giao</label>
+                        <input asp-for="ChuaBG" class="ex-input" type="number" min="0" />
+                        <span asp-validation-for="ChuaBG" class="ex-error"></span>
+                    </div>
+                    <div class="ex-form-group">
+                        <label asp-for="DaBG" class="ex-label">Đã bàn giao</label>
+                        <input asp-for="DaBG" class="ex-input" type="number" min="0" />
+                        <span asp-validation-for="DaBG" class="ex-error"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="ex-divider"></div>
+        <div class="ex-card-footer">
+            <button type="submit" form="editForm" class="btn-save">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                Save Changes
+            </button>
+            <a asp-action="Details" asp-route-id="@Model?.Id" class="btn-cancel">Cancel</a>
+        </div>
     </div>
 </div>
-<div>
-    <a asp-action="Index">Trở về</a>
-</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

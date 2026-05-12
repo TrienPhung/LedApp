@@ -4,51 +4,1712 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Quản lý cửa xuất</h5>
-    <a asp-action="Create" class="btn btn-sm btn-dark">+ Thêm mới</a>
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .px-page {
+        padding: 24px 24px 80px;
+    }
+
+    /* ── Breadcrumb ── */
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+            line-height: 1;
+        }
+
+            .px-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+            line-height: 1;
+        }
+
+    /* ── Header ── */
+    .px-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 3px;
+            line-height: 1.2;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background .15s;
+    }
+
+        .btn-add:hover {
+            background: #15803d;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn-add svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    /* ── Toolbar ── */
+    .px-toolbar-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .px-toolbar-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 10px;
+    }
+
+    .filter-tabs {
+        display: inline-flex;
+        gap: 2px;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 3px;
+    }
+
+    .filter-tab {
+        padding: 5px 14px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        border: 1px solid transparent;
+        background: transparent;
+        transition: all .15s;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+        .filter-tab:hover {
+            color: #374151;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .filter-tab.active {
+            background: #fff;
+            color: #111827;
+            border-color: #e5e7eb;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+        }
+
+    /* ── Search ── */
+    .px-search {
+        position: relative;
+        flex: 1;
+        max-width: 480px;
+    }
+
+        .px-search svg {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 15px;
+            height: 15px;
+            pointer-events: none;
+        }
+
+        .px-search input {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #111827;
+            font-size: 0.875rem;
+            padding: 9px 14px 9px 34px;
+            width: 100%;
+            outline: none;
+            transition: border-color .15s,box-shadow .15s;
+        }
+
+            .px-search input::placeholder {
+                color: #9ca3af;
+            }
+
+            .px-search input:focus {
+                border-color: #16a34a;
+                box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            }
+
+    .px-toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tb-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+        white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+
+        .tb-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+        }
+
+        .tb-btn svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+        }
+
+    .btn-reset {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+
+        .btn-reset.show {
+            display: inline-flex;
+        }
+
+        .btn-reset:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #ef4444;
+        }
+
+        .btn-reset svg {
+            width: 13px;
+            height: 13px;
+        }
+
+    /* ── Bulk bar ── */
+    .bulk-bar {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+    .bulk-bar-info {
+        font-size: 0.875rem;
+        color: #374151;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+        .bulk-bar-info span {
+            color: #111827;
+            font-weight: 700;
+        }
+
+    .btn-bulk-delete {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+        white-space: nowrap;
+    }
+
+        .btn-bulk-delete:hover {
+            background: #dc2626;
+        }
+
+        .btn-bulk-delete svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-bulk-clear {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 6px 8px;
+        border-radius: 6px;
+        transition: all .15s;
+    }
+
+        .btn-bulk-clear:hover {
+            color: #111827;
+            background: #f3f4f6;
+        }
+
+        .btn-bulk-clear svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* ── Columns dropdown ── */
+    .columns-wrap {
+        position: relative;
+    }
+
+    .col-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        z-index: 200;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.1);
+        min-width: 190px;
+        overflow: hidden;
+    }
+
+        .col-dropdown.open {
+            display: block;
+        }
+
+    .col-dropdown-title {
+        padding: 10px 14px 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #9ca3af;
+    }
+
+    .col-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        cursor: pointer;
+        transition: background .1s;
+    }
+
+        .col-item:hover {
+            background: #f9fafb;
+        }
+
+        .col-item span {
+            font-size: 0.82rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+    .col-check {
+        width: 16px;
+        height: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #16a34a;
+        opacity: 0;
+        transition: opacity .12s;
+    }
+
+        .col-check svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .col-item.col-visible .col-check {
+        opacity: 1;
+    }
+
+    .col-hidden {
+        display: none !important;
+    }
+
+    /* ── Table card ── */
+    .px-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .px-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+        .px-table thead th {
+            background: #f9fafb;
+            color: #374151;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: normal;
+            line-height: 1.3;
+            min-width: 70px;
+            user-select: none;
+        }
+
+            .px-table thead th:first-child {
+                width: 40px;
+            }
+
+    .th-inner {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+    }
+
+        .th-inner:hover {
+            color: #111827;
+        }
+
+    .sort-icon {
+        display: inline-flex;
+        opacity: 0.35;
+        flex-shrink: 0;
+        transition: opacity .15s;
+    }
+
+        .sort-icon svg {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+
+    .th-inner:hover .sort-icon {
+        opacity: 0.65;
+    }
+
+    .sort-icon.active {
+        opacity: 1;
+        color: #16a34a;
+    }
+
+    .px-table tbody tr {
+        border-bottom: 1px solid #f3f4f6;
+        transition: background .1s;
+    }
+
+        .px-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .px-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .px-table tbody tr.row-selected {
+            background: #f0fdf4 !important;
+        }
+
+    .px-table td {
+        padding: 12px 12px;
+        color: #111827;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .px-table input[type=checkbox] {
+        width: 16px;
+        height: 16px;
+        accent-color: #16a34a;
+        cursor: pointer;
+    }
+
+    .td-id {
+        color: #6b7280;
+        font-size: 0.82rem;
+        font-weight: 600;
+    }
+
+    .td-ten {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .td-mota {
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* ── Status badges ── */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 600;
+    }
+
+        .badge-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+    .bp-active {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-active::before {
+            background: #16a34a;
+        }
+
+    .bp-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .bp-inactive::before {
+            background: #94a3b8;
+        }
+
+    /* ── Kebab ── */
+    .row-action-wrap {
+        position: relative;
+        display: inline-flex;
+    }
+
+    .kebab-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #9ca3af;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .kebab-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+            border-color: #e5e7eb;
+        }
+
+    .row-action-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        z-index: 300;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.1);
+        min-width: 150px;
+        overflow: hidden;
+    }
+
+        .row-action-menu.open {
+            display: block;
+        }
+
+        .row-action-menu.drop-up {
+            bottom: calc(100% + 4px);
+            top: auto;
+        }
+
+        .row-action-menu.drop-down {
+            top: calc(100% + 4px);
+            bottom: auto;
+        }
+
+    .ram-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 14px;
+        font-size: 0.82rem;
+        color: #374151;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background .1s;
+        cursor: pointer;
+        white-space: nowrap;
+        border: none;
+        background: transparent;
+        width: 100%;
+    }
+
+        .ram-item:hover {
+            background: #f9fafb;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .ram-item svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+    .ram-delete {
+        color: #ef4444;
+    }
+
+        .ram-delete:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+    .ram-toggle {
+        color: #2563eb;
+    }
+
+        .ram-toggle:hover {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+
+    /* ── No results ── */
+    .no-results-row td {
+        padding: 48px 20px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* ── Pagination ── */
+    .px-pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 0.82rem;
+        color: #6b7280;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .pg-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pg-rows {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .pg-rows select {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.82rem;
+            color: #374151;
+            outline: none;
+            cursor: pointer;
+        }
+
+    .pg-btn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .pg-btn:hover:not(:disabled) {
+            background: #f3f4f6;
+        }
+
+        .pg-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+    .pg-num {
+        min-width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .pg-num:hover {
+            background: #f3f4f6;
+        }
+
+        .pg-num.active {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #fff;
+            font-weight: 600;
+        }
+
+    /* ── Empty state ── */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #9ca3af;
+    }
+
+        .empty-state svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+            opacity: .4;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    /* ── Alert ── */
+    .px-alert {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* ── Delete Modal ── */
+    .del-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.1rem;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 6px;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .del-modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        padding-right: 24px;
+    }
+
+    .del-modal-body {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.55;
+    }
+
+    .del-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-modal-cancel {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-modal-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    .btn-modal-confirm {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-modal-confirm:hover {
+            background: #dc2626;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* ── Toast ── */
+    #exportToast {
+        display: none;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        background: #111827;
+        color: #fff;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    /* ── Dark mode ── */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .filter-tabs {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .filter-tab {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .filter-tab:hover {
+            color: #e2e8f0 !important;
+            background: rgba(255,255,255,.05) !important;
+        }
+
+        body.dark-mode .filter-tab.active {
+            background: #2e3248 !important;
+            border-color: #3d4460 !important;
+            color: #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,.3) !important;
+        }
+
+    body.dark-mode .px-search input {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .tb-btn, body.dark-mode .btn-reset {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+        box-shadow: none !important;
+    }
+
+        body.dark-mode .tb-btn:hover {
+            background: #22263a !important;
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .col-dropdown {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .col-item:hover {
+        background: #22263a !important;
+    }
+
+    body.dark-mode .col-item span {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .col-dropdown-title {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .px-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .px-table thead th {
+        background: #22263a !important;
+        color: #6b7280 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .px-table tbody tr {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .px-table tbody tr:hover {
+            background: #22263a !important;
+        }
+
+        body.dark-mode .px-table tbody tr.row-selected {
+            background: #0a2e1a !important;
+        }
+
+    body.dark-mode .px-table td {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .td-id {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .td-ten {
+        color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .td-mota {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-pagination {
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .pg-btn, body.dark-mode .pg-num {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .pg-rows select {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .pg-num.active {
+        background: #16a34a !important;
+        border-color: #16a34a !important;
+        color: #fff !important;
+    }
+
+    body.dark-mode .row-action-menu {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .ram-item {
+        color: #d1d5db !important;
+    }
+
+        body.dark-mode .ram-item:hover {
+            background: #22263a !important;
+            color: #fff !important;
+        }
+
+    body.dark-mode .ram-delete {
+        color: #f87171 !important;
+    }
+
+        body.dark-mode .ram-delete:hover {
+            background: #2e0f0f !important;
+        }
+
+    body.dark-mode .ram-toggle {
+        color: #93c5fd !important;
+    }
+
+        body.dark-mode .ram-toggle:hover {
+            background: #1e3a5f !important;
+        }
+
+    body.dark-mode .del-modal {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .del-modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal-body {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-modal-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .bulk-bar-info {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .bulk-bar-info span {
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .btn-bulk-clear {
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .btn-bulk-clear:hover {
+            background: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+
+    .ram-item:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    button.ram-item:focus {
+        outline: none;
+        box-shadow: none;
+    }
+</style>
+
+<div class="px-page">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="px-alert">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+            @TempData["Error"]
+        </div>
+    }
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Cửa xuất</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <div>
+            <h1>Quản lý cửa xuất</h1>
+            <p>Quản lý danh sách cửa xuất kho và trạng thái hoạt động.</p>
+        </div>
+        <a asp-action="Create" class="btn-add">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            Thêm cửa mới
+        </a>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="px-toolbar-top">
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="active">Đang mở</button>
+            <button class="filter-tab" data-filter="inactive">Đã đóng</button>
+        </div>
+    </div>
+
+    <!-- Toolbar bottom -->
+    <div class="px-toolbar-bottom" id="toolbarBottom">
+
+        <!-- LEFT: Normal mode -->
+        <div id="normalBar" style="display:flex;align-items:center;gap:8px;flex:1;">
+            <div class="px-search">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                <input type="text" id="searchInput" placeholder="Tìm tên cửa, mô tả..." />
+            </div>
+            <button class="btn-reset" id="btnReset" type="button">
+                Reset
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <!-- LEFT: Bulk mode -->
+        <div class="bulk-bar" id="bulkBar">
+            <span class="bulk-bar-info"><span id="bulkCount">0</span> selected</span>
+            <button class="btn-bulk-delete" id="btnBulkDelete" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Delete (<span id="bulkDeleteCount">0</span>)
+            </button>
+            <button class="btn-bulk-clear" id="btnBulkClear" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                Clear
+            </button>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="px-toolbar-actions">
+            <div class="columns-wrap" id="columnsWrap">
+                <button class="tb-btn" id="columnsBtn" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                    Columns
+                </button>
+                <div class="col-dropdown" id="colDropdown">
+                    <div class="col-dropdown-title">Toggle columns</div>
+                    <div class="col-item col-visible" data-col="col-id"><span>Mã cửa</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="col-ten"><span>Tên cửa</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="col-mota"><span>Mô tả</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="col-trangthai"><span>Trạng thái</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                </div>
+            </div>
+            <button class="tb-btn" id="exportBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                Export
+            </button>
+            <div id="exportToast">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#16a34a" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                <span id="exportToastMsg"></span>
+                <button onclick="document.getElementById('exportToast').style.display='none'" style="background:none;border:none;color:#9ca3af;cursor:pointer;margin-left:8px;font-size:1rem;line-height:1;">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="px-card">
+        <table class="px-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAll" /></th>
+                    <th data-col-th="col-id"><span class="th-inner">Mã cửa <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                    <th data-col-th="col-ten"><span class="th-inner">Tên cửa <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                    <th data-col-th="col-mota"><span class="th-inner">Mô tả <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                    <th data-col-th="col-trangthai"><span class="th-inner">Trạng thái <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                    <th class="th-action" style="width:48px;text-align:right;"></th>
+                </tr>
+            </thead>
+            <tbody id="cuaBody">
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+                                <p>Chưa có cửa xuất nào.</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    string filterKey = item.IsActive ? "active" : "inactive";
+                    string badgeClass = item.IsActive ? "bp-active" : "bp-inactive";
+                    string badgeLabel = item.IsActive ? "Đang mở" : "Đã đóng";
+
+                    <tr data-filter="@filterKey"
+                        data-id="@item.Id"
+                        data-search="@item.Ten @item.Mota">
+                        <td><input type="checkbox" class="row-check" /></td>
+                        <td data-col-td="col-id" class="td-id">@item.Id.ToString("D2")</td>
+                        <td data-col-td="col-ten" class="td-ten">@item.Ten</td>
+                        <td data-col-td="col-mota" class="td-mota">@(item.Mota ?? "—")</td>
+                        <td data-col-td="col-trangthai"><span class="badge-pill @badgeClass">@badgeLabel</span></td>
+                        <td style="text-align:right;">
+                            <div class="row-action-wrap">
+                                <button class="kebab-btn" type="button" title="Actions">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
+                                </button>
+                                <div class="row-action-menu">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="ram-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                                        View
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="ram-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                                        Sửa
+                                    </a>
+                                    <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post" style="margin:0;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="returnUrl" value="/CuaXuats" />
+                                        @if (item.IsActive)
+                                        {
+                                            <button type="submit" class="ram-item ram-toggle">
+                                                <!-- Ổ khóa ĐÓNG -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                                                <span>Đóng cửa</span>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="ram-item ram-toggle">
+                                                <!-- Ổ khóa MỞ -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                                                <span>Mở lại</span>
+                                            </button>
+                                        }
+                                    </form>
+                                    <button class="ram-item ram-delete" type="button" data-id="@item.Id" data-ten="@item.Ten">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                        Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="px-pagination">
+            <div class="pg-info" id="pgInfo">Showing 0 results</div>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <div class="pg-rows">
+                    Rows
+                    <select id="rowsPerPage">
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div class="pg-controls" id="pgControls"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<table class="table table-hover align-middle">
-    <thead class="table-light">
-        <tr>
-            <th>#</th>
-            <th>Tên cửa</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="text-secondary">@item.Id.ToString("D2")</td>
-                <td>@Html.DisplayFor(modelItem => item.Ten)</td>
-                <td class="text-secondary">@Html.DisplayFor(modelItem => item.Mota)</td>
-                <td>
-                    @if (item.IsActive)
-                    {
-                        <span class="badge rounded-pill text-success" style="background:#EAF3DE">● Đang mở</span>
-                    }
-                    else
-                    {
-                        <span class="badge rounded-pill text-secondary" style="background:#F1EFE8">● Đã đóng</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none small me-1">Sửa</a>
-                    <span class="text-secondary small">|</span>
-                    <form asp-action="ToggleActive" asp-route-id="@item.Id" method="post" class="d-inline mx-1">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none small">
-                            @(item.IsActive ? "Đóng" : "Mở lại")
-                        </button>
-                    </form>
-                    <span class="text-secondary small">|</span>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-decoration-none small text-danger ms-1">Xóa</a>
-                </td>
-            </tr>
+<!-- Modal xóa đơn -->
+<div class="del-modal-overlay" id="delModalOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" id="delModalClose">×</button>
+        <div class="del-modal-title">Xóa cửa xuất</div>
+        <div class="del-modal-body">Bạn có chắc chắn muốn xóa cửa <strong id="delModalTen"></strong>? Hành động này không thể hoàn tác.</div>
+        <div class="del-modal-footer">
+            <button class="btn-modal-cancel" id="delModalCancel">Cancel</button>
+            <form id="delConfirmForm" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-modal-confirm">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xóa nhiều -->
+<div class="del-modal-overlay" id="bulkDelModalOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" id="bulkDelModalClose">×</button>
+        <div class="del-modal-title">Xóa cửa xuất đã chọn</div>
+        <div class="del-modal-body">Bạn có chắc chắn muốn xóa <strong id="bulkDelCount">0</strong> cửa xuất đã chọn? Hành động này không thể hoàn tác.</div>
+        <div class="del-modal-footer">
+            <button class="btn-modal-cancel" id="bulkDelModalCancel">Cancel</button>
+            <button class="btn-modal-confirm" id="bulkDelModalConfirm">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const allRows = Array.from(document.querySelectorAll('#cuaBody tr[data-filter]'));
+        const searchInput = document.getElementById('searchInput');
+        const rowsPerPageSel = document.getElementById('rowsPerPage');
+        const pgInfo = document.getElementById('pgInfo');
+        const pgControls = document.getElementById('pgControls');
+        const btnReset = document.getElementById('btnReset');
+        const columnsBtn = document.getElementById('columnsBtn');
+        const colDropdown = document.getElementById('colDropdown');
+        const cuaBody = document.getElementById('cuaBody');
+        const checkAll = document.getElementById('checkAll');
+        const bulkBar = document.getElementById('bulkBar');
+        const normalBar = document.getElementById('normalBar');
+
+        let currentPage = 1;
+        let activeTabFilter = 'all';
+        let sortCol = null;
+        let sortDir = 'asc';
+
+        // ── Filter tabs ──
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeTabFilter = tab.dataset.filter;
+                currentPage = 1;
+                render();
+            });
+        });
+
+        // ── Search ──
+        searchInput.addEventListener('input', () => {
+            btnReset.classList.toggle('show', searchInput.value.trim().length > 0);
+            currentPage = 1; render();
+        });
+        rowsPerPageSel.addEventListener('change', () => { currentPage = 1; render(); });
+        btnReset.addEventListener('click', () => {
+            searchInput.value = '';
+            btnReset.classList.remove('show');
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+            activeTabFilter = 'all';
+            currentPage = 1; render();
+        });
+
+        // ── Bulk selection ──
+        function updateBulkUI() {
+            const checked = Array.from(document.querySelectorAll('.row-check:checked'));
+            const count = checked.length;
+            document.querySelectorAll('#cuaBody tr[data-filter]').forEach(row => {
+                const cb = row.querySelector('.row-check');
+                row.classList.toggle('row-selected', cb && cb.checked);
+            });
+            if (count > 0) {
+                document.getElementById('bulkCount').textContent = count;
+                document.getElementById('bulkDeleteCount').textContent = count;
+                normalBar.style.display = 'none';
+                bulkBar.style.display = 'flex';
+                const total = document.querySelectorAll('.row-check').length;
+                checkAll.indeterminate = count > 0 && count < total;
+                checkAll.checked = count === total && total > 0;
+            } else {
+                normalBar.style.display = 'flex';
+                bulkBar.style.display = 'none';
+                checkAll.indeterminate = false;
+                checkAll.checked = false;
+            }
         }
-    </tbody>
-</table>
+
+        checkAll.addEventListener('change', function () {
+            getFiltered().forEach(row => {
+                const cb = row.querySelector('.row-check');
+                if (cb) cb.checked = this.checked;
+            });
+            updateBulkUI();
+        });
+
+        cuaBody.addEventListener('change', e => {
+            if (e.target.classList.contains('row-check')) updateBulkUI();
+        });
+
+        document.getElementById('btnBulkClear').addEventListener('click', () => {
+            document.querySelectorAll('.row-check').forEach(c => c.checked = false);
+            updateBulkUI();
+        });
+
+        // ── Columns dropdown ──
+        columnsBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            colDropdown.classList.toggle('open');
+        });
+
+        document.querySelectorAll('#colDropdown .col-item').forEach(item => {
+            item.addEventListener('click', e => {
+                e.stopPropagation();
+                const col = item.dataset.col;
+                const isVisible = item.classList.contains('col-visible');
+                if (isVisible) {
+                    item.classList.remove('col-visible');
+                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                } else {
+                    item.classList.add('col-visible');
+                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                }
+            });
+        });
+
+        document.addEventListener('click', e => {
+            if (!document.getElementById('columnsWrap').contains(e.target))
+                colDropdown.classList.remove('open');
+            if (!e.target.closest('.row-action-wrap'))
+                document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+        });
+
+        // ── Sort ──
+        document.querySelectorAll('.th-inner').forEach(inner => {
+            inner.addEventListener('click', () => {
+                const th = inner.closest('th');
+                const col = th.dataset.colTh;
+                if (!col) return;
+                if (sortCol === col) { sortDir = sortDir === 'asc' ? 'desc' : 'asc'; }
+                else { sortCol = col; sortDir = 'asc'; }
+                document.querySelectorAll('.th-inner').forEach(i => {
+                    const icon = i.querySelector('.sort-icon');
+                    icon.classList.remove('active');
+                    icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>`;
+                });
+                const activeIcon = inner.querySelector('.sort-icon');
+                activeIcon.classList.add('active');
+                activeIcon.innerHTML = sortDir === 'asc'
+                    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9 5-5 5 5"/></svg>`
+                    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/></svg>`;
+                allRows.sort((a, b) => {
+                    const aEl = a.querySelector(`[data-col-td="${col}"]`);
+                    const bEl = b.querySelector(`[data-col-td="${col}"]`);
+                    const aVal = aEl ? aEl.textContent.trim() : '';
+                    const bVal = bEl ? bEl.textContent.trim() : '';
+                    const cmp = aVal.localeCompare(bVal, 'vi', { numeric: true });
+                    return sortDir === 'asc' ? cmp : -cmp;
+                });
+                allRows.forEach(r => cuaBody.appendChild(r));
+                currentPage = 1; render();
+            });
+        });
+
+        // ── Kebab menus ──
+        document.querySelectorAll('.kebab-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const menu = btn.nextElementSibling;
+                const isOpen = menu.classList.contains('open');
+                document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+                if (!isOpen) {
+                    const rect = btn.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - rect.bottom;
+                    const visibleRows = allRows.filter(r => r.style.display !== 'none');
+                    const isLastRow = visibleRows.length > 0 && visibleRows[visibleRows.length - 1] === btn.closest('tr');
+                    menu.classList.remove('drop-up','drop-down');
+                    menu.classList.add((isLastRow || spaceBelow < 160) ? 'drop-up' : 'drop-down');
+                    menu.classList.add('open');
+                }
+            });
+        });
+                // ── Toggle active (Index) ──
+        document.querySelectorAll('[data-toggle-id]').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                // Đóng menu
+                document.querySelectorAll('.row-action-menu.open')
+                        .forEach(m => m.classList.remove('open'));
+
+                const id = btn.dataset.toggleId;
+                const token = document.querySelector(
+                    'input[name="__RequestVerificationToken"]')?.value || '';
+
+                try {
+                    const res = await fetch(`/CuaXuats/ToggleActive/${id}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: `__RequestVerificationToken=${encodeURIComponent(token)}&id=${id}`,
+                        redirect: 'follow'
+                    });
+                    console.log('Status:', res.status);
+                    if (res.ok || res.redirected) {
+                        // Cập nhật UI ngay không cần reload
+                        const row = btn.closest('tr');
+                        const isActive = btn.dataset.toggleActive === 'true';
+                        const newActive = !isActive;
+
+                        // Cập nhật badge trạng thái trong row
+                        const badge = row.querySelector('[data-col-td="col-trangthai"] .badge-pill');
+                        if (badge) {
+                            badge.className = 'badge-pill ' + (newActive ? 'bp-active' : 'bp-inactive');
+                            badge.textContent = newActive ? 'Đang mở' : 'Đã đóng';
+                        }
+
+                        // Cập nhật data-filter của row
+                        row.dataset.filter = newActive ? 'active' : 'inactive';
+
+                        // Cập nhật button text và data
+                        btn.dataset.toggleActive = newActive.toString();
+                        const span = btn.querySelector('span');
+                        if (span) span.textContent = newActive ? 'Đóng cửa' : 'Mở lại';
+
+                        // Re-render để filter tab cập nhật đúng
+                        render();
+                    } else {
+                        alert('Cập nhật thất bại.');
+                    }
+                } catch {
+                    alert('Lỗi kết nối server.');
+                }
+            });
+        });
+        // ── Modal xóa đơn ──
+        const delModalOverlay = document.getElementById('delModalOverlay');
+
+        document.querySelectorAll('.ram-delete').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+                const id = btn.dataset.id;
+                const ten = btn.dataset.ten;
+                document.getElementById('delModalTen').textContent = ten;
+                document.getElementById('delConfirmForm').action = '/CuaXuats/Delete/' + id;
+                delModalOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+            });
+        });
+
+        function closeDelModal() { delModalOverlay.classList.remove('open'); document.body.classList.remove('modal-open'); }
+        document.getElementById('delModalClose').addEventListener('click', closeDelModal);
+        document.getElementById('delModalCancel').addEventListener('click', closeDelModal);
+        delModalOverlay.addEventListener('click', e => { if (e.target === delModalOverlay) closeDelModal(); });
+
+        // ── Modal xóa nhiều ──
+        const bulkDelModalOverlay = document.getElementById('bulkDelModalOverlay');
+        const bulkDelModalConfirm = document.getElementById('bulkDelModalConfirm');
+
+        document.getElementById('btnBulkDelete').addEventListener('click', () => {
+            const count = document.querySelectorAll('.row-check:checked').length;
+            document.getElementById('bulkDelCount').textContent = count;
+            bulkDelModalOverlay.classList.add('open');
+            document.body.classList.add('modal-open');
+        });
+
+        function closeBulkDelModal() { bulkDelModalOverlay.classList.remove('open'); document.body.classList.remove('modal-open'); }
+        document.getElementById('bulkDelModalClose').addEventListener('click', closeBulkDelModal);
+        document.getElementById('bulkDelModalCancel').addEventListener('click', closeBulkDelModal);
+        bulkDelModalOverlay.addEventListener('click', e => { if (e.target === bulkDelModalOverlay) closeBulkDelModal(); });
+
+        bulkDelModalConfirm.addEventListener('click', async () => {
+            const checkedRows = Array.from(document.querySelectorAll('.row-check:checked'));
+            const ids = checkedRows.map(cb => parseInt(cb.closest('tr').dataset.id)).filter(id => !isNaN(id));
+            if (!ids.length) { closeBulkDelModal(); return; }
+
+            bulkDelModalConfirm.disabled = true;
+            bulkDelModalConfirm.textContent = 'Đang xóa...';
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                const res = await fetch('/CuaXuats/BulkDelete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify({ ids })
+                });
+                if (res.ok) {
+                    checkedRows.forEach(cb => {
+                        const row = cb.closest('tr');
+                        const idx = allRows.indexOf(row);
+                        if (idx > -1) allRows.splice(idx, 1);
+                        row.remove();
+                    });
+                    closeBulkDelModal();
+                    updateBulkUI();
+                    render();
+                } else { alert('Xóa thất bại. Vui lòng thử lại.'); closeBulkDelModal(); }
+            } catch { alert('Lỗi kết nối server.'); closeBulkDelModal(); }
+            finally { bulkDelModalConfirm.disabled = false; bulkDelModalConfirm.textContent = 'Delete'; }
+        });
+
+        // ── Export CSV ──
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const visibleRows = getFiltered();
+            const visibleColKeys = Array.from(document.querySelectorAll('#colDropdown .col-item.col-visible')).map(i => i.dataset.col);
+            const colLabels = { 'col-id': 'Mã cửa', 'col-ten': 'Tên cửa', 'col-mota': 'Mô tả', 'col-trangthai': 'Trạng thái' };
+            const headers = visibleColKeys.map(k => colLabels[k] || k);
+            const rows = visibleRows.map(row =>
+                visibleColKeys.map(key => {
+                    const td = row.querySelector(`[data-col-td="${key}"]`);
+                    const val = td ? td.textContent.trim() : '';
+                    return `"${val.replace(/"/g,'""')}"`;
+                }).join(',')
+            );
+            const csv = [headers.map(h=>`"${h}"`).join(','), ...rows].join('\n');
+            const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href=url; a.download='cua-xuat.csv'; a.click();
+            URL.revokeObjectURL(url);
+            const toast = document.getElementById('exportToast');
+            document.getElementById('exportToastMsg').textContent = `Exported ${visibleRows.length} rows to CSV`;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        });
+
+        // ── Filter & Pagination ──
+        function getFiltered() {
+            const q = searchInput.value.toLowerCase();
+            return allRows.filter(row => {
+                const tabMatch = activeTabFilter === 'all' || row.dataset.filter === activeTabFilter;
+                const searchMatch = !q || row.dataset.search.toLowerCase().includes(q);
+                return tabMatch && searchMatch;
+            });
+        }
+
+        function render() {
+            const visibleRows = getFiltered();
+            const rpp = parseInt(rowsPerPageSel.value);
+            const totalPages = Math.max(1, Math.ceil(visibleRows.length / rpp));
+            currentPage = Math.min(currentPage, totalPages);
+            const start = (currentPage - 1) * rpp;
+            const end = start + rpp;
+
+            allRows.forEach(r => r.style.display = 'none');
+            const existing = cuaBody.querySelector('.no-results-row');
+            if (existing) existing.remove();
+
+            if (visibleRows.length === 0) {
+                const row = document.createElement('tr');
+                row.className = 'no-results-row';
+                row.innerHTML = '<td colspan="6">Không tìm thấy kết quả nào.</td>';
+                cuaBody.appendChild(row);
+                pgInfo.textContent = 'Showing 0 results';
+            } else {
+                visibleRows.slice(start, end).forEach(r => r.style.display = '');
+                pgInfo.textContent = `Showing ${start+1}–${Math.min(end, visibleRows.length)} of ${visibleRows.length} results`;
+            }
+
+            pgControls.innerHTML = '';
+            const prev = document.createElement('button');
+            prev.className = 'pg-btn'; prev.textContent = 'Previous'; prev.disabled = currentPage === 1;
+            prev.onclick = () => { currentPage--; render(); };
+            pgControls.appendChild(prev);
+
+            pageRange(currentPage, totalPages).forEach(p => {
+                if (p === '...') {
+                    const dot = document.createElement('span');
+                    dot.textContent = '…'; dot.style.cssText = 'padding:0 4px;color:#9ca3af;';
+                    pgControls.appendChild(dot);
+                } else {
+                    const btn = document.createElement('button');
+                    btn.className = 'pg-num' + (p === currentPage ? ' active' : '');
+                    btn.textContent = p; btn.onclick = () => { currentPage = p; render(); };
+                    pgControls.appendChild(btn);
+                }
+            });
+
+            const next = document.createElement('button');
+            next.className = 'pg-btn'; next.textContent = 'Next'; next.disabled = currentPage === totalPages;
+            next.onclick = () => { currentPage++; render(); };
+            pgControls.appendChild(next);
+        }
+
+        function pageRange(cur, total) {
+            if (total <= 7) return Array.from({length:total},(_,i)=>i+1);
+            if (cur <= 4) return [1,2,3,4,5,'...',total];
+            if (cur >= total-3) return [1,'...',total-4,total-3,total-2,total-1,total];
+            return [1,'...',cur-1,cur,cur+1,'...',total];
+        }
+
+        render();
+    })();
+</script>

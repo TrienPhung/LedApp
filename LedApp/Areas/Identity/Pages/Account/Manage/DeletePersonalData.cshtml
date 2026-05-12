@@ -5,27 +5,156 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
 
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-    </p>
-</div>
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
 
-<div>
-    <form id="delete-user" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @if (Model.RequirePassword)
-        {
-            <div class="form-floating">
-                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                <label asp-for="Input.Password" class="form-label"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .status-msg-warning {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #d97706;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+        max-width: 360px;
+    }
+
+        .field-input:focus {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239,68,68,.1);
         }
-        <button class="w-100 btn btn-lg btn-danger" type="submit">Delete data and close my account</button>
-    </form>
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        transition: background .15s;
+    }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Delete personal data</p>
+        <p class="manage-card-sub">Permanently remove your account and all associated data</p>
+    </div>
+    <div class="manage-card-body">
+        <div class="status-msg-warning">
+            <i class="bi bi-exclamation-triangle-fill" style="margin-right:6px;"></i>
+            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+        </div>
+        <form id="delete-user" method="post">
+            <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:12px;"></div>
+            @if (Model.RequirePassword)
+            {
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label class="field-label" asp-for="Input.Password">Confirm your password</label>
+                    <input asp-for="Input.Password" class="field-input"
+                           autocomplete="current-password" aria-required="true"
+                           placeholder="Nhập mật khẩu để xác nhận..." />
+                    <span asp-validation-for="Input.Password" class="field-error"></span>
+                </div>
+            }
+            <button class="btn-danger" type="submit">
+                <i class="bi bi-trash3"></i>
+                Delete data and close my account
+            </button>
+        </form>
+    </div>
 </div>
 
 @section Scripts {

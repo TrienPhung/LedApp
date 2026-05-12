@@ -1,0 +1,126 @@
+﻿/* =====================================================
+   PERMISSION DISABLED + TOOLTIP
+   Đặt file này vào wwwroot/css/permission.css
+   Hoặc copy vào <style> trong _Layout1.cshtml
+   ===================================================== */
+
+/* Wrapper để hiện tooltip */
+.perm-tooltip-wrap {
+    position: relative;
+    display: inline-flex; /* giữ layout của element bên trong */
+}
+
+    /* Tooltip bubble */
+    .perm-tooltip-wrap::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1f2937;
+        color: #f9fafb;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease, transform 0.15s ease;
+        transform: translateX(-50%) translateY(4px);
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        max-width: 240px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* Mũi tên nhỏ phía dưới tooltip */
+    .perm-tooltip-wrap::before {
+        content: '';
+        position: absolute;
+        bottom: calc(100% + 2px);
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #1f2937;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 9999;
+    }
+
+    /* Hiện tooltip khi hover */
+    .perm-tooltip-wrap:hover::after,
+    .perm-tooltip-wrap:hover::before {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+/* Element bị disable: mờ + không cho click */
+.perm-disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    pointer-events: none; /* tắt hover effect của chính element */
+    user-select: none;
+}
+
+/* Wrapper vẫn cho phép hover để tooltip hiện */
+.perm-tooltip-wrap {
+    pointer-events: auto !important;
+    cursor: not-allowed;
+}
+
+/* Dark mode support */
+body.dark-mode .perm-tooltip-wrap::after {
+    background: #374151;
+    color: #f9fafb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .perm-tooltip-wrap::before {
+    border-top-color: #374151;
+}
+/* Fix layout khi perm-tooltip-wrap nằm trong dropdown menu */
+.row-action-menu .perm-tooltip-wrap {
+    display: block; /* không dùng inline-flex */
+    width: 100%;
+}
+
+    .row-action-menu .perm-tooltip-wrap::after {
+        /* Tooltip hiện sang trái thay vì lên trên để không bị cắt */
+        bottom: auto;
+        top: 50%;
+        left: auto;
+        right: calc(100% + 8px);
+        transform: translateY(-50%);
+        white-space: nowrap;
+    }
+
+    .row-action-menu .perm-tooltip-wrap::before {
+        bottom: auto;
+        top: 50%;
+        left: auto;
+        right: calc(100% + 2px);
+        transform: translateY(-50%);
+        border-top-color: transparent;
+        border-left-color: #1f2937;
+    }
+/* Tooltip hiện phía dưới thay vì phía trên */
+.px-header .perm-tooltip-wrap::after {
+    top: calc(100% + 8px);
+    bottom: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.px-header .perm-tooltip-wrap::before {
+    top: calc(100% + 2px);
+    bottom: auto;
+    border-top-color: transparent;
+    border-bottom-color: #1f2937;
+}
+
+.px-header .perm-tooltip-wrap:hover::after {
+    transform: translateX(-50%) translateY(0);
+}

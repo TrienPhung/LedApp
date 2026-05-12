@@ -4,18 +4,126 @@
     ViewData["Title"] = "Log out";
 }
 
-<header>
-    <h1>@ViewData["Title"]</h1>
-    @{
-        if (User.Identity?.IsAuthenticated ?? false)
-        {
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
-            </form>
-        }
-        else
-        {
-            <p>You have successfully logged out of the application.</p>
-        }
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
     }
-</header>
+
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+    }
+
+    .auth-card-body {
+        padding: 40px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .logout-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logout-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .logout-sub {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .btn-logout {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #ef4444;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #16a34a;
+        color: #fff;
+        text-decoration: none;
+        transition: background .15s;
+    }
+
+        .btn-back:hover {
+            background: #15803d;
+            color: #fff;
+        }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-body">
+            <div class="logout-icon">
+                <i class="bi bi-box-arrow-right"></i>
+            </div>
+            <p class="logout-title">Log out</p>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <p class="logout-sub">Bạn có chắc muốn đăng xuất không?</p>
+                <form asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button type="submit" class="btn-logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Đăng xuất
+                    </button>
+                </form>
+            }
+            else
+            {
+                <p class="logout-sub">Bạn đã đăng xuất thành công.</p>
+                <a asp-page="./Login" class="btn-back">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Đăng nhập lại
+                </a>
+            }
+        </div>
+    </div>
+</div>

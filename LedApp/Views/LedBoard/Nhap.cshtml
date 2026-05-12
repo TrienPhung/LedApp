@@ -397,10 +397,10 @@
                 border-left-color: #0a2a18;
                 background: #040a06;
             }
-
+            /* tt=0 VÀO CỬA NGAY — nổi bật hơn để tài xế thấy ngay */
             .row.r-wait {
-                border-left-color: #1a5a2a;
-                background: #060e08;
+                border-left-color: var(--green);
+                background: #071a0a;
             }
 
             .row.r-active {
@@ -458,7 +458,7 @@
         }
 
         .cua-wait {
-            color: #2a8a5a;
+            color: var(--green);
         }
 
         .cua-active {
@@ -525,15 +525,16 @@
             .b-empty .bdot {
                 background: #0a2a18;
             }
-
+        /* tt=0 VÀO CỬA NGAY — badge sáng như b-active, dot nhấp nháy nhanh */
         .b-wait {
-            background: #081a10;
-            color: #2a8a5a;
-            border: 1px solid #0f3a1a;
+            background: #082a14;
+            color: var(--green2);
+            border: 1px solid #0f4a20;
         }
 
             .b-wait .bdot {
-                background: #2a6a4a;
+                background: var(--green);
+                animation: blink .8s infinite;
             }
 
         .b-active {
@@ -905,12 +906,18 @@
 
         // Recheck mỗi 1 giây — hiện xe MỚI NHẤT vừa đến giờ ThoiGianPhanCong
         setInterval(function() {
-            var now = new Date();
+            var now      = new Date();
+            var window30 = 30 * 60 * 1000; // 30 phút tính bằng ms
+
             var arrived = (lastRows || []).filter(function(r) {
                 if (!r.bienSoXe || !r.bienSoXe.trim()) return false;
+                // tt=1 đang bàn giao: luôn hiện
                 if (r.trangThai === 1) return true;
-                if (r.trangThai === 0 && r.thoiGianPhanCong)
-                    return new Date(r.thoiGianPhanCong) <= now;
+                // tt=0: chỉ hiện trong vòng 30 phút sau giờ phân công
+                if (r.trangThai === 0 && r.thoiGianPhanCong) {
+                    var t = new Date(r.thoiGianPhanCong);
+                    return t <= now && (now - t) <= window30;
+                }
                 return false;
             });
 

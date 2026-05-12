@@ -33,6 +33,7 @@ namespace LedApp.Data
         public DbSet<CanhBao> CanhBaos { get; set; }
         public DbSet<CauHinh> CauHinhs { get; set; }
         public DbSet<nguoiDungs> nguoiDungs { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
         #endregion
     }
 }

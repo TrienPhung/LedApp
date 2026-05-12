@@ -1,6 +1,9 @@
 ﻿using LedApp.Data;
+using LedApp.Helpers;
 using LedApp.Hubs;
 using LedApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
@@ -12,18 +15,43 @@ namespace LedApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _signalrHub;
-      
-        public HomeController(ILogger<HomeController> logger, ApplicationDBContext context, IHubContext<SignalServer> signalrHub)
+        private readonly UserManager<AppUser> _userManager;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDBContext context, IHubContext<SignalServer> signalrHub, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _context = context;
             _signalrHub = signalrHub;
-         
+            _userManager = userManager;
         }
-
-        public IActionResult Index()
+        [Authorize]
+        public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Index", "Nav");
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("Index", "Dashboard");
+
+            var trangChu = User.Claims
+                .Where(c => c.Type == "QuyenExtra" && c.Value.EndsWith(".View"))
+                .Select(c => c.Value.Replace(".View", ""))
+                .FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(trangChu))
+                return RedirectToAction("Index", trangChu);
+
+            var allowedNhap = await PermissionChecker
+                .GetAllowedCuaNhapIds(User, _userManager, _context);
+            if (allowedNhap.Any())
+                return RedirectToAction("CuaNhap", "NhanVienNhap",
+                    new { cuaNhapId = allowedNhap[0] });
+
+            var allowedXuat = await PermissionChecker
+                .GetAllowedCuaXuatIds(User, _userManager, _context);
+            if (allowedXuat.Any())
+                return RedirectToAction("CuaXuat", "NhanVienXuat",
+                    new { cuaXuatId = allowedXuat[0] });
+
+            // Không có gì → về login
+            return Challenge();
         }
         public IActionResult cuaxuat(int id)
         {

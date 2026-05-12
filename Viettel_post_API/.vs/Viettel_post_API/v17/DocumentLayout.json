@@ -1,57 +1,57 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\",
+  "WorkspaceRootPath": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\models\\trangthaichuyen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\models\\trangthaichuyen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\models\\trangthaichuyen.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\controllers\\danhsachxescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\controllers\\danhsachxescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\controllers\\danhsachxescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\data\\viettel_post_apicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\hubs\\signalserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\data\\viettel_post_apicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\data\\viettel_post_apicontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\models\\danhsachxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\models\\chuyenxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\models\\chuyenxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\models\\chuyenxe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\models\\hanghoaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\models\\hanghoaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\models\\hanghoaitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\migrations\\20260402180444_api.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\migrations\\20260402180444_api.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\migrations\\20260402180444_api.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp_api\\viettel_post_api_signalserver\\viettel_post_api\\viettel_post_api\\viettel_post_api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|e:\\codelvtn\\ledapp\\viettel_post_api\\viettel_post_api\\viettel_post_api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{B5D19FB3-8C89-4183-91E4-4F5CD6B55FF3}|Viettel_post_API\\Viettel_post_API.csproj|solutionrelative:viettel_post_api\\viettel_post_api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
@@ -62,7 +62,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,36 +70,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Program.cs",
-              "RelativeDocumentMoniker": "Viettel_post_API\\Program.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Program.cs",
-              "RelativeToolTip": "Viettel_post_API\\Program.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAUwCAAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-30T18:20:51.159Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TrangThaiChuyen.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\TrangThaiChuyen.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\TrangThaiChuyen.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Models\\TrangThaiChuyen.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\TrangThaiChuyen.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\TrangThaiChuyen.cs",
               "RelativeToolTip": "Viettel_post_API\\Models\\TrangThaiChuyen.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-02T17:18:31.193Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Controllers\\WeatherForecastController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Controllers\\WeatherForecastController.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Controllers\\WeatherForecastController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Controllers\\WeatherForecastController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Controllers\\WeatherForecastController.cs",
               "RelativeToolTip": "Viettel_post_API\\Controllers\\WeatherForecastController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -107,11 +95,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "SignalServer.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Hubs\\SignalServer.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Hubs\\SignalServer.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Hubs\\SignalServer.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Hubs\\SignalServer.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Hubs\\SignalServer.cs",
               "RelativeToolTip": "Viettel_post_API\\Hubs\\SignalServer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -119,11 +107,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\appsettings.json",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\appsettings.json",
               "RelativeDocumentMoniker": "Viettel_post_API\\appsettings.json",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\appsettings.json",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\appsettings.json",
               "RelativeToolTip": "Viettel_post_API\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
@@ -131,11 +119,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "WeatherForecast.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\WeatherForecast.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\WeatherForecast.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\WeatherForecast.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\WeatherForecast.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\WeatherForecast.cs",
               "RelativeToolTip": "Viettel_post_API\\WeatherForecast.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -143,23 +131,36 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "DanhSachXesController.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Controllers\\DanhSachXesController.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Controllers\\DanhSachXesController.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Controllers\\DanhSachXesController.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Controllers\\DanhSachXesController.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Controllers\\DanhSachXesController.cs",
               "RelativeToolTip": "Viettel_post_API\\Controllers\\DanhSachXesController.cs",
-              "ViewState": "AgIAAAYBAAAAAAAAAAAcwAwBAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T17:30:49.276Z"
+              "WhenOpened": "2026-04-02T17:30:49.276Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Program.cs",
+              "RelativeDocumentMoniker": "Viettel_post_API\\Program.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Program.cs",
+              "RelativeToolTip": "Viettel_post_API\\Program.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAUwCAAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-30T18:20:51.159Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
               "Title": "Viettel_post_APIContext.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
               "RelativeToolTip": "Viettel_post_API\\Data\\Viettel_post_APIContext.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABIAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -169,9 +170,9 @@
               "$type": "Document",
               "DocumentIndex": 9,
               "Title": "ChuyenXe.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\ChuyenXe.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\ChuyenXe.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Models\\ChuyenXe.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\ChuyenXe.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\ChuyenXe.cs",
               "RelativeToolTip": "Viettel_post_API\\Models\\ChuyenXe.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -181,9 +182,9 @@
               "$type": "Document",
               "DocumentIndex": 10,
               "Title": "HangHoaItem.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\HangHoaItem.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\HangHoaItem.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Models\\HangHoaItem.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\HangHoaItem.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\HangHoaItem.cs",
               "RelativeToolTip": "Viettel_post_API\\Models\\HangHoaItem.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -193,9 +194,9 @@
               "$type": "Document",
               "DocumentIndex": 8,
               "Title": "DanhSachXe.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\DanhSachXe.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\DanhSachXe.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Models\\DanhSachXe.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Models\\DanhSachXe.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\DanhSachXe.cs",
               "RelativeToolTip": "Viettel_post_API\\Models\\DanhSachXe.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -205,9 +206,9 @@
               "$type": "Document",
               "DocumentIndex": 11,
               "Title": "20260402180444_api.cs",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Migrations\\20260402180444_api.cs",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Migrations\\20260402180444_api.cs",
               "RelativeDocumentMoniker": "Viettel_post_API\\Migrations\\20260402180444_api.cs",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Migrations\\20260402180444_api.cs",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Migrations\\20260402180444_api.cs",
               "RelativeToolTip": "Viettel_post_API\\Migrations\\20260402180444_api.cs",
               "ViewState": "AQIAACwAAACAmZmZmdkpwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -217,9 +218,9 @@
               "$type": "Document",
               "DocumentIndex": 12,
               "Title": "Viettel_post_API.csproj",
-              "DocumentMoniker": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
+              "DocumentMoniker": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
               "RelativeDocumentMoniker": "Viettel_post_API\\Viettel_post_API.csproj",
-              "ToolTip": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
+              "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
               "RelativeToolTip": "Viettel_post_API\\Viettel_post_API.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",

@@ -10,6 +10,22 @@
     var email = user?.Email ?? "";
     var initials = string.IsNullOrEmpty(userName) ? "?" :
         new string(userName.Where(char.IsLetter).Take(2).ToArray()).ToUpper();
+
+    var perms = ViewBag.UserPerms as HashSet<string> ?? new HashSet<string>();
+    bool isAdmin = perms.Contains("*");
+    bool HasPerm(string p) => isAdmin || perms.Contains(p);
+
+    var cuaNhapClaims = User.Claims
+        .Where(c => c.Type == "CuaNhap")
+        .Select(c => c.Value)
+        .ToHashSet();
+    var cuaXuatClaims = User.Claims
+        .Where(c => c.Type == "CuaXuat")
+        .Select(c => c.Value)
+        .ToHashSet();
+
+    bool HasCuaNhap(int id) => isAdmin || cuaNhapClaims.Contains(id.ToString());
+    bool HasCuaXuat(int id) => isAdmin || cuaXuatClaims.Contains(id.ToString());
 }
 
 <!DOCTYPE html>
@@ -27,7 +43,6 @@
             padding: 0;
         }
 
-        /* ===== DARK THEME (default) ===== */
         [data-theme="dark"] {
             --bg: #060a0f;
             --surface: #0a1520;
@@ -56,7 +71,6 @@
             --glow-blue: rgba(56,189,248,.04);
         }
 
-        /* ===== LIGHT THEME ===== */
         [data-theme="light"] {
             --bg: #f0f4f8;
             --surface: #ffffff;
@@ -113,7 +127,6 @@
                 z-index: 0;
             }
 
-        /* ===== HEADER ===== */
         .hdr {
             position: sticky;
             top: 0;
@@ -165,7 +178,6 @@
             font-weight: 400;
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             display: flex;
             align-items: center;
@@ -215,7 +227,6 @@
             transform: rotate(90deg) scale(.5);
         }
 
-        /* ===== USER DROPDOWN ===== */
         .user-menu {
             position: relative;
         }
@@ -417,7 +428,6 @@
             margin-top: 2px;
         }
 
-        /* ===== MAIN ===== */
         .main {
             position: relative;
             z-index: 1;
@@ -426,7 +436,6 @@
             margin: 0 auto;
         }
 
-        /* ===== SECTION LABEL ===== */
         .section-label {
             font-family: 'Space Grotesk',sans-serif;
             font-size: 10px;
@@ -450,7 +459,6 @@
                 flex-shrink: 0;
             }
 
-        /* ===== GRID ===== */
         .grid {
             display: grid;
             gap: 12px;
@@ -473,7 +481,6 @@
             grid-template-columns: repeat(5,1fr);
         }
 
-        /* ===== CARD ===== */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -733,10 +740,12 @@
         .cua-row {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .card-sm {
             flex: 1;
+            min-width: 80px;
             padding: 12px 12px;
             gap: 5px;
         }
@@ -763,7 +772,6 @@
             transition: background .3s;
         }
 
-        /* FOOTER */
         .footer {
             position: relative;
             z-index: 1;
@@ -851,25 +859,34 @@
                 padding: 10px 16px;
                 font-size: 9px;
             }
-
-          
         }
 
         .card-locked {
-            opacity: .5;
-            filter: grayscale(.6);
+            opacity: .45;
+            filter: grayscale(.7);
             cursor: not-allowed !important;
         }
 
-        .card-locked:hover {
+            .card-locked:hover {
                 transform: none !important;
                 box-shadow: none !important;
                 border-color: var(--border) !important;
                 background: var(--card-bg) !important;
-        }
+            }
 
-        .card-locked::before {
+            .card-locked::before {
                 display: none !important;
+            }
+
+            .card-locked .card-arrow {
+                display: none !important;
+            }
+
+        .lock-badge {
+            font-size: 9px;
+            color: var(--red);
+            letter-spacing: 1px;
+            opacity: .8;
         }
     </style>
 </head>
@@ -892,11 +909,8 @@
                 <div class="hdr-clock" id="clk">--:--:--</div>
                 <div class="hdr-date" id="dt"></div>
             </div>
-            <!-- User Dropdown -->
             <div class="user-menu" id="userMenu">
-                <div class="user-avatar" id="userAvatarBtn" onclick="toggleUserMenu()" title="Tài khoản">
-                    @initials
-                </div>
+                <div class="user-avatar" id="userAvatarBtn" onclick="toggleUserMenu()" title="Tài khoản">@initials</div>
                 <div class="user-dropdown" id="userDropdown">
                     <div class="ud-profile">
                         <div class="ud-avatar-big">@initials</div>
@@ -908,19 +922,15 @@
                     </div>
                     <div class="ud-menu">
                         <a class="ud-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                            <i class="bi bi-person-circle"></i>
-                            Hồ sơ cá nhân
+                            <i class="bi bi-person-circle"></i> Hồ sơ cá nhân
                         </a>
                         <a class="ud-item" href="/Dashboard">
-                            <i class="bi bi-speedometer2"></i>
-                            Trang quản trị
+                            <i class="bi bi-speedometer2"></i> Trang quản trị
                         </a>
                         <div class="ud-divider"></div>
-                        <form asp-area="Identity" asp-page="/Account/Logout"
-                              asp-route-returnUrl="@Url.Action("Index", "Nav")">
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
                             <button type="submit" class="ud-item ud-item-logout">
-                                <i class="bi bi-box-arrow-right"></i>
-                                Đăng xuất
+                                <i class="bi bi-box-arrow-right"></i> Đăng xuất
                             </button>
                         </form>
                     </div>
@@ -937,7 +947,7 @@
             TỔNG QUAN HỆ THỐNG
         </div>
         <div class="grid grid-2" style="margin-bottom:36px;">
-            <a class="card card-blue card-big" href="/TongTrungTam" target="_blank">
+            <a class="card card-blue card-big @(!HasPerm("TongTrungTam.View") ? "card-locked" : "")" href="/TongTrungTam" target="_blank">
                 <div class="card-icon">🖥️</div>
                 <div>
                     <div class="card-name">TRUNG TÂM ĐIỀU HÀNH</div>
@@ -947,14 +957,14 @@
                 <div class="card-arrow">→</div>
             </a>
             <div class="grid grid-2" style="margin-bottom:0;">
-                <a class="card card-green" href="/Home/tonghopnhap" target="_blank">
+                <a class="card card-green @(!HasPerm("TongHopNhap.View") ? "card-locked" : "")" href="/Home/tonghopnhap" target="_blank">
                     <div class="card-top"><div class="card-icon">📥</div><div class="card-badge">TỔNG HỢP</div></div>
                     <div class="card-name">TỔNG HỢP NHẬP</div>
                     <div class="card-desc">Thống kê xe, hàng hóa khu vực nhập</div>
                     <div class="card-url">/Home/tonghopnhap</div>
                     <div class="card-arrow">→</div>
                 </a>
-                <a class="card card-gold" href="/Home/tonghopxuat" target="_blank">
+                <a class="card card-gold @(!HasPerm("TongHopXuat.View") ? "card-locked" : "")" href="/Home/tonghopxuat" target="_blank">
                     <div class="card-top"><div class="card-icon">📤</div><div class="card-badge">TỔNG HỢP</div></div>
                     <div class="card-name">TỔNG HỢP XUẤT</div>
                     <div class="card-desc">Thống kê xe, hàng hóa khu vực xuất</div>
@@ -972,14 +982,14 @@
             BẢNG LED — MÀN HÌNH BÃI XE
         </div>
         <div class="grid grid-2" style="margin-bottom:36px;">
-            <a class="card card-green" href="/LedBoard/Nhap" target="_blank">
+            <a class="card card-green @(!HasPerm("LedBoard.View") ? "card-locked" : "")" href="/LedBoard/Nhap" target="_blank">
                 <div class="card-top"><div class="card-icon">🚚</div><div class="card-badge">LED BOARD</div></div>
                 <div class="card-name">CỔNG NHẬP KHO</div>
                 <div class="card-desc">Bảng LED điều hướng tài xế — biển số, cửa vào, trạng thái realtime</div>
                 <div class="card-url">/LedBoard/Nhap</div>
                 <div class="card-arrow">→</div>
             </a>
-            <a class="card card-gold" href="/LedBoard/Xuat" target="_blank">
+            <a class="card card-gold @(!HasPerm("LedBoard.View") ? "card-locked" : "")" href="/LedBoard/Xuat" target="_blank">
                 <div class="card-top"><div class="card-icon">🚛</div><div class="card-badge">LED BOARD</div></div>
                 <div class="card-name">CỔNG XUẤT KHO</div>
                 <div class="card-desc">Bảng LED điều hướng tài xế — biển số, cửa xuất, địa điểm giao</div>
@@ -996,18 +1006,32 @@
             ĐIỀU ĐỘ PHÂN CÔNG
         </div>
         <div class="grid grid-2" style="margin-bottom:36px;">
-            <a class="card card-green" href="/DieuDoNhap" target="_blank">
-                <div class="card-top"><div class="card-icon">⚡</div><div class="card-badge">ĐIỀU ĐỘ</div></div>
+            <a class="card card-green @(!HasPerm("DieuDoNhap.View") ? "card-locked" : "")" href="/DieuDoNhap" target="_blank">
+                <div class="card-top">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-badge">ĐIỀU ĐỘ</div>
+                </div>
                 <div class="card-name">ĐIỀU ĐỘ NHẬP</div>
                 <div class="card-desc">Phân công cửa nhập, quản lý hàng đợi xe vào kho</div>
                 <div class="card-url">/DieuDoNhap</div>
+                @if (!HasPerm("DieuDoNhap.View"))
+                {
+                    <span class="lock-badge">🔒 Không có quyền</span>
+                }
                 <div class="card-arrow">→</div>
             </a>
-            <a class="card card-gold" href="/DieuDoXuat" target="_blank">
-                <div class="card-top"><div class="card-icon">⚡</div><div class="card-badge">ĐIỀU ĐỘ</div></div>
+            <a class="card card-gold @(!HasPerm("DieuDoXuat.View") ? "card-locked" : "")" href="/DieuDoXuat" target="_blank">
+                <div class="card-top">
+                    <div class="card-icon">⚡</div>
+                    <div class="card-badge">ĐIỀU ĐỘ</div>
+                </div>
                 <div class="card-name">ĐIỀU ĐỘ XUẤT</div>
                 <div class="card-desc">Tạo phiếu xuất, phân công cửa xuất, quản lý hàng hóa</div>
                 <div class="card-url">/DieuDoXuat</div>
+                @if (!HasPerm("DieuDoXuat.View"))
+                {
+                    <span class="lock-badge">🔒 Không có quyền</span>
+                }
                 <div class="card-arrow">→</div>
             </a>
         </div>
@@ -1020,18 +1044,32 @@
             TRẠM BẢO VỆ — CAMERA AI
         </div>
         <div class="grid grid-2" style="margin-bottom:36px;">
-            <a class="card card-green" href="/BaoVeNhap" target="_blank">
-                <div class="card-top"><div class="card-icon">📷</div><div class="card-badge">CAMERA AI</div></div>
+            <a class="card card-green @(!HasPerm("BaoVeNhap.View") ? "card-locked" : "")" href="/BaoVeNhap" target="_blank">
+                <div class="card-top">
+                    <div class="card-icon">📷</div>
+                    <div class="card-badge">CAMERA AI</div>
+                </div>
                 <div class="card-name">BẢO VỆ CỔNG NHẬP</div>
                 <div class="card-desc">Nhận diện biển số AI, xác nhận xe vào bãi, lịch sử nhận diện</div>
                 <div class="card-url">/BaoVeNhap</div>
+                @if (!HasPerm("BaoVeNhap.View"))
+                {
+                    <span class="lock-badge">🔒 Không có quyền</span>
+                }
                 <div class="card-arrow">→</div>
             </a>
-            <a class="card card-gold" href="/BaoVeXuat" target="_blank">
-                <div class="card-top"><div class="card-icon">📷</div><div class="card-badge">CAMERA AI</div></div>
+            <a class="card card-gold @(!HasPerm("BaoVeXuat.View") ? "card-locked" : "")" href="/BaoVeXuat" target="_blank">
+                <div class="card-top">
+                    <div class="card-icon">📷</div>
+                    <div class="card-badge">CAMERA AI</div>
+                </div>
                 <div class="card-name">BẢO VỆ CỔNG XUẤT</div>
                 <div class="card-desc">Xác nhận xe ra cổng, kiểm tra biển số, camera realtime</div>
                 <div class="card-url">/BaoVeXuat</div>
+                @if (!HasPerm("BaoVeXuat.View"))
+                {
+                    <span class="lock-badge">🔒 Không có quyền</span>
+                }
                 <div class="card-arrow">→</div>
             </a>
         </div>
@@ -1049,7 +1087,8 @@
                 <div class="cua-row">
                     @foreach (var cua in ViewBag.CuaNhaps as List<LedApp.Models.CuaNhap> ?? new())
                     {
-                        <a class="card card-green card-sm @(!cua.IsActive ? "card-locked" : "")"
+                        bool locked = !cua.IsActive || !HasCuaNhap(cua.Id);
+                        <a class="card card-green card-sm @(locked ? "card-locked" : "")"
                            href="/NhanVienNhap/CuaNhap?cuaNhapId=@cua.Id" target="_blank">
                             <div class="card-icon">🚪</div>
                             <div class="card-name">@cua.Ten</div>
@@ -1057,6 +1096,10 @@
                                 @if (!cua.IsActive)
                                 {
                                     <span style="color:var(--red);font-size:9px;letter-spacing:1px;">🔒 ĐÃ KHÓA</span>
+                                }
+                                else if (!HasCuaNhap(cua.Id))
+                                {
+                                    <span class="lock-badge">🔒 Không có quyền</span>
                                 }
                                 else
                                 {
@@ -1072,7 +1115,8 @@
                 <div class="cua-row">
                     @foreach (var cua in ViewBag.CuaXuats as List<LedApp.Models.CuaXuat> ?? new())
                     {
-                        <a class="card card-gold card-sm @(!cua.IsActive ? "card-locked" : "")"
+                        bool locked = !cua.IsActive || !HasCuaXuat(cua.Id);
+                        <a class="card card-gold card-sm @(locked ? "card-locked" : "")"
                            href="/NhanVienXuat/CuaXuat?cuaXuatId=@cua.Id" target="_blank">
                             <div class="card-icon">🚪</div>
                             <div class="card-name">@cua.Ten</div>
@@ -1080,6 +1124,10 @@
                                 @if (!cua.IsActive)
                                 {
                                     <span style="color:var(--red);font-size:9px;letter-spacing:1px;">🔒 ĐÃ KHÓA</span>
+                                }
+                                else if (!HasCuaXuat(cua.Id))
+                                {
+                                    <span class="lock-badge">🔒 Không có quyền</span>
                                 }
                                 else
                                 {
@@ -1166,46 +1214,39 @@
     </div>
 
     <script>
-        // Clock
         function tick(){
-          var n=new Date();
-          document.getElementById('clk').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
-          document.getElementById('dt').textContent=n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
-          document.getElementById('footer-time').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
+            var n=new Date();
+            document.getElementById('clk').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
+            document.getElementById('dt').textContent=n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+            document.getElementById('footer-time').textContent=n.toLocaleTimeString('vi-VN',{hour12:false});
         }
         setInterval(tick,1000);tick();
 
-        // Theme toggle
         function toggleTheme(){
-          var html=document.documentElement;
-          var next=html.getAttribute('data-theme')==='dark'?'light':'dark';
-          html.setAttribute('data-theme',next);
-          try{localStorage.setItem('wms-theme',next);}catch(e){}
+            var html=document.documentElement;
+            var next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+            html.setAttribute('data-theme',next);
+            try{localStorage.setItem('wms-theme',next);}catch(e){}
         }
         (function(){
-          try{var s=localStorage.getItem('wms-theme');if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}
+            try{var s=localStorage.getItem('wms-theme');if(s)document.documentElement.setAttribute('data-theme',s);}catch(e){}
         })();
 
-        // User dropdown
         function toggleUserMenu(){
-          var btn=document.getElementById('userAvatarBtn');
-          var dd=document.getElementById('userDropdown');
-          var open=dd.classList.toggle('open');
-          btn.classList.toggle('open',open);
+            var btn=document.getElementById('userAvatarBtn');
+            var dd=document.getElementById('userDropdown');
+            var open=dd.classList.toggle('open');
+            btn.classList.toggle('open',open);
         }
         document.addEventListener('click',function(e){
-          var menu=document.getElementById('userMenu');
-          if(menu&&!menu.contains(e.target)){
-            document.getElementById('userDropdown').classList.remove('open');
-            document.getElementById('userAvatarBtn').classList.remove('open');
-          }
+            var menu=document.getElementById('userMenu');
+            if(menu&&!menu.contains(e.target)){
+                document.getElementById('userDropdown').classList.remove('open');
+                document.getElementById('userAvatarBtn').classList.remove('open');
+            }
         });
-                // Chặn click card bị khóa
         document.querySelectorAll('.card-locked').forEach(function(el){
-            el.addEventListener('click', function(e){
-                e.preventDefault();
-                e.stopPropagation();
-            });
+            el.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); });
         });
     </script>
 </body>

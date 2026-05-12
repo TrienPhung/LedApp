@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Không có quyền truy cập";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Không có quyền</title>
+    <style>
+        body {
+            background: #060a0f;
+            color: #c8dce8;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .box {
+            text-align: center;
+            padding: 48px;
+            background: #0a1520;
+            border: 1px solid #1a3a5c;
+            border-radius: 16px;
+            max-width: 420px;
+        }
+
+        .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ef4444;
+            margin-bottom: 8px;
+        }
+
+        .desc {
+            font-size: 13px;
+            color: #4a6a8a;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: #1a3a5c;
+            color: #c8dce8;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background .2s;
+        }
+
+            .btn:hover {
+                background: #2a5a8c;
+                color: #fff;
+            }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="icon">🔒</div>
+        <div class="title">Không có quyền truy cập</div>
+        <div class="desc">
+            Tài khoản của bạn không có quyền thực hiện chức năng này.<br />
+            Vui lòng liên hệ Admin để được cấp quyền.
+        </div>
+        <a class="btn" href="/Nav">← Quay về trang chủ</a>
+    </div>
+</body>
+</html>

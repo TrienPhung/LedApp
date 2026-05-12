@@ -123,10 +123,12 @@ namespace Viettel_post_API.Controllers
                     xe.BienSo,
                     xe.TenLaiXe,
                     xe.MaChiNhanh,
-
                     ChuyenHienTai = xe.ChuyenXes
-                        .Where(c => c.IsLatest)
-                         .OrderByDescending(c => c.NgayDuKien) // 🔥 sắp xếp theo ngày dự kiến
+                        .OrderBy(c => c.TrangThai == TrangThaiChuyen.DaDen ? 0 :
+                                      c.TrangThai == TrangThaiChuyen.DangNhapHang ? 1 :
+                                      c.TrangThai == TrangThaiChuyen.DangVe ? 2 :
+                                      c.TrangThai == TrangThaiChuyen.ChuaVe ? 3 : 4)
+                        .ThenByDescending(c => c.NgayDuKien)
                         .Select(c => new
                         {
                             c.Id,
@@ -136,7 +138,7 @@ namespace Viettel_post_API.Controllers
                             c.TrangThai,
                             c.ThoiGianDen,
                             c.ThoiGianHoanThanh,
-
+                            c.IsLatest,
                             HangHoas = c.HangHoas.Select(h => new
                             {
                                 h.DonVi,
@@ -145,9 +147,8 @@ namespace Viettel_post_API.Controllers
                         })
                         .FirstOrDefault()
                 })
-                .OrderByDescending(x => x.ChuyenHienTai.NgayDuKien) // 🔥 sắp xếp toàn bộ danh sách
+                .OrderByDescending(x => x.ChuyenHienTai.NgayDuKien)
                 .ToListAsync();
-            
 
             return Ok(data);
         }

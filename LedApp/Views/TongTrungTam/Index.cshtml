@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>TRUNG TÂM ĐIỀU HÀNH KHO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
     <style>
         *, *::before, *::after {
@@ -21,29 +21,26 @@
         }
 
         :root {
-            --bg: #030508;
-            --s1: #070c14;
-            --s2: #0a1220;
-            --s3: #0d1828;
-            --border: #0e2040;
-            --border2: #14304a;
-            --border3: #1a3d5c;
-            --blue: #00b4ff;
-            --blue2: #38bdf8;
-            --cyan: #00e5ff;
-            --green: #00e676;
+            --bg: #0b0f1a;
+            --s1: #111827;
+            --s2: #1a2234;
+            --s3: #1e293b;
+            --border: #1e3a5f;
+            --border2: #243855;
+            --cyan: #22d3ee;
+            --blue: #3b82f6;
+            --blue2: #60a5fa;
+            --green: #22c55e;
             --green2: #4ade80;
-            --gold: #f5a623;
+            --gold: #f59e0b;
             --gold2: #fbbf24;
-            --orange: #ff6d00;
+            --orange: #f97316;
             --orange2: #fb923c;
-            --red: #ff3d3d;
+            --red: #ef4444;
             --red2: #f87171;
-            --purple: #a855f7;
-            --text: #8fb0cc;
-            --text2: #3a5f80;
-            --text3: #1e3a55;
-            --bright: #d4e8f8;
+            --text: #94a3b8;
+            --text2: #475569;
+            --bright: #e2e8f0;
         }
 
         html, body {
@@ -54,123 +51,124 @@
         body {
             background: var(--bg);
             color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
         }
 
-            /* Scanline overlay */
-            body::after {
-                content: '';
-                position: fixed;
-                inset: 0;
-                background: repeating-linear-gradient( 0deg, transparent, transparent 2px, rgba(0,180,255,.012) 2px, rgba(0,180,255,.012) 4px );
-                pointer-events: none;
-                z-index: 9999;
-            }
-
-            /* Grid overlay */
+            /* Subtle grid bg */
             body::before {
                 content: '';
                 position: fixed;
                 inset: 0;
-                background-image: linear-gradient(rgba(0,180,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,180,255,.04) 1px, transparent 1px);
-                background-size: 60px 60px;
+                background-image: linear-gradient(rgba(34,211,238,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.03) 1px, transparent 1px);
+                background-size: 48px 48px;
                 pointer-events: none;
                 z-index: 0;
             }
 
+        /* ══ LAYOUT ══ */
         .screen {
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-rows: 64px 1fr 48px;
+            grid-template-rows: 65px 1fr 110px;
             height: 100vh;
-            padding: 10px;
-            gap: 8px;
+            padding: 6px;
+            gap: 4px;
         }
 
-        /* ══════════════ TOPBAR ══════════════ */
+        /* ══ TOPBAR ══ */
         .topbar {
             display: grid;
-            grid-template-columns: 280px 1fr auto;
+            grid-template-columns: 220px 1fr auto;
             align-items: center;
             background: var(--s1);
-            border: 1px solid var(--border3);
-            border-top: 2px solid var(--cyan);
+            border: 1px solid var(--border2);
+           
             border-radius: 8px;
-            padding: 0 20px;
-            gap: 20px;
+            padding: 0 14px;
+            gap: 12px;
         }
 
         .tb-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .tb-logo {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, #001a2e, #003a60);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0c2340, #1e4080);
             border: 1px solid var(--cyan);
             border-radius: 7px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 0 16px rgba(0,229,255,.25);
+            font-size: 15px;
         }
 
         .tb-title {
             font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 4px;
+            font-weight: 800;
+            letter-spacing: 2px;
             color: var(--cyan);
             text-transform: uppercase;
-            line-height: 1;
+            line-height: 1.2;
         }
 
         .tb-sub {
             font-size: 9px;
             color: var(--text2);
-            letter-spacing: 2px;
-            margin-top: 3px;
+            letter-spacing: 1px;
+            margin-top: 2px;
         }
 
-        /* KPI pills trên topbar */
+        /* KPI row — big pills like mockup */
         .kpi-row {
             display: flex;
-            gap: 6px;
-            align-items: center;
+            gap: 5px;
+            align-items: stretch;
             overflow: hidden;
         }
 
         .kpi-pill {
             background: var(--s2);
             border: 1px solid var(--border2);
-            border-radius: 5px;
+            border-radius: 7px;
             padding: 5px 12px;
             text-align: center;
-            min-width: 70px;
-            flex-shrink: 0;
+            min-width: 80px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
             .kpi-pill .n {
-                font-family: 'Share Tech Mono', monospace;
-                font-size: 18px;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 22px;
                 font-weight: 700;
                 line-height: 1;
+                display: block;
             }
 
             .kpi-pill .l {
-                font-size: 8px;
+                font-size: 9px;
                 color: var(--text2);
-                letter-spacing: 1px;
+                letter-spacing: .5px;
                 text-transform: uppercase;
-                margin-top: 2px;
+                margin-top: 3px;
+                white-space: nowrap;
             }
 
             .kpi-pill.c-blue .n {
-                color: var(--blue);
+                color: var(--blue2);
+            }
+
+            .kpi-pill.c-cyan .n {
+                color: var(--cyan);
             }
 
             .kpi-pill.c-green .n {
@@ -181,28 +179,33 @@
                 color: var(--gold);
             }
 
-            .kpi-pill.c-red .n {
-                color: var(--red);
-                animation: blink .8s step-start infinite;
-            }
-
             .kpi-pill.c-orange .n {
                 color: var(--orange2);
             }
 
-            .kpi-pill.c-cyan .n {
-                color: var(--cyan);
+            .kpi-pill.c-red .n {
+                color: var(--red);
+                animation: blink .8s step-start infinite;
             }
 
         @@keyframes blink {
             50%
 
         {
-            opacity: .25;
+            opacity: .2;
+        }
+
+        }
+        @@keyframes pulse {
+            50%
+
+        {
+            opacity: .4;
         }
 
         }
 
+        /* Right topbar */
         .tb-right {
             display: flex;
             align-items: center;
@@ -210,127 +213,221 @@
             flex-shrink: 0;
         }
 
-        .clock-box {
-            text-align: right;
-        }
-
         .clock {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 28px;
-            color: var(--gold);
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px rgba(245,166,35,.4);
+            font-weight: 700;
+            color: var(--gold2);
+            letter-spacing: 3px;
         }
 
         .date {
             font-size: 9px;
             color: var(--text2);
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             margin-top: 2px;
+            text-align: right;
         }
 
-        .sig-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--s2);
-            border: 1px solid var(--border2);
-            border-radius: 20px;
-            padding: 5px 12px;
-            font-size: 10px;
-            color: var(--text2);
-            letter-spacing: 1px;
-        }
+
 
         .dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: var(--text3);
+            background: var(--text2);
             flex-shrink: 0;
         }
 
             .dot.on {
                 background: var(--green);
-                box-shadow: 0 0 8px var(--green);
                 animation: pulse 2s infinite;
             }
 
             .dot.err {
                 background: var(--red);
             }
-        @@keyframes pulse {
-            50%
 
-        {
-            opacity: .3;
+        .alert-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(239,68,68,.12);
+            border: 1px solid rgba(239,68,68,.25);
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--red2);
         }
 
-        }
+            .alert-pill.hidden {
+                display: none;
+            }
 
-        /* ══════════════ MAIN GRID ══════════════ */
+        /* ══ MAIN GRID ══ */
         .main {
             display: grid;
-            grid-template-columns: 1fr 1px 1fr 220px;
-            gap: 0;
+            grid-template-columns: 168px 1px 1fr 1px 1.45fr 1px 168px;
             min-height: 0;
+            overflow: hidden;
         }
 
         .divider-v {
             background: var(--border2);
         }
 
-        /* Cột NHẬP */
-        .col-nhap {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            padding: 8px 10px;
-            gap: 8px;
-            min-height: 0;
-        }
-
-        /* Cột XUẤT */
-        .col-xuat {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            padding: 8px 10px;
-            gap: 8px;
-            min-height: 0;
-        }
-
-        /* Cột phải: sidebar */
+        /* ── Sidebar ── */
         .col-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 8px 8px 8px 10px;
-            border-left: 1px solid var(--border2);
-            overflow-y: auto;
             min-height: 0;
+            overflow: hidden;
         }
 
-            .col-sidebar::-webkit-scrollbar {
-                width: 3px;
+        .sb-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 10px;
+            border-bottom: 1px solid var(--border2);
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .sb-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 7px;
+        }
+
+            .sb-body::-webkit-scrollbar {
+                width: 2px;
             }
 
-            .col-sidebar::-webkit-scrollbar-thumb {
+            .sb-body::-webkit-scrollbar-thumb {
                 background: var(--border2);
             }
 
-        /* ── Section header ── */
+        .count-badge {
+            background: var(--s2);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 1px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Xe sắp về card */
+        .sapve-card {
+            background: var(--s2);
+            border: 1px solid var(--border2);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 7px 9px;
+            margin-bottom: 5px;
+        }
+
+            .sapve-card.da-pc {
+                border-left-color: var(--gold);
+            }
+
+        .sapve-bienso {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue2);
+        }
+
+        .sapve-card.da-pc .sapve-bienso {
+            color: var(--gold2);
+        }
+
+        .sapve-meta {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        .sapve-hang {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-top: 4px;
+        }
+
+        .hang-tag {
+            background: var(--s1);
+            border: 1px solid var(--border2);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+        }
+
+            .hang-tag .hn {
+                color: var(--gold2);
+            }
+
+            .hang-tag .hd {
+                color: var(--text2);
+            }
+
+        /* Chờ ra cổng */
+        .racong-card {
+            background: var(--s2);
+            border: 1px solid var(--border2);
+            border-left: 3px solid var(--green);
+            border-radius: 6px;
+            padding: 7px 9px;
+            margin-bottom: 5px;
+        }
+
+        .racong-bienso {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--green2);
+        }
+
+        .racong-meta {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+        }
+
+        .racong-hang {
+            font-size: 10px;
+            color: var(--green2);
+            margin-top: 3px;
+        }
+
+        /* ── Col nhập / xuất ── */
+        .col-nhap, .col-xuat {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            padding: 6px 8px;
+            gap: 5px;
+            min-height: 0;
+        }
+
         .sec-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 6px;
+            padding-bottom: 5px;
             border-bottom: 1px solid var(--border2);
             flex-shrink: 0;
         }
 
         .sec-title {
             font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
+            font-weight: 800;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
@@ -342,44 +439,24 @@
                 color: var(--orange2);
             }
 
-        /* Stats row */
-        .stats-row {
+        .sec-stats {
             display: flex;
-            gap: 6px;
-            flex-shrink: 0;
+            gap: 10px;
+            font-size: 10px;
+            color: var(--text2);
         }
 
-        .stat-chip {
-            flex: 1;
-            background: var(--s1);
-            border: 1px solid var(--border2);
-            border-radius: 5px;
-            padding: 6px 8px;
-            text-align: center;
-        }
-
-            .stat-chip .sn {
-                font-family: 'Share Tech Mono', monospace;
-                font-size: 20px;
+            .sec-stats span span {
                 font-weight: 700;
-                line-height: 1;
             }
 
-            .stat-chip .sl {
-                font-size: 8px;
-                color: var(--text2);
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                margin-top: 2px;
-            }
-
-        /* ── Grid cửa ── */
+        /* Cửa grid — nhập 3 cột, xuất 4 cột */
         .cua-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 7px;
+            gap: 5px;
             align-content: start;
             overflow-y: auto;
+            overflow-x: hidden;
             min-height: 0;
         }
 
@@ -387,43 +464,49 @@
                 width: 3px;
             }
 
-            .cua-grid::-webkit-scrollbar-thumb {
-                background: var(--border2);
+            .cua-grid::-webkit-scrollbar-track {
+                background: transparent;
             }
 
-        /* Card cửa */
+            .cua-grid::-webkit-scrollbar-thumb {
+                background: var(--border2);
+                border-radius: 2px;
+            }
+
+            .cua-grid.nhap {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .cua-grid.xuat {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+        /* Card cửa — to hơn, dễ đọc */
         .cua-card {
             background: var(--s1);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--border2);
+            @* border-left: 3px solid var(--border2); *@
             border-radius: 7px;
-            padding: 10px 12px;
+            padding: 8px 10px;
             cursor: pointer;
-            transition: border-color .2s, background .2s;
-            position: relative;
-            overflow: hidden;
+            transition: background .12s;
         }
 
             .cua-card:hover {
                 background: var(--s2);
             }
 
-            /* Trạng thái border màu */
-            .cua-card.st-trong {
-                border-left-color: var(--border2);
-            }
-
             .cua-card.st-cho {
-                border-left-color: var(--blue);
+                @* border-left-color: var(--blue); *@
             }
 
             .cua-card.st-dang {
-                border-left-color: var(--gold);
+                @* border-left-color: var(--gold); *@
             }
 
             .cua-card.st-quagio {
                 border-left-color: var(--red);
-                background: rgba(255,61,61,.04);
+                background: rgba(239,68,68,.04);
             }
 
             .cua-card.st-done {
@@ -431,11 +514,14 @@
             }
 
         .cua-name {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
             .cua-name.nhap {
@@ -447,30 +533,29 @@
             }
 
         .cua-bienso {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
             font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 2px;
-            min-height: 24px;
+            color: var(--gold2);
+            letter-spacing: 1px;
+            min-height: 22px;
         }
 
             .cua-bienso.empty {
-                color: var(--text3);
-                font-size: 12px;
+                color: var(--text2);
+                font-size: 11px;
                 font-weight: 400;
-                letter-spacing: 1px;
             }
 
         .cua-divider {
             border-top: 1px solid var(--border);
-            margin: 6px 0;
+            margin: 5px 0;
         }
 
         .cua-hang-row {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 9px;
             margin-bottom: 2px;
         }
 
@@ -478,60 +563,60 @@
             color: var(--text2);
         }
 
-        .cua-hang-val {
-            font-family: 'Share Tech Mono', monospace;
+        .cua-hang-val.chua {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gold2);
+            font-size: 10px;
         }
 
-            .cua-hang-val.chua {
-                color: var(--gold2);
-            }
-
-            .cua-hang-val.da {
-                color: var(--green2);
-            }
+        .cua-hang-val.da {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--green2);
+            font-size: 10px;
+        }
 
         .cua-strip {
-            margin-top: 7px;
-            padding: 4px 8px;
+            margin-top: 5px;
+            padding: 3px 6px;
             border-radius: 4px;
             font-size: 9px;
             font-weight: 700;
-            letter-spacing: .5px;
+            letter-spacing: .3px;
             text-align: center;
         }
 
+            .cua-strip.trong {
+                background: rgba(30,58,95,.3);
+                color: var(--text2);
+            }
+
             .cua-strip.wait {
-                background: rgba(14,32,64,.8);
+                background: rgba(59,130,246,.12);
                 color: var(--blue2);
             }
 
             .cua-strip.dang {
-                background: rgba(24,18,0,.8);
+                background: rgba(245,158,11,.12);
                 color: var(--gold);
             }
 
             .cua-strip.over {
-                background: rgba(40,0,0,.8);
+                background: rgba(239,68,68,.15);
                 color: var(--red2);
                 animation: blink .7s step-start infinite;
             }
 
             .cua-strip.done {
-                background: rgba(0,24,12,.8);
+                background: rgba(34,197,94,.12);
                 color: var(--green);
             }
 
-            .cua-strip.trong {
-                background: rgba(14,32,64,.4);
-                color: var(--text2);
-            }
-
         .cua-timer {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
             color: var(--text2);
             text-align: right;
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
             .cua-timer.warn {
@@ -542,219 +627,98 @@
                 color: var(--red);
             }
 
-        /* Xe sắp về strip ở cuối cột nhập */
-        .sapve-strip {
-            background: var(--s1);
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            padding: 8px 10px;
-            flex-shrink: 0;
-        }
-
-        .sapve-title {
-            font-size: 9px;
-            letter-spacing: 2px;
+        .empty-note {
+            text-align: center;
+            padding: 14px 6px;
+            font-size: 10px;
             color: var(--text2);
-            text-transform: uppercase;
-            margin-bottom: 6px;
+            font-style: italic;
         }
 
-        .sapve-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-
-        .sapve-tag {
-            background: var(--s2);
-            border: 1px solid var(--border2);
-            border-radius: 4px;
-            padding: 3px 8px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 11px;
-            color: var(--blue2);
-        }
-
-            .sapve-tag.chuaphan {
-                border-color: rgba(245,166,35,.3);
-                color: var(--gold);
-            }
-
-        /* Xe chờ ra cổng ở cuối cột xuất */
-        .choracong-strip {
-            background: var(--s1);
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            padding: 8px 10px;
-            flex-shrink: 0;
-        }
-
-        /* ══════════════ SIDEBAR ══════════════ */
-        .sidebar-section {
+        /* ══ FOOTER ══ */
+        .footer {
+            display: grid;
+            grid-template-columns: 1fr 1px 1fr;
             background: var(--s1);
             border: 1px solid var(--border2);
             border-radius: 7px;
             overflow: hidden;
-            flex-shrink: 0;
+            min-height: 0;
         }
 
-        .sidebar-section-header {
+        .footer-divider {
+            background: var(--border2);
+        }
+
+        .footer-col {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            padding: 4px 10px;
+            min-height: 0;
+        }
+
+        .footer-col-header {
+            display: flex;
             align-items: center;
-            padding: 8px 12px;
-            border-bottom: 1px solid var(--border);
+            justify-content: space-between;
             font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-        }
-
-        .sidebar-section-body {
-            padding: 8px 10px;
-        }
-
-        /* Xe trong bãi */
-        .xe-bai-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 11px;
-        }
-
-            .xe-bai-row:last-child {
-                border-bottom: none;
-            }
-
-        /* Cảnh báo */
-        .cb-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 7px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-            .cb-item:last-child {
-                border-bottom: none;
-            }
-
-        .cb-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border2);
             flex-shrink: 0;
-            margin-top: 4px;
+            margin-bottom: 4px;
         }
 
-            .cb-dot.tt-0 {
-                background: var(--red);
-                animation: pulse 1s infinite;
-            }
-
-            .cb-dot.tt-1 {
-                background: var(--gold);
-            }
-
-        .cb-content {
+        .footer-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            overflow-y: auto;
             flex: 1;
-            min-width: 0;
         }
 
-        .cb-bienso {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 12px;
-            color: var(--red2);
-        }
-
-        .cb-meta {
-            font-size: 10px;
-            color: var(--text2);
-            margin-top: 1px;
-        }
-
-        /* Van chuyen */
-        .van-item {
-            padding: 5px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 11px;
-        }
-
-            .van-item:last-child {
-                border-bottom: none;
+            .footer-chips::-webkit-scrollbar {
+                width: 2px;
             }
 
-        .van-bienso {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 13px;
-            color: var(--orange2);
-        }
+            .footer-chips::-webkit-scrollbar-thumb {
+                background: var(--border2);
+            }
 
-        .van-meta {
-            font-size: 10px;
-            color: var(--text2);
-            margin-top: 1px;
-        }
-
-        .empty-note {
-            text-align: center;
-            padding: 12px 6px;
-            font-size: 10px;
-            color: var(--text3);
-            font-style: italic;
-        }
-
-        /* Badge count */
-        .count-badge {
+        .xe-chip {
             background: var(--s2);
             border: 1px solid var(--border2);
-            border-radius: 10px;
-            padding: 1px 8px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 11px;
+            border-radius: 5px;
+            padding: 3px 8px; /* giảm padding */
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            width: fit-content; /* ← thêm dòng này */
+            height: fit-content; /* ← thêm dòng này */
         }
 
-        /* ══════════════ FOOTER ══════════════ */
-        .footer {
-            background: var(--s1);
-            border: 1px solid var(--border2);
-            border-radius: 6px;
-            padding: 0 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 9px;
-            color: var(--text2);
-            letter-spacing: 1px;
-            flex-shrink: 0;
-        }
-
-        .footer-alerts {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-pill {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255,61,61,.1);
-            border: 1px solid rgba(255,61,61,.2);
-            border-radius: 4px;
-            padding: 2px 8px;
-            font-size: 10px;
+        .xe-chip-bs {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
             font-weight: 700;
-            color: var(--red2);
         }
 
-            .alert-pill.hidden {
-                display: none;
+            .xe-chip-bs.green {
+                color: var(--green2);
             }
 
-        /* ══════════════ DETAIL POPUP ══════════════ */
+            .xe-chip-bs.orange {
+                color: var(--orange2);
+            }
+
+        .xe-chip-tt {
+            font-size: 9px;
+            color: var(--text2);
+        }
+
+        /* ══ POPUP ══ */
         .popup-overlay {
             position: fixed;
             inset: 0;
@@ -771,7 +735,7 @@
 
         .popup {
             background: var(--s2);
-            border: 1px solid var(--border3);
+            border: 1px solid var(--border2);
             border-top: 2px solid var(--cyan);
             border-radius: 10px;
             width: 480px;
@@ -781,11 +745,11 @@
 
         .popup-title {
             font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 3px;
+            font-weight: 800;
+            letter-spacing: 2px;
             color: var(--cyan);
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
         }
@@ -796,15 +760,14 @@
             color: var(--text2);
             font-size: 20px;
             cursor: pointer;
-            line-height: 1;
         }
 
         .popup-bienso {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 36px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
             font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 6px;
+            color: var(--gold2);
+            letter-spacing: 4px;
             text-align: center;
             padding: 12px 0;
             border: 1px solid var(--border2);
@@ -829,19 +792,6 @@
             font-weight: 600;
         }
 
-            .popup-val.gold {
-                color: var(--gold);
-                font-family: 'Share Tech Mono', monospace;
-            }
-
-            .popup-val.green {
-                color: var(--green);
-            }
-
-            .popup-val.red {
-                color: var(--red);
-            }
-
         .popup-hang-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -860,11 +810,10 @@
         .popup-hang-dv {
             font-size: 10px;
             color: var(--text2);
-            letter-spacing: 1px;
         }
 
         .popup-hang-n {
-            font-family: 'Share Tech Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 18px;
             font-weight: 700;
             margin-top: 2px;
@@ -888,49 +837,48 @@
                 <div class="tb-logo">⚙</div>
                 <div>
                     <div class="tb-title">Trung Tâm Điều Hành</div>
-                    <div class="tb-sub">Warehouse Operation Center — Real-time</div>
+                    <div class="tb-sub">Warehouse Operation Center · Real-time</div>
                 </div>
             </div>
 
-            <div class="kpi-row" id="kpi-row">
+            <div class="kpi-row">
                 <div class="kpi-pill c-blue">
-                    <div class="n" id="kpi-nhap-hom">0</div>
-                    <div class="l">Nhập hôm nay</div>
+                    <span class="n" id="kpi-nhap-hom">0</span>
+                    <span class="l">Nhập hôm nay</span>
                 </div>
                 <div class="kpi-pill c-cyan">
-                    <div class="n" id="kpi-nhap-xong">0</div>
-                    <div class="l">Nhập xong</div>
+                    <span class="n" id="kpi-nhap-xong">0</span>
+                    <span class="l">Nhập xong</span>
                 </div>
                 <div class="kpi-pill c-orange">
-                    <div class="n" id="kpi-xuat-hom">0</div>
-                    <div class="l">Xuất hôm nay</div>
+                    <span class="n" id="kpi-xuat-hom">0</span>
+                    <span class="l">Xuất hôm nay</span>
                 </div>
                 <div class="kpi-pill c-green">
-                    <div class="n" id="kpi-xuat-xong">0</div>
-                    <div class="l">Đã rời kho</div>
+                    <span class="n" id="kpi-xuat-xong">0</span>
+                    <span class="l">Đã rời kho</span>
                 </div>
                 <div class="kpi-pill c-red" id="kpi-quagio-pill">
-                    <div class="n" id="kpi-quagio">0</div>
-                    <div class="l">Quá giờ</div>
+                    <span class="n" id="kpi-quagio">0</span>
+                    <span class="l">Quá giờ</span>
                 </div>
                 <div class="kpi-pill c-gold">
-                    <div class="n" id="kpi-xe-bai">0</div>
-                    <div class="l">Xe trong bãi</div>
+                    <span class="n" id="kpi-xe-bai">0</span>
+                    <span class="l">Xe trong bãi</span>
                 </div>
-                <div class="kpi-pill c-green">
-                    <div class="n" id="kpi-van-chuyen">0</div>
-                    <div class="l">Đang vận chuyển</div>
+                <div class="kpi-pill c-blue">
+                    <span class="n" id="kpi-sap-ve">0</span>
+                    <span class="l">Xe sắp về</span>
                 </div>
             </div>
 
             <div class="tb-right">
-                <div class="clock-box">
+                <div class="alert-pill hidden" id="footer-alert-pill">
+                    <span>⚠</span><span id="footer-alert-txt"></span>
+                </div>
+                <div>
                     <div class="clock" id="clock">--:--:--</div>
                     <div class="date" id="date-str"></div>
-                </div>
-                <div class="sig-badge">
-                    <span class="dot" id="sig-dot"></span>
-                    <span id="sig-txt">Kết nối...</span>
                 </div>
             </div>
         </div>
@@ -938,31 +886,42 @@
         <!-- ══ MAIN ══ -->
         <div class="main">
 
-            <!-- ══ CỘT NHẬP ══ -->
+            <!-- Sidebar trái: Xe sắp về -->
+            <div class="col-sidebar">
+                <div class="sb-header" style="color:var(--blue2);">
+                    <span>▶ Xe sắp về</span>
+                    <span class="count-badge" id="sb-sapve-count" style="color:var(--blue2);">0</span>
+                </div>
+                <div class="sb-body" id="sb-sapve-list">
+                    <div class="empty-note">Chưa có dữ liệu</div>
+                </div>
+            </div>
+
+            <div class="divider-v"></div>
+
+            <!-- Cột Nhập — 3 cột -->
             <div class="col-nhap">
                 <div class="sec-header">
                     <span class="sec-title nhap">▶ Nhập kho</span>
-                    <div style="display:flex;gap:8px;font-size:11px;">
-                        <span style="color:var(--text2);">Sắp về: <span id="nh-sapve" style="color:var(--gold2);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Đã về: <span id="nh-dave" style="color:var(--blue2);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Chưa vào: <span id="nh-chuavao" style="color:var(--red2);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Đang BG: <span id="nh-dangbg" style="color:var(--orange2);font-weight:700;">0</span></span>
+                    <div class="sec-stats">
+                        <span>Đã về: <span id="nh-dave" style="color:var(--blue2);">0</span></span>
+                        <span>Chưa vào: <span id="nh-chuavao" style="color:var(--red2);">0</span></span>
+                        <span>Đang BG: <span id="nh-dangbg" style="color:var(--orange2);">0</span></span>
+                        <span style="color:var(--text2);font-size:9px;margin-left:4px;">@cuaNhaps.Count cửa</span>
                     </div>
                 </div>
-
-                <!-- Grid cửa nhập -->
-                <div class="cua-grid" id="grid-nhap">
+                <div class="cua-grid nhap" id="grid-nhap">
                     @foreach (var c in cuaNhaps)
                     {
                         <div class="cua-card st-trong" id="nc-@c.Id" onclick="showDetail('nhap',@c.Id)">
-                            <div class="cua-name nhap">@c.Ten</div>
+                            <div class="cua-name nhap"><span>@c.Ten</span></div>
                             <div class="cua-bienso empty" id="nb-@c.Id">— Trống —</div>
-                            <div class="cua-divider"></div>
-                            <div class="cua-hang-row">
+                            <div class="cua-divider" id="nc-div-@c.Id" style="display:none;"></div>
+                            <div class="cua-hang-row" id="nc-hang-@c.Id" style="display:none;">
                                 <span class="cua-hang-lbl">Chưa BG</span>
                                 <span class="cua-hang-val chua" id="nc-chua-@c.Id">—</span>
                             </div>
-                            <div class="cua-hang-row">
+                            <div class="cua-hang-row" id="nc-hang2-@c.Id" style="display:none;">
                                 <span class="cua-hang-lbl">Đã BG</span>
                                 <span class="cua-hang-val da" id="nc-da-@c.Id">—</span>
                             </div>
@@ -971,49 +930,40 @@
                         </div>
                     }
                 </div>
-
-                <!-- Xe sắp về -->
-                <div class="sapve-strip" id="sapve-strip">
-                    <div class="sapve-title">▸ Xe đang trên đường về</div>
-                    <div class="sapve-list" id="sapve-list">
-                        <span style="color:var(--text3);font-size:10px;">Chưa có dữ liệu</span>
-                    </div>
-                </div>
             </div>
 
             <div class="divider-v"></div>
 
-            <!-- ══ CỘT XUẤT ══ -->
+            <!-- Cột Xuất — 4 cột -->
             <div class="col-xuat">
                 <div class="sec-header">
                     <span class="sec-title xuat">▶ Xuất kho</span>
-                    <div style="display:flex;gap:8px;font-size:11px;">
-                        <span style="color:var(--text2);">Chờ xuất: <span id="xc-cho" style="color:var(--text);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Đang BG: <span id="xc-dang" style="color:var(--gold2);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Quá giờ: <span id="xc-qg" style="color:var(--red2);font-weight:700;">0</span></span>
-                        <span style="color:var(--text2);">Đã rời: <span id="xc-roi" style="color:var(--green2);font-weight:700;">0</span></span>
+                    <div class="sec-stats">
+                        <span>Chờ xuất: <span id="xc-cho" style="color:var(--text);">0</span></span>
+                        <span>Đang BG: <span id="xc-dang" style="color:var(--gold2);">0</span></span>
+                        <span>Quá giờ: <span id="xc-qg" style="color:var(--red2);">0</span></span>
+                        <span>Đã rời: <span id="xc-roi" style="color:var(--green2);">0</span></span>
+                        <span style="color:var(--text2);font-size:9px;margin-left:4px;">@cuaXuats.Count cửa</span>
                     </div>
                 </div>
-
-                <!-- Grid cửa xuất -->
-                <div class="cua-grid" id="grid-xuat">
+                <div class="cua-grid xuat" id="grid-xuat">
                     @foreach (var c in cuaXuats)
                     {
                         <div class="cua-card st-trong" id="xc-@c.Id" onclick="showDetail('xuat',@c.Id)">
-                            <div class="cua-name xuat" style="display:flex;justify-content:space-between;align-items:center;">
+                            <div class="cua-name xuat">
                                 <span>@c.Ten</span>
                                 @if (!c.IsActive)
                                 {
-                                    <span style="font-size:8px;color:var(--red2);letter-spacing:1px;">KHÓA</span>
+                                    <span style="font-size:7px;color:var(--red2);">KHÓA</span>
                                 }
                             </div>
                             <div class="cua-bienso empty" id="xb-@c.Id">— Trống —</div>
-                            <div class="cua-divider"></div>
-                            <div class="cua-hang-row">
+                            <div class="cua-divider" id="xc-div-@c.Id" style="display:none;"></div>
+                            <div class="cua-hang-row" id="xc-hang-@c.Id" style="display:none;">
                                 <span class="cua-hang-lbl">Chưa BG</span>
                                 <span class="cua-hang-val chua" id="xc-chua-@c.Id">—</span>
                             </div>
-                            <div class="cua-hang-row">
+                            <div class="cua-hang-row" id="xc-hang2-@c.Id" style="display:none;">
                                 <span class="cua-hang-lbl">Đã BG</span>
                                 <span class="cua-hang-val da" id="xc-da-@c.Id">—</span>
                             </div>
@@ -1022,68 +972,47 @@
                         </div>
                     }
                 </div>
-
-                <!-- Xe chờ ra cổng -->
-                <div class="choracong-strip" id="racong-strip">
-                    <div class="sapve-title" style="color:var(--orange2);">▸ Xe chờ bảo vệ xác nhận ra cổng</div>
-                    <div class="sapve-list" id="racong-list">
-                        <span style="color:var(--text3);font-size:10px;">Không có xe</span>
-                    </div>
-                </div>
             </div>
 
-            <!-- ══ SIDEBAR ══ -->
+            <div class="divider-v"></div>
+
+            <!-- Sidebar phải: Chờ ra cổng -->
             <div class="col-sidebar">
-
-                <!-- Cảnh báo -->
-                <div class="sidebar-section" id="sb-canhbao">
-                    <div class="sidebar-section-header" style="color:var(--red2);">
-                        <span>⚠ Cảnh báo</span>
-                        <span class="count-badge" id="cb-count" style="color:var(--red2);">0</span>
-                    </div>
-                    <div class="sidebar-section-body" id="cb-list">
-                        <div class="empty-note">Không có cảnh báo</div>
-                    </div>
+                <div class="sb-header" style="color:var(--green2);">
+                    <span>▶ Chờ ra cổng</span>
+                    <span class="count-badge" id="sb-racong-count" style="color:var(--green2);">0</span>
                 </div>
-
-                <!-- Xe trong bãi -->
-                <div class="sidebar-section">
-                    <div class="sidebar-section-header" style="color:var(--green2);">
-                        <span>🚛 Xe trong bãi</span>
-                        <span class="count-badge" id="xebai-count" style="color:var(--green2);">0</span>
-                    </div>
-                    <div class="sidebar-section-body" id="xebai-list">
-                        <div class="empty-note">Đang tải...</div>
-                    </div>
+                <div class="sb-body" id="sb-racong-list">
+                    <div class="empty-note">Không có xe</div>
                 </div>
-
-                <!-- Xe đang vận chuyển -->
-                <div class="sidebar-section">
-                    <div class="sidebar-section-header" style="color:var(--orange2);">
-                        <span>🛣 Đang vận chuyển</span>
-                        <span class="count-badge" id="van-count" style="color:var(--orange2);">0</span>
-                    </div>
-                    <div class="sidebar-section-body" id="van-list">
-                        <div class="empty-note">Không có xe</div>
-                    </div>
-                </div>
-
             </div>
-        </div>
 
-        <!-- ══ FOOTER ══ -->
+        </div><!-- end .main -->
+        <!-- ══ FOOTER 2 cột — cao hơn ══ -->
         <div class="footer">
-            <div class="footer-alerts">
-                <span>© Trung Tâm Điều Hành Kho — ViettelPost</span>
-                <div class="alert-pill hidden" id="footer-alert-pill">
-                    <span>⚠</span><span id="footer-alert-txt"></span>
+            <div class="footer-col">
+                <div class="footer-col-header" style="color:var(--green2);">
+                    <span>Xe trong bãi</span>
+                    <span class="count-badge" id="ft-xebai-count" style="color:var(--green2);">0</span>
+                </div>
+                <div class="footer-chips" id="ft-xebai-chips">
+                    <span style="font-size:9px;color:var(--text2);">Đang tải...</span>
                 </div>
             </div>
-            <span id="footer-time"></span>
+            <div class="footer-divider"></div>
+            <div class="footer-col">
+                <div class="footer-col-header" style="color:var(--orange2);">
+                    <span>Đã rời kho hôm nay</span>
+                    <span class="count-badge" id="ft-roikho-count" style="color:var(--orange2);">0</span>
+                </div>
+                <div class="footer-chips" id="ft-roikho-chips">
+                    <span style="font-size:9px;color:var(--text2);">Chưa có dữ liệu</span>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- ══ POPUP CHI TIẾT ══ -->
+    </div><!-- end .screen -->
+    <!-- ══ POPUP ══ -->
     <div class="popup-overlay" id="popup-overlay" onclick="closePopup(event)">
         <div class="popup" onclick="event.stopPropagation()">
             <div class="popup-title">
@@ -1096,22 +1025,18 @@
         </div>
     </div>
 
-<script>
-        // ── STATE ──────────────────────────────────────────────
+    <script>
         var snapshot = null;
         var timerMap = {};
 
-        // ── ĐỒNG HỒ ──────────────────────────────────────────
         function tick() {
             var n = new Date();
-            document.getElementById('clock').textContent    = n.toLocaleTimeString('vi-VN',{hour12:false});
-            document.getElementById('date-str').textContent = n.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}).toUpperCase();
-            document.getElementById('footer-time').textContent = 'Cập nhật: ' + n.toLocaleTimeString('vi-VN');
+            document.getElementById('clock').textContent    = n.toLocaleTimeString('vi-VN', {hour12:false});
+            document.getElementById('date-str').textContent = n.toLocaleDateString('vi-VN', {weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'}).toUpperCase();
             updateTimers();
         }
         setInterval(tick, 1000); tick();
 
-        // ── TIMERS real-time ──────────────────────────────────
         function updateTimers() {
             var now = new Date();
             Object.keys(timerMap).forEach(function(key) {
@@ -1121,7 +1046,7 @@
                 if (!el) return;
                 var diff = Math.floor((info.deadline - now) / 1000);
                 if (diff > 0) {
-                    var m = Math.floor(diff/60), s = diff%60;
+                    var m = Math.floor(diff / 60), s = diff % 60;
                     el.textContent = 'Còn ' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
                     el.className   = 'cua-timer' + (diff < 300 ? ' warn' : '');
                 } else {
@@ -1131,11 +1056,8 @@
             });
         }
 
-        // ── SIGNALR ───────────────────────────────────────────
         var conn = new signalR.HubConnectionBuilder()
-            .withUrl('/signalserver')
-            .withAutomaticReconnect()
-            .build();
+            .withUrl('/signalserver').withAutomaticReconnect().build();
 
         conn.on('UpdateBangTongHop',     function() { loadSnapshot(); });
         conn.on('UpdateBangTongHopXuat', function() { loadSnapshot(); });
@@ -1146,13 +1068,10 @@
 
         conn.start().then(function() {
             document.getElementById('sig-dot').className = 'dot on';
-            document.getElementById('sig-txt').textContent = 'Realtime';
         }).catch(function() {
             document.getElementById('sig-dot').className = 'dot err';
-            document.getElementById('sig-txt').textContent = 'Mất kết nối';
         });
 
-        // ── LOAD DATA ─────────────────────────────────────────
         async function loadSnapshot() {
             try {
                 var res = await fetch('/TongTrungTam/GetSnapshot');
@@ -1161,23 +1080,21 @@
                 render();
             } catch(e) { console.error('loadSnapshot:', e); }
         }
-
         loadSnapshot();
         setInterval(loadSnapshot, 30000);
 
-        // ── RENDER ────────────────────────────────────────────
         function render() {
             if (!snapshot) return;
             renderKPI();
+            renderSidebarSapVe();
             renderNhap();
             renderXuat();
-            renderSidebar();
+            renderSidebarRaCong();
+            renderFooter();
         }
 
-        // ── KPI ───────────────────────────────────────────────
         function renderKPI() {
-            var k = snapshot.kpi;
-            if (!k) return;
+            var k = snapshot.kpi; if (!k) return;
             set('kpi-nhap-hom',  k.tongNhapHom   || 0);
             set('kpi-nhap-xong', k.nhapHoanThanh || 0);
             set('kpi-xuat-hom',  k.tongXuatHom   || 0);
@@ -1185,12 +1102,10 @@
             var quaGio = (k.nhapQuaGio || 0) + (k.xuatQuaGio || 0);
             set('kpi-quagio', quaGio);
             document.getElementById('kpi-quagio-pill').style.opacity = quaGio > 0 ? '1' : '0.4';
-
             var xeBai = 0;
-            (k.xeGroups || []).forEach(function(g){ if (g.trangThai === 0) xeBai = g.soLuong; });
-            set('kpi-xe-bai', xeBai);
-            set('kpi-van-chuyen', (snapshot.xeVanChuyenViettel || []).length);
-
+            (k.xeGroups || []).forEach(function(g) { if (g.trangThai === 0) xeBai = g.soLuong; });
+            set('kpi-xe-bai',  xeBai);
+            set('kpi-sap-ve', (snapshot.nhap && snapshot.nhap.sapVeXe) || 0);
             if (quaGio > 0) {
                 document.getElementById('footer-alert-pill').className = 'alert-pill';
                 document.getElementById('footer-alert-txt').textContent = quaGio + ' cửa quá giờ — Xử lý ngay!';
@@ -1199,44 +1114,63 @@
             }
         }
 
-        // ── NHẬP ──────────────────────────────────────────────
+        function renderSidebarSapVe() {
+            var nh = snapshot.nhap || {};
+            var xeSapVe = nh.xeSapVe || [];
+            var el = document.getElementById('sb-sapve-list');
+            set('sb-sapve-count', xeSapVe.length);
+            if (!xeSapVe.length) { el.innerHTML = '<div class="empty-note">Chưa có xe sắp về</div>'; return; }
+            el.innerHTML = xeSapVe.map(function(x) {
+                var cls   = x.daPhanCong ? 'sapve-card da-pc' : 'sapve-card';
+                var hangs = (x.hangHoas || []).map(function(h) {
+                    return '<span class="hang-tag"><span class="hn">' + h.soLuong.toLocaleString('vi-VN') + '</span> <span class="hd">' + h.donVi + '</span></span>';
+                }).join('');
+                var ngay  = x.ngayDuKien ? new Date(x.ngayDuKien).toLocaleString('vi-VN',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
+                return '<div class="' + cls + '">'
+                    + '<div class="sapve-bienso">' + x.bienSo + '</div>'
+                    + '<div class="sapve-meta">' + (x.tenLaiXe && x.tenLaiXe !== '--' ? x.tenLaiXe : '') + (ngay ? ' · ' + ngay : '') + '</div>'
+                    + (x.daPhanCong ? '<div class="sapve-meta" style="color:var(--gold2);margin-top:2px;">✔ Đã phân công</div>' : '')
+                    + (hangs ? '<div class="sapve-hang">' + hangs + '</div>' : '')
+                + '</div>';
+            }).join('');
+        }
+
         function renderNhap() {
-            var nh = snapshot.nhap;
-            if (!nh) return;
-            set('nh-sapve',   nh.sapVeXe     || 0);
+            var nh = snapshot.nhap; if (!nh) return;
             set('nh-dave',    nh.daVeXe      || 0);
             set('nh-chuavao', nh.chuaVaoXe   || 0);
             set('nh-dangbg',  nh.dangBanGiao || 0);
-
             (nh.cards || []).forEach(function(c) {
                 var id    = c.cuaId;
                 var card  = document.getElementById('nc-' + id);
-                var bienso = document.getElementById('nb-' + id);
+                var bienso= document.getElementById('nb-' + id);
                 var strip = document.getElementById('ns-' + id);
                 var chua  = document.getElementById('nc-chua-' + id);
                 var da    = document.getElementById('nc-da-' + id);
                 var timer = document.getElementById('nt-' + id);
+                var divEl = document.getElementById('nc-div-' + id);
+                var hang1 = document.getElementById('nc-hang-' + id);
+                var hang2 = document.getElementById('nc-hang2-' + id);
                 if (!card) return;
-
                 if (!c.phieu) {
-                    card.className     = 'cua-card st-trong';
+                    card.className = 'cua-card st-trong';
                     bienso.textContent = '— Trống —'; bienso.className = 'cua-bienso empty';
                     strip.textContent  = 'Trống'; strip.className = 'cua-strip trong';
-                    chua.textContent   = '—'; da.textContent = '—';
                     timer.textContent  = '';
-                    delete timerMap['n' + id];
-                    return;
+                    if (divEl) divEl.style.display = 'none';
+                    if (hang1) hang1.style.display = 'none';
+                    if (hang2) hang2.style.display = 'none';
+                    delete timerMap['n' + id]; return;
                 }
-
-                var p  = c.phieu;
-                var tt = p.trangThai;
+                var p = c.phieu, tt = p.trangThai;
                 bienso.textContent = p.bienSo; bienso.className = 'cua-bienso';
-
                 var tc = 0, td = 0;
-                (p.hangHoas || []).forEach(function(h){ tc += h.chuaBG || 0; td += h.daBG || 0; });
+                (p.hangHoas || []).forEach(function(h) { tc += h.chuaBG || 0; td += h.daBG || 0; });
+                if (divEl) divEl.style.display = '';
+                if (hang1) hang1.style.display = '';
+                if (hang2) hang2.style.display = '';
                 chua.textContent = tc > 0 ? tc.toLocaleString('vi-VN') : '—';
                 da.textContent   = td > 0 ? td.toLocaleString('vi-VN') : '—';
-
                 if (tt === 0) {
                     card.className = 'cua-card st-cho';
                     strip.textContent = 'Đã phân công — chờ xe vào'; strip.className = 'cua-strip wait';
@@ -1244,7 +1178,7 @@
                 } else if (tt === 1) {
                     card.className = 'cua-card st-dang';
                     strip.textContent = 'Đang bàn giao'; strip.className = 'cua-strip dang';
-                    if (p.thoiGianGioiHan) timerMap['n'+id] = { deadline: new Date(p.thoiGianGioiHan), elId: 'nt-'+id };
+                    if (p.thoiGianGioiHan) timerMap['n' + id] = { deadline: new Date(p.thoiGianGioiHan), elId: 'nt-' + id };
                 } else if (tt === 2) {
                     card.className = 'cua-card st-quagio';
                     strip.textContent = 'QUÁ GIỜ — XỬ LÝ NGAY'; strip.className = 'cua-strip over';
@@ -1256,67 +1190,46 @@
                     delete timerMap['n' + id];
                 }
             });
-
-            // Xe sắp về — có hàng hóa
-            var sapVeList = document.getElementById('sapve-list');
-            var xeSapVe   = nh.xeSapVe || [];
-            if (!xeSapVe.length) {
-                sapVeList.innerHTML = '<span style="color:var(--text3);font-size:10px;">Không có xe</span>';
-            } else {
-                sapVeList.innerHTML = xeSapVe.map(function(x) {
-                    var hangs = (x.hangHoas || []).map(function(h) {
-                        return '<span style="color:var(--gold2);font-family:Share Tech Mono,monospace;">'
-                            + h.soLuong.toLocaleString('vi-VN') + '</span>'
-                            + '<span style="color:var(--text2);"> ' + h.donVi + '</span>';
-                    }).join(' · ');
-                    var cls = x.daPhanCong ? '' : ' chuaphan';
-                    return '<span class="sapve-tag' + cls + '" title="' + (x.daPhanCong ? 'Đã phân công' : 'Chưa phân công') + '">'
-                        + '<span style="display:block;font-size:12px;">' + x.bienSo + '</span>'
-                        + (hangs ? '<span style="display:block;font-size:9px;margin-top:2px;">' + hangs + '</span>' : '')
-                        + '</span>';
-                }).join('');
-            }
         }
 
-        // ── XUẤT ──────────────────────────────────────────────
         function renderXuat() {
-            var xd = snapshot.xuat;
-            if (!xd) return;
+            var xd = snapshot.xuat; if (!xd) return;
             var st = xd.stats || {};
             set('xc-cho',  st.choPhanCong || 0);
             set('xc-dang', st.dangBanGiao || 0);
             set('xc-qg',   st.quaGio      || 0);
             set('xc-roi',  st.daRoiKho    || 0);
-
             (xd.cards || []).forEach(function(c) {
                 var id    = c.cuaId;
                 var card  = document.getElementById('xc-' + id);
-                var bienso = document.getElementById('xb-' + id);
+                var bienso= document.getElementById('xb-' + id);
                 var strip = document.getElementById('xs-' + id);
                 var chua  = document.getElementById('xc-chua-' + id);
                 var da    = document.getElementById('xc-da-' + id);
                 var timer = document.getElementById('xt-' + id);
+                var divEl = document.getElementById('xc-div-' + id);
+                var hang1 = document.getElementById('xc-hang-' + id);
+                var hang2 = document.getElementById('xc-hang2-' + id);
                 if (!card) return;
-
                 if (!c.phieu) {
-                    card.className     = 'cua-card st-trong';
+                    card.className = 'cua-card st-trong';
                     bienso.textContent = '— Trống —'; bienso.className = 'cua-bienso empty';
                     strip.textContent  = 'Trống'; strip.className = 'cua-strip trong';
-                    chua.textContent   = '—'; da.textContent = '—';
                     timer.textContent  = '';
-                    delete timerMap['x' + id];
-                    return;
+                    if (divEl) divEl.style.display = 'none';
+                    if (hang1) hang1.style.display = 'none';
+                    if (hang2) hang2.style.display = 'none';
+                    delete timerMap['x' + id]; return;
                 }
-
-                var p  = c.phieu;
-                var tt = p.trangThai;
+                var p = c.phieu, tt = p.trangThai;
                 bienso.textContent = p.bienSo; bienso.className = 'cua-bienso';
-
                 var tc = 0, td = 0;
-                (p.hangHoas || []).forEach(function(h){ tc += h.chuaBG || 0; td += h.daBG || 0; });
+                (p.hangHoas || []).forEach(function(h) { tc += h.chuaBG || 0; td += h.daBG || 0; });
+                if (divEl) divEl.style.display = '';
+                if (hang1) hang1.style.display = '';
+                if (hang2) hang2.style.display = '';
                 chua.textContent = tc > 0 ? tc.toLocaleString('vi-VN') : '—';
                 da.textContent   = td > 0 ? td.toLocaleString('vi-VN') : '—';
-
                 if (tt === 0) {
                     card.className = 'cua-card st-cho';
                     strip.textContent = 'Đã phân công — chờ xe vào'; strip.className = 'cua-strip wait';
@@ -1324,7 +1237,7 @@
                 } else if (tt === 1) {
                     card.className = 'cua-card st-dang';
                     strip.textContent = 'Đang xuất hàng'; strip.className = 'cua-strip dang';
-                    if (p.thoiGianGioiHan) timerMap['x'+id] = { deadline: new Date(p.thoiGianGioiHan), elId: 'xt-'+id };
+                    if (p.thoiGianGioiHan) timerMap['x' + id] = { deadline: new Date(p.thoiGianGioiHan), elId: 'xt-' + id };
                 } else if (tt === 2) {
                     card.className = 'cua-card st-quagio';
                     strip.textContent = 'QUÁ GIỜ — XỬ LÝ NGAY'; strip.className = 'cua-strip over';
@@ -1336,176 +1249,70 @@
                     delete timerMap['x' + id];
                 }
             });
+        }
 
-            // Xe chờ ra cổng — có thông tin chi tiết
-            var racongList = document.getElementById('racong-list');
+        function renderSidebarRaCong() {
             var xeRa = snapshot.xeChoRaCong || [];
-            if (!xeRa.length) {
-                racongList.innerHTML = '<span style="color:var(--text3);font-size:10px;">Không có xe</span>';
+            var el   = document.getElementById('sb-racong-list');
+            set('sb-racong-count', xeRa.length);
+            if (!xeRa.length) { el.innerHTML = '<div class="empty-note">Không có xe</div>'; return; }
+            el.innerHTML = xeRa.map(function(x) {
+                var hangs = (x.hangHoas || []).map(function(h) {
+                    return h.daBG.toLocaleString('vi-VN') + ' ' + h.donVi;
+                }).join(' · ');
+                var tg = x.thoiGianHoanThanh
+                    ? new Date(x.thoiGianHoanThanh).toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'})
+                    : '--:--';
+                return '<div class="racong-card">'
+                    + '<div class="racong-bienso">' + x.bienSo + '</div>'
+                    + '<div class="racong-meta">' + x.tenCua + ' · ' + tg + '</div>'
+                    + (hangs ? '<div class="racong-hang">✔ ' + hangs + '</div>' : '')
+                + '</div>';
+            }).join('');
+        }
+
+        function renderFooter() {
+            var xes   = snapshot.xeTrongBai || [];
+            var baiEl = document.getElementById('ft-xebai-chips');
+            set('ft-xebai-count', xes.length);
+            if (!xes.length) {
+                baiEl.innerHTML = '<span style="font-size:9px;color:var(--text2);">Không có xe</span>';
             } else {
-                racongList.innerHTML = xeRa.map(function(x) {
-                    var hangs = (x.hangHoas || []).map(function(h) {
-                        return h.daBG.toLocaleString('vi-VN') + ' ' + h.donVi;
-                    }).join(' · ');
-                    return '<span class="sapve-tag" style="border-color:rgba(251,146,60,.3);color:var(--orange2);display:inline-block;margin:2px;">'
-                        + '<span style="display:block;font-size:12px;">' + x.bienSo + '</span>'
-                        + '<span style="display:block;font-size:9px;color:var(--text2);">' + x.tenCua + '</span>'
-                        + (hangs ? '<span style="display:block;font-size:9px;color:var(--green2);">✔ ' + hangs + '</span>' : '')
-                        + '</span>';
+                var ttLabel = ['Trong bãi','Chờ phân công','Đang vận chuyển','Bảo trì'];
+                baiEl.innerHTML = xes.map(function(x) {
+                    return '<div class="xe-chip">'
+                        + '<span class="xe-chip-bs green">' + x.bienSo + '</span>'
+                        + (x.tenTaiXe && x.tenTaiXe !== '--'
+                            ? '<span class="xe-chip-tt">' + x.tenTaiXe + '</span>'
+                            : '')
+                    + '</div>';
+                }).join('');
+            }
+            var xeRoiList = snapshot.xeRoiKho || [];
+            var roiEl = document.getElementById('ft-roikho-chips');
+            set('ft-roikho-count', xeRoiList.length);
+            if (!xeRoiList.length) {
+                roiEl.innerHTML = '<span style="font-size:9px;color:var(--text2);">Chưa có xe rời kho</span>';
+            } else {
+                roiEl.innerHTML = xeRoiList.map(function(x) {
+                    var tg = x.thoiGianRoi
+                        ? new Date(x.thoiGianRoi).toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'})
+                        : '--:--';
+                    return '<div class="xe-chip">'
+                        + '<span class="xe-chip-bs orange">' + x.bienSo + '</span>'
+                        + '<span class="xe-chip-tt">' + (x.tenCua || '--') + ' · ' + tg + '</span>'
+                    + '</div>';
                 }).join('');
             }
         }
 
-        // ── SIDEBAR — redesign đầy đủ ─────────────────────────
-        function renderSidebar() {
-            renderCanhBao();
-            renderXeTrongBai();
-            renderXeVanChuyen();
-        }
-
-        // Cảnh báo
-        function renderCanhBao() {
-            var cbs    = snapshot.canhBaos || [];
-            var cbList = document.getElementById('cb-list');
-            set('cb-count', cbs.length);
-
-            if (!cbs.length) {
-                cbList.innerHTML = '<div class="empty-note">✔ Không có cảnh báo</div>';
-                document.getElementById('sb-canhbao').style.borderColor = 'var(--border2)';
-                return;
-            }
-
-            document.getElementById('sb-canhbao').style.borderColor = 'rgba(255,61,61,.4)';
-
-            var loaiLabel = {
-                'QuaHanNhap': 'Quá hạn nhập',
-                'QuaHanXuat': 'Quá hạn xuất',
-                'BaoSaiXe':   'Báo sai xe'
-            };
-
-            cbList.innerHTML = cbs.map(function(c) {
-                var thoiGian = new Date(c.thoiGian).toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
-                var loai     = loaiLabel[c.loaiCanhBao] || c.loaiCanhBao || '--';
-                var isSaiXe  = c.loaiCanhBao === 'BaoSaiXe';
-
-                return '<div class="cb-item">'
-                    + '<div class="cb-dot tt-' + c.trangThai + '"></div>'
-                    + '<div class="cb-content">'
-                        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">'
-                            + '<span style="font-size:9px;font-weight:700;letter-spacing:1px;color:' + (c.trangThai===0?'var(--red2)':'var(--gold)') + ';">' + loai.toUpperCase() + '</span>'
-                            + '<span style="font-size:9px;color:var(--text2);">' + thoiGian + '</span>'
-                        + '</div>'
-                        + '<div class="cb-bienso">' + (isSaiXe ? 'DB: ' : 'Xe: ') + c.bienSoDB + '</div>'
-                        + (isSaiXe && c.bienSoTT !== '--'
-                            ? '<div class="cb-bienso" style="color:var(--red);font-size:11px;">TT: ' + c.bienSoTT + '</div>'
-                            : '')
-                        + '<div class="cb-meta">'
-                            + 'Cửa ' + c.cuaId
-                            + (c.gioiHan && c.gioiHan !== '--' && !isSaiXe ? ' · Giới hạn: ' + c.gioiHan : '')
-                        + '</div>'
-                    + '</div>'
-                + '</div>';
-            }).join('');
-        }
-
-        // Xe trong bãi
-        function renderXeTrongBai() {
-            var xes    = snapshot.xeTrongBai || [];
-            var xebai  = document.getElementById('xebai-list');
-            var ttLabel = ['Trong bãi', 'Đang phân công', 'Đang vận chuyển', 'Bảo trì'];
-            var ttColor = ['var(--green2)', 'var(--gold2)', 'var(--orange2)', 'var(--red2)'];
-            set('xebai-count', xes.length);
-
-            if (!xes.length) {
-                xebai.innerHTML = '<div class="empty-note">Không có dữ liệu</div>';
-                return;
-            }
-
-            // Group theo trạng thái để hiển thị header
-            var groups = {};
-            xes.forEach(function(x) {
-                var tt = x.trangThai;
-                if (!groups[tt]) groups[tt] = [];
-                groups[tt].push(x);
-            });
-
-            var html = '';
-            Object.keys(groups).sort().forEach(function(tt) {
-                var list  = groups[tt];
-                var lbl   = ttLabel[tt] || ('TT ' + tt);
-                var col   = ttColor[tt] || 'var(--text)';
-                html += '<div style="font-size:9px;letter-spacing:1px;color:' + col + ';font-weight:700;'
-                      + 'padding:4px 0 3px;border-bottom:1px solid var(--border);margin-bottom:3px;">'
-                      + lbl.toUpperCase() + ' (' + list.length + ')</div>';
-                list.forEach(function(x) {
-                    html += '<div class="xe-bai-row">'
-                        + '<div>'
-                            + '<div style="font-family:Share Tech Mono,monospace;font-size:13px;color:var(--gold);">' + x.bienSo + '</div>'
-                            + '<div style="font-size:10px;color:var(--text2);">'
-                                + x.loaiXe
-                                + (x.tenTaiXe && x.tenTaiXe !== '--' ? ' · 👤 ' + x.tenTaiXe : '')
-                            + '</div>'
-                        + '</div>'
-                        + '<div style="font-family:Share Tech Mono,monospace;font-size:11px;color:var(--text2);">'
-                            + x.taiTrong.toLocaleString('vi-VN') + 'kg'
-                        + '</div>'
-                    + '</div>';
-                });
-            });
-            xebai.innerHTML = html;
-        }
-
-        // Xe đang vận chuyển (Viettel — đang trên đường về)
-        function renderXeVanChuyen() {
-            var vans  = snapshot.xeVanChuyenViettel || [];
-            var vanEl = document.getElementById('van-list');
-            set('van-count', vans.length);
-            set('kpi-van-chuyen', vans.length);
-
-            if (!vans.length) {
-                vanEl.innerHTML = '<div class="empty-note">Không có xe đang vận chuyển</div>';
-                return;
-            }
-
-            vanEl.innerHTML = vans.map(function(x) {
-                var hangs = (x.hangHoas || []).map(function(h) {
-                    return '<span style="background:var(--s2);border:1px solid var(--border2);border-radius:3px;'
-                         + 'padding:1px 5px;font-family:Share Tech Mono,monospace;font-size:10px;">'
-                         + '<span style="color:var(--gold2);">' + h.soLuong.toLocaleString('vi-VN') + '</span>'
-                         + '<span style="color:var(--text2);"> ' + h.donVi + '</span>'
-                         + '</span>';
-                }).join(' ');
-
-                var ngay = x.ngayDuKien
-                    ? new Date(x.ngayDuKien).toLocaleString('vi-VN', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})
-                    : '--';
-
-                return '<div class="van-item">'
-                    + '<div style="display:flex;justify-content:space-between;align-items:center;">'
-                        + '<div class="van-bienso">' + x.bienSo + '</div>'
-                        + '<div style="font-size:9px;color:var(--text2);">🏢 ' + x.maChiNhanh + '</div>'
-                    + '</div>'
-                    + '<div class="van-meta">'
-                        + '👤 ' + x.tenLaiXe
-                        + ' · ' + x.maChuyenApi
-                        + ' · Lần ' + x.lanThu
-                    + '</div>'
-                    + '<div class="van-meta" style="margin-top:2px;">📅 Dự kiến: ' + ngay + '</div>'
-                    + (hangs ? '<div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:3px;">' + hangs + '</div>' : '')
-                + '</div>';
-            }).join('');
-        }
-
-        // ── POPUP CHI TIẾT ────────────────────────────────────
         function showDetail(loai, cuaId) {
             if (!snapshot) return;
             var card = null;
-
             if (loai === 'nhap' && snapshot.nhap && snapshot.nhap.cards)
-                card = snapshot.nhap.cards.find(function(c){ return c.cuaId == cuaId; });
+                card = snapshot.nhap.cards.find(function(c) { return c.cuaId == cuaId; });
             else if (loai === 'xuat' && snapshot.xuat && snapshot.xuat.cards)
-                card = snapshot.xuat.cards.find(function(c){ return c.cuaId == cuaId; });
-
+                card = snapshot.xuat.cards.find(function(c) { return c.cuaId == cuaId; });
             if (!card) return;
 
             var tenCuaMap = loai === 'nhap'
@@ -1513,36 +1320,30 @@
                 : @Html.Raw(System.Text.Json.JsonSerializer.Serialize(cuaXuats.ToDictionary(c => c.Id, c => c.Ten)));
 
             document.getElementById('popup-title-txt').textContent =
-                (loai === 'nhap' ? '📥 CỬA NHẬP — ' : '📤 CỬA XUẤT — ') + (tenCuaMap[cuaId] || ('Cửa ' + cuaId));
+                (loai === 'nhap' ? 'CỬA NHẬP — ' : 'CỬA XUẤT — ') + (tenCuaMap[cuaId] || ('Cửa ' + cuaId));
 
             if (!card.phieu) {
                 document.getElementById('popup-bienso').textContent = '— TRỐNG —';
-                document.getElementById('popup-rows').innerHTML   = '<div style="text-align:center;padding:20px;color:var(--text2);">Cửa đang trống</div>';
-                document.getElementById('popup-hangs').innerHTML  = '';
+                document.getElementById('popup-rows').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);">Cửa đang trống</div>';
+                document.getElementById('popup-hangs').innerHTML = '';
             } else {
-                var p  = card.phieu;
+                var p = card.phieu;
                 document.getElementById('popup-bienso').textContent = p.bienSo || '--';
-
-                var ttLabels = ['Đã phân công — chờ xe', 'Đang bàn giao', 'Quá thời gian', 'Hoàn thành', 'Đã rời kho'];
-                var ttColors = ['var(--blue2)', 'var(--gold)', 'var(--red)', 'var(--green)', 'var(--green2)'];
+                var ttLabels = ['Đã phân công — chờ xe','Đang bàn giao','Quá thời gian','Hoàn thành','Đã rời kho'];
+                var ttColors = ['var(--blue2)','var(--gold)','var(--red)','var(--green)','var(--green2)'];
                 var tt = p.trangThai || 0;
-
                 var vaoCua  = p.thoiGianVaoCua  ? new Date(p.thoiGianVaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})  : '--:--';
                 var gioiHan = p.thoiGianGioiHan ? new Date(p.thoiGianGioiHan).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
-
                 var rows = [
-                    { lbl: 'Trạng thái',  val: ttLabels[tt] || '--', style: 'color:' + (ttColors[tt]||'var(--text)') },
-                    { lbl: 'Giờ vào cửa', val: vaoCua,  style: 'color:var(--gold);font-family:Share Tech Mono,monospace;' },
-                    { lbl: 'Giờ giới hạn',val: gioiHan, style: 'color:var(--gold);font-family:Share Tech Mono,monospace;' },
+                    { lbl: 'Trạng thái',  val: ttLabels[tt] || '--', style: 'color:' + (ttColors[tt] || 'var(--text)') },
+                    { lbl: 'Giờ vào cửa', val: vaoCua,  style: 'color:var(--gold2);font-family:JetBrains Mono,monospace;' },
+                    { lbl: 'Giờ giới hạn',val: gioiHan, style: 'color:var(--gold2);font-family:JetBrains Mono,monospace;' },
                 ];
-                if (p.tenTaiXe && p.tenTaiXe !== '--')
-                    rows.push({ lbl: 'Tài xế', val: p.tenTaiXe, style: '' });
-
+                if (p.tenTaiXe && p.tenTaiXe !== '--') rows.push({ lbl: 'Tài xế', val: p.tenTaiXe, style: '' });
                 document.getElementById('popup-rows').innerHTML = rows.map(function(r) {
                     return '<div class="popup-row"><span class="popup-lbl">' + r.lbl + '</span>'
                          + '<span class="popup-val"' + (r.style ? ' style="' + r.style + '"' : '') + '>' + r.val + '</span></div>';
                 }).join('');
-
                 var hangs = p.hangHoas || [];
                 document.getElementById('popup-hangs').innerHTML = hangs.length
                     ? hangs.map(function(h) {
@@ -1558,18 +1359,13 @@
                     }).join('')
                     : '';
             }
-
             document.getElementById('popup-overlay').classList.add('show');
         }
 
         function closePopup(e) { if (e.target === document.getElementById('popup-overlay')) closePopupDirect(); }
         function closePopupDirect() { document.getElementById('popup-overlay').classList.remove('show'); }
 
-        // ── UTIL ──────────────────────────────────────────────
-        function set(id, val) {
-            var el = document.getElementById(id);
-            if (el) el.textContent = val;
-        }
+        function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
     </script>
 </body>
 </html>

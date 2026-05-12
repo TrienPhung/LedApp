@@ -5,21 +5,107 @@
     ViewData["ActivePage"] = "TwoFactorAuthentication";
 }
 
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .status-msg.warning {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #d97706;
+        margin-bottom: 4px;
+    }
+
+    .recovery-codes-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .recovery-code {
+        font-family: monospace;
+        font-size: 0.9rem;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 8px 14px;
+        color: #111827;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .recovery-code {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
 <partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>Put these codes in a safe place.</strong>
-    </p>
-    <p>
-        If you lose your device and don't have the recovery codes you will lose access to your account.
-    </p>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        @for (var row = 0; row < Model.RecoveryCodes.Length; row += 2)
-        {
-            <code class="recovery-code">@Model.RecoveryCodes[row]</code><text>&nbsp;</text><code class="recovery-code">@Model.RecoveryCodes[row + 1]</code><br />
-        }
+
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Recovery codes</p>
+        <p class="manage-card-sub">Save these codes in a safe place</p>
+    </div>
+    <div class="manage-card-body">
+        <div class="status-msg warning">
+            <i class="bi bi-exclamation-triangle-fill" style="margin-right:6px;"></i>
+            <strong>Put these codes in a safe place.</strong>
+            <p style="margin:6px 0 0;">If you lose your device and don't have the recovery codes you will lose access to your account.</p>
+        </div>
+        <div class="recovery-codes-grid">
+            @foreach (var code in Model.RecoveryCodes)
+            {
+                <code class="recovery-code">@code</code>
+            }
+        </div>
     </div>
 </div>

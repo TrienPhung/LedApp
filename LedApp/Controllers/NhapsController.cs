@@ -31,6 +31,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Nhaps
+        [Authorize(Policy = "Nhap.View")]
         public async Task<IActionResult> Index()
         {
             var applicationDBContext = _context.Nhaps
@@ -40,6 +41,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Nhaps/Details/5
+        [Authorize(Policy = "Nhap.View")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Nhaps == null)
@@ -56,16 +58,18 @@ namespace LedApp.Controllers
         }
 
         // GET: Nhaps/Create
+        [Authorize(Policy = "Nhap.Create")]
         public IActionResult Create()
         {
             ViewData["CuaNhapId"]          = new SelectList(_context.CuaNhaps, "Id", "Ten");
-            ViewData["NhanVienXacNhanId"]  = new SelectList(_context.nguoiDungs, "Id", "Name");
+            ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "FullName");
             ViewData["TrangThai"]          = GetTrangThaiSelectList((int)TrangThaiNhap.DaPhanCong);
             return View();
         }
 
         // POST: Nhaps/Create
         [HttpPost]
+        [Authorize(Policy = "Nhap.Create")]
         public async Task<IActionResult> Create([Bind("CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai,GhiChu")] Nhap nhap)
         {
             try
@@ -84,6 +88,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Nhaps/Edit/5
+        [Authorize(Policy = "Nhap.Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Nhaps == null) return NotFound();
@@ -92,13 +97,14 @@ namespace LedApp.Controllers
             if (nhap == null) return NotFound();
 
             ViewData["CuaNhapId"]         = new SelectList(_context.CuaNhaps, "Id", "Ten", nhap.CuaNhapId);
-            ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "Name", nhap.NhanVienXacNhanId);
+            ViewData["NhanVienXacNhanId"] = new SelectList(_context.nguoiDungs, "Id", "FullName", nhap.NhanVienXacNhanId);
             ViewData["TrangThai"]         = GetTrangThaiSelectList(nhap.TrangThai);
             return View(nhap);
         }
 
         // POST: Nhaps/Edit/5
         [HttpPost]
+        [Authorize(Policy = "Nhap.Edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CuaNhapId,BienSoXe,ThoiGianPhanCong,ThoiGianVaoBai,ThoiGianVaoCua,ThoiGianGioiHan,ThoiGianHoanThanh,NhanVienXacNhanId,TrangThai,GhiChu")] Nhap nhap)
         {
             if (id != nhap.Id) return NotFound();
@@ -135,6 +141,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Nhaps/Delete/5
+        [Authorize(Policy = "Nhap.Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Nhaps == null) return NotFound();
@@ -150,6 +157,7 @@ namespace LedApp.Controllers
 
         // POST: Nhaps/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "Nhap.Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var nhap = await _context.Nhaps
@@ -167,10 +175,36 @@ namespace LedApp.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [Authorize(Policy = "Nhap.Delete")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteNhapRequest request)
+        {
+            if (request?.Ids == null || !request.Ids.Any())
+                return BadRequest(new { message = "Không có ID nào được gửi lên." });
 
+            foreach (var id in request.Ids)
+            {
+                var nhap = await _context.Nhaps
+                    .Include(n => n.ChitietNhaps)
+                    .FirstOrDefaultAsync(n => n.Id == id);
+
+                if (nhap == null) continue;
+
+                _context.ChitietNhaps.RemoveRange(nhap.ChitietNhaps ?? new List<ChitietNhap>());
+                _context.Nhaps.Remove(nhap);
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = $"Đã xóa {request.Ids.Count} phiếu nhập." });
+        }
         private bool NhapExists(int id)
         {
             return (_context.Nhaps?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+    }
+    public class BulkDeleteNhapRequest
+    {
+        public List<int> Ids { get; set; } = new();
     }
 }

@@ -3,388 +3,690 @@
     ViewData["Title"] = "Thêm phiếu xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
+
 @if (TempData["Debug"] != null)
 {
-    <div class="alert alert-warning">@TempData["Debug"]</div>
+    <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#92400e;">@TempData["Debug"]</div>
 }
+
 <style>
-    .custom-select-wrapper {
+    :root {
+        --ap-bg: #f9fafb;
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-green: #16a34a;
+        --ap-green-bg: #dcfce7;
+        --ap-green-dark: #15803d;
+        --ap-red: #dc2626;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+        --ap-shadow-md: 0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -1px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .cr-wrap {
+        padding: 0 0 40px;
+    }
+
+    /* Breadcrumb */
+    .cr-bc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .cr-bc a {
+            color: var(--ap-text-2);
+            text-decoration: none;
+        }
+
+            .cr-bc a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .cr-bc .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .cr-bc .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+            }
+
+        .cr-bc .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    /* Header */
+    .cr-header {
+        margin-bottom: 24px;
+    }
+
+        .cr-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ap-text-1);
+            margin: 0 0 4px;
+            letter-spacing: -.3px;
+        }
+
+        .cr-header p {
+            font-size: 13px;
+            color: var(--ap-text-2);
+            margin: 0;
+        }
+
+    /* Layout */
+    .cr-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 16px;
+        align-items: start;
+    }
+    @@media(max - width:860px) {
+        .cr-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* Panel */
+    .ap-panel {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .ap-panel:last-child {
+            margin-bottom: 0;
+        }
+
+    .ap-panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+    .ap-panel-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+        margin: 0 0 2px;
+    }
+
+    .ap-panel-sub {
+        font-size: 12px;
+        color: var(--ap-text-2);
+        margin: 0;
+    }
+
+    .ap-panel-body {
+        padding: 20px;
+    }
+
+    /* Form */
+    .f-group {
+        margin-bottom: 18px;
+    }
+
+        .f-group:last-child {
+            margin-bottom: 0;
+        }
+
+    .f-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ap-text-1);
+        margin-bottom: 6px;
+    }
+
+    .f-input, .f-select, .f-textarea {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13.5px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+
+        .f-input:focus, .f-select:focus, .f-textarea:focus {
+            border-color: var(--ap-green);
+            box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+        }
+
+        .f-input::placeholder, .f-textarea::placeholder {
+            color: var(--ap-text-3);
+        }
+
+    .f-textarea {
+        resize: vertical;
+        min-height: 72px;
+    }
+
+    .f-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+    }
+
+    .f-hint {
+        font-size: 11.5px;
+        color: var(--ap-text-3);
+        margin-top: 4px;
+    }
+
+    .f-error {
+        font-size: 12px;
+        color: var(--ap-red);
+        margin-top: 4px;
+    }
+
+    .f-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    @@media(max - width:600px) {
+        .f-row-2
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* Custom Select */
+    .cs-wrap {
         position: relative;
         user-select: none;
     }
 
-    .custom-select-trigger {
+    .cs-trigger {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 38px;
-        padding: 0 12px;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
-        background: #fff;
+        padding: 9px 12px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
         cursor: pointer;
-        font-size: 14px;
-        color: #212529;
-        transition: border-color .2s, box-shadow .2s;
+        font-size: 13.5px;
+        color: var(--ap-text-1);
+        transition: border-color .15s, box-shadow .15s;
     }
 
-        .custom-select-trigger:hover {
-            border-color: #86b7fe;
+        .cs-trigger:hover {
+            border-color: #9ca3af;
         }
 
-        .custom-select-trigger.open {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
-            border-radius: 6px 6px 0 0;
+        .cs-trigger.open {
+            border-color: var(--ap-green);
+            box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+            border-radius: 8px 8px 0 0;
         }
 
-        .custom-select-trigger .placeholder {
-            color: #adb5bd;
+    .cs-placeholder {
+        color: var(--ap-text-3);
+    }
+
+    .cs-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .cs-clear {
+        color: var(--ap-text-3);
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 2px;
+        border-radius: 4px;
+        transition: color .1s;
+    }
+
+        .cs-clear:hover {
+            color: var(--ap-red);
         }
 
-        .custom-select-trigger .clear-btn {
-            color: #adb5bd;
-            font-size: 16px;
-            margin-right: 6px;
-            line-height: 1;
-            cursor: pointer;
+    .cs-arrow {
+        color: var(--ap-text-3);
+        display: flex;
+        align-items: center;
+        transition: transform .2s;
+    }
+
+        .cs-arrow svg {
+            width: 14px;
+            height: 14px;
         }
 
-            .custom-select-trigger .clear-btn:hover {
-                color: #e74c3c;
-            }
+    .cs-trigger.open .cs-arrow {
+        transform: rotate(180deg);
+    }
 
-        .custom-select-trigger .arrow {
-            font-size: 12px;
-            color: #6c757d;
-            transition: transform .2s;
-        }
-
-        .custom-select-trigger.open .arrow {
-            transform: rotate(180deg);
-        }
-
-    .custom-select-dropdown {
+    .cs-dropdown {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        border: 1px solid #86b7fe;
+        border: 1px solid var(--ap-green);
         border-top: none;
-        border-radius: 0 0 6px 6px;
-        background: #fff;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-        z-index: 9999;
+        border-radius: 0 0 8px 8px;
+        background: var(--ap-surface);
+        box-shadow: var(--ap-shadow-md);
+        z-index: 999;
     }
 
-        .custom-select-dropdown.open {
+        .cs-dropdown.open {
             display: block;
         }
 
-    .custom-select-search {
+    .cs-search-wrap {
         padding: 8px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid var(--ap-border-lt);
     }
 
-        .custom-select-search input {
+        .cs-search-wrap input {
             width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
+            padding: 7px 10px;
+            border: 1px solid var(--ap-border);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--ap-text-1);
+            background: var(--ap-surface);
             outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
         }
 
-            .custom-select-search input:focus {
-                border-color: #86b7fe;
-                box-shadow: 0 0 0 2px rgba(13,110,253,0.15);
+            .cs-search-wrap input:focus {
+                border-color: var(--ap-green);
+                box-shadow: 0 0 0 2px rgba(22,163,74,.1);
             }
 
-    .custom-select-list {
+    .cs-list {
         max-height: 200px;
         overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #ced4da #f8f9fa;
     }
 
-        .custom-select-list::-webkit-scrollbar {
-            width: 6px;
-        }
+    .cs-group {
+        padding: 6px 12px 4px;
+        font-size: 10.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--ap-text-3);
+        background: var(--ap-border-lt);
+        border-top: 1px solid var(--ap-border-lt);
+    }
 
-        .custom-select-list::-webkit-scrollbar-track {
-            background: #f8f9fa;
-        }
-
-        .custom-select-list::-webkit-scrollbar-thumb {
-            background: #ced4da;
-            border-radius: 3px;
-        }
-
-            .custom-select-list::-webkit-scrollbar-thumb:hover {
-                background: #adb5bd;
-            }
-
-    .custom-select-option {
+    .cs-opt {
         padding: 8px 14px;
-        font-size: 14px;
+        font-size: 13px;
         cursor: pointer;
-        transition: background .15s;
+        color: var(--ap-text-1);
+        transition: background .1s;
     }
 
-        .custom-select-option:hover {
-            background: #e9f0ff;
-            color: #0d6efd;
+        .cs-opt:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-green);
         }
 
-        .custom-select-option.selected {
-            background: #e9f0ff;
-            color: #0d6efd;
+        .cs-opt.selected {
+            background: var(--ap-green-bg);
+            color: var(--ap-green);
             font-weight: 500;
         }
 
-        .custom-select-option.no-result {
-            color: #adb5bd;
+        .cs-opt.no-result {
+            color: var(--ap-text-3);
             cursor: default;
         }
 
-            .custom-select-option.no-result:hover {
+            .cs-opt.no-result:hover {
                 background: none;
+                color: var(--ap-text-3);
             }
 
-    .custom-select-group-label {
-        padding: 6px 14px 4px;
-        font-size: 11px;
+    /* Sidebar buttons */
+    .btn-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+        padding: 11px 16px;
+        background: var(--ap-green);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
         font-weight: 600;
-        color: #6c757d;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-        background: #f8f9fa;
-        border-top: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background .15s;
+        margin-bottom: 8px;
+        font-family: inherit;
+    }
+
+        .btn-create:hover {
+            background: var(--ap-green-dark);
+        }
+
+        .btn-create svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-cancel-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 16px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-2);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all .15s;
+        box-sizing: border-box;
+    }
+
+        .btn-cancel-link:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+            text-decoration: none;
+        }
+
+    /* Dark mode */
+    body.dark-mode .ap-panel {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .f-input, body.dark-mode .f-select, body.dark-mode .f-textarea,
+    body.dark-mode .cs-trigger, body.dark-mode .cs-dropdown, body.dark-mode .cs-search-wrap input {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-1) !important;
+    }
+
+    body.dark-mode .cs-group {
+        background: #0f172a !important;
+    }
+
+    body.dark-mode .cs-opt:hover {
+        background: rgba(255,255,255,.05) !important;
+    }
+
+    body.dark-mode .btn-cancel-link {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-2) !important;
     }
 </style>
-<h1>Thêm phiếu xuất</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CuaXuatId" class="control-label"></label>
-                <select asp-for="CuaXuatId" class="form-control" asp-items="ViewBag.CuaXuatId">
-                    <option value="">— Chọn cửa xuất —</option>
-                </select>
-                <span asp-validation-for="CuaXuatId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="XeId" class="control-label"></label>
-                <select asp-for="XeId" class="form-control" asp-items="ViewBag.XeId">
-                    <option value="">— Chọn xe —</option>
-                </select>
-                <small class="text-muted">Chỉ hiển thị xe đang trong bãi.</small>
-                <span asp-validation-for="XeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ThoiGianPhanCong" class="control-label"></label>
-                <input asp-for="ThoiGianPhanCong" class="form-control" type="datetime-local" />
-                <span asp-validation-for="ThoiGianPhanCong" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ThoiGianGioiHan" class="control-label"></label>
-                <input asp-for="ThoiGianGioiHan" class="form-control" type="datetime-local" />
-                <small class="text-muted">Thời gian tối đa để hoàn thành bàn giao.</small>
-                <span asp-validation-for="ThoiGianGioiHan" class="text-danger"></span>
-            </div>
-            <!-- Input hidden để bind vào model -->
-            <input type="hidden" asp-for="DiaDiemGiao" id="hdDiaDiemGiao" />
 
-            <div class="form-group">
-                <label asp-for="DiaDiemGiao" class="control-label"></label>
-                <div class="custom-select-wrapper" id="diaDiemSelect">
-                    <div class="custom-select-trigger" onclick="toggleDiaDiem()">
-                        <span id="diaDiemLabel" class="placeholder">— Chọn điểm giao —</span>
-                        <div style="display:flex;align-items:center;gap:4px;">
-                            <span class="clear-btn" id="diaDiemClearBtn"
-                                  onclick="clearDiaDiem(event)" style="display:none">×</span>
-                            <span class="arrow"><i class="mdi mdi-chevron-down"></i></span>
-                        </div>
+<div class="cr-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="cr-bc">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="Xuats" asp-action="Index">Phiếu xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Thêm phiếu mới</span>
+    </div>
+
+    <!-- Header -->
+    <div class="cr-header">
+        <h1>Thêm phiếu xuất</h1>
+        <p>Nhập thông tin để tạo phiếu xuất mới.</p>
+    </div>
+
+    <form asp-action="Create" id="createForm">
+        <div asp-validation-summary="ModelOnly" class="f-error" style="margin-bottom:16px;padding:12px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;"></div>
+
+        <div class="cr-grid">
+
+            <!-- ── LEFT ── -->
+            <div>
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Thông tin phiếu xuất</div>
+                        <div class="ap-panel-sub">Nhập thông tin cơ bản cho phiếu xuất mới.</div>
                     </div>
-                    <div class="custom-select-dropdown" id="diaDiemDropdown">
-                        <div class="custom-select-search">
-                            <input type="text" id="diaDiemSearch"
-                                   placeholder="Tìm bưu cục..."
-                                   oninput="filterDiaDiem(this.value)" />
+                    <div class="ap-panel-body">
+
+                        <div class="f-row-2">
+                            <div class="f-group">
+                                <label class="f-label">Cửa xuất</label>
+                                <select asp-for="CuaXuatId" class="f-select" asp-items="ViewBag.CuaXuatId">
+                                    <option value="">— Chọn cửa xuất —</option>
+                                </select>
+                                <span asp-validation-for="CuaXuatId" class="f-error"></span>
+                            </div>
+                            <div class="f-group">
+                                <label class="f-label">Xe</label>
+                                <select asp-for="XeId" class="f-select" asp-items="ViewBag.XeId">
+                                    <option value="">— Chọn xe —</option>
+                                </select>
+                                <div class="f-hint">Chỉ hiển thị xe đang trong bãi.</div>
+                                <span asp-validation-for="XeId" class="f-error"></span>
+                            </div>
                         </div>
-                        <div class="custom-select-list" id="diaDiemList">
-                            <div class="custom-select-group-label">Hà Nội</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hoàn Kiếm" onclick="selectDiaDiem(this)">Bưu cục Hoàn Kiếm</div>
-                            <div class="custom-select-option" data-value="Bưu cục Cầu Giấy" onclick="selectDiaDiem(this)">Bưu cục Cầu Giấy</div>
-                            <div class="custom-select-option" data-value="Bưu cục Đống Đa" onclick="selectDiaDiem(this)">Bưu cục Đống Đa</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hai Bà Trưng" onclick="selectDiaDiem(this)">Bưu cục Hai Bà Trưng</div>
-                            <div class="custom-select-option" data-value="Bưu cục Thanh Xuân" onclick="selectDiaDiem(this)">Bưu cục Thanh Xuân</div>
-                            <div class="custom-select-option" data-value="Bưu cục Long Biên" onclick="selectDiaDiem(this)">Bưu cục Long Biên</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hà Đông" onclick="selectDiaDiem(this)">Bưu cục Hà Đông</div>
-                            <div class="custom-select-option" data-value="Bưu cục Gia Lâm" onclick="selectDiaDiem(this)">Bưu cục Gia Lâm</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hoàng Mai" onclick="selectDiaDiem(this)">Bưu cục Hoàng Mai</div>
-                            <div class="custom-select-option" data-value="Bưu cục Tây Hồ" onclick="selectDiaDiem(this)">Bưu cục Tây Hồ</div>
-                            <div class="custom-select-option" data-value="Bưu cục Bắc Từ Liêm" onclick="selectDiaDiem(this)">Bưu cục Bắc Từ Liêm</div>
-                            <div class="custom-select-option" data-value="Bưu cục Nam Từ Liêm" onclick="selectDiaDiem(this)">Bưu cục Nam Từ Liêm</div>
-                            <div class="custom-select-option" data-value="Trung tâm khai thác Hà Nội" onclick="selectDiaDiem(this)">Trung tâm khai thác Hà Nội</div>
 
-                            <div class="custom-select-group-label">Hải Phòng</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hồng Bàng" onclick="selectDiaDiem(this)">Bưu cục Hồng Bàng</div>
-                            <div class="custom-select-option" data-value="Bưu cục Ngô Quyền" onclick="selectDiaDiem(this)">Bưu cục Ngô Quyền</div>
-                            <div class="custom-select-option" data-value="Bưu cục Lê Chân" onclick="selectDiaDiem(this)">Bưu cục Lê Chân</div>
-                            <div class="custom-select-option" data-value="Bưu cục Kiến An" onclick="selectDiaDiem(this)">Bưu cục Kiến An</div>
-                            <div class="custom-select-option" data-value="Bưu cục An Dương" onclick="selectDiaDiem(this)">Bưu cục An Dương</div>
-                            <div class="custom-select-option" data-value="Bưu cục Thủy Nguyên" onclick="selectDiaDiem(this)">Bưu cục Thủy Nguyên</div>
-                            <div class="custom-select-option" data-value="Trung tâm khai thác Hải Phòng" onclick="selectDiaDiem(this)">Trung tâm khai thác Hải Phòng</div>
+                        <div class="f-row-2">
+                            <div class="f-group">
+                                <label class="f-label">Thời gian phân công</label>
+                                <input asp-for="ThoiGianPhanCong" class="f-input" type="datetime-local" />
+                                <span asp-validation-for="ThoiGianPhanCong" class="f-error"></span>
+                            </div>
+                            <div class="f-group">
+                                <label class="f-label">Thời gian giới hạn</label>
+                                <input asp-for="ThoiGianGioiHan" class="f-input" type="datetime-local" />
+                                <div class="f-hint">Thời gian tối đa để hoàn thành.</div>
+                                <span asp-validation-for="ThoiGianGioiHan" class="f-error"></span>
+                            </div>
+                        </div>
 
-                            <div class="custom-select-group-label">TP. Hồ Chí Minh</div>
-                            <div class="custom-select-option" data-value="Bưu cục Quận 1" onclick="selectDiaDiem(this)">Bưu cục Quận 1</div>
-                            <div class="custom-select-option" data-value="Bưu cục Quận 3" onclick="selectDiaDiem(this)">Bưu cục Quận 3</div>
-                            <div class="custom-select-option" data-value="Bưu cục Quận 5" onclick="selectDiaDiem(this)">Bưu cục Quận 5</div>
-                            <div class="custom-select-option" data-value="Bưu cục Quận 7" onclick="selectDiaDiem(this)">Bưu cục Quận 7</div>
-                            <div class="custom-select-option" data-value="Bưu cục Bình Thạnh" onclick="selectDiaDiem(this)">Bưu cục Bình Thạnh</div>
-                            <div class="custom-select-option" data-value="Bưu cục Tân Bình" onclick="selectDiaDiem(this)">Bưu cục Tân Bình</div>
-                            <div class="custom-select-option" data-value="Bưu cục Gò Vấp" onclick="selectDiaDiem(this)">Bưu cục Gò Vấp</div>
-                            <div class="custom-select-option" data-value="Bưu cục Thủ Đức" onclick="selectDiaDiem(this)">Bưu cục Thủ Đức</div>
-                            <div class="custom-select-option" data-value="Trung tâm khai thác HCM" onclick="selectDiaDiem(this)">Trung tâm khai thác HCM</div>
+                        <div class="f-group">
+                            <label class="f-label">Địa điểm giao hàng</label>
+                            <input type="hidden" asp-for="DiaDiemGiao" id="hdDiaDiemGiao" />
+                            <div class="cs-wrap" id="diaDiemSelect">
+                                <div class="cs-trigger" onclick="toggleDiaDiem()">
+                                    <span id="diaDiemLabel" class="cs-placeholder">— Chọn điểm giao —</span>
+                                    <div class="cs-right">
+                                        <span class="cs-clear" id="diaDiemClearBtn" onclick="clearDiaDiem(event)" style="display:none">×</span>
+                                        <span class="cs-arrow"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></span>
+                                    </div>
+                                </div>
+                                <div class="cs-dropdown" id="diaDiemDropdown">
+                                    <div class="cs-search-wrap">
+                                        <input type="text" id="diaDiemSearch" placeholder="Tìm bưu cục..." oninput="filterDiaDiem(this.value)" />
+                                    </div>
+                                    <div class="cs-list" id="diaDiemList">
+                                        <div class="cs-group">Hà Nội</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hoàn Kiếm" onclick="selectDiaDiem(this)">Bưu cục Hoàn Kiếm</div>
+                                        <div class="cs-opt" data-value="Bưu cục Cầu Giấy" onclick="selectDiaDiem(this)">Bưu cục Cầu Giấy</div>
+                                        <div class="cs-opt" data-value="Bưu cục Đống Đa" onclick="selectDiaDiem(this)">Bưu cục Đống Đa</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hai Bà Trưng" onclick="selectDiaDiem(this)">Bưu cục Hai Bà Trưng</div>
+                                        <div class="cs-opt" data-value="Bưu cục Thanh Xuân" onclick="selectDiaDiem(this)">Bưu cục Thanh Xuân</div>
+                                        <div class="cs-opt" data-value="Bưu cục Long Biên" onclick="selectDiaDiem(this)">Bưu cục Long Biên</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hà Đông" onclick="selectDiaDiem(this)">Bưu cục Hà Đông</div>
+                                        <div class="cs-opt" data-value="Bưu cục Gia Lâm" onclick="selectDiaDiem(this)">Bưu cục Gia Lâm</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hoàng Mai" onclick="selectDiaDiem(this)">Bưu cục Hoàng Mai</div>
+                                        <div class="cs-opt" data-value="Bưu cục Tây Hồ" onclick="selectDiaDiem(this)">Bưu cục Tây Hồ</div>
+                                        <div class="cs-opt" data-value="Bưu cục Bắc Từ Liêm" onclick="selectDiaDiem(this)">Bưu cục Bắc Từ Liêm</div>
+                                        <div class="cs-opt" data-value="Bưu cục Nam Từ Liêm" onclick="selectDiaDiem(this)">Bưu cục Nam Từ Liêm</div>
+                                        <div class="cs-opt" data-value="Trung tâm khai thác Hà Nội" onclick="selectDiaDiem(this)">Trung tâm khai thác Hà Nội</div>
+                                        <div class="cs-group">Hải Phòng</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hồng Bàng" onclick="selectDiaDiem(this)">Bưu cục Hồng Bàng</div>
+                                        <div class="cs-opt" data-value="Bưu cục Ngô Quyền" onclick="selectDiaDiem(this)">Bưu cục Ngô Quyền</div>
+                                        <div class="cs-opt" data-value="Bưu cục Lê Chân" onclick="selectDiaDiem(this)">Bưu cục Lê Chân</div>
+                                        <div class="cs-opt" data-value="Bưu cục Kiến An" onclick="selectDiaDiem(this)">Bưu cục Kiến An</div>
+                                        <div class="cs-opt" data-value="Bưu cục An Dương" onclick="selectDiaDiem(this)">Bưu cục An Dương</div>
+                                        <div class="cs-opt" data-value="Bưu cục Thủy Nguyên" onclick="selectDiaDiem(this)">Bưu cục Thủy Nguyên</div>
+                                        <div class="cs-opt" data-value="Trung tâm khai thác Hải Phòng" onclick="selectDiaDiem(this)">Trung tâm khai thác Hải Phòng</div>
+                                        <div class="cs-group">TP. Hồ Chí Minh</div>
+                                        <div class="cs-opt" data-value="Bưu cục Quận 1" onclick="selectDiaDiem(this)">Bưu cục Quận 1</div>
+                                        <div class="cs-opt" data-value="Bưu cục Quận 3" onclick="selectDiaDiem(this)">Bưu cục Quận 3</div>
+                                        <div class="cs-opt" data-value="Bưu cục Quận 5" onclick="selectDiaDiem(this)">Bưu cục Quận 5</div>
+                                        <div class="cs-opt" data-value="Bưu cục Quận 7" onclick="selectDiaDiem(this)">Bưu cục Quận 7</div>
+                                        <div class="cs-opt" data-value="Bưu cục Bình Thạnh" onclick="selectDiaDiem(this)">Bưu cục Bình Thạnh</div>
+                                        <div class="cs-opt" data-value="Bưu cục Tân Bình" onclick="selectDiaDiem(this)">Bưu cục Tân Bình</div>
+                                        <div class="cs-opt" data-value="Bưu cục Gò Vấp" onclick="selectDiaDiem(this)">Bưu cục Gò Vấp</div>
+                                        <div class="cs-opt" data-value="Bưu cục Thủ Đức" onclick="selectDiaDiem(this)">Bưu cục Thủ Đức</div>
+                                        <div class="cs-opt" data-value="Trung tâm khai thác HCM" onclick="selectDiaDiem(this)">Trung tâm khai thác HCM</div>
+                                        <div class="cs-group">Đà Nẵng</div>
+                                        <div class="cs-opt" data-value="Bưu cục Hải Châu" onclick="selectDiaDiem(this)">Bưu cục Hải Châu</div>
+                                        <div class="cs-opt" data-value="Bưu cục Thanh Khê" onclick="selectDiaDiem(this)">Bưu cục Thanh Khê</div>
+                                        <div class="cs-opt" data-value="Bưu cục Sơn Trà" onclick="selectDiaDiem(this)">Bưu cục Sơn Trà</div>
+                                        <div class="cs-opt" data-value="Bưu cục Liên Chiểu" onclick="selectDiaDiem(this)">Bưu cục Liên Chiểu</div>
+                                        <div class="cs-opt" data-value="Trung tâm khai thác Đà Nẵng" onclick="selectDiaDiem(this)">Trung tâm khai thác Đà Nẵng</div>
+                                        <div class="cs-group">Cần Thơ</div>
+                                        <div class="cs-opt" data-value="Bưu cục Ninh Kiều" onclick="selectDiaDiem(this)">Bưu cục Ninh Kiều</div>
+                                        <div class="cs-opt" data-value="Bưu cục Bình Thủy" onclick="selectDiaDiem(this)">Bưu cục Bình Thủy</div>
+                                        <div class="cs-opt" data-value="Trung tâm khai thác Cần Thơ" onclick="selectDiaDiem(this)">Trung tâm khai thác Cần Thơ</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="DiaDiemGiao" class="f-error"></span>
+                        </div>
 
-                            <div class="custom-select-group-label">Đà Nẵng</div>
-                            <div class="custom-select-option" data-value="Bưu cục Hải Châu" onclick="selectDiaDiem(this)">Bưu cục Hải Châu</div>
-                            <div class="custom-select-option" data-value="Bưu cục Thanh Khê" onclick="selectDiaDiem(this)">Bưu cục Thanh Khê</div>
-                            <div class="custom-select-option" data-value="Bưu cục Sơn Trà" onclick="selectDiaDiem(this)">Bưu cục Sơn Trà</div>
-                            <div class="custom-select-option" data-value="Bưu cục Liên Chiểu" onclick="selectDiaDiem(this)">Bưu cục Liên Chiểu</div>
-                            <div class="custom-select-option" data-value="Trung tâm khai thác Đà Nẵng" onclick="selectDiaDiem(this)">Trung tâm khai thác Đà Nẵng</div>
-
-                            <div class="custom-select-group-label">Cần Thơ</div>
-                            <div class="custom-select-option" data-value="Bưu cục Ninh Kiều" onclick="selectDiaDiem(this)">Bưu cục Ninh Kiều</div>
-                            <div class="custom-select-option" data-value="Bưu cục Bình Thủy" onclick="selectDiaDiem(this)">Bưu cục Bình Thủy</div>
-                            <div class="custom-select-option" data-value="Trung tâm khai thác Cần Thơ" onclick="selectDiaDiem(this)">Trung tâm khai thác Cần Thơ</div>
+                        <div class="f-group" style="margin-bottom:0;">
+                            <label class="f-label">Ghi chú</label>
+                            <textarea asp-for="GhiChu" class="f-textarea" rows="3" placeholder="Ghi chú thêm (nếu có)..."></textarea>
+                            <span asp-validation-for="GhiChu" class="f-error"></span>
                         </div>
                     </div>
                 </div>
-                <span asp-validation-for="DiaDiemGiao" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NhanVienXacNhanId" class="control-label"></label>
-                <select asp-for="NhanVienXacNhanId" class="form-control" asp-items="ViewBag.NhanVienXacNhanId">
-                    <option value="">— Chưa chỉ định —</option>
-                </select>
-                <small class="text-muted">Nhân viên bảo vệ xác nhận xe ra cổng.</small>
+
+            <!-- ── RIGHT: Sidebar ── -->
+            <div>
+                <!-- Nhân viên -->
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Nhân viên xác nhận</div>
+                    </div>
+                    <div class="ap-panel-body">
+                        <div class="f-group" style="margin-bottom:0;">
+                            <label class="f-label">Nhân viên</label>
+                            <select asp-for="NhanVienXacNhanId" class="f-select" asp-items="ViewBag.NhanVienXacNhanId">
+                                <option value="">— Chưa chỉ định —</option>
+                            </select>
+                            <div class="f-hint">Nhân viên bảo vệ xác nhận xe ra cổng.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create / Cancel -->
+                <div class="ap-panel">
+                    <div class="ap-panel-body">
+                        <button type="submit" class="btn-create" perm="Xuat.Create">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            Tạo phiếu xuất
+                        </button>
+                        <a asp-action="Index" class="btn-cancel-link">Hủy</a>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="GhiChu" class="control-label"></label>
-                <textarea asp-for="GhiChu" class="form-control" rows="2"></textarea>
-                <span asp-validation-for="GhiChu" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
-            </div>
-        </form>
-    </div>
+
+        </div>
+    </form>
 </div>
 
 @section Scripts {
     <script>
-
-            // ---- DiaDiemGiao dropdown ----
         function toggleDiaDiem() {
-            const trigger = document.querySelector('#diaDiemSelect .custom-select-trigger');
+            const trigger = document.querySelector('#diaDiemSelect .cs-trigger');
             const dropdown = document.getElementById('diaDiemDropdown');
-            const isOpen = dropdown.classList.contains('open');
-            if (isOpen) {
-                closeDiaDiem();
-            } else {
-                trigger.classList.add('open');
-                dropdown.classList.add('open');
-                document.getElementById('diaDiemSearch').focus();
-            }
+            if (dropdown.classList.contains('open')) { closeDiaDiem(); }
+            else { trigger.classList.add('open'); dropdown.classList.add('open'); document.getElementById('diaDiemSearch').focus(); }
         }
-
         function closeDiaDiem() {
-            document.querySelector('#diaDiemSelect .custom-select-trigger').classList.remove('open');
+            document.querySelector('#diaDiemSelect .cs-trigger').classList.remove('open');
             document.getElementById('diaDiemDropdown').classList.remove('open');
             document.getElementById('diaDiemSearch').value = '';
             filterDiaDiem('');
         }
-
         function selectDiaDiem(el) {
             const value = el.dataset.value;
             document.getElementById('hdDiaDiemGiao').value = value;
-            document.getElementById('diaDiemLabel').textContent = value;
-            document.getElementById('diaDiemLabel').classList.remove('placeholder');
+            const lbl = document.getElementById('diaDiemLabel');
+            lbl.textContent = value; lbl.classList.remove('cs-placeholder');
             document.getElementById('diaDiemClearBtn').style.display = 'inline';
-            document.querySelectorAll('#diaDiemList .custom-select-option')
-                .forEach(o => o.classList.toggle('selected', o.dataset.value === value));
+            document.querySelectorAll('#diaDiemList .cs-opt').forEach(o => o.classList.toggle('selected', o.dataset.value === value));
             closeDiaDiem();
         }
-
         function clearDiaDiem(e) {
             e.stopPropagation();
             document.getElementById('hdDiaDiemGiao').value = '';
-            document.getElementById('diaDiemLabel').textContent = '— Chọn điểm giao —';
-            document.getElementById('diaDiemLabel').classList.add('placeholder');
+            const lbl = document.getElementById('diaDiemLabel');
+            lbl.textContent = '— Chọn điểm giao —'; lbl.classList.add('cs-placeholder');
             document.getElementById('diaDiemClearBtn').style.display = 'none';
-            document.querySelectorAll('#diaDiemList .custom-select-option')
-                .forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('#diaDiemList .cs-opt').forEach(o => o.classList.remove('selected'));
         }
-
-        function filterDiaDiem(keyword) {
-            const kw = keyword.toLowerCase();
-            const options = document.querySelectorAll('#diaDiemList .custom-select-option');
-            const groups = document.querySelectorAll('#diaDiemList .custom-select-group-label');
+        function filterDiaDiem(kw) {
+            kw = kw.toLowerCase();
+            const opts = document.querySelectorAll('#diaDiemList .cs-opt');
+            const groups = document.querySelectorAll('#diaDiemList .cs-group');
             let found = false;
-
-            options.forEach(o => {
-                const match = o.dataset.value.toLowerCase().includes(kw);
-                o.style.display = match ? 'block' : 'none';
+            opts.forEach(o => {
+                const match = o.dataset.value && o.dataset.value.toLowerCase().includes(kw);
+                o.style.display = match ? '' : 'none';
                 if (match) found = true;
             });
-
-            // Ẩn group label nếu không có option nào trong group hiển thị
             groups.forEach(g => {
-                let next = g.nextElementSibling;
-                let hasVisible = false;
-                while (next && !next.classList.contains('custom-select-group-label')) {
-                    if (next.style.display !== 'none') hasVisible = true;
+                let next = g.nextElementSibling, has = false;
+                while (next && !next.classList.contains('cs-group')) {
+                    if (next.style.display !== 'none') has = true;
                     next = next.nextElementSibling;
                 }
-                g.style.display = hasVisible ? 'block' : 'none';
+                g.style.display = has ? '' : 'none';
             });
-
-            const noResult = document.getElementById('diaDiemNoResult');
+            const nr = document.getElementById('csNoResult');
             if (!found) {
-                if (!noResult) {
-                    const div = document.createElement('div');
-                    div.id = 'diaDiemNoResult';
-                    div.className = 'custom-select-option no-result';
-                    div.textContent = 'Không tìm thấy bưu cục';
-                    document.getElementById('diaDiemList').appendChild(div);
-                }
-            } else {
-                if (noResult) noResult.remove();
-            }
+                if (!nr) { const d = document.createElement('div'); d.id='csNoResult'; d.className='cs-opt no-result'; d.textContent='Không tìm thấy bưu cục'; document.getElementById('diaDiemList').appendChild(d); }
+            } else { if (nr) nr.remove(); }
         }
-
-        // Đóng khi click ra ngoài
-        document.addEventListener('click', function (e) {
-            if (!document.getElementById('diaDiemSelect').contains(e.target)) {
-                closeDiaDiem();
-            }
-        });
-
-        // Preload giá trị khi Edit
-        document.addEventListener('DOMContentLoaded', function () {
-            const val = document.getElementById('hdDiaDiemGiao').value;
-            if (val) {
-                const opt = document.querySelector(`#diaDiemList .custom-select-option[data-value="${val}"]`);
-                if (opt) selectDiaDiem(opt);
-            }
-        });
+        document.addEventListener('click', e => { if (!document.getElementById('diaDiemSelect').contains(e.target)) closeDiaDiem(); });
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -6,6 +6,8 @@ using LedApp.SubscribeTableDependencies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using LedApp.Data;
+using LedApp.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,16 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 );
 builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Access/Forbidden";
+});
 
+
+//Phân quyền theo role và chi tiết quyền
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+builder.Services.AddAuthorization();
 
 // Kiểm tra SecurityStamp mỗi request
 // → Admin sửa thông tin/role/khóa tài khoản có hiệu lực ngay lập tức
@@ -56,22 +67,25 @@ builder.Services.AddControllers().AddJsonOptions(options => {
 // DI
 //builder.Services.AddSingleton<UserRepository>();
 //builder.Services.AddSingleton<CuaXuatRepository>();
+
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<CuaXuatRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 //builder.Services.AddSingleton<SignalServer>();
+
+
 builder.Services.AddSingleton<SubscribeChitietXuatTableDependency>();
-builder.Services.AddSingleton<SubscribeNhapTableDependency>();        // ? thêm m?i
+builder.Services.AddSingleton<SubscribeNhapTableDependency>();    
 builder.Services.AddSingleton<SubscribeChitietNhapTableDependency>();
 builder.Services.AddSingleton<SubscribeXuatTableDependency>();
 // Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
+
 //Cảnh báo quá hạn
 // Thêm vào trước app.Run()
-
-
 builder.Services.AddHostedService<LedApp.Services.QuaHanNhapService>();
 builder.Services.AddHostedService<LedApp.Services.XuatCanhBaoService>();
 
@@ -108,22 +122,23 @@ app.MapControllerRoute(
 //    new { controller = "TongTrungTam", action = "Index" });
 //Ki?ch hoa?t SubscribeTableDependency
 app.UseSqlTableDependency<SubscribeChitietXuatTableDependency>(connectionString);
-app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);        // ? thêm m?i
-app.UseSqlTableDependency<SubscribeChitietNhapTableDependency>(connectionString); // ? thêm m?i
+app.UseSqlTableDependency<SubscribeNhapTableDependency>(connectionString);       
+app.UseSqlTableDependency<SubscribeChitietNhapTableDependency>(connectionString);
 app.UseSqlTableDependency<SubscribeXuatTableDependency>(connectionString);
 
 
 
-// Thêm vào cuối Program.cs, trước app.Run() phân quyền 
-using (var scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+// Thêm vào cuối Program.cs, trước app.Run() phân quyền ==> cũ
+//using (var scope = app.Services.CreateScope())
+//{
+//    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    foreach (var role in Enum.GetNames<Quyen>())
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));
-    }
-}
+//    foreach (var role in Enum.GetNames<Quyen>())
+//    foreach (var role in Enum.GetNames<Quyen>())
+//    {
+//        if (!await roleManager.RoleExistsAsync(role))
+//            await roleManager.CreateAsync(new IdentityRole(role));
+//    }
+//}
 
 app.Run();

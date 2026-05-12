@@ -1,0 +1,346 @@
+﻿@model LedApp.Models.CauHinh
+@{
+    ViewData["Title"] = "Thêm cấu hình";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    :root {
+        --ap-bg: #f9fafb;
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-green: #16a34a;
+        --ap-green-dark: #15803d;
+        --ap-red: #dc2626;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .cr-wrap {
+        padding: 0 0 40px;
+    }
+
+    .cr-bc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .cr-bc a {
+            color: var(--ap-text-2);
+            text-decoration: none;
+        }
+
+            .cr-bc a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .cr-bc .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .cr-bc .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+            }
+
+        .cr-bc .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    .cr-header {
+        margin-bottom: 24px;
+    }
+
+        .cr-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ap-text-1);
+            margin: 0 0 4px;
+            letter-spacing: -.3px;
+        }
+
+        .cr-header p {
+            font-size: 13px;
+            color: var(--ap-text-2);
+            margin: 0;
+        }
+
+    .cr-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    @@media(max-width:860px) {
+        .cr-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .ap-panel {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .ap-panel:last-child {
+            margin-bottom: 0;
+        }
+
+    .ap-panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+    .ap-panel-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+        margin: 0 0 2px;
+    }
+
+    .ap-panel-sub {
+        font-size: 12px;
+        color: var(--ap-text-2);
+        margin: 0;
+    }
+
+    .ap-panel-body {
+        padding: 20px;
+    }
+
+    .f-group {
+        margin-bottom: 18px;
+    }
+
+        .f-group:last-child {
+            margin-bottom: 0;
+        }
+
+    .f-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ap-text-1);
+        margin-bottom: 6px;
+    }
+
+    .f-input, .f-textarea {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13.5px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+
+        .f-input:focus, .f-textarea:focus {
+            border-color: var(--ap-green);
+            box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+        }
+
+        .f-input::placeholder, .f-textarea::placeholder {
+            color: var(--ap-text-3);
+        }
+
+    .f-textarea {
+        resize: vertical;
+        min-height: 72px;
+    }
+
+    .f-hint {
+        font-size: 11.5px;
+        color: var(--ap-text-3);
+        margin-top: 4px;
+    }
+
+    .f-error {
+        font-size: 12px;
+        color: var(--ap-red);
+        margin-top: 4px;
+    }
+
+    .f-mono {
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+    }
+
+    .btn-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+        padding: 11px 16px;
+        background: var(--ap-green);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+        margin-bottom: 8px;
+        font-family: inherit;
+    }
+
+        .btn-create:hover {
+            background: var(--ap-green-dark);
+        }
+
+        .btn-create svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-cancel-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 16px;
+        border: 1px solid var(--ap-border);
+        border-radius: 8px;
+        background: var(--ap-surface);
+        color: var(--ap-text-2);
+        font-size: 14px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all .15s;
+        box-sizing: border-box;
+    }
+
+        .btn-cancel-link:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+            text-decoration: none;
+        }
+
+    body.dark-mode .ap-panel {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .f-input, body.dark-mode .f-textarea {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-1) !important;
+    }
+
+    body.dark-mode .btn-cancel-link {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-2) !important;
+    }
+</style>
+
+<div class="cr-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="cr-bc">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="CauHinhs" asp-action="Index">Cấu hình hệ thống</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Thêm mới</span>
+    </div>
+
+    <!-- Header -->
+    <div class="cr-header">
+        <h1>Thêm cấu hình</h1>
+        <p>Nhập thông tin để tạo cấu hình mới.</p>
+    </div>
+
+    <form asp-action="Create" id="createForm">
+        <div asp-validation-summary="ModelOnly" class="f-error" style="margin-bottom:16px;padding:12px 16px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;"></div>
+
+        <div class="cr-grid">
+            <!-- LEFT -->
+            <div>
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Thông tin cấu hình</div>
+                        <div class="ap-panel-sub">Nhập key và value cho tham số cấu hình mới.</div>
+                    </div>
+                    <div class="ap-panel-body">
+                        <div class="f-group">
+                            <label class="f-label">Key</label>
+                            <input asp-for="Key" class="f-input f-mono" placeholder="VD: ThoiGianGioiHanNhap" />
+                            <div class="f-hint">Tên định danh duy nhất cho tham số cấu hình.</div>
+                            <span asp-validation-for="Key" class="f-error"></span>
+                        </div>
+                        <div class="f-group" style="margin-bottom:0;">
+                            <label class="f-label">Value</label>
+                            <input asp-for="Value" class="f-input" placeholder="VD: 40" />
+                            <div class="f-hint">Giá trị của tham số cấu hình.</div>
+                            <span asp-validation-for="Value" class="f-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div>
+                <div class="ap-panel">
+                    <div class="ap-panel-head">
+                        <div class="ap-panel-title">Hướng dẫn</div>
+                    </div>
+                    <div class="ap-panel-body" style="font-size:13px;color:var(--ap-text-2);line-height:1.6;">
+                        <p style="margin:0 0 10px;">Các key thường dùng:</p>
+                        <ul style="margin:0;padding-left:18px;">
+                            <li><code style="font-size:11.5px;background:var(--ap-border-lt);padding:1px 5px;border-radius:4px;">CuaXuatW</code> — Chiều rộng cửa xuất</li>
+                            <li style="margin-top:6px;"><code style="font-size:11.5px;background:var(--ap-border-lt);padding:1px 5px;border-radius:4px;">CuaNhapW</code> — Chiều rộng cửa nhập</li>
+                            <li style="margin-top:6px;"><code style="font-size:11.5px;background:var(--ap-border-lt);padding:1px 5px;border-radius:4px;">ThoiGianNhapToiDa</code> — Thời gian tối đa nhập</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="ap-panel">
+                    <div class="ap-panel-body">
+                        <button type="submit" class="btn-create">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            Tạo cấu hình
+                        </button>
+                        <a asp-action="Index" class="btn-cancel-link">Hủy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

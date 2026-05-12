@@ -3,38 +3,426 @@
     ViewData["Title"] = "Thêm chi tiết xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Thêm chi tiết xuất hàng</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-3">
-                <label asp-for="XuatId" class="control-label"></label>
-                <select asp-for="XuatId" class="form-control" asp-items="ViewBag.XuatId"></select>
-                <span asp-validation-for="XuatId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="DonVi" class="control-label"></label>
-                <input asp-for="DonVi" class="form-control" placeholder="VD: Tải, Kiện, ĐH..." />
-                <span asp-validation-for="DonVi" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="ChuaBG" class="control-label"></label>
-                <input asp-for="ChuaBG" class="form-control" type="number" min="0" />
-                <span asp-validation-for="ChuaBG" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="DaBG" class="control-label"></label>
-                <input asp-for="DaBG" class="form-control" type="number" min="0" />
-                <span asp-validation-for="DaBG" class="text-danger"></span>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Lưu dữ liệu" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
-            </div>
-        </form>
+
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .cx-page {
+        padding: 24px 24px 80px;
+        max-width: 860px;
+    }
+
+    /* ── Breadcrumb ── */
+    .cx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .cx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .cx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .cx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .cx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .cx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    /* ── Header ── */
+    .cx-header {
+        margin-bottom: 24px;
+    }
+
+        .cx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .cx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    /* ── Card ── */
+    .cx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .cx-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .cx-card-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 3px;
+        }
+
+        .cx-card-header p {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+    .cx-card-body {
+        padding: 24px;
+    }
+
+    /* ── Form ── */
+    .cx-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .cx-form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+        .cx-form-group.full {
+            grid-column: 1 / -1;
+        }
+
+    .cx-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .cx-input,
+    .cx-select {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 10px 14px;
+        width: 100%;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+        .cx-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .cx-input:focus,
+        .cx-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .cx-input.input-error {
+            border-color: #ef4444;
+        }
+
+    .cx-select-wrap {
+        position: relative;
+    }
+
+        .cx-select-wrap svg {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 14px;
+            height: 14px;
+            pointer-events: none;
+        }
+
+        .cx-select-wrap .cx-select {
+            padding-right: 36px;
+        }
+
+    .cx-error {
+        font-size: 0.76rem;
+        color: #ef4444;
+        font-weight: 500;
+    }
+
+    /* ── Number input ── */
+    input[type=number].cx-input::-webkit-inner-spin-button,
+    input[type=number].cx-input::-webkit-outer-spin-button {
+        opacity: 1;
+    }
+
+    /* ── Divider ── */
+    .cx-divider {
+        height: 1px;
+        background: #f3f4f6;
+        margin: 0 -24px 24px;
+    }
+
+    /* ── Footer ── */
+    .cx-card-footer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 24px 24px;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+        white-space: nowrap;
+    }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+        .btn-submit svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+    /* ── Validation summary ── */
+    .cx-validation-summary {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        color: #dc2626;
+        font-size: 0.82rem;
+    }
+
+        .cx-validation-summary ul {
+            margin: 4px 0 0;
+            padding-left: 16px;
+        }
+
+    /* ── Dark mode ── */
+    body.dark-mode .cx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .cx-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .cx-breadcrumb, body.dark-mode .cx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .cx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .cx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .cx-card-header h2 {
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .cx-card-header p {
+            color: #9ca3af !important;
+        }
+
+    body.dark-mode .cx-divider {
+        background: #2e3248 !important;
+    }
+
+    body.dark-mode .cx-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .cx-input, body.dark-mode .cx-select {
+        background: #141720 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+        body.dark-mode .cx-input::placeholder {
+            color: #4b5563 !important;
+        }
+
+    body.dark-mode .cx-select-wrap svg {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="cx-page">
+
+    <!-- Breadcrumb -->
+    <div class="cx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="ChitietXuats" asp-action="Index">Chi tiết xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Thêm mới</span>
     </div>
+
+    <!-- Header -->
+    <div class="cx-header">
+        <h1>Thêm chi tiết xuất</h1>
+        <p>Tạo mới một dòng chi tiết cho phiếu xuất hàng.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="cx-card">
+        <div class="cx-card-header">
+            <h2>Thông tin chi tiết</h2>
+            <p>Điền đầy đủ thông tin bên dưới để tạo chi tiết xuất mới.</p>
+        </div>
+
+        <div class="cx-card-body">
+            <form asp-action="Create" id="createForm">
+
+                @{
+                    var hasSummaryErrors = !ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey(string.Empty);
+                }
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="cx-validation-summary">
+                        <strong>Vui lòng kiểm tra lại các thông tin sau:</strong>
+                        <ul>
+                            @foreach (var state in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in state.Errors)
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <div class="cx-form-grid">
+
+                    <!-- Phiếu xuất -->
+                    <div class="cx-form-group full">
+                        <label asp-for="XuatId" class="cx-label">Phiếu xuất</label>
+                        <div class="cx-select-wrap">
+                            <select asp-for="XuatId" class="cx-select" asp-items="ViewBag.XuatId">
+                                <option value="">-- Chọn phiếu xuất --</option>
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+                        <span asp-validation-for="XuatId" class="cx-error"></span>
+                    </div>
+
+                    <!-- Đơn vị -->
+                    <div class="cx-form-group full">
+                        <label asp-for="DonVi" class="cx-label">Đơn vị</label>
+                        <input asp-for="DonVi" class="cx-input" placeholder="VD: Tải, Kiện, Đơn hàng..." />
+                        <span asp-validation-for="DonVi" class="cx-error"></span>
+                    </div>
+
+                    <!-- Chưa bàn giao -->
+                    <div class="cx-form-group">
+                        <label asp-for="ChuaBG" class="cx-label">Chưa bàn giao</label>
+                        <input asp-for="ChuaBG" class="cx-input" type="number" min="0" placeholder="0" />
+                        <span asp-validation-for="ChuaBG" class="cx-error"></span>
+                    </div>
+
+                    <!-- Đã bàn giao -->
+                    <div class="cx-form-group">
+                        <label asp-for="DaBG" class="cx-label">Đã bàn giao</label>
+                        <input asp-for="DaBG" class="cx-input" type="number" min="0" placeholder="0" />
+                        <span asp-validation-for="DaBG" class="cx-error"></span>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+
+        <div class="cx-divider"></div>
+
+        <div class="cx-card-footer">
+            <button type="submit" form="createForm" class="btn-submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Lưu chi tiết
+            </button>
+            <a asp-action="Index" class="btn-cancel">Hủy</a>
+        </div>
+    </div>
+
 </div>
 
 @section Scripts {

@@ -4077,6 +4077,10 @@
       "PackagePath": "staticwebassets\\admin\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\css\\permission.css",
+      "PackagePath": "staticwebassets\\css\\permission.css"
+    },
+    {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
@@ -4373,6 +4377,10 @@
       "PackagePath": "staticwebassets\\uploads\\avatars\\0d3f22e2-501d-47d1-9bd3-fec2ea53be04.png"
     },
     {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\0efbe373-d511-41b9-a494-05f0abffb8cb.jpeg",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\0efbe373-d511-41b9-a494-05f0abffb8cb.jpeg"
+    },
+    {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\10566877-cec5-4508-9275-6692a160bea7.jpeg"
     },
@@ -4383,6 +4391,10 @@
     {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\233bb593-be97-4e7e-86c9-a800f65952c5.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\3ab5557c-8d1f-47af-b5d8-185f1cbea92b.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\3ab5557c-8d1f-47af-b5d8-185f1cbea92b.png"
     },
     {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\3abdae6e-0bec-4fbe-aa70-aa2a42ebc33b.jpeg",
@@ -4489,8 +4501,16 @@
       "PackagePath": "staticwebassets\\uploads\\avatars\\bc7450aa-9192-4547-a14c-1cd20feaf706.jpeg"
     },
     {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\c9e9a775-e87c-44c1-9a2a-69cb0bd10e7f.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\c9e9a775-e87c-44c1-9a2a-69cb0bd10e7f.png"
+    },
+    {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\cfbdd519-5424-48a3-8414-83f585655d82.jpg",
       "PackagePath": "staticwebassets\\uploads\\avatars\\cfbdd519-5424-48a3-8414-83f585655d82.jpg"
+    },
+    {
+      "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\d15a5d89-dfcd-43b3-abf5-12c346e01753.png",
+      "PackagePath": "staticwebassets\\uploads\\avatars\\d15a5d89-dfcd-43b3-abf5-12c346e01753.png"
     },
     {
       "Id": "E:\\CodeLVTN\\LedApp\\LedApp\\wwwroot\\uploads\\avatars\\e0b58718-6d76-409c-b228-79995f442079.jpeg",

@@ -1,9 +1,11 @@
 ﻿using System.Net.Http;
 using LedApp.Data;
 using LedApp.DTOs;
+using LedApp.Helpers;
 using LedApp.Hubs;
 using LedApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,6 @@ using Microsoft.Extensions.Logging;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "NhanVien")]
     public class NhanVienNhapController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -19,6 +20,7 @@ namespace LedApp.Controllers
         private readonly ILogger<NhanVienNhapController> _logger;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly UserManager<AppUser> _userManager;
         private readonly string _connectionString;
 
         public NhanVienNhapController(
@@ -27,26 +29,39 @@ namespace LedApp.Controllers
             ILogger<NhanVienNhapController> logger,
             IHttpClientFactory httpClientFactory,
             IServiceScopeFactory scopeFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+             UserManager<AppUser> userManager)
         {
             _context = context;
             _hubContext = hubContext;
             _logger = logger;
             _httpClientFactory = httpClientFactory;
             _scopeFactory = scopeFactory;
+            _userManager = userManager;
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
-
         public async Task<IActionResult> CuaNhap(int cuaNhapId)
         {
+            if (!User.Identity?.IsAuthenticated ?? true)
+                return Challenge();
+
+            var allowedIds = await PermissionChecker
+                .GetAllowedCuaNhapIds(User, _userManager, _context);
+
+            if (!allowedIds.Any())
+                return Challenge();
+
+            if (!allowedIds.Contains(cuaNhapId))
+                return RedirectToAction("CuaNhap", new { cuaNhapId = allowedIds[0] });
+
             var cua = await _context.CuaNhaps.FindAsync(cuaNhapId);
             if (cua == null) return NotFound();
+
             ViewBag.CuaNhapId = cuaNhapId;
             ViewBag.TenCua = cua.Ten;
-
-            // Đọc từ Claims — không cần inject thêm gì
             ViewBag.UserName = User.Identity?.Name ?? "";
-            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+            ViewBag.UserEmail = User.FindFirst(
+                System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
 
             return View();
         }
@@ -227,6 +242,7 @@ namespace LedApp.Controllers
 
                 await _hubContext.Clients.All.SendAsync("ReceivedChitietNhap", chitietMoi, nhap.CuaNhapId);
                 await _hubContext.Clients.All.SendAsync("CapNhatChitietCua", nhap.CuaNhapId);
+                await _hubContext.Clients.All.SendAsync("ReloadDashboard");
                 _logger.LogInformation("Bàn giao nhapId={Id}", req.NhapId);
 
                 return Ok(new { success = true, chitiet = chitietMoi });

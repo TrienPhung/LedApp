@@ -997,8 +997,8 @@
 							</div>
 						</div>
 						<div class="ud-divider"></div>
-						<a href="#" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
-						<a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a>
+						<a asp-area="Identity" asp-page="/Account/Manage/Index" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
+						@* <a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a> *@
 						<div class="ud-divider"></div>
 						<form asp-area="Identity" asp-page="/Account/Logout"
 							  asp-route-returnUrl="@Url.Action("CuaNhap","NhanVienNhap",new{cuaNhapId})" method="post">

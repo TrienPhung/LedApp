@@ -929,8 +929,8 @@
                             </div>
                         </div>
                         <div class="ud-divider"></div>
-                        <a href="#" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
-                        <a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
+                        @* <a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a> *@
                         <div class="ud-divider"></div>
                         <form asp-area="Identity" asp-page="/Account/Logout"
                               asp-route-returnUrl="@Url.Action("CuaXuat","NhanVienXuat",new{cuaXuatId})" method="post">
@@ -1416,10 +1416,27 @@
             .withAutomaticReconnect([0, 1000, 2000, 5000, 10000]) // thử reconnect sau 0s, 1s, 2s, 5s, 10s
             .build();
 
+        // SỬA handler ReceivedXuat:
         connection.on('ReceivedXuat', function(x, id) {
             if (id != CUA_XUAT_ID) return;
             if (state.dangHoanThanh) return;
             if (x === null) { applyXuatData(null); return; }
+
+            // THÊM: nếu server báo trangThai = 2 (QuaThoiGian)
+            // cập nhật UI ngay không chờ timer client
+            if (x.trangThai === 2 && state.trangThai === 1) {
+                state.trangThai = 2;
+                state.thoiGianGioiHan = x.thoiGianGioiHan;
+                _daBooCanhBao = true; // đánh dấu đã báo rồi, không gọi lại
+                document.getElementById('tt-text').textContent      = 'Quá thời gian';
+                document.getElementById('status-strip').className   = 'strip over';
+                document.getElementById('status-strip').textContent = 'QUÁ GIỜ QUY ĐỊNH — XỬ LÝ NGAY';
+                document.getElementById('timer-num').textContent    = 'QUÁ HẠN';
+                document.getElementById('timer-num').className      = 'timer-num over';
+                document.getElementById('btn-xuly').className       = 'btn-xuly show';
+                return; // không cần loadXuatHienTai nữa
+            }
+
             if (_loadTimer) clearTimeout(_loadTimer);
             _loadTimer = setTimeout(loadXuatHienTai, 100);
         });

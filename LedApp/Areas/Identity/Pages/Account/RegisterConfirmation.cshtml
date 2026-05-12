@@ -4,20 +4,150 @@
     ViewData["Title"] = "Register confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
     }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
 
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .auth-card-header {
+        padding: 24px 28px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .auth-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .auth-card-body {
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .success-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .success-msg {
+        font-size: 0.875rem;
+        color: #374151;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .confirm-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #16a34a;
+        color: #fff;
+        text-decoration: none;
+        transition: background .15s;
+    }
+
+        .confirm-link:hover {
+            background: #15803d;
+            color: #fff;
+        }
+
+    .info-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        color: #1d4ed8;
+        text-align: left;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .info-box a {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+
+    .auth-footer {
+        padding: 16px 28px;
+        border-top: 1px solid #f3f4f6;
+        text-align: center;
+        font-size: 0.82rem;
+        color: #6b7280;
+    }
+
+        .auth-footer a {
+            color: #16a34a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <p class="auth-card-title">Registration confirmation</p>
+        </div>
+        <div class="auth-card-body">
+            <div class="success-icon">
+                <i class="bi bi-person-check"></i>
+            </div>
+            @if (Model.DisplayConfirmAccountLink)
+            {
+                <div class="info-box">
+                    <i class="bi bi-info-circle" style="margin-right:6px;"></i>
+                    This app does not currently have a real email sender registered.
+                    See <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
+                </div>
+                <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="confirm-link">
+                    <i class="bi bi-check-circle"></i>
+                    Click here to confirm your account
+                </a>
+            }
+            else
+            {
+                <p class="success-msg">
+                    Please check your email to confirm your account.
+                </p>
+            }
+        </div>
+        <div class="auth-footer">
+            <a asp-page="./Login">Quay lại đăng nhập</a>
+        </div>
+    </div>
+</div>

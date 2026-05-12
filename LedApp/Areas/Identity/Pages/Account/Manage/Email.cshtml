@@ -5,36 +5,237 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h3>@ViewData["Title"]</h3>
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input:disabled {
+            background: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .field-row-email {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+        .field-row-email .field-input {
+            flex: 1;
+        }
+
+    .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        align-self: center;
+    }
+
+    .status-msg {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 16px;
+    }
+
+        .status-msg.success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+
+        .status-msg.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+    .manage-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding-top: 4px;
+    }
+
+    .btn-save {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+    .btn-verify {
+        background: #fff;
+        color: #374151;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-verify:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+        body.dark-mode .field-input:disabled {
+            background: #1a1d27 !important;
+        }
+
+    body.dark-mode .btn-verify {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
 <partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Email address</p>
+        <p class="manage-card-sub">Manage your email address and verification status</p>
+    </div>
+    <div class="manage-card-body">
         <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating input-group">
-                    <input asp-for="Email" class="form-control" disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
-                        </div>
-                    <label asp-for="Email" class="form-label"></label>
+            <div asp-validation-summary="All" class="field-error" style="margin-bottom:12px;"></div>
+
+            <div class="field-group">
+                <label class="field-label">Current email</label>
+                <div class="field-row-email">
+                    <input asp-for="Email" class="field-input" disabled />
+                    @if (Model.IsEmailConfirmed)
+                    {
+                        <span class="verified-badge">✓ Verified</span>
+                    }
+                    else
+                    {
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn-verify">
+                            Send verification
+                        </button>
+                    }
                 </div>
-            }
-            else
-            {
-                <div class="form-floating">
-                    <input asp-for="Email" class="form-control" disabled />
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                </div>
-            }
-            <div class="form-floating">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
             </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
+
+            <div class="field-group">
+                <label class="field-label" asp-for="Input.NewEmail">New email</label>
+                <input asp-for="Input.NewEmail" class="field-input" placeholder="Nhập email mới..." autocomplete="email" aria-required="true" />
+                <span asp-validation-for="Input.NewEmail" class="field-error"></span>
+            </div>
+
+            <div class="manage-footer">
+                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn-save">Save Changes</button>
+            </div>
         </form>
     </div>
 </div>

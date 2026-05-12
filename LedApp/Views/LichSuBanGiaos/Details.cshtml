@@ -2,29 +2,817 @@
 @{
     ViewData["Title"] = "Chi tiết lịch sử bàn giao";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+    string nhanVienName = Model.NhanVien?.FullName ?? Model.NhanVienId.ToString();
+    string loaiLower = (Model.LoaiPhieu ?? "").ToLower();
+    string loaiBadgeClass = loaiLower.Contains("xuat") ? "lp-xuat" : (loaiLower.Contains("nhap") ? "lp-nhap" : "lp-other");
 }
 
-<h1>Chi tiết lịch sử bàn giao</h1>
-<hr />
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-<dl class="row">
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.LoaiPhieu)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.LoaiPhieu)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.PhieuId)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.PhieuId)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ChiTietDonViId)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.ChiTietDonViId)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.DonVi)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.DonVi)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.SoBG)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.SoBG)</dd>
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.NhanVienId)</dt>
-    @* <dd class="col-sm-10">@(Model.NhanVien?.Name ?? Model.NhanVienId.ToString())</dd> *@
-    <dt class="col-sm-2">@Html.DisplayNameFor(m => m.ThoiGian)</dt>
-    <dd class="col-sm-10">@Html.DisplayFor(m => m.ThoiGian)</dd>
-</dl>
+    .dx-page {
+        padding: 24px 24px 80px;
+    }
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
-    <a asp-action="Index">Trở về</a>
+    .dx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .dx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .dx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .dx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .dx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .dx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .dx-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+        .dx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 6px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .dx-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .id-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #f5f3ff;
+        color: #7c3aed;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .lp-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .lp-xuat {
+        background: #fef9c3;
+        color: #ca8a04;
+    }
+
+    .lp-nhap {
+        background: #dbeafe;
+        color: #2563eb;
+    }
+
+    .lp-other {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .btn-back, .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+        .btn-back:hover, .btn-edit:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-back svg, .btn-edit svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* Stats */
+    .dx-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 900px) {
+        .dx-stats {
+            grid-template-columns: repeat(2,1fr);
+        }
+    }
+
+    @@media (max-width: 500px) {
+        .dx-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 18px 20px;
+    }
+
+    .stat-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #111827;
+        line-height: 1.1;
+        display: block;
+    }
+
+    .stat-sub {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        display: block;
+        margin-top: 4px;
+    }
+
+    /* Grid */
+    .dx-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @@media (max-width: 768px) {
+        .dx-grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .dx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .dx-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dx-card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f5f3ff;
+        color: #7c3aed;
+        flex-shrink: 0;
+    }
+
+        .dx-card-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+    .dx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .dx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .dx-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 13px 20px;
+        border-bottom: 1px solid #f3f4f6;
+        gap: 12px;
+    }
+
+        .dx-row:last-child {
+            border-bottom: none;
+        }
+
+    .dx-row-label {
+        font-size: 0.82rem;
+        color: #6b7280;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .dx-row-value {
+        font-size: 0.875rem;
+        color: #111827;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    /* NV card */
+    .nv-card-body {
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nv-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #ede9fe;
+        color: #7c3aed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .nv-name {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .nv-role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #f5f3ff;
+        color: #7c3aed;
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 999px;
+    }
+
+    /* Timeline entry */
+    .timeline-item {
+        display: flex;
+        gap: 14px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+    .tl-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7c3aed;
+        flex-shrink: 0;
+        margin-top: 6px;
+    }
+
+    .tl-label {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin-bottom: 2px;
+    }
+
+    .tl-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    /* Delete modal */
+    .del-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.1rem;
+        padding: 4px;
+        border-radius: 6px;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .del-modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        padding-right: 24px;
+    }
+
+    .del-modal-body {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.55;
+    }
+
+    .del-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-mc {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-mc:hover {
+            background: #f9fafb;
+        }
+
+    .btn-md {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-md:hover {
+            background: #dc2626;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* Dark mode */
+    body.dark-mode .dx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-breadcrumb, body.dark-mode .dx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .id-badge {
+        background: #2d1f5e !important;
+        color: #a78bfa !important;
+    }
+
+    body.dark-mode .stat-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .stat-label {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .stat-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .stat-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-icon {
+        background: #2d1f5e !important;
+        color: #a78bfa !important;
+    }
+
+    body.dark-mode .dx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-card-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-row-label {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-row-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .nv-avatar {
+        background: #2d1f5e !important;
+        color: #a78bfa !important;
+    }
+
+    body.dark-mode .nv-name {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .nv-role-badge {
+        background: #2d1f5e !important;
+        color: #a78bfa !important;
+    }
+
+    body.dark-mode .tl-label {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .tl-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .timeline-item {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .btn-edit, body.dark-mode .btn-back {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .del-modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal-body {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-mc {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="dx-page">
+
+    <!-- Breadcrumb -->
+    <div class="dx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Lịch sử bàn giao</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">#@Model.Id.ToString("D4")</span>
+    </div>
+
+    <!-- Header -->
+    <div class="dx-header">
+        <div>
+            <h1>
+                <span class="lp-badge @loaiBadgeClass">@Model.LoaiPhieu</span>
+                <span class="id-badge">#@Model.Id.ToString("D4")</span>
+            </h1>
+            <p>Chi tiết bản ghi bàn giao &mdash; Phiếu ID: <strong>@Model.PhieuId</strong></p>
+        </div>
+        <div class="dx-actions">
+            <a asp-action="Index" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Quay lại
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                Sửa
+            </a>
+            <button type="button" class="btn-edit" onclick="openDel()" style="border-color:#fecaca;color:#ef4444;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Xóa
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="dx-stats">
+        <div class="stat-card">
+            <span class="stat-label">Mã bản ghi</span>
+            <span class="stat-value">#@Model.Id.ToString("D4")</span>
+            <span class="stat-sub">ID định danh</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Số bàn giao</span>
+            <span class="stat-value">@Model.SoBG</span>
+            <span class="stat-sub">Lần bàn giao</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Phiếu ID</span>
+            <span class="stat-value" style="font-size:1.1rem;">@Model.PhieuId</span>
+            <span class="stat-sub">Mã phiếu liên kết</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Thời gian</span>
+            <span class="stat-value" style="font-size:1rem;">@Model.ThoiGian.ToString("HH:mm")</span>
+            <span class="stat-sub">@Model.ThoiGian.ToString("dd/MM/yyyy")</span>
+        </div>
+    </div>
+
+    <!-- Detail grid -->
+    <div class="dx-grid-2">
+
+        <!-- Card trái: thông tin phiếu -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Thông tin phiếu</p>
+                        <p class="dx-card-sub">Chi tiết phiếu bàn giao</p>
+                    </div>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Loại phiếu</span>
+                    <span class="dx-row-value"><span class="lp-badge @loaiBadgeClass">@Model.LoaiPhieu</span></span>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Phiếu ID</span>
+                    <span class="dx-row-value">@Model.PhieuId</span>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Chi tiết đơn vị ID</span>
+                    <span class="dx-row-value">@(Model.ChiTietDonViId.HasValue ? Model.ChiTietDonViId.ToString() : "—")</span>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Đơn vị</span>
+                    <span class="dx-row-value">@(string.IsNullOrWhiteSpace(Model.DonVi) ? "—" : Model.DonVi)</span>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Số bàn giao</span>
+                    <span class="dx-row-value">@Model.SoBG</span>
+                </div>
+            </div>
+
+            <!-- Timeline card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Thời gian bàn giao</p>
+                        <p class="dx-card-sub">Mốc thời gian ghi nhận</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-dot"></div>
+                    <div>
+                        <p class="tl-label">Ngày bàn giao</p>
+                        <p class="tl-value">@Model.ThoiGian.ToString("dddd, dd/MM/yyyy")</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-dot" style="background:#9ca3af;"></div>
+                    <div>
+                        <p class="tl-label">Giờ bàn giao</p>
+                        <p class="tl-value">@Model.ThoiGian.ToString("HH:mm")</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="tl-dot" style="background:#9ca3af;"></div>
+                    <div>
+                        <p class="tl-label">Đầy đủ</p>
+                        <p class="tl-value">@Model.ThoiGian.ToString("dd/MM/yyyy HH:mm:ss")</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Card phải: nhân viên -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Nhân viên bàn giao</p>
+                        <p class="dx-card-sub">Người thực hiện bàn giao</p>
+                    </div>
+                </div>
+                <div class="nv-card-body">
+                    <div class="nv-avatar">
+                        @(nhanVienName.Length > 0 ? nhanVienName[0].ToString().ToUpper() : "?")
+                    </div>
+                    <div style="text-align:center;">
+                        <p class="nv-name">@nhanVienName</p>
+                        <span class="nv-role-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="12" height="12"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                            Nhân viên
+                        </span>
+                    </div>
+                </div>
+                <div class="dx-row" style="border-top:1px solid #f3f4f6;">
+                    <span class="dx-row-label">Nhân viên ID</span>
+                    <span class="dx-row-value">@Model.NhanVienId</span>
+                </div>
+                @if (Model.NhanVien != null)
+                {
+                    <div class="dx-row">
+                        <span class="dx-row-label">Họ tên đầy đủ</span>
+                        <span class="dx-row-value">@Model.NhanVien.FullName</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Quick actions card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Thao tác nhanh</p>
+                        <p class="dx-card-sub">Các hành động với bản ghi này</p>
+                    </div>
+                </div>
+                <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
+                    <a asp-action="Edit" asp-route-id="@Model.Id"
+                       style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;text-decoration:none;color:#374151;font-size:0.875rem;font-weight:500;transition:all .15s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#7c3aed" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                        Chỉnh sửa bản ghi này
+                    </a>
+                    <a asp-action="Index"
+                       style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px;text-decoration:none;color:#374151;font-size:0.875rem;font-weight:500;transition:all .15s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6b7280" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                        Về danh sách
+                    </a>
+                    <button onclick="openDel()"
+                            style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #fecaca;border-radius:8px;background:#fff;color:#ef4444;font-size:0.875rem;font-weight:500;cursor:pointer;width:100%;text-align:left;transition:all .15s;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ef4444" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                        Xóa bản ghi này
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
+
+<!-- Delete Modal -->
+<div class="del-overlay" id="delOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" onclick="closeDel()">×</button>
+        <div class="del-modal-title">Xóa lịch sử bàn giao</div>
+        <div class="del-modal-body">
+            Bạn có chắc chắn muốn xóa bản ghi <strong>@Model.LoaiPhieu – Phiếu #@Model.PhieuId</strong>?
+            Hành động này không thể hoàn tác.
+        </div>
+        <div class="del-modal-footer">
+            <button class="btn-mc" onclick="closeDel()">Hủy</button>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-md">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDel()  { document.getElementById('delOverlay').classList.add('open');    document.body.classList.add('modal-open'); }
+    function closeDel() { document.getElementById('delOverlay').classList.remove('open'); document.body.classList.remove('modal-open'); }
+    document.getElementById('delOverlay').addEventListener('click', e => { if (e.target === document.getElementById('delOverlay')) closeDel(); });
+</script>

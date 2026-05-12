@@ -313,13 +313,17 @@ function BindxuattoTable(x, id) {
     if (gioiHan) {
         var now = new Date();
         var deadline = new Date(gioiHan);
-        var conLaiPhut = Math.round((deadline - now) / 60000);
+        var conLaiPhut = Math.floor((deadline - now) / 1000);
         if (conLaiPhut > 0) {
-            $(conlai).css("color", "#facc15").html(conLaiPhut + " phút");
-            $(strip).css({ background: "#0c2a4a", color: "#93c5fd" }).html("Đang xuất hàng — còn " + conLaiPhut + " phút");
+            var m = Math.floor(conLaiPhut / 60), s = conLaiPhut % 60;
+            $(conlai).css("color", "#facc15")
+                .html(String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'));
+            $(strip).css({ background: "#0c2a4a", color: "#93c5fd" })
+                .html("Đang xuất hàng — còn " + m + " phút " + s + " giây");
         } else {
             $(conlai).css("color", "#f87171").html("Quá hạn");
-            $(strip).css({ background: "#4a0c0c", color: "#fca5a5" }).html("QUÁ GIỜ XUẤT — XỬ LÝ NGAY");
+            $(strip).css({ background: "#4a0c0c", color: "#fca5a5" })
+                .html("QUÁ GIỜ XUẤT — XỬ LÝ NGAY");
         }
     } else {
         $(conlai).css("color", "#facc15").html("—");

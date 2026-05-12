@@ -4,33 +4,915 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h5 class="mb-4">Chi tiết cửa xuất</h5>
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-<div class="row">
-    <div class="col-md-5">
-        <dl class="row small mb-4">
-            <dt class="col-4 text-secondary fw-normal">Tên cửa</dt>
-            <dd class="col-8">@Html.DisplayFor(model => model.Ten)</dd>
+    .dx-page {
+        padding: 24px 24px 80px;
+    }
 
-            <dt class="col-4 text-secondary fw-normal">Mô tả</dt>
-            <dd class="col-8">@Html.DisplayFor(model => model.Mota)</dd>
+    /* ── Breadcrumb ── */
+    .dx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
 
-            <dt class="col-4 text-secondary fw-normal">Trạng thái</dt>
-            <dd class="col-8">
-                @if (Model.IsActive)
-                {
-                    <span class="badge rounded-pill text-success" style="background:#EAF3DE">● Đang mở</span>
-                }
-                else
-                {
-                    <span class="badge rounded-pill text-secondary" style="background:#F1EFE8">● Đã đóng</span>
-                }
-            </dd>
-        </dl>
+        .dx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
 
-        <div class="d-flex gap-2">
-            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-sm btn-dark">Sửa</a>
-            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Trở lại danh sách</a>
+            .dx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .dx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .dx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .dx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    /* ── Header ── */
+    .dx-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+    }
+
+        .dx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .id-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .dx-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+        .btn-back:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-back svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+        .btn-edit:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-edit svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .btn-toggle-open {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: none;
+        border-radius: 8px;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-toggle-open:hover {
+            background: #dc2626;
+        }
+
+        .btn-toggle-open.is-open {
+            background: #f59e0b;
+        }
+
+            .btn-toggle-open.is-open:hover {
+                background: #d97706;
+            }
+
+        .btn-toggle-open svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* ── Stats row ── */
+    .dx-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: #111827;
+    }
+
+    .stat-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+    }
+
+    .stat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    /* ── Cards ── */
+    .dx-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    @@media (max-width: 768px) {
+        .dx-grid-2
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    .dx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .dx-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dx-card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f0fdf4;
+        color: #16a34a;
+        flex-shrink: 0;
+    }
+
+        .dx-card-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+    .dx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .dx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .dx-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .dx-row:last-child {
+            border-bottom: none;
+        }
+
+    .dx-row-label {
+        font-size: 0.82rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .dx-row-value {
+        font-size: 0.875rem;
+        color: #111827;
+        font-weight: 600;
+        text-align: right;
+        max-width: 60%;
+    }
+
+    /* ── Status display ── */
+    .status-display {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 20px;
+        gap: 12px;
+    }
+
+    .status-icon-wrap {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+
+        .status-icon-wrap.is-active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .status-icon-wrap.is-inactive {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        .status-icon-wrap svg {
+            width: 28px;
+            height: 28px;
+        }
+
+    .status-text-big {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #111827;
+    }
+
+    .status-text-sub {
+        font-size: 0.82rem;
+        color: #9ca3af;
+        text-align: center;
+    }
+
+    /* ── Toggle form ── */
+    .toggle-action {
+        padding: 16px 20px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-toggle-form {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 22px;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-toggle-form.close-btn {
+            background: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+        }
+
+            .btn-toggle-form.close-btn:hover {
+                background: #fee2e2;
+                border-color: #fca5a5;
+            }
+
+        .btn-toggle-form.open-btn {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+            .btn-toggle-form.open-btn:hover {
+                background: #dcfce7;
+                border-color: #86efac;
+            }
+
+        .btn-toggle-form svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* ── Mô tả card ── */
+    .mota-content {
+        padding: 20px;
+        font-size: 0.875rem;
+        color: #374151;
+        line-height: 1.65;
+        min-height: 80px;
+    }
+
+    .mota-empty {
+        color: #9ca3af;
+        font-style: italic;
+    }
+
+    /* ── Badge ── */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 600;
+    }
+
+        .badge-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+    .bp-active {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-active::before {
+            background: #16a34a;
+        }
+
+    .bp-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .bp-inactive::before {
+            background: #94a3b8;
+        }
+
+    /* ── Delete Modal ── */
+    .del-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.1rem;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 6px;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .del-modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        padding-right: 24px;
+    }
+
+    .del-modal-body {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.55;
+    }
+
+    .del-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-mc {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-mc:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    .btn-md {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-md:hover {
+            background: #dc2626;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* ── Dark mode ── */
+    body.dark-mode .dx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-breadcrumb, body.dark-mode .dx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .id-badge {
+        background: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .stat-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .stat-label {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .stat-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .stat-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-icon {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .dx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-card-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-row-label {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-row-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .mota-content {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .status-text-big {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .status-icon-wrap.is-active {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .status-icon-wrap.is-inactive {
+        background: #22263a !important;
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .toggle-action {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .btn-toggle-form.close-btn {
+        background: #3b0f0f !important;
+        border-color: #991b1b !important;
+        color: #fca5a5 !important;
+    }
+
+    body.dark-mode .btn-toggle-form.open-btn {
+        background: #052e16 !important;
+        border-color: #166534 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .btn-edit, body.dark-mode .btn-back {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .del-modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal-body {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-mc {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="dx-page">
+
+    <!-- Breadcrumb -->
+    <div class="dx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Cửa xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">@Model.Ten</span>
+    </div>
+
+    <!-- Header -->
+    <div class="dx-header">
+        <div>
+            <h1>
+                @Model.Ten
+                <span class="id-badge">#@Model.Id.ToString("D2")</span>
+            </h1>
+            <p>
+                Chi tiết cửa xuất &mdash;
+                <span class="badge-pill @(Model.IsActive ? "bp-active" : "bp-inactive")" style="font-size:0.75rem;">
+                    @(Model.IsActive ? "Đang mở" : "Đã đóng")
+                </span>
+            </p>
+        </div>
+        <div class="dx-actions">
+            <a asp-action="Index" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Quay lại
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                Edit
+            </a>
+            <button type="button" class="btn-edit" onclick="openDel()" style="border-color:#fecaca;color:#ef4444;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="dx-stats">
+        <!-- Mã cửa -->
+        <div class="stat-card">
+            <span class="stat-label">Mã cửa</span>
+            <span class="stat-value">@Model.Id.ToString("D2")</span>
+            <span class="stat-sub">ID định danh</span>
+        </div>
+        <!-- Trạng thái -->
+        <div class="stat-card">
+            <span class="stat-label">Trạng thái</span>
+            <span class="stat-value" style="font-size:1.1rem;padding-top:4px;">
+                <span class="badge-pill @(Model.IsActive ? "bp-active" : "bp-inactive")">
+                    @(Model.IsActive ? "Đang mở" : "Đã đóng")
+                </span>
+            </span>
+            <span class="stat-sub">@(Model.IsActive ? "Cửa đang hoạt động" : "Cửa tạm đóng")</span>
+        </div>
+        <!-- Tên cửa -->
+        <div class="stat-card">
+            <span class="stat-label">Tên cửa</span>
+            <span class="stat-value" style="font-size:1.25rem;">@Model.Ten</span>
+            <span class="stat-sub">Tên hiển thị</span>
+        </div>
+    </div>
+
+    <!-- Detail grid -->
+    <div class="dx-grid-2">
+
+        <!-- Card trái: thông tin -->
+        <div class="dx-card">
+            <div class="dx-card-header">
+                <div class="dx-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+                </div>
+                <div>
+                    <p class="dx-card-title">Thông tin cửa xuất</p>
+                    <p class="dx-card-sub">Dữ liệu cơ bản</p>
+                </div>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Mã cửa</span>
+                <span class="dx-row-value">#@Model.Id.ToString("D2")</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Tên cửa</span>
+                <span class="dx-row-value">@Model.Ten</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Trạng thái</span>
+                <span class="dx-row-value">
+                    <span class="badge-pill @(Model.IsActive ? "bp-active" : "bp-inactive")">
+                        @(Model.IsActive ? "Đang mở" : "Đã đóng")
+                    </span>
+                </span>
+            </div>
+            <div class="dx-row" style="align-items:flex-start;">
+                <span class="dx-row-label">Mô tả</span>
+                <span class="dx-row-value" style="font-weight:400;color:#374151;">
+                    @if (!string.IsNullOrWhiteSpace(Model.Mota))
+                    {
+                        @Model.Mota
+                    }
+                    else
+                    {
+                        <span style="color:#9ca3af;font-style:italic;">Chưa có mô tả</span>
+                    }
+                </span>
+            </div>
+        </div>
+
+        <!-- Card phải: trạng thái + toggle -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Status visual card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Trạng thái hoạt động</p>
+                        <p class="dx-card-sub">Trạng thái hiện tại của cửa</p>
+                    </div>
+                </div>
+
+                <div class="status-display">
+                    @if (Model.IsActive)
+                    {
+                        <div class="status-icon-wrap is-active">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                        </div>
+                        <span class="status-text-big">Cửa đang mở</span>
+                        <span class="status-text-sub">Cửa xuất này đang hoạt động<br />và có thể được sử dụng.</span>
+                    }
+                    else
+                    {
+                        <div class="status-icon-wrap is-inactive">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                        </div>
+                        <span class="status-text-big">Cửa đã đóng</span>
+                        <span class="status-text-sub">Cửa xuất này tạm đóng<br />và không thể sử dụng.</span>
+                    }
+                </div>
+
+                <div class="toggle-action">
+                    <form asp-action="ToggleActive" asp-route-id="@Model.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="returnUrl" value="/CuaXuats/Details/@Model.Id" />
+                        @if (Model.IsActive)
+                        {
+                            <button type="submit" class="btn-toggle-form close-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                                Đóng cửa này
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn-toggle-form open-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>
+                                Mở lại cửa này
+                            </button>
+                        }
+                    </form>
+                </div>
+            </div>
+
+            <!-- Mô tả card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Mô tả</p>
+                        <p class="dx-card-sub">Ghi chú thêm về cửa xuất</p>
+                    </div>
+                </div>
+                <div class="mota-content">
+                    @if (!string.IsNullOrWhiteSpace(Model.Mota))
+                    {
+                        @Model.Mota
+                    }
+                    else
+                    {
+                        <span class="mota-empty">Chưa có mô tả nào.</span>
+                    }
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<!-- Delete Modal -->
+<div class="del-overlay" id="delOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" onclick="closeDel()">×</button>
+        <div class="del-modal-title">Xóa cửa xuất</div>
+        <div class="del-modal-body">
+            Bạn có chắc chắn muốn xóa cửa <strong>@Model.Ten</strong>?
+            Hành động này không thể hoàn tác.
+        </div>
+        <div class="del-modal-footer">
+            <button class="btn-mc" onclick="closeDel()">Hủy</button>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-md">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDel()  { document.getElementById('delOverlay').classList.add('open');    document.body.classList.add('modal-open'); }
+    function closeDel() { document.getElementById('delOverlay').classList.remove('open'); document.body.classList.remove('modal-open'); }
+    document.getElementById('delOverlay').addEventListener('click', e => { if (e.target === document.getElementById('delOverlay')) closeDel(); });
+</script>

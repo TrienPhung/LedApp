@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zDc3TV0V92M=",
+  "dgSpecHash": "JOJLE0ne+SY=",
   "success": true,
-  "projectFilePath": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
+  "projectFilePath": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ACER\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

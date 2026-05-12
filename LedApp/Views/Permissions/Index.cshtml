@@ -1,0 +1,1009 @@
+﻿@model Dictionary<string, List<LedApp.Models.Permission>>
+@{
+    ViewData["Title"] = "Quản lý quyền";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .px-page {
+        padding: 24px 24px 80px;
+    }
+
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep svg {
+            width: 13px;
+            height: 13px;
+            stroke-width: 2;
+        }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .px-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 3px;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background .15s;
+    }
+
+        .btn-add:hover {
+            background: #15803d;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn-add svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .px-alert-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #15803d;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .px-alert-error {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Group cards */
+    .group-section {
+        margin-bottom: 20px;
+    }
+
+    .group-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .group-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #374151;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .group-count {
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 999px;
+    }
+
+    .px-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .px-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+        .px-table thead th {
+            background: #f9fafb;
+            color: #374151;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .px-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background .1s;
+        }
+
+            .px-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .px-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+        .px-table td {
+            padding: 11px 14px;
+            color: #111827;
+            vertical-align: middle;
+        }
+
+    .td-value {
+        font-family: monospace;
+        font-size: 0.82rem;
+        color: #7c3aed;
+        background: #f5f3ff;
+        padding: 2px 8px;
+        border-radius: 5px;
+    }
+
+    .td-label {
+        font-weight: 500;
+        color: #111827;
+    }
+
+    .td-order {
+        color: #9ca3af;
+        font-size: 0.82rem;
+        text-align: center;
+    }
+
+    .badge-active {
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 999px;
+    }
+
+    .badge-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 999px;
+    }
+
+    .row-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        justify-content: flex-end;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-action:hover {
+            background: #f9fafb;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-action svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .btn-action.danger {
+            color: #ef4444;
+            border-color: #fecaca;
+        }
+
+            .btn-action.danger:hover {
+                background: #fef2f2;
+            }
+
+        .btn-action.toggle-on {
+            color: #ca8a04;
+            border-color: #fef08a;
+        }
+
+            .btn-action.toggle-on:hover {
+                background: #fefce8;
+            }
+
+        .btn-action.toggle-off {
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+            .btn-action.toggle-off:hover {
+                background: #f0fdf4;
+            }
+
+    /* Modal */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+    .modal-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 460px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 4px;
+        border-radius: 6px;
+    }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+        padding-right: 24px;
+    }
+
+    .modal-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .btn-mc {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-mc:hover {
+            background: #f9fafb;
+        }
+
+    .btn-ms {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #16a34a;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-ms:hover {
+            background: #15803d;
+        }
+
+    .btn-md {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-md:hover {
+            background: #dc2626;
+        }
+
+    .f-group {
+        margin-bottom: 16px;
+    }
+
+        .f-group:last-child {
+            margin-bottom: 0;
+        }
+
+    .f-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+        .f-label .req {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+    .f-input, .f-select {
+        width: 100%;
+        padding: 9px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        box-sizing: border-box;
+        background: #fff;
+        color: #111827;
+    }
+
+        .f-input:focus, .f-select:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+    .f-hint {
+        font-size: 0.76rem;
+        color: #9ca3af;
+        margin-top: 4px;
+    }
+
+    .f-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .f-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+    }
+
+    /* empty state */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        color: #9ca3af;
+    }
+
+        .empty-state svg {
+            width: 36px;
+            height: 36px;
+            opacity: .4;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* Dark mode */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p, body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .px-table thead th {
+        background: #22263a !important;
+        color: #6b7280 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .px-table tbody tr {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .px-table tbody tr:hover {
+            background: #22263a !important;
+        }
+
+    body.dark-mode .px-table td {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .td-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .group-title {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .group-count {
+        background: #2e3248 !important;
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .btn-action {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .btn-action:hover {
+            background: #22263a !important;
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .modal-box {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .f-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .f-input, body.dark-mode .f-select {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .btn-mc {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    input[list]::-webkit-calendar-picker-indicator {
+        display: none !important;
+    }
+
+    .px-search {
+        position: relative;
+    }
+
+        .px-search svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        .px-search input {
+            width: 100%;
+            padding: 8px 12px 8px 34px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #111827;
+            font-size: 0.875rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+            .px-search input:focus {
+                border-color: #16a34a;
+                box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            }
+
+    .btn-reset {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-reset.show {
+            display: inline-flex;
+        }
+
+        .btn-reset:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #ef4444;
+        }
+    /* Dark mode */
+    body.dark-mode .px-search input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .btn-reset {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .btn-reset:hover {
+            background: #2e0f0f !important;
+            border-color: #991b1b !important;
+            color: #f87171 !important;
+        }
+</style>
+
+<div class="px-page">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="px-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="px-alert-error">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+            @TempData["Error"]
+        </div>
+    }
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Quản lý quyền</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <div>
+            <h1>Quản lý quyền</h1>
+            <p>Danh mục các quyền trong hệ thống. Thêm quyền mới để sử dụng khi phân quyền role.</p>
+        </div>
+        <button class="btn-add" onclick="openAddModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            Thêm quyền mới
+        </button>
+    </div>
+    <!-- Toolbar search -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+        <div class="px-search" style="max-width:360px;flex:1;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="text" id="permSearchInput" placeholder="Tìm mã quyền, tên hiển thị..."
+                   oninput="filterPerms(this.value)" autocomplete="off" />
+        </div>
+        <button class="btn-reset" id="btnPermReset" type="button" onclick="resetPermSearch()">
+            Reset
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" width="13" height="13">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <span style="font-size:0.82rem;color:#6b7280;margin-left:auto;">
+            Hiển thị <span id="permVisibleCount">0</span> quyền
+        </span>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="px-card">
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+                <p>Chưa có quyền nào. Nhấn "Thêm quyền mới" để bắt đầu.</p>
+            </div>
+        </div>
+    }
+
+    @foreach (var group in Model)
+    {
+        <div class="group-section">
+            <div class="group-header">
+                <div class="group-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" /></svg>
+                    @group.Key
+                    <span class="group-count">@group.Value.Count quyền</span>
+                </div>
+            </div>
+
+            <div class="px-card">
+                <table class="px-table">
+                    <thead>
+                        <tr>
+                            <th>Mã quyền</th>
+                            <th>Tên hiển thị</th>
+                            <th style="text-align:center;">Thứ tự</th>
+                            <th style="text-align:center;">Trạng thái</th>
+                            <th style="text-align:right;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var perm in group.Value.OrderBy(p => p.Order))
+                        {
+                            <tr>
+                                <td><span class="td-value">@perm.Value</span></td>
+                                <td class="td-label">
+                                    @perm.Label
+                                    @if (perm.IsExtraOnly)
+                                    {
+                                        <span style="display:inline-flex;align-items:center;gap:3px;background:#eff6ff;color:#3b82f6;
+                                             font-size:0.68rem;font-weight:600;padding:2px 7px;border-radius:5px;
+                                             margin-left:6px;vertical-align:middle;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 stroke-width="2" stroke="currentColor" width="10" height="10">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                            </svg>
+                                            Cá nhân
+                                        </span>
+                                    }
+                                </td>
+                                <td class="td-order">@perm.Order</td>
+                                <td style="text-align:center;">
+                                    @if (perm.IsActive)
+                                    {
+                                        <span class="badge-active">Đang bật</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-inactive">Đã tắt</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="row-actions">
+                                        <button class="btn-action" type="button"
+                                                data-id="@perm.Id"
+                                                data-group="@perm.GroupName"
+                                                data-value="@perm.Value"
+                                                data-label="@perm.Label"
+                                                data-order="@perm.Order"
+                                                data-active="@perm.IsActive.ToString().ToLower()"
+                                                data-extraonly="@perm.IsExtraOnly.ToString().ToLower()"
+                                                onclick="openEditModal(this)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" /></svg>
+                                            Sửa
+                                        </button>
+                                        <form asp-action="ToggleActive" asp-route-id="@perm.Id" method="post" style="margin:0;">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn-action @(perm.IsActive ? "toggle-on" : "toggle-off")">
+                                                @if (perm.IsActive)
+                                                {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                                                    <span>Tắt</span>
+                                                }
+                                                else
+                                                {
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                                                    <span>Bật</span>
+                                                }
+                                            </button>
+                                        </form>
+                                        <button class="btn-action danger" type="button"
+                                                onclick="openDelModal(@perm.Id, '@perm.Label')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                            Xóa
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal thêm quyền -->
+<div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('addModal')">×</button>
+        <div class="modal-title">Thêm quyền mới</div>
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div class="f-group">
+                <label class="f-label">Nhóm quyền <span class="req">*</span></label>
+                <input type="text" name="GroupName" class="f-input" list="groupSuggestions"
+                       placeholder="Chọn nhóm có sẵn hoặc gõ tên nhóm mới..." required />
+                <datalist id="groupSuggestions">
+                    @foreach (var g in Model.Keys)
+                    {
+                        <option value="@g" />
+                    }
+                </datalist>
+                <p class="f-hint">Chọn nhóm có sẵn hoặc nhập tên nhóm mới.</p>
+            </div>
+            <div class="f-row-2">
+                <div class="f-group">
+                    <label class="f-label">Mã quyền <span class="req">*</span></label>
+                    <input type="text" name="Value" class="f-input"
+                           placeholder="VD: BaoCao.View" required />
+                    <p class="f-hint">Định dạng: Module.Action</p>
+                </div>
+                <div class="f-group">
+                    <label class="f-label">Thứ tự</label>
+                    <input type="number" name="Order" class="f-input" value="1" min="1" />
+                </div>
+            </div>
+            <div class="f-group">
+                <label class="f-label">Tên hiển thị <span class="req">*</span></label>
+                <input type="text" name="Label" class="f-input"
+                       placeholder="VD: Xem báo cáo" required />
+            </div>
+            <div class="f-group">
+                <label class="f-label">Trạng thái</label>
+                <select name="IsActive" class="f-select">
+                    <option value="true" selected>Đang bật</option>
+                    <option value="false">Tắt</option>
+                </select>
+            </div>
+            <div class="f-group">
+                <label class="f-label">Loại quyền</label>
+                <select name="IsExtraOnly" class="f-select">
+                    <option value="false" selected>Quyền chung (dùng cho Role)</option>
+                    <option value="true">Quyền Extra (chỉ cấp cá nhân)</option>
+                </select>
+                <p class="f-hint">Quyền Extra không hiển thị trong phân quyền Role.</p>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-mc" onclick="closeModal('addModal')">Hủy</button>
+                <button type="submit" class="btn-ms">Thêm quyền</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal sửa quyền -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal('editModal')">×</button>
+        <div class="modal-title">Sửa quyền</div>
+        <form asp-action="Edit" method="post" id="editForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Id" id="editId" />
+            <div class="f-group">
+                <label class="f-label">Nhóm quyền <span class="req">*</span></label>
+                <input type="text" name="GroupName" id="editGroupName" class="f-input"
+                       list="groupSuggestions2" required />
+                <datalist id="groupSuggestions2">
+                    @foreach (var g in Model.Keys)
+                    {
+                        <option value="@g" />
+                    }
+                </datalist>
+            </div>
+            <div class="f-row-2">
+                <div class="f-group">
+                    <label class="f-label">Mã quyền <span class="req">*</span></label>
+                    <input type="text" name="Value" id="editValue" class="f-input" required />
+                    <p class="f-hint">Định dạng: Module.Action</p>
+                </div>
+                <div class="f-group">
+                    <label class="f-label">Thứ tự</label>
+                    <input type="number" name="Order" id="editOrder" class="f-input" min="1" />
+                </div>
+            </div>
+            <div class="f-group">
+                <label class="f-label">Tên hiển thị <span class="req">*</span></label>
+                <input type="text" name="Label" id="editLabel" class="f-input" required />
+            </div>
+            <div class="f-group">
+                <label class="f-label">Trạng thái</label>
+                <select name="IsActive" id="editIsActive" class="f-select">
+                    <option value="true">Đang bật</option>
+                    <option value="false">Tắt</option>
+                </select>
+            </div>
+            <div class="f-group">
+                <label class="f-label">Loại quyền</label>
+                <select name="IsExtraOnly" id="editIsExtraOnly" class="f-select">
+                    <option value="false">Quyền chung (dùng cho Role)</option>
+                    <option value="true">Quyền Extra (chỉ cấp cá nhân)</option>
+                </select>
+                <p class="f-hint">Quyền Extra không hiển thị trong phân quyền Role.</p>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-mc" onclick="closeModal('editModal')">Hủy</button>
+                <button type="submit" class="btn-ms">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal xóa quyền -->
+<div class="modal-overlay" id="delModal">
+    <div class="modal-box" style="max-width:380px;">
+        <button class="modal-close" onclick="closeModal('delModal')">×</button>
+        <div class="modal-title">Xóa quyền</div>
+        <p style="font-size:0.875rem;color:#6b7280;margin-bottom:20px;line-height:1.55;">
+            Bạn có chắc chắn muốn xóa quyền <strong id="delPermLabel"></strong>?
+            Hành động này không thể hoàn tác.
+        </p>
+        <div class="modal-foot">
+            <button type="button" class="btn-mc" onclick="closeModal('delModal')">Hủy</button>
+            <form id="delPermForm" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-md">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openAddModal() {
+        document.getElementById('addModal').classList.add('open');
+        document.body.classList.add('modal-open');
+    }
+
+    function openEditModal(btn) {
+        document.getElementById('editId').value = btn.dataset.id;
+        document.getElementById('editGroupName').value = btn.dataset.group;
+        document.getElementById('editValue').value = btn.dataset.value;
+        document.getElementById('editLabel').value = btn.dataset.label;
+        document.getElementById('editOrder').value = btn.dataset.order;
+        document.getElementById('editIsActive').value = btn.dataset.active;
+        document.getElementById('editIsExtraOnly').value = btn.dataset.extraonly;
+        document.getElementById('editForm').action = `/Permissions/Edit/${btn.dataset.id}`;
+        document.getElementById('editModal').classList.add('open');
+        document.body.classList.add('modal-open');
+    }
+
+    function openDelModal(id, label) {
+        document.getElementById('delPermLabel').textContent = label;
+        document.getElementById('delPermForm').action = `/Permissions/Delete/${id}`;
+        document.getElementById('delModal').classList.add('open');
+        document.body.classList.add('modal-open');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('open');
+        document.body.classList.remove('modal-open');
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', e => {
+            if (e.target === overlay) {
+                overlay.classList.remove('open');
+                document.body.classList.remove('modal-open');
+            }
+        });
+    });
+        // ── Search permissions ──
+    function filterPerms(q) {
+        q = q.trim().toLowerCase();
+        let total = 0;
+
+        document.querySelectorAll('.group-section').forEach(section => {
+            let groupVisible = 0;
+            section.querySelectorAll('tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const show = !q || text.includes(q);
+                row.style.display = show ? '' : 'none';
+                if (show) groupVisible++;
+            });
+            section.style.display = groupVisible > 0 ? '' : 'none';
+            total += groupVisible;
+        });
+
+        document.getElementById('permVisibleCount').textContent = total;
+        const btn = document.getElementById('btnPermReset');
+        if (q) btn.classList.add('show');
+        else btn.classList.remove('show');
+    }
+
+    function resetPermSearch() {
+        document.getElementById('permSearchInput').value = '';
+        filterPerms('');
+    }
+
+    // Init count
+    document.addEventListener('DOMContentLoaded', () => {
+        let total = 0;
+        document.querySelectorAll('.group-section tbody tr').forEach(() => total++);
+        document.getElementById('permVisibleCount').textContent = total;
+    });
+</script>

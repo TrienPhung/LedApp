@@ -5,21 +5,115 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .status-msg-warning {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #d97706;
+        line-height: 1.6;
+    }
+
+        .status-msg-warning p {
+            margin: 6px 0 0;
+            font-weight: 400;
+        }
+
+        .status-msg-warning a {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+    .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        transition: background .15s;
+    }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+</style>
+
 <partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
 
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>This action only disables 2FA.</strong>
-    </p>
-    <p>
-        Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
-        used in an authenticator app you should <a asp-page="./ResetAuthenticator">reset your authenticator keys.</a>
-    </p>
-</div>
-
-<div>
-    <form method="post">
-        <button class="btn btn-danger" type="submit">Disable 2FA</button>
-    </form>
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Disable two-factor authentication (2FA)</p>
+        <p class="manage-card-sub">Turn off two-factor authentication for your account</p>
+    </div>
+    <div class="manage-card-body">
+        <div class="status-msg-warning">
+            <i class="bi bi-exclamation-triangle-fill" style="margin-right:6px;"></i>
+            <strong>This action only disables 2FA.</strong>
+            <p>
+                Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
+                used in an authenticator app you should <a asp-page="./ResetAuthenticator">reset your authenticator keys.</a>
+            </p>
+        </div>
+        <form method="post">
+            <button class="btn-danger" type="submit">
+                <i class="bi bi-shield-x"></i>
+                Disable 2FA
+            </button>
+        </form>
+    </div>
 </div>

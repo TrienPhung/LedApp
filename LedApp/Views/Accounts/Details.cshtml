@@ -1,0 +1,985 @@
+﻿@model LedApp.Controllers.AccountDetailsViewModel
+@{
+    ViewData["Title"] = "Chi tiết tài khoản";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+    string initials = Model.NguoiDung != null
+        ? (Model.NguoiDung.FirstName?.Length > 0 ? Model.NguoiDung.FirstName[0].ToString().ToUpper() : "?")
+        : (Model.UserName.Length > 0 ? Model.UserName[0].ToString().ToUpper() : "?");
+    string roleLabel = Model.Roles.FirstOrDefault() ?? "—";
+    string roleClass = roleLabel switch
+    {
+        "Admin" => "role-admin",
+        "QuanLy" => "role-quanly",
+        "DieuDoXuat" => "role-dieudo",
+        "DieuDoNhap" => "role-dieudo",
+        "NhanVien" => "role-nhanvien",
+        _ => "role-default"
+    };
+
+    // Tính effective permissions (kế thừa + extra - deny)
+    var effective = Model.RolePermissions
+        .Concat(Model.ExtraPermissions)
+        .Distinct()
+        .Where(p => !Model.DenyPermissions.Contains(p))
+        .ToHashSet();
+}
+
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .dx-page {
+        padding: 24px 24px 80px;
+    }
+
+    .dx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+
+        .dx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .dx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .dx-breadcrumb .sep svg {
+            width: 13px;
+            height: 13px;
+            stroke-width: 2;
+            display: block;
+        }
+
+        .dx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .dx-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+        .dx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+        }
+
+        .dx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .dx-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-action:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-action svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .btn-action.danger {
+            border-color: #fecaca;
+            color: #ef4444;
+        }
+
+            .btn-action.danger:hover {
+                background: #fef2f2;
+            }
+
+    .dx-3col {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    @@media(max-width:900px) {
+        .dx-3col {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .dx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .dx-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dx-card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f0fdf4;
+        color: #16a34a;
+        flex-shrink: 0;
+    }
+
+        .dx-card-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+    .dx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .dx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .profile-body {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .profile-avatar-ph {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 1.1rem;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .profile-name {
+        font-size: 0.975rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 3px;
+    }
+
+    .profile-email {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0 0 6px;
+    }
+
+    .dx-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .dx-row:last-child {
+            border-bottom: none;
+        }
+
+    .dx-row-label {
+        font-size: 0.82rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .dx-row-value {
+        font-size: 0.875rem;
+        color: #111827;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .badge-role {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .role-admin {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .role-quanly {
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+    .role-dieudo {
+        background: #f5f3ff;
+        color: #7c3aed;
+    }
+
+    .role-nhanvien {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    .role-default {
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+        .badge-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+    .bp-active {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-active::before {
+            background: #16a34a;
+        }
+
+    .bp-inactive {
+        background: #fef2f2;
+        color: #ef4444;
+    }
+
+        .bp-inactive::before {
+            background: #ef4444;
+        }
+
+    /* Permission sections */
+    .perm-section-wrap {
+        padding: 20px;
+    }
+
+    .perm-section {
+        margin-bottom: 24px;
+    }
+
+        .perm-section:last-child {
+            margin-bottom: 0;
+        }
+
+    .perm-section-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .perm-section-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .perm-section-icon.green {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .perm-section-icon.blue {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        .perm-section-icon.red {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+
+        .perm-section-icon.purple {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .perm-section-icon svg {
+            width: 13px;
+            height: 13px;
+        }
+
+    .perm-section-title-txt {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #374151;
+    }
+
+    .perm-section-count {
+        font-size: 0.72rem;
+        color: #9ca3af;
+        background: #f3f4f6;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-left: auto;
+    }
+
+    .perm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    @@media(max-width:600px) {
+        .perm-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .perm-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        font-size: 0.78rem;
+    }
+
+        .perm-item.has {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+        }
+
+        .perm-item.extra {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .perm-item.deny {
+            border-color: #fecaca;
+            background: #fef2f2;
+        }
+
+        .perm-item.off {
+            background: #f9fafb;
+            opacity: 0.6;
+        }
+
+    .perm-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+        .perm-dot.green {
+            background: #16a34a;
+        }
+
+        .perm-dot.blue {
+            background: #3b82f6;
+        }
+
+        .perm-dot.red {
+            background: #ef4444;
+        }
+
+        .perm-dot.gray {
+            background: #d1d5db;
+        }
+
+    .perm-label {
+        color: #374151;
+        font-weight: 500;
+    }
+
+        .perm-label.deny-text {
+            color: #ef4444;
+        }
+
+        .perm-label.off-text {
+            color: #9ca3af;
+        }
+
+    .perm-source-tag {
+        margin-left: auto;
+        font-size: 0.65rem;
+        font-weight: 600;
+        padding: 1px 6px;
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+        .perm-source-tag.role {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .perm-source-tag.extra {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .perm-source-tag.deny {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+    /* Cửa tags */
+    .cua-tags {
+        padding: 16px 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .cua-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+        .cua-tag.xuat {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .cua-tag.nhap {
+            background: #eff6ff;
+            color: #3b82f6;
+            border: 1px solid #bfdbfe;
+        }
+
+    .cua-empty {
+        color: #9ca3af;
+        font-size: 0.82rem;
+        font-style: italic;
+    }
+
+    /* Summary stats */
+    .stats-row {
+        display: flex;
+        gap: 12px;
+        padding: 14px 20px;
+        border-top: 1px solid #f3f4f6;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .stat-val {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    /* Empty state */
+    .perm-empty {
+        text-align: center;
+        padding: 24px;
+        color: #9ca3af;
+        font-size: 0.82rem;
+        font-style: italic;
+    }
+
+    /* Dark mode */
+    body.dark-mode .dx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-header p, body.dark-mode .dx-breadcrumb, body.dark-mode .dx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-icon {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .dx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-row-label {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-row-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .profile-name {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .perm-section-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .perm-section-title-txt {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .perm-section-count {
+        background: #2e3248 !important;
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .perm-item {
+        border-color: #2e3248 !important;
+        background: #22263a !important;
+    }
+
+        body.dark-mode .perm-item.has {
+            background: #052e16 !important;
+            border-color: #166534 !important;
+        }
+
+        body.dark-mode .perm-item.extra {
+            background: #1e3a5f !important;
+            border-color: #1d4ed8 !important;
+        }
+
+        body.dark-mode .perm-item.deny {
+            background: #2e0f0f !important;
+            border-color: #991b1b !important;
+        }
+
+    body.dark-mode .perm-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .btn-action {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+        body.dark-mode .btn-action.danger {
+            border-color: #991b1b !important;
+            color: #f87171 !important;
+        }
+
+    body.dark-mode .cua-tag.xuat {
+        background: #052e16 !important;
+        border-color: #166534 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .cua-tag.nhap {
+        background: #1e3a5f !important;
+        border-color: #1d4ed8 !important;
+        color: #60a5fa !important;
+    }
+
+    body.dark-mode .stats-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .stat-val {
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="dx-page">
+    <div class="dx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Tài khoản</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">@Model.UserName</span>
+    </div>
+
+    <div class="dx-header">
+        <div>
+            <h1>@(Model.NguoiDung?.FullName ?? Model.UserName)</h1>
+            <p>@Model.Email</p>
+        </div>
+        <div class="dx-actions">
+            <a asp-action="Index" class="btn-action">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Quay lại
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn-action">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" /></svg>
+                Sửa
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.UserId" class="btn-action danger">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Xóa
+            </a>
+        </div>
+    </div>
+
+    <!-- 3 top cards -->
+    <div class="dx-3col">
+
+        <!-- Profile -->
+        <div class="dx-card">
+            <div class="dx-card-header">
+                <div class="dx-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                </div>
+                <div><p class="dx-card-title">Profile</p><p class="dx-card-sub">Thông tin nhân viên</p></div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-avatar-ph">@initials</div>
+                <div>
+                    <p class="profile-name">@(Model.NguoiDung?.FullName ?? Model.UserName)</p>
+                    <p class="profile-email">@Model.Email</p>
+                    <span class="badge-role @roleClass">@roleLabel</span>
+                </div>
+            </div>
+            @if (Model.NguoiDung != null)
+            {
+                <div class="dx-row">
+                    <span class="dx-row-label">Ngày sinh</span>
+                    <span class="dx-row-value">@(Model.NguoiDung.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</span>
+                </div>
+                <div class="dx-row">
+                    <span class="dx-row-label">Điện thoại</span>
+                    <span class="dx-row-value">@(Model.NguoiDung.SoDienThoai ?? "—")</span>
+                </div>
+            }
+        </div>
+
+        <!-- Account details -->
+        <div class="dx-card">
+            <div class="dx-card-header">
+                <div class="dx-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" /></svg>
+                </div>
+                <div><p class="dx-card-title">Account Details</p><p class="dx-card-sub">Thông tin tài khoản</p></div>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Username</span>
+                <span class="dx-row-value">@Model.UserName</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Role</span>
+                <span class="dx-row-value"><span class="badge-role @roleClass">@roleLabel</span></span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Trạng thái</span>
+                <span class="dx-row-value">
+                    <span class="badge-status @(Model.IsLocked ? "bp-inactive" : "bp-active")">
+                        @(Model.IsLocked ? "Đã khóa" : "Hoạt động")
+                    </span>
+                </span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Quyền hiệu lực</span>
+                <span class="dx-row-value" style="color:#16a34a;">@effective.Count quyền</span>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-val" style="color:#16a34a;">@Model.RolePermissions.Count</span>
+                    <span class="stat-label">Từ role</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val" style="color:#3b82f6;">@Model.ExtraPermissions.Count</span>
+                    <span class="stat-label">Extra</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-val" style="color:#ef4444;">@Model.DenyPermissions.Count</span>
+                    <span class="stat-label">Deny</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cửa được phép -->
+        <div class="dx-card">
+            <div class="dx-card-header">
+                <div class="dx-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+                </div>
+                <div><p class="dx-card-title">Cửa được phép</p><p class="dx-card-sub">Cửa nhập & xuất</p></div>
+            </div>
+            <div style="padding:12px 20px;border-bottom:1px solid #f3f4f6;">
+                <p style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;margin:0 0 8px;">Cửa xuất</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    @if (Model.AllowedCuaXuats.Any())
+                    {
+                        foreach (var c in Model.AllowedCuaXuats)
+                        {
+                            <span class="cua-tag xuat">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 0 0 0 12h3" /></svg>
+                                @c.Ten
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="cua-empty">Chưa cấp cửa xuất</span>
+                    }
+                </div>
+            </div>
+            <div style="padding:12px 20px;">
+                <p style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#9ca3af;margin:0 0 8px;">Cửa nhập</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    @if (Model.AllowedCuaNhaps.Any())
+                    {
+                        foreach (var c in Model.AllowedCuaNhaps)
+                        {
+                            <span class="cua-tag nhap">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9l-6 6m0 0l6 6m-6-6h15a6 6 0 0 1 0 12h-3" /></svg>
+                                @c.Ten
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="cua-empty">Chưa cấp cửa nhập</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Permissions detail card -->
+    <div class="dx-card">
+        <div class="dx-card-header">
+            <div class="dx-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+            </div>
+            <div>
+                <p class="dx-card-title">Chi tiết phân quyền</p>
+                <p class="dx-card-sub">Quyền từ role + override cá nhân</p>
+            </div>
+        </div>
+
+        <div class="perm-section-wrap">
+
+            <!-- 1. Quyền từ Role -->
+            <div class="perm-section">
+                <div class="perm-section-header">
+                    <div class="perm-section-icon green">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    </div>
+                    <span class="perm-section-title-txt">Quyền mặc định từ Role <strong>@roleLabel</strong></span>
+                    <span class="perm-section-count">@Model.RolePermissions.Count</span>
+                </div>
+                @if (Model.RolePermissions.Any())
+                {
+                    <div class="perm-grid">
+                        @foreach (var group in Model.AllPermissions)
+                        {
+                            @foreach (var item in group.Items)
+                            {
+                                if (Model.RolePermissions.Contains(item.Value))
+                                {
+                                    bool isDenied = Model.DenyPermissions.Contains(item.Value);
+                                    <div class="perm-item @(isDenied ? "off" : "has")">
+                                        <div class="perm-dot @(isDenied ? "gray" : "green")"></div>
+                                        <span class="perm-label @(isDenied ? "off-text" : "")">@item.Label</span>
+                                        @if (isDenied)
+                                        {
+                                            <span class="perm-source-tag deny" style="margin-left:auto;">bị deny</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="perm-source-tag role" style="margin-left:auto;">role</span>
+                                        }
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="perm-empty">Role này chưa có quyền mặc định nào.</div>
+                }
+            </div>
+
+            <!-- 2. Quyền Extra -->
+            @if (Model.ExtraPermissions.Any())
+            {
+                <div class="perm-section">
+                    <div class="perm-section-header">
+                        <div class="perm-section-icon blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        </div>
+                        <span class="perm-section-title-txt">Quyền grant thêm (QuyenExtra)</span>
+                        <span class="perm-section-count">@Model.ExtraPermissions.Count</span>
+                    </div>
+                    <div class="perm-grid">
+                        @foreach (var group in Model.AllPermissions)
+                        {
+                            @foreach (var item in group.Items)
+                            {
+                                if (Model.ExtraPermissions.Contains(item.Value))
+                                {
+                                    <div class="perm-item extra">
+                                        <div class="perm-dot blue"></div>
+                                        <span class="perm-label">@item.Label</span>
+                                        <span class="perm-source-tag extra" style="margin-left:auto;">extra</span>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- 3. Quyền Deny -->
+            @if (Model.DenyPermissions.Any())
+            {
+                <div class="perm-section">
+                    <div class="perm-section-header">
+                        <div class="perm-section-icon red">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                        </div>
+                        <span class="perm-section-title-txt">Quyền bị thu hồi (QuyenDeny)</span>
+                        <span class="perm-section-count">@Model.DenyPermissions.Count</span>
+                    </div>
+                    <div class="perm-grid">
+                        @foreach (var group in Model.AllPermissions)
+                        {
+                            @foreach (var item in group.Items)
+                            {
+                                if (Model.DenyPermissions.Contains(item.Value))
+                                {
+                                    <div class="perm-item deny">
+                                        <div class="perm-dot red"></div>
+                                        <span class="perm-label deny-text">@item.Label</span>
+                                        <span class="perm-source-tag deny" style="margin-left:auto;">deny</span>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- 4. Quyền hiệu lực tổng hợp -->
+            <div class="perm-section">
+                <div class="perm-section-header">
+                    <div class="perm-section-icon purple">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+                    </div>
+                    <span class="perm-section-title-txt">Quyền hiệu lực thực tế</span>
+                    <span class="perm-section-count">@effective.Count</span>
+                </div>
+                @if (effective.Any())
+                {
+                    <div class="perm-grid">
+                        @foreach (var group in Model.AllPermissions)
+                        {
+                            @foreach (var item in group.Items)
+                            {
+                                if (effective.Contains(item.Value))
+                                {
+                                    bool isExtra = Model.ExtraPermissions.Contains(item.Value);
+                                    <div class="perm-item @(isExtra ? "extra" : "has")">
+                                        <div class="perm-dot @(isExtra ? "blue" : "green")"></div>
+                                        <span class="perm-label">@item.Label</span>
+                                        <span class="perm-source-tag @(isExtra ? "extra" : "role")" style="margin-left:auto;">@(isExtra ? "extra" : "role")</span>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="perm-empty">User này không có quyền hiệu lực nào.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

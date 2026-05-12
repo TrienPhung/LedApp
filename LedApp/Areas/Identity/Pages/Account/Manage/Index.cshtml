@@ -5,22 +5,242 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+    }
+
+    .avatar-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .avatar-circle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #16a34a, #0d9488);
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        letter-spacing: .5px;
+    }
+
+    .avatar-info {
+        flex: 1;
+    }
+
+    .avatar-name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .avatar-email {
+        font-size: 0.78rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .field-row-full {
+        margin-bottom: 16px;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input:disabled {
+            background: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .status-msg {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 16px;
+    }
+
+        .status-msg.success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+
+        .status-msg.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+    .manage-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 4px;
+    }
+
+    .btn-save {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .manage-card-sub {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .avatar-name {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .avatar-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+        body.dark-mode .field-input:disabled {
+            background: #1a1d27 !important;
+        }
+</style>
+
 <partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Profile</p>
+        <p class="manage-card-sub">Update your personal information</p>
+    </div>
+    <div class="manage-card-body">
+        <div class="avatar-row">
+            <div class="avatar-circle">
+                @(Model.Username?.Length > 0 ? Model.Username[0].ToString().ToUpper() : "?")
+            </div>
+            <div class="avatar-info">
+                <p class="avatar-name">@Model.Username</p>
+                <p class="avatar-email">Manage your profile settings below</p>
+            </div>
+        </div>
+
         <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Username" class="form-control" disabled />
-                <label asp-for="Username" class="form-label"></label>
+            <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:12px;"></div>
+
+            <div class="field-row-full field-group">
+                <label class="field-label">Username</label>
+                <input asp-for="Username" class="field-input" disabled />
             </div>
-            <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+
+            <div class="field-row-full field-group">
+                <label class="field-label" asp-for="Input.PhoneNumber">Phone number</label>
+                <input asp-for="Input.PhoneNumber" class="field-input" placeholder="Nhập số điện thoại..." />
+                <span asp-validation-for="Input.PhoneNumber" class="field-error"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+
+            <div class="manage-footer">
+                <button id="update-profile-button" type="submit" class="btn-save">Save Changes</button>
+            </div>
         </form>
     </div>
 </div>

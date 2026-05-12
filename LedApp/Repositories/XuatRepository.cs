@@ -27,8 +27,7 @@ namespace LedApp.Repositories
             return _dbContext.Xuats
                 .Include(s => s.Xe)
                 .Where(s => s.CuaXuatId == cuaXuatId
-                    && s.ThoiGianPhanCong.Date == DateTime.Today
-                    && trangThaiHoatDong.Contains(s.TrangThai))
+                            && trangThaiHoatDong.Contains(s.TrangThai))
                 .OrderByDescending(s => s.ThoiGianPhanCong)
                 .FirstOrDefault();
         }

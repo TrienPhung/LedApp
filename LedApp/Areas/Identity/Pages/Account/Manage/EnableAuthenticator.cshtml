@@ -5,47 +5,249 @@
     ViewData["ActivePage"] = ManageNavPages.TwoFactorAuthentication;
 }
 
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+    }
+
+    .auth-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: step;
+    }
+
+    .auth-step {
+        display: flex;
+        gap: 16px;
+        counter-increment: step;
+    }
+
+    .auth-step-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        font-size: 0.82rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .auth-step-body {
+        flex: 1;
+    }
+
+        .auth-step-body p {
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.6;
+            margin: 0 0 10px;
+        }
+
+        .auth-step-body a {
+            color: #16a34a;
+            text-decoration: none;
+        }
+
+            .auth-step-body a:hover {
+                text-decoration: underline;
+            }
+
+    .shared-key {
+        display: inline-block;
+        font-family: monospace;
+        font-size: 0.9rem;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 4px 10px;
+        color: #111827;
+        letter-spacing: 1px;
+    }
+
+    .info-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        color: #1d4ed8;
+        margin: 10px 0;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 16px;
+        max-width: 360px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .btn-save {
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .auth-step-body p {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .shared-key {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
 <partial name="_StatusMessage" for="StatusMessage" />
-<h3>@ViewData["Title"]</h3>
-<div>
-    <p>To use an authenticator app go through the following steps:</p>
-    <ol class="list">
-        <li>
-            <p>
-                Download a two-factor authenticator app like Microsoft Authenticator for
-                <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
-                <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> or
-                Google Authenticator for
-                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> and
-                <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
-            </p>
-        </li>
-        <li>
-            <p>Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-            <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
-            <div id="qrCode"></div>
-            <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
-        </li>
-        <li>
-            <p>
-                Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
-                with a unique code. Enter the code in the confirmation box below.
-            </p>
-            <div class="row">
-                <div class="col-md-6">
+
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Configure authenticator app</p>
+        <p class="manage-card-sub">Set up your two-factor authentication app</p>
+    </div>
+    <div class="manage-card-body">
+        <ol class="auth-steps">
+            <li class="auth-step">
+                <div class="auth-step-num">1</div>
+                <div class="auth-step-body">
+                    <p>
+                        Download a two-factor authenticator app like Microsoft Authenticator for
+                        <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
+                        <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a>, or
+                        Google Authenticator for
+                        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en">Android</a> and
+                        <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
+                    </p>
+                </div>
+            </li>
+            <li class="auth-step">
+                <div class="auth-step-num">2</div>
+                <div class="auth-step-body">
+                    <p>Scan the QR code or enter this key into your authenticator app. Spaces and casing do not matter.</p>
+                    <span class="shared-key">@Model.SharedKey</span>
+                    <div class="info-box" style="margin-top:12px;">
+                        <i class="bi bi-info-circle" style="margin-right:6px;"></i>
+                        Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.
+                    </div>
+                    <div id="qrCode" style="margin-top:12px;"></div>
+                    <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+                </div>
+            </li>
+            <li class="auth-step">
+                <div class="auth-step-num">3</div>
+                <div class="auth-step-body">
+                    <p>Once you have scanned the QR code or input the key, your authenticator app will provide a unique code. Enter it below to verify.</p>
                     <form id="send-code" method="post">
-                        <div class="form-floating">
-                            <input asp-for="Input.Code" class="form-control" autocomplete="off" />
-                            <label asp-for="Input.Code" class="control-label form-label">Verification Code</label>
-                            <span asp-validation-for="Input.Code" class="text-danger"></span>
+                        <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:12px;"></div>
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Input.Code">Verification Code</label>
+                            <input asp-for="Input.Code" class="field-input" autocomplete="off" placeholder="Nhập mã xác thực..." />
+                            <span asp-validation-for="Input.Code" class="field-error"></span>
                         </div>
-                        <button type="submit" class="w-100 btn btn-lg btn-primary">Verify</button>
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <button type="submit" class="btn-save">Verify</button>
                     </form>
                 </div>
-            </div>
-        </li>
-    </ol>
+            </li>
+        </ol>
+    </div>
 </div>
 
 @section Scripts {

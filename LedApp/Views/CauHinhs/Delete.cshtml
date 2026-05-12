@@ -1,0 +1,284 @@
+﻿@model LedApp.Models.CauHinh
+@{
+    ViewData["Title"] = "Xóa cấu hình #" + Model.Id;
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    :root {
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-red: #dc2626;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .del-wrap {
+        padding: 0 0 40px;
+        max-width: 520px;
+    }
+
+    .del-bc {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .del-bc a {
+            color: var(--ap-text-2);
+            text-decoration: none;
+        }
+
+            .del-bc a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .del-bc .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .del-bc .sep svg {
+                width: 13px;
+                height: 13px;
+            }
+
+        .del-bc .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    .del-card {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+    }
+
+    .del-card-head {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--ap-border-lt);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .del-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: #fef2f2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .del-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--ap-red);
+        }
+
+    .del-card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ap-text-1);
+        margin: 0 0 2px;
+    }
+
+    .del-card-sub {
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin: 0;
+    }
+
+    .del-card-body {
+        padding: 20px 24px;
+    }
+
+    .detail-row {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        padding: 11px 14px;
+        border-radius: 8px;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid var(--ap-border-lt);
+        background: var(--ap-border-lt);
+        margin-bottom: 8px;
+    }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+    .detail-key {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--ap-text-2);
+    }
+
+    .detail-val {
+        font-size: 13px;
+        color: var(--ap-text-1);
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+        .detail-val.mono {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+    .del-warning {
+        margin-top: 16px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        font-size: 13px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+        .del-warning svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+    .del-card-foot {
+        padding: 16px 24px;
+        border-top: 1px solid var(--ap-border-lt);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-back {
+        padding: 9px 18px;
+        border-radius: 8px;
+        border: 1px solid var(--ap-border);
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-back:hover {
+            background: var(--ap-border-lt);
+            text-decoration: none;
+            color: var(--ap-text-1);
+        }
+
+    .btn-del {
+        padding: 9px 18px;
+        border-radius: 8px;
+        border: none;
+        background: var(--ap-red);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-del:hover {
+            background: #b91c1c;
+        }
+
+    body.dark-mode .del-card {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .detail-row {
+        background: rgba(255,255,255,.04) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .btn-back {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-1) !important;
+    }
+</style>
+
+<div class="del-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="del-bc">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="CauHinhs" asp-action="Index">Cấu hình hệ thống</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Xóa</span>
+    </div>
+
+    <div class="del-card">
+        <div class="del-card-head">
+            <div class="del-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+            </div>
+            <div>
+                <div class="del-card-title">Xóa cấu hình</div>
+                <div class="del-card-sub">Xác nhận xóa cấu hình bên dưới.</div>
+            </div>
+        </div>
+
+        <div class="del-card-body">
+            <div class="detail-row">
+                <span class="detail-key">Mã cấu hình</span>
+                <span class="detail-val mono">#@Model.Id</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-key">Key</span>
+                <span class="detail-val mono">@Model.Key</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-key">Value</span>
+                <span class="detail-val">@(string.IsNullOrEmpty(Model.Value) ? "—" : Model.Value)</span>
+            </div>
+
+            <div class="del-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+                Hành động này không thể hoàn tác. Cấu hình sẽ bị xóa vĩnh viễn.
+            </div>
+        </div>
+
+        <div class="del-card-foot">
+            <a asp-action="Index" class="btn-back">Hủy</a>
+            <form asp-action="Delete" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn-del">Xóa cấu hình</button>
+            </form>
+        </div>
+    </div>
+</div>

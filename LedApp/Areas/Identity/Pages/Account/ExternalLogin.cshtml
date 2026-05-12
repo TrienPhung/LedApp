@@ -4,27 +4,137 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
 
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+    .auth-card-header {
+        padding: 24px 28px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .auth-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .auth-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .auth-card-body {
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .info-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 0.82rem;
+        color: #1d4ed8;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .btn-save {
+        width: 100%;
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <p class="auth-card-title">Associate @Model.ProviderDisplayName account</p>
+            <p class="auth-card-sub">
+                Bạn đã xác thực thành công với <strong>@Model.ProviderDisplayName</strong>.
+                Nhập email để hoàn tất đăng ký.
+            </p>
+        </div>
+        <div class="auth-card-body">
+            <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:8px;"></div>
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label class="field-label" asp-for="Input.Email">Email</label>
+                    <input asp-for="Input.Email" class="field-input"
+                           autocomplete="email" placeholder="Nhập địa chỉ email..." />
+                    <span asp-validation-for="Input.Email" class="field-error"></span>
+                </div>
+                <button type="submit" class="btn-save">Register</button>
+            </form>
+        </div>
     </div>
 </div>
 

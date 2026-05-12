@@ -106,7 +106,8 @@ namespace LedApp.Controllers
                                ?? new List<DanhSachXeDto>();
                 // 🔥 sắp xếp theo ngày dự kiến giảm dần
                 dataList = dataList
-                    .OrderByDescending(x => x.ChuyenHienTai?.NgayDuKien)//sua cho nay
+                    .Where(x => x.ChuyenHienTai != null)
+                    .OrderByDescending(x => x.ChuyenHienTai!.NgayDuKien)
                     .ToList();
 
                 return View(dataList);

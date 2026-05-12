@@ -4,7 +4,94 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
+
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+    }
+
+    .auth-card-body {
+        padding: 40px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .error-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #ef4444;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .error-sub {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #16a34a;
+        color: #fff;
+        text-decoration: none;
+        transition: background .15s;
+        border: none;
+        cursor: pointer;
+    }
+
+        .btn-back:hover {
+            background: #15803d;
+            color: #fff;
+        }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-body">
+            <div class="error-icon">
+                <i class="bi bi-shield-x"></i>
+            </div>
+            <p class="error-title">Access Denied</p>
+            <p class="error-sub">You do not have permission to access this resource.</p>
+            <a href="/" class="btn-back">
+                <i class="bi bi-house"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>
+</div>

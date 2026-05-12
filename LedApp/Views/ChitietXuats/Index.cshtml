@@ -3,107 +3,2094 @@
     ViewData["Title"] = "Chi tiết xuất";
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
-<h1>Quản lý thông tin chi tiết xuất</h1>
-<p><a asp-controller="ChitietXuats" asp-action="Create">+ Thêm mới</a></p>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th></th>
-            <th>Phiếu</th>
-            <th>Biển số xe</th>
-            <th>Cửa xuất</th>
-            <th>Thời gian phân công</th>
-            <th>Trạng thái</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var xuat in Model)
-        {
-            <tr onclick="toggleCard(@xuat.Id)" style="cursor:pointer;">
-                <td><span id="icon-@xuat.Id">▶</span></td>
-                <td>#@xuat.Id</td>
-                <td>@(xuat.Xe?.BienSoXe ?? "—")</td>
-                <td>@(xuat.CuaXuat?.Ten ?? $"X-{xuat.CuaXuatId:D2}")</td>
-                <td>@xuat.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>
-                    @switch (xuat.TrangThai)
-                    {
-                        case (int)LedApp.Models.TrangThaiXuat.DaPhanCong:
-                            <span class="badge bg-secondary">Đã phân công</span>
-                            break;
-                        case (int)LedApp.Models.TrangThaiXuat.DangBanGiao:
-                            <span class="badge bg-primary">Đang bàn giao</span>
-                            break;
-                        case (int)LedApp.Models.TrangThaiXuat.QuaThoiGian:
-                            <span class="badge bg-danger">Quá thời gian</span>
-                            break;
-                        case (int)LedApp.Models.TrangThaiXuat.HoanThanh:
-                            <span class="badge bg-success">Hoàn thành</span>
-                            break;
-                        case (int)LedApp.Models.TrangThaiXuat.DaXuatPhat:
-                            <span class="badge bg-dark">Đã xuất phát</span>
-                            break;
-                    }
-                </td>
-            </tr>
-            <tr id="body-@xuat.Id" style="display:none;">
-                <td colspan="6">
-                    @if (xuat.ChitietXuats != null && xuat.ChitietXuats.Any())
-                    {
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Đơn vị</th>
-                                    <th>Chưa bàn giao</th>
-                                    <th>Đã bàn giao</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    int i = 1;
-                                }
-                                @foreach (var ct in xuat.ChitietXuats)
-                                {
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>@ct.DonVi</td>
-                                        <td>@ct.ChuaBG</td>
-                                        <td>@ct.DaBG</td>
-                                        <td>
-                                            <a asp-controller="ChitietXuats" asp-action="Edit" asp-route-id="@ct.Id">Sửa</a> |
-                                            <a asp-controller="ChitietXuats" asp-action="Details" asp-route-id="@ct.Id">Chi tiết</a> |
-                                            <a asp-controller="ChitietXuats" asp-action="Delete" asp-route-id="@ct.Id">Xóa</a>
-                                        </td>
-                                    </tr>
-                                    i++;
-                                }
-                            </tbody>
-                        </table>
-                    }
-                    else
-                    {
-                        <p class="text-muted ms-2">Chưa có chi tiết nào</p>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-@section Scripts {
-    <script>
-        function toggleCard(id) {
-            var body = document.getElementById('body-' + id);
-            var icon = document.getElementById('icon-' + id);
-            if (body.style.display === 'none') {
-                body.style.display = 'table-row';
-                icon.textContent = '▼';
-            } else {
-                body.style.display = 'none';
-                icon.textContent = '▶';
-            }
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .px-page {
+        padding: 24px 24px 80px;
+    }
+
+    /* ── Breadcrumb ── */
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
         }
-    </script>
-}
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .px-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    /* ── Header ── */
+    .px-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 3px;
+            line-height: 1.2;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background .15s;
+    }
+
+        .btn-add:hover {
+            background: #15803d;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .btn-add svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    /* ── Toolbar ── */
+    .px-toolbar-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .px-toolbar-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 10px;
+    }
+
+    .filter-tabs {
+        display: inline-flex;
+        gap: 2px;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 3px;
+    }
+
+    .filter-tab {
+        padding: 5px 14px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        border: 1px solid transparent;
+        background: transparent;
+        transition: all .15s;
+        line-height: 1.4;
+        white-space: nowrap;
+    }
+
+        .filter-tab:hover {
+            color: #374151;
+            background: rgba(255,255,255,0.5);
+        }
+
+        .filter-tab.active {
+            background: #fff;
+            color: #111827;
+            border-color: #e5e7eb;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+        }
+
+    /* ── Search ── */
+    .px-search {
+        position: relative;
+        flex: 1;
+        max-width: 480px;
+    }
+
+        .px-search svg {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            width: 15px;
+            height: 15px;
+            pointer-events: none;
+        }
+
+        .px-search input {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #111827;
+            font-size: 0.875rem;
+            padding: 9px 14px 9px 34px;
+            width: 100%;
+            outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+            .px-search input::placeholder {
+                color: #9ca3af;
+            }
+
+            .px-search input:focus {
+                border-color: #16a34a;
+                box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            }
+
+    .px-toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tb-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+        white-space: nowrap;
+        box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+
+        .tb-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+        }
+
+        .tb-btn svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+        }
+
+    .btn-reset {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+
+        .btn-reset.show {
+            display: inline-flex;
+        }
+
+        .btn-reset:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #ef4444;
+        }
+
+        .btn-reset svg {
+            width: 13px;
+            height: 13px;
+        }
+
+    /* ── Columns dropdown ── */
+    .columns-wrap {
+        position: relative;
+    }
+
+    .col-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        z-index: 200;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.1);
+        min-width: 190px;
+        overflow: hidden;
+    }
+
+        .col-dropdown.open {
+            display: block;
+        }
+
+    .col-dropdown-title {
+        padding: 10px 14px 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #9ca3af;
+    }
+
+    .col-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        cursor: pointer;
+        transition: background .1s;
+    }
+
+        .col-item:hover {
+            background: #f9fafb;
+        }
+
+        .col-item span {
+            font-size: 0.82rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+    .col-check {
+        width: 16px;
+        height: 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #16a34a;
+        opacity: 0;
+        transition: opacity .12s;
+    }
+
+        .col-check svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    .col-item.col-visible .col-check {
+        opacity: 1;
+    }
+
+    .col-hidden {
+        display: none !important;
+    }
+
+    /* ── Table card ── */
+    .px-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .px-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+        .px-table thead th {
+            background: #f9fafb;
+            color: #374151;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 10px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+    /* ── Parent row ── */
+    .row-parent {
+        border-bottom: 1px solid #f3f4f6;
+        cursor: pointer;
+        transition: background .12s;
+    }
+
+        .row-parent:hover {
+            background: #f9fafb;
+        }
+
+        .row-parent.is-open {
+            background: #f0fdf4;
+            border-bottom: none;
+        }
+
+        .row-parent td {
+            padding: 13px 14px;
+            vertical-align: middle;
+            color: #111827;
+        }
+
+    .toggle-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: #f3f4f6;
+        color: #6b7280;
+        transition: all .2s;
+        flex-shrink: 0;
+    }
+
+        .toggle-icon svg {
+            width: 13px;
+            height: 13px;
+            transition: transform .2s;
+        }
+
+    .row-parent.is-open .toggle-icon {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+        .row-parent.is-open .toggle-icon svg {
+            transform: rotate(90deg);
+        }
+
+    .phieu-num {
+        font-weight: 700;
+        color: #111827;
+        font-size: 0.875rem;
+    }
+
+    .td-bienso {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .td-cuaxuat {
+        color: #374151;
+    }
+
+    .td-time {
+        color: #6b7280;
+        font-size: 0.81rem;
+    }
+
+    /* ── Status badges ── */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 600;
+    }
+
+        .badge-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+    .bp-phan-cong {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .bp-phan-cong::before {
+            background: #94a3b8;
+        }
+
+    .bp-ban-giao {
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+        .bp-ban-giao::before {
+            background: #3b82f6;
+        }
+
+    .bp-qua-tg {
+        background: #fef2f2;
+        color: #ef4444;
+    }
+
+        .bp-qua-tg::before {
+            background: #ef4444;
+        }
+
+    .bp-hoan-thanh {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-hoan-thanh::before {
+            background: #16a34a;
+        }
+
+    .bp-xuat-phat {
+        background: #f5f3ff;
+        color: #7c3aed;
+    }
+
+        .bp-xuat-phat::before {
+            background: #7c3aed;
+        }
+
+    /* ── Expand row ── */
+    .row-expand {
+        display: none;
+    }
+
+        .row-expand.open {
+            display: table-row;
+        }
+
+        .row-expand > td {
+            padding: 0 !important;
+            border-bottom: 2px solid #e5e7eb;
+            background: #fafafa;
+        }
+
+    .expand-inner {
+        padding: 0 16px 16px 48px;
+    }
+
+    /* ── Inner toolbar (bulk + columns for inner) ── */
+    .inner-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 10px 0 8px;
+    }
+
+    .inner-bulk-bar {
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .inner-bulk-bar.show {
+            display: flex;
+        }
+
+    .inner-bulk-info {
+        font-size: 0.82rem;
+        color: #374151;
+        font-weight: 500;
+    }
+
+        .inner-bulk-info span {
+            font-weight: 700;
+            color: #111827;
+        }
+
+    .btn-inner-bulk-del {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-inner-bulk-del:hover {
+            background: #dc2626;
+        }
+
+        .btn-inner-bulk-del svg {
+            width: 13px;
+            height: 13px;
+        }
+
+    .btn-inner-bulk-clear {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        font-size: 0.78rem;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 5px 8px;
+        border-radius: 6px;
+        transition: all .15s;
+    }
+
+        .btn-inner-bulk-clear:hover {
+            color: #111827;
+            background: #f3f4f6;
+        }
+
+        .btn-inner-bulk-clear svg {
+            width: 13px;
+            height: 13px;
+        }
+
+    .inner-toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* ── Inner columns dropdown ── */
+    .inner-col-wrap {
+        position: relative;
+    }
+
+    .inner-col-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 0;
+        z-index: 300;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.1);
+        min-width: 170px;
+        overflow: hidden;
+    }
+
+        .inner-col-dropdown.open {
+            display: block;
+        }
+
+    /* ── Inner table ── */
+    .inner-table-wrap {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .inner-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+    }
+
+        .inner-table thead th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 0.71rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            user-select: none;
+        }
+
+            .inner-table thead th:first-child {
+                width: 36px;
+            }
+
+        .inner-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background .1s;
+        }
+
+            .inner-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .inner-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+            .inner-table tbody tr.row-ct-selected {
+                background: #f0fdf4 !important;
+            }
+
+        .inner-table td {
+            padding: 10px 12px;
+            vertical-align: middle;
+            color: #111827;
+        }
+
+        .inner-table input[type=checkbox] {
+            width: 15px;
+            height: 15px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+
+    .stt-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+
+    .inner-donvi {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    /* ── Number pills ── */
+    .num-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        min-width: 36px;
+    }
+
+    .num-chua {
+        background: #fff7ed;
+        color: #ea580c;
+    }
+
+    .num-da {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 100px;
+    }
+
+    .progress-bar-bg {
+        flex: 1;
+        height: 5px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: #16a34a;
+        border-radius: 999px;
+        transition: width .3s;
+    }
+
+    .progress-pct {
+        font-size: 0.72rem;
+        color: #9ca3af;
+        font-weight: 500;
+        min-width: 28px;
+        text-align: right;
+    }
+
+    /* ── Inner actions ── */
+    .inner-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    .ia-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all .12s;
+        white-space: nowrap;
+        border: 1px solid transparent;
+        background: transparent;
+        cursor: pointer;
+    }
+
+        .ia-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+    .ia-view {
+        color: #374151;
+        border-color: #e5e7eb;
+        background: #fff;
+    }
+
+        .ia-view:hover {
+            background: #f9fafb;
+            color: #111827;
+        }
+
+    .ia-edit {
+        color: #2563eb;
+        border-color: #dbeafe;
+        background: #eff6ff;
+    }
+
+        .ia-edit:hover {
+            background: #dbeafe;
+        }
+
+    .ia-delete {
+        color: #ef4444;
+        border-color: #fecaca;
+        background: #fef2f2;
+    }
+
+        .ia-delete:hover {
+            background: #fecaca;
+        }
+
+    /* ── Empty inner ── */
+    .empty-inner {
+        padding: 24px;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.82rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+        .empty-inner svg {
+            width: 16px;
+            height: 16px;
+            opacity: .5;
+        }
+
+    /* ── Add detail btn ── */
+    .btn-add-detail {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        border-radius: 7px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+        text-decoration: none;
+        transition: all .12s;
+        margin-top: 10px;
+    }
+
+        .btn-add-detail:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #15803d;
+            text-decoration: none;
+        }
+
+        .btn-add-detail svg {
+            width: 12px;
+            height: 12px;
+        }
+
+    /* ── Count badge ── */
+    .ct-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e5e7eb;
+        color: #6b7280;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 999px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+    }
+
+        .ct-count.has-items {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+    /* ── Pagination ── */
+    .px-pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-top: 1px solid #e5e7eb;
+        font-size: 0.82rem;
+        color: #6b7280;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .pg-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pg-rows {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .pg-rows select {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.82rem;
+            color: #374151;
+            outline: none;
+            cursor: pointer;
+        }
+
+    .pg-btn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .pg-btn:hover:not(:disabled) {
+            background: #f3f4f6;
+        }
+
+        .pg-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+    .pg-num {
+        min-width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .pg-num:hover {
+            background: #f3f4f6;
+        }
+
+        .pg-num.active {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #fff;
+            font-weight: 600;
+        }
+
+    /* ── Empty state ── */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #9ca3af;
+    }
+
+        .empty-state svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+            opacity: .4;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    /* ── Delete Modal ── */
+    .del-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.1rem;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 6px;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .del-modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        padding-right: 24px;
+    }
+
+    .del-modal-body {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.55;
+    }
+
+    .del-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-modal-cancel {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-modal-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    .btn-modal-confirm {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-modal-confirm:hover {
+            background: #dc2626;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* ── No results ── */
+    .no-results-row td {
+        padding: 48px 20px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* ── Toast ── */
+    #exportToast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 9999;
+        background: #111827;
+        color: #fff;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: none;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    /* ── Dark mode ── */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .filter-tabs {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .filter-tab {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .filter-tab.active {
+            background: #2e3248 !important;
+            border-color: #3d4460 !important;
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .px-search input {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .tb-btn, body.dark-mode .btn-reset {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .px-table thead th {
+        background: #22263a !important;
+        color: #6b7280 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .row-parent {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .row-parent:hover {
+            background: #22263a !important;
+        }
+
+        body.dark-mode .row-parent.is-open {
+            background: #0a2e1a !important;
+        }
+
+        body.dark-mode .row-parent td {
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .toggle-icon {
+        background: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .row-parent.is-open .toggle-icon {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .row-expand > td {
+        background: #141720 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .inner-table-wrap {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .inner-table thead th {
+        background: #22263a !important;
+        color: #6b7280 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .inner-table tbody tr {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .inner-table tbody tr:hover {
+            background: #22263a !important;
+        }
+
+        body.dark-mode .inner-table tbody tr.row-ct-selected {
+            background: #0a2e1a !important;
+        }
+
+    body.dark-mode .inner-table td {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .inner-donvi {
+        color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .stt-badge {
+        background: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .ct-count {
+        background: #2e3248 !important;
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .ct-count.has-items {
+            background: #052e16 !important;
+            color: #4ade80 !important;
+        }
+
+    body.dark-mode .num-chua {
+        background: #2e1a0e !important;
+        color: #fb923c !important;
+    }
+
+    body.dark-mode .num-da {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .progress-bar-bg {
+        background: #2e3248 !important;
+    }
+
+    body.dark-mode .ia-view {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .ia-edit {
+        background: #1e3a5f !important;
+        border-color: #1d4ed8 !important;
+        color: #93c5fd !important;
+    }
+
+    body.dark-mode .ia-delete {
+        background: #3b0f0f !important;
+        border-color: #991b1b !important;
+        color: #fca5a5 !important;
+    }
+
+    body.dark-mode .btn-add-detail {
+        background: #052e16 !important;
+        border-color: #166534 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .px-pagination {
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .pg-btn, body.dark-mode .pg-num {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .pg-rows select {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .pg-num.active {
+        background: #16a34a !important;
+        border-color: #16a34a !important;
+        color: #fff !important;
+    }
+
+    body.dark-mode .col-dropdown, body.dark-mode .inner-col-dropdown {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .col-item:hover {
+        background: #22263a !important;
+    }
+
+    body.dark-mode .col-item span {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .col-dropdown-title {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .del-modal {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .del-modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal-body {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-modal-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .inner-bulk-info {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .inner-bulk-info span {
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .btn-inner-bulk-clear {
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .btn-inner-bulk-clear:hover {
+            background: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+</style>
+
+<div class="px-page">
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="Xuats" asp-action="Index">Phiếu xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Chi tiết xuất</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <div>
+            <h1>Quản lý chi tiết xuất</h1>
+            <p>Theo dõi số lượng bàn giao theo từng phiếu xuất và đơn vị.</p>
+        </div>
+        <a asp-controller="ChitietXuats" asp-action="Create" class="btn-add">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            Thêm mới
+        </a>
+    </div>
+
+    <!-- Toolbar top: filter tabs -->
+    <div class="px-toolbar-top">
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="phan-cong">Đã phân công</button>
+            <button class="filter-tab" data-filter="ban-giao">Đang bàn giao</button>
+            <button class="filter-tab" data-filter="hoan-thanh">Hoàn thành</button>
+            <button class="filter-tab" data-filter="xuat-phat">Đã xuất phát</button>
+            <button class="filter-tab" data-filter="qua-tg">Quá thời gian</button>
+        </div>
+    </div>
+
+    <!-- Toolbar bottom -->
+    <div class="px-toolbar-bottom">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;">
+            <div class="px-search">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                <input type="text" id="searchInput" placeholder="Tìm biển số, cửa xuất..." />
+            </div>
+            <button class="btn-reset" id="btnReset" type="button">
+                Reset
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+        <div class="px-toolbar-actions">
+            <button class="tb-btn" id="btnExpandAll" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg>
+                Mở tất cả
+            </button>
+            <!-- Columns dropdown (for outer table) -->
+            <div class="columns-wrap" id="columnsWrap">
+                <button class="tb-btn" id="columnsBtn" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                    Columns
+                </button>
+                <div class="col-dropdown" id="colDropdown">
+                    <div class="col-dropdown-title">Cột phiếu xuất</div>
+                    <div class="col-item col-visible" data-col="outer-bienso"><span>Biển số xe</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="outer-cuaxuat"><span>Cửa xuất</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="outer-tgpc"><span>TG phân công</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="outer-trangthai"><span>Trạng thái</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    <div class="col-item col-visible" data-col="outer-chitiet"><span>Chi tiết</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                </div>
+            </div>
+            <button class="tb-btn" id="exportBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                Export
+            </button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="px-card">
+        <table class="px-table">
+            <thead>
+                <tr>
+                    <th style="width:40px;"></th>
+                    <th>Phiếu xuất</th>
+                    <th data-col-th="outer-bienso">Biển số xe</th>
+                    <th data-col-th="outer-cuaxuat">Cửa xuất</th>
+                    <th data-col-th="outer-tgpc">Thời gian phân công</th>
+                    <th data-col-th="outer-trangthai">Trạng thái</th>
+                    <th data-col-th="outer-chitiet" style="width:80px;text-align:center;">Chi tiết</th>
+                </tr>
+            </thead>
+            <tbody id="xuatBody">
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" /></svg>
+                                <p>Chưa có dữ liệu.</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @foreach (var xuat in Model)
+                {
+                    string badgeClass = xuat.TrangThai switch
+                    {
+                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "bp-phan-cong",
+                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "bp-ban-giao",
+                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "bp-qua-tg",
+                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "bp-hoan-thanh",
+                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "bp-xuat-phat",
+                        _ => "bp-phan-cong"
+                    };
+                    string badgeLabel = xuat.TrangThai switch
+                    {
+                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "Đã phân công",
+                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "Đang bàn giao",
+                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "Quá thời gian",
+                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "Hoàn thành",
+                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "Đã xuất phát",
+                        _ => "—"
+                    };
+                    string filterKey = xuat.TrangThai switch
+                    {
+                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "phan-cong",
+                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "ban-giao",
+                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "qua-tg",
+                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "hoan-thanh",
+                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "xuat-phat",
+                        _ => ""
+                    };
+                    int ctCount = xuat.ChitietXuats?.Count ?? 0;
+
+                    <!-- Parent row -->
+                    <tr class="row-parent"
+                        data-id="@xuat.Id"
+                        data-filter="@filterKey"
+                        data-search="@(xuat.Xe?.BienSoXe ?? "") @(xuat.CuaXuat?.Ten ?? "")"
+                        onclick="toggleRow(@xuat.Id)">
+                        <td>
+                            <span class="toggle-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+                            </span>
+                        </td>
+                        <td><span class="phieu-num">#@xuat.Id</span></td>
+                        <td class="td-bienso" data-col-td="outer-bienso">@(xuat.Xe?.BienSoXe ?? "—")</td>
+                        <td class="td-cuaxuat" data-col-td="outer-cuaxuat">@(xuat.CuaXuat?.Ten ?? $"X-{xuat.CuaXuatId:D2}")</td>
+                        <td class="td-time" data-col-td="outer-tgpc">@xuat.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td data-col-td="outer-trangthai"><span class="badge-pill @badgeClass">@badgeLabel</span></td>
+                        <td style="text-align:center;" data-col-td="outer-chitiet">
+                            <span class="ct-count @(ctCount > 0 ? "has-items" : "")">@ctCount</span>
+                        </td>
+                    </tr>
+
+                    <!-- Expand row -->
+                    <tr class="row-expand" id="expand-@xuat.Id">
+                        <td colspan="7">
+                            <div class="expand-inner">
+
+                                <!-- Inner toolbar -->
+                                <div class="inner-toolbar" id="inner-toolbar-@xuat.Id">
+                                    <!-- Bulk bar (hidden by default) -->
+                                    <div class="inner-bulk-bar" id="inner-bulk-bar-@xuat.Id">
+                                        <span class="inner-bulk-info"><span id="inner-bulk-count-@xuat.Id">0</span> đã chọn</span>
+                                        <button class="btn-inner-bulk-del" type="button" onclick="openBulkDelModal(@xuat.Id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                            Xóa (<span id="inner-bulk-del-count-@xuat.Id">0</span>)
+                                        </button>
+                                        <button class="btn-inner-bulk-clear" type="button" onclick="clearInnerBulk(@xuat.Id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                                            Bỏ chọn
+                                        </button>
+                                    </div>
+                                    <div id="inner-normal-bar-@xuat.Id" style="flex:1;"></div>
+
+                                    <!-- Inner right tools -->
+                                    <div class="inner-toolbar-right">
+                                        <!-- Inner columns dropdown -->
+                                        <div class="inner-col-wrap" id="inner-col-wrap-@xuat.Id">
+                                            <button class="tb-btn" style="font-size:0.78rem;padding:6px 10px;" type="button" onclick="toggleInnerColDropdown(@xuat.Id, event)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                                                Columns
+                                            </button>
+                                            <div class="inner-col-dropdown" id="inner-col-dropdown-@xuat.Id">
+                                                <div class="col-dropdown-title">Cột chi tiết</div>
+                                                <div class="col-item col-visible" data-inner-col="donvi" data-xuat-id="@xuat.Id"><span>Đơn vị</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                                                <div class="col-item col-visible" data-inner-col="chuabg" data-xuat-id="@xuat.Id"><span>Chưa bàn giao</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                                                <div class="col-item col-visible" data-inner-col="dabg" data-xuat-id="@xuat.Id"><span>Đã bàn giao</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                                                <div class="col-item col-visible" data-inner-col="tiendo" data-xuat-id="@xuat.Id"><span>Tiến độ</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                                            </div>
+                                        </div>
+                                        <!-- Export inner -->
+                                        <button class="tb-btn" style="font-size:0.78rem;padding:6px 10px;" type="button" onclick="exportInner(@xuat.Id, '@(xuat.Xe?.BienSoXe ?? $"phieu-{xuat.Id}")')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                                            Export
+                                        </button>
+                                    </div>
+                                </div>
+
+                                @if (xuat.ChitietXuats != null && xuat.ChitietXuats.Any())
+                                {
+                                    <div class="inner-table-wrap">
+                                        <table class="inner-table" id="inner-table-@xuat.Id">
+                                            <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" class="inner-check-all" data-xuat-id="@xuat.Id" onclick="toggleInnerAll(@xuat.Id, this)" /></th>
+                                                    <th style="width:40px;">STT</th>
+                                                    <th data-inner-th="donvi" data-xuat-id="@xuat.Id">Đơn vị</th>
+                                                    <th data-inner-th="chuabg" data-xuat-id="@xuat.Id">Chưa bàn giao</th>
+                                                    <th data-inner-th="dabg" data-xuat-id="@xuat.Id">Đã bàn giao</th>
+                                                    <th data-inner-th="tiendo" data-xuat-id="@xuat.Id">Tiến độ</th>
+                                                    <th style="text-align:right;">Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int i = 1;
+                                                }
+                                                @foreach (var ct in xuat.ChitietXuats)
+                                                {
+                                                    long total = ct.ChuaBG + ct.DaBG;
+                                                    int pct = total > 0 ? (int)Math.Round(ct.DaBG * 100.0 / total) : 0;
+                                                    <tr data-ct-id="@ct.Id" data-xuat-id="@xuat.Id"
+                                                        data-donvi="@ct.DonVi"
+                                                        data-chuabg="@ct.ChuaBG"
+                                                        data-dabg="@ct.DaBG"
+                                                        data-pct="@pct">
+                                                        <td><input type="checkbox" class="inner-row-check" data-xuat-id="@xuat.Id" onchange="updateInnerBulk(@xuat.Id)" onclick="event.stopPropagation()" /></td>
+                                                        <td><span class="stt-badge">@i</span></td>
+                                                        <td class="inner-donvi" data-inner-td="donvi" data-xuat-id="@xuat.Id">@ct.DonVi</td>
+                                                        <td data-inner-td="chuabg" data-xuat-id="@xuat.Id"><span class="num-pill num-chua">@ct.ChuaBG</span></td>
+                                                        <td data-inner-td="dabg" data-xuat-id="@xuat.Id"><span class="num-pill num-da">@ct.DaBG</span></td>
+                                                        <td data-inner-td="tiendo" data-xuat-id="@xuat.Id">
+                                                            <div class="progress-wrap">
+                                                                <div class="progress-bar-bg">
+                                                                    <div class="progress-bar-fill" style="width:@pct%"></div>
+                                                                </div>
+                                                                <span class="progress-pct">@pct%</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="inner-actions">
+                                                                <a asp-controller="ChitietXuats" asp-action="Details" asp-route-id="@ct.Id" class="ia-btn ia-view" onclick="event.stopPropagation()">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                                                                    View
+                                                                </a>
+                                                                <a asp-controller="ChitietXuats" asp-action="Edit" asp-route-id="@ct.Id" class="ia-btn ia-edit" onclick="event.stopPropagation()">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                                                                    Edit
+                                                                </a>
+                                                                <button class="ia-btn ia-delete" type="button" onclick="openDelModal(@ct.Id, event)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                                                    Xóa
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    i++;
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="inner-table-wrap">
+                                        <div class="empty-inner">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+                                            Chưa có chi tiết nào cho phiếu này.
+                                        </div>
+                                    </div>
+                                }
+                                <a asp-controller="ChitietXuats" asp-action="Create" class="btn-add-detail" onclick="event.stopPropagation()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                                    Thêm chi tiết cho phiếu #@xuat.Id
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="px-pagination">
+            <div class="pg-info" id="pgInfo">Showing 0 results</div>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <div class="pg-rows">
+                    Rows
+                    <select id="rowsPerPage">
+                        <option value="10" selected>10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div class="pg-controls" id="pgControls"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xóa đơn ChitietXuat -->
+<div class="del-modal-overlay" id="delModalOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" id="delModalClose">×</button>
+        <div class="del-modal-title">Xóa chi tiết xuất</div>
+        <div class="del-modal-body">Bạn có chắc chắn muốn xóa chi tiết này không? Hành động này không thể hoàn tác.</div>
+        <div class="del-modal-footer">
+            <button class="btn-modal-cancel" id="delModalCancel">Cancel</button>
+            <form id="delConfirmForm" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-modal-confirm">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xóa nhiều ChitietXuat -->
+<div class="del-modal-overlay" id="bulkDelModalOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" id="bulkDelModalClose">×</button>
+        <div class="del-modal-title">Xóa chi tiết đã chọn</div>
+        <div class="del-modal-body">
+            Bạn có chắc chắn muốn xóa <strong id="bulkDelCount">0</strong> chi tiết đã chọn? Hành động này không thể hoàn tác.
+        </div>
+        <div class="del-modal-footer">
+            <button class="btn-modal-cancel" id="bulkDelModalCancel">Cancel</button>
+            <button class="btn-modal-confirm" id="bulkDelModalConfirm">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Export toast -->
+<div id="exportToast">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#16a34a" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+    <span id="exportToastMsg"></span>
+    <button onclick="document.getElementById('exportToast').style.display='none'" style="background:none;border:none;color:#9ca3af;cursor:pointer;margin-left:8px;font-size:1rem;line-height:1;">×</button>
+</div>
+
+<script>
+    (function () {
+        const allParents = Array.from(document.querySelectorAll('.row-parent'));
+        const searchInput = document.getElementById('searchInput');
+        const rowsPerPageSel = document.getElementById('rowsPerPage');
+        const pgInfo = document.getElementById('pgInfo');
+        const pgControls = document.getElementById('pgControls');
+        const btnReset = document.getElementById('btnReset');
+        const btnExpandAll = document.getElementById('btnExpandAll');
+
+        let currentPage = 1;
+        let activeTabFilter = 'all';
+        let allExpanded = false;
+
+        // ── Track current bulk xuat id ──
+        let currentBulkXuatId = null;
+
+        // ─────────────────────────────────────────
+        // ACCORDION
+        // ─────────────────────────────────────────
+        window.toggleRow = function (id) {
+            const parent = document.querySelector(`.row-parent[data-id="${id}"]`);
+            const expand = document.getElementById('expand-' + id);
+            if (!parent || !expand) return;
+            const isOpen = expand.classList.contains('open');
+            expand.classList.toggle('open', !isOpen);
+            parent.classList.toggle('is-open', !isOpen);
+        };
+
+        btnExpandAll.addEventListener('click', () => {
+            allExpanded = !allExpanded;
+            getFiltered().forEach(row => {
+                const id = row.dataset.id;
+                const expand = document.getElementById('expand-' + id);
+                if (expand) {
+                    expand.classList.toggle('open', allExpanded);
+                    row.classList.toggle('is-open', allExpanded);
+                }
+            });
+            btnExpandAll.innerHTML = allExpanded
+                ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25"/></svg> Đóng tất cả`
+                : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg> Mở tất cả`;
+        });
+
+        // ─────────────────────────────────────────
+        // FILTER TABS
+        // ─────────────────────────────────────────
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                activeTabFilter = tab.dataset.filter;
+                currentPage = 1;
+                render();
+            });
+        });
+
+        // ─────────────────────────────────────────
+        // SEARCH & RESET
+        // ─────────────────────────────────────────
+        searchInput.addEventListener('input', () => {
+            btnReset.classList.toggle('show', searchInput.value.trim().length > 0);
+            currentPage = 1;
+            render();
+        });
+
+        rowsPerPageSel.addEventListener('change', () => { currentPage = 1; render(); });
+
+        btnReset.addEventListener('click', () => {
+            searchInput.value = '';
+            btnReset.classList.remove('show');
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+            activeTabFilter = 'all';
+            currentPage = 1;
+            render();
+        });
+
+        // ─────────────────────────────────────────
+        // OUTER COLUMNS TOGGLE
+        // ─────────────────────────────────────────
+        const columnsBtn = document.getElementById('columnsBtn');
+        const colDropdown = document.getElementById('colDropdown');
+
+        columnsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            colDropdown.classList.toggle('open');
+        });
+
+        document.querySelectorAll('#colDropdown .col-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const col = item.dataset.col;
+                const isVisible = item.classList.contains('col-visible');
+                if (isVisible) {
+                    item.classList.remove('col-visible');
+                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                } else {
+                    item.classList.add('col-visible');
+                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                }
+            });
+        });
+
+        document.addEventListener('click', () => {
+            colDropdown.classList.remove('open');
+            document.querySelectorAll('.inner-col-dropdown.open').forEach(d => d.classList.remove('open'));
+        });
+
+        // ─────────────────────────────────────────
+        // INNER COLUMNS TOGGLE
+        // ─────────────────────────────────────────
+        window.toggleInnerColDropdown = function (xuatId, e) {
+            e.stopPropagation();
+            const dd = document.getElementById('inner-col-dropdown-' + xuatId);
+            if (!dd) return;
+            const wasOpen = dd.classList.contains('open');
+            document.querySelectorAll('.inner-col-dropdown.open').forEach(d => d.classList.remove('open'));
+            colDropdown.classList.remove('open');
+            if (!wasOpen) dd.classList.add('open');
+        };
+
+        document.querySelectorAll('.inner-col-dropdown .col-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const col = item.dataset.innerCol;
+                const xuatId = item.dataset.xuatId;
+                const isVisible = item.classList.contains('col-visible');
+                const scope = document.getElementById('inner-table-' + xuatId);
+                if (!scope) return;
+                if (isVisible) {
+                    item.classList.remove('col-visible');
+                    scope.querySelectorAll(`[data-inner-th="${col}"][data-xuat-id="${xuatId}"]`).forEach(el => el.classList.add('col-hidden'));
+                    scope.querySelectorAll(`[data-inner-td="${col}"][data-xuat-id="${xuatId}"]`).forEach(el => el.classList.add('col-hidden'));
+                } else {
+                    item.classList.add('col-visible');
+                    scope.querySelectorAll(`[data-inner-th="${col}"][data-xuat-id="${xuatId}"]`).forEach(el => el.classList.remove('col-hidden'));
+                    scope.querySelectorAll(`[data-inner-td="${col}"][data-xuat-id="${xuatId}"]`).forEach(el => el.classList.remove('col-hidden'));
+                }
+            });
+        });
+
+        // ─────────────────────────────────────────
+        // INNER BULK SELECTION
+        // ─────────────────────────────────────────
+        window.toggleInnerAll = function (xuatId, checkbox) {
+            document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]`).forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+            updateInnerBulk(xuatId);
+        };
+
+        window.updateInnerBulk = function (xuatId) {
+            const checked = Array.from(document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]:checked`));
+            const total = document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]`).length;
+            const bulkBar = document.getElementById('inner-bulk-bar-' + xuatId);
+            const countEl = document.getElementById('inner-bulk-count-' + xuatId);
+            const delCountEl = document.getElementById('inner-bulk-del-count-' + xuatId);
+            const checkAll = document.querySelector(`.inner-check-all[data-xuat-id="${xuatId}"]`);
+
+            // highlight rows
+            document.querySelectorAll(`tr[data-xuat-id="${xuatId}"]`).forEach(row => {
+                const cb = row.querySelector('.inner-row-check');
+                row.classList.toggle('row-ct-selected', cb && cb.checked);
+            });
+
+            if (checked.length > 0) {
+                bulkBar.classList.add('show');
+                countEl.textContent = checked.length;
+                delCountEl.textContent = checked.length;
+                if (checkAll) {
+                    checkAll.indeterminate = checked.length > 0 && checked.length < total;
+                    checkAll.checked = checked.length === total;
+                }
+            } else {
+                bulkBar.classList.remove('show');
+                if (checkAll) { checkAll.indeterminate = false; checkAll.checked = false; }
+            }
+        };
+
+        window.clearInnerBulk = function (xuatId) {
+            document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]`).forEach(cb => cb.checked = false);
+            updateInnerBulk(xuatId);
+        };
+
+        // ─────────────────────────────────────────
+        // MODAL XÓA ĐƠN
+        // ─────────────────────────────────────────
+        const delModalOverlay = document.getElementById('delModalOverlay');
+
+        window.openDelModal = function (ctId, e) {
+            if (e) e.stopPropagation();
+            const form = document.getElementById('delConfirmForm');
+            form.action = '/ChitietXuats/Delete/' + ctId;
+            delModalOverlay.classList.add('open');
+            document.body.classList.add('modal-open');
+        };
+
+        function closeDelModal() {
+            delModalOverlay.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+
+        document.getElementById('delModalClose').addEventListener('click', closeDelModal);
+        document.getElementById('delModalCancel').addEventListener('click', closeDelModal);
+        delModalOverlay.addEventListener('click', (e) => { if (e.target === delModalOverlay) closeDelModal(); });
+
+        // ─────────────────────────────────────────
+        // MODAL XÓA NHIỀU
+        // ─────────────────────────────────────────
+        const bulkDelModalOverlay = document.getElementById('bulkDelModalOverlay');
+        const bulkDelCount = document.getElementById('bulkDelCount');
+        const bulkDelModalConfirm = document.getElementById('bulkDelModalConfirm');
+
+        window.openBulkDelModal = function (xuatId) {
+            currentBulkXuatId = xuatId;
+            const checked = document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]:checked`).length;
+            bulkDelCount.textContent = checked;
+            bulkDelModalOverlay.classList.add('open');
+            document.body.classList.add('modal-open');
+        };
+
+        function closeBulkDelModal() {
+            bulkDelModalOverlay.classList.remove('open');
+            document.body.classList.remove('modal-open');
+            currentBulkXuatId = null;
+        }
+
+        document.getElementById('bulkDelModalClose').addEventListener('click', closeBulkDelModal);
+        document.getElementById('bulkDelModalCancel').addEventListener('click', closeBulkDelModal);
+        bulkDelModalOverlay.addEventListener('click', (e) => { if (e.target === bulkDelModalOverlay) closeBulkDelModal(); });
+
+        bulkDelModalConfirm.addEventListener('click', async () => {
+            if (!currentBulkXuatId) return;
+            const xuatId = currentBulkXuatId;
+            const checkedCbs = Array.from(document.querySelectorAll(`.inner-row-check[data-xuat-id="${xuatId}"]:checked`));
+            const ids = checkedCbs.map(cb => parseInt(cb.closest('tr').dataset.ctId)).filter(id => !isNaN(id));
+            if (ids.length === 0) { closeBulkDelModal(); return; }
+
+            bulkDelModalConfirm.disabled = true;
+            bulkDelModalConfirm.textContent = 'Đang xóa...';
+
+            try {
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                const res = await fetch('/ChitietXuats/BulkDelete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify({ ids })
+                });
+
+                if (res.ok) {
+                    checkedCbs.forEach(cb => {
+                        const row = cb.closest('tr');
+                        if (row) row.remove();
+                    });
+                    // Update count badge
+                    const remaining = document.querySelectorAll(`tr[data-xuat-id="${xuatId}"]`).length;
+                    const badge = document.querySelector(`.row-parent[data-id="${xuatId}"] .ct-count`);
+                    if (badge) {
+                        badge.textContent = remaining;
+                        badge.classList.toggle('has-items', remaining > 0);
+                    }
+                    closeBulkDelModal();
+                    updateInnerBulk(xuatId);
+                    showToast(`Đã xóa ${ids.length} chi tiết`);
+                } else {
+                    alert('Xóa thất bại. Vui lòng thử lại.');
+                    closeBulkDelModal();
+                }
+            } catch {
+                alert('Lỗi kết nối server.');
+                closeBulkDelModal();
+            } finally {
+                bulkDelModalConfirm.disabled = false;
+                bulkDelModalConfirm.textContent = 'Delete';
+            }
+        });
+
+        // ─────────────────────────────────────────
+        // EXPORT OUTER (tất cả phiếu đang hiển thị)
+        // ─────────────────────────────────────────
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const visible = getFiltered();
+            const headers = ['Phiếu xuất', 'Biển số xe', 'Cửa xuất', 'TG phân công', 'Trạng thái', 'Số chi tiết'];
+            const rows = visible.map(row => {
+                const id = row.dataset.id;
+                const bienso = row.querySelector('[data-col-td="outer-bienso"]')?.textContent.trim() ?? '';
+                const cua = row.querySelector('[data-col-td="outer-cuaxuat"]')?.textContent.trim() ?? '';
+                const tgpc = row.querySelector('[data-col-td="outer-tgpc"]')?.textContent.trim() ?? '';
+                const tt = row.querySelector('[data-col-td="outer-trangthai"]')?.textContent.trim() ?? '';
+                const ct = row.querySelector('[data-col-td="outer-chitiet"]')?.textContent.trim() ?? '';
+                return [id, bienso, cua, tgpc, tt, ct].map(v => `"${v.replace(/"/g, '""')}"`).join(',');
+            });
+            downloadCsv([headers.map(h => `"${h}"`).join(','), ...rows].join('\n'), 'chitiet-xuat.csv');
+            showToast(`Exported ${visible.length} phiếu to CSV`);
+        });
+
+        // ─────────────────────────────────────────
+        // EXPORT INNER (từng phiếu)
+        // ─────────────────────────────────────────
+        window.exportInner = function (xuatId, label) {
+            const table = document.getElementById('inner-table-' + xuatId);
+            if (!table) { showToast('Phiếu này chưa có chi tiết.'); return; }
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            if (rows.length === 0) { showToast('Phiếu này chưa có chi tiết.'); return; }
+
+            const headers = ['STT', 'Đơn vị', 'Chưa bàn giao', 'Đã bàn giao', 'Tiến độ (%)'];
+            const data = rows.map((row, idx) => {
+                const donvi = row.dataset.donvi ?? '';
+                const chua = row.dataset.chuabg ?? '';
+                const da = row.dataset.dabg ?? '';
+                const pct = row.dataset.pct ?? '';
+                return [idx + 1, donvi, chua, da, pct].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+            });
+            downloadCsv([headers.map(h => `"${h}"`).join(','), ...data].join('\n'), `chitiet-phieu-${label}.csv`);
+            showToast(`Exported ${rows.length} dòng cho phiếu #${xuatId}`);
+        };
+
+        function downloadCsv(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('exportToast');
+            document.getElementById('exportToastMsg').textContent = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        }
+
+        // ─────────────────────────────────────────
+        // FILTER & PAGINATION
+        // ─────────────────────────────────────────
+        function getFiltered() {
+            const q = searchInput.value.toLowerCase();
+            return allParents.filter(row => {
+                const tabMatch = activeTabFilter === 'all' || row.dataset.filter === activeTabFilter;
+                const searchMatch = !q || row.dataset.search.toLowerCase().includes(q);
+                return tabMatch && searchMatch;
+            });
+        }
+
+        function render() {
+            const visible = getFiltered();
+            const rpp = parseInt(rowsPerPageSel.value);
+            const totalPages = Math.max(1, Math.ceil(visible.length / rpp));
+            currentPage = Math.min(currentPage, totalPages);
+            const start = (currentPage - 1) * rpp;
+            const end = start + rpp;
+            const pageIds = new Set(visible.slice(start, end).map(r => r.dataset.id));
+
+            allParents.forEach(row => {
+                const id = row.dataset.id;
+                const expand = document.getElementById('expand-' + id);
+                const show = pageIds.has(id);
+                row.style.display = show ? '' : 'none';
+                if (expand) expand.style.display = show ? '' : 'none';
+            });
+
+            pgInfo.textContent = visible.length === 0
+                ? 'Showing 0 results'
+                : `Showing ${start + 1}–${Math.min(end, visible.length)} of ${visible.length} phiếu`;
+
+            pgControls.innerHTML = '';
+            const prev = document.createElement('button');
+            prev.className = 'pg-btn'; prev.textContent = 'Previous'; prev.disabled = currentPage === 1;
+            prev.onclick = () => { currentPage--; render(); };
+            pgControls.appendChild(prev);
+
+            pageRange(currentPage, totalPages).forEach(p => {
+                if (p === '...') {
+                    const dot = document.createElement('span');
+                    dot.textContent = '…'; dot.style.cssText = 'padding:0 4px;color:#9ca3af;';
+                    pgControls.appendChild(dot);
+                } else {
+                    const btn = document.createElement('button');
+                    btn.className = 'pg-num' + (p === currentPage ? ' active' : '');
+                    btn.textContent = p; btn.onclick = () => { currentPage = p; render(); };
+                    pgControls.appendChild(btn);
+                }
+            });
+
+            const next = document.createElement('button');
+            next.className = 'pg-btn'; next.textContent = 'Next'; next.disabled = currentPage === totalPages;
+            next.onclick = () => { currentPage++; render(); };
+            pgControls.appendChild(next);
+        }
+
+        function pageRange(cur, total) {
+            if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+            if (cur <= 4) return [1, 2, 3, 4, 5, '...', total];
+            if (cur >= total - 3) return [1, '...', total-4, total-3, total-2, total-1, total];
+            return [1, '...', cur-1, cur, cur+1, '...', total];
+        }
+
+        render();
+    })();
+</script>

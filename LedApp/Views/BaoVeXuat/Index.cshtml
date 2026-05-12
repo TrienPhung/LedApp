@@ -850,7 +850,7 @@
         .xe-item {
             background: var(--surface2);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--border2);
+          
             border-radius: 7px;
             padding: 11px 13px;
             cursor: pointer;
@@ -1712,10 +1712,6 @@
                     <span class="conn-dot" id="conn-dot"></span>
                     <span id="conn-text">Kết nối...</span>
                 </div>
-                <div class="conn-badge" id="py-badge">
-                    <span class="conn-dot" id="py-dot"></span>
-                    <span id="py-text">Python...</span>
-                </div>
                 <div class="tb-divider"></div>
                 <button class="theme-toggle" onclick="toggleTheme()" title="Sáng/Tối">
                     <i class="bi bi-moon-fill" id="theme-ico"></i>
@@ -1731,8 +1727,9 @@
                             </div>
                         </div>
                         <div class="ud-divider"></div>
-                        <a href="#" class="ud-item"><i class="bi bi-gear"></i> Cài đặt</a>
-                        <a href="#" class="ud-item"><i class="bi bi-bell"></i> Thông báo</a>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="ud-item">
+                            <i class="bi bi-gear"></i> Cài đặt tài khoản
+                        </a>
                         <div class="ud-divider"></div>
                         <form asp-area="Identity" asp-page="/Account/Logout"
                               asp-route-returnUrl="@Url.Action("Index","BaoVeXuat")" method="post">
@@ -1756,7 +1753,15 @@
                     <div class="cam-corner bl"></div><div class="cam-corner br"></div>
                     <div class="scan-line"></div>
                     <div class="cam-label">📷 CAM CỔNG XUẤT</div>
-                    <div class="cam-status"><span class="conn-dot on"></span><span>Python AI</span></div>
+                    <div class="cam-status">
+                        <span class="conn-dot" id="cam-dot"></span>
+                        <span id="cam-text">Đang kiểm tra...</span>
+                        <button id="btn-camera" onclick="toggleCamera()"
+                                style="margin-left:8px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);
+                                border-radius:4px;color:var(--green);font-size:9px;padding:2px 8px;cursor:pointer;">
+                            BẬT
+                        </button>
+                    </div>
                     <div class="cam-placeholder">
                         <div class="cam-placeholder-icon">🎥</div>
                         <div class="cam-placeholder-text">Camera đang xử lý</div>
@@ -1830,11 +1835,11 @@
                 </div>
                 <div class="tabs-row">
                     <button class="tab-btn active-ra" id="tab-ra" onclick="switchTab('ra')">
-                        ✔ Xe ra cổng
+                        Xe ra cổng
                         <span id="tab-ra-count" style="margin-left:5px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--green);">0</span>
                     </button>
                     <button class="tab-btn" id="tab-ve" onclick="switchTab('ve')">
-                        🔄 Xe về bãi
+                        Xe về bãi
                         <span id="tab-ve-count" style="margin-left:5px;background:rgba(255,152,0,.15);border:1px solid rgba(255,152,0,.3);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--orange);">0</span>
                     </button>
                 </div>
@@ -2104,7 +2109,11 @@
             if (!data) return;
             playBeep(data.timThay);
             handleNhanDien(data);
-            if (data.timThay && data.bienSo) highlightXe(data.bienSo);
+            if (data.timThay && data.bienSo) {
+                if (data.loaiNhanDien === 've' && activeTab !== 've') switchTab('ve');
+                else if (data.loaiNhanDien === 'ra' && activeTab !== 'ra') switchTab('ra');
+                highlightXe(data.bienSo);
+            }
         });
         conn.on('UpdateBangTongHopXuat', function() { loadRaData(); });
         conn.on('XeVeBai', function() { loadVeData(); });
@@ -2112,7 +2121,7 @@
         conn.start().then(function() {
             document.getElementById('conn-dot').classList.add('on');
             document.getElementById('conn-text').textContent = 'Realtime';
-            checkPythonStatus();
+            checkCameraStatus();
             loadRaData(); loadVeData();
         }).catch(function() {
             document.getElementById('conn-dot').classList.add('err');
@@ -2421,7 +2430,6 @@
                 } else { alert('❌ '+(data.message||'Lỗi!')); }
             } catch(e) { alert('❌ Lỗi kết nối'); }
             btn.disabled = false;
-            // [FIX 3] Đúng icon 🏁
            btn.innerHTML = '<i class="bi bi-sign-turn-right" style="font-size:16px;"></i> Xác nhận xe đã vào bãi';
         }
 
@@ -2436,6 +2444,10 @@
                 ? new Date(data.thoiGian).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})
                 : '--:--:--';
             var ttText = data.trangThaiText || '--';
+            if (!timThay) {
+                resetDetail();
+            }
+
             var rBienso = document.getElementById('r-bienso');
             rBienso.textContent = bienSo;
             rBienso.className   = 'result-bienso ' + (timThay ? 'found' : 'notfound');
@@ -2487,18 +2499,50 @@
                 '<div class="log-item"><div class="log-dot"></div><span>'+msg+'</span></div>';
         }
 
-        // ── PYTHON STATUS ──
-        async function checkPythonStatus() {
+        // ── CAMERA CONTROL ────────────────────────────────────────────
+        var cameraRunning = false;
+
+        async function checkCameraStatus() {
             try {
-                var res = await fetch('/BaoVeXuat/Status', { signal: AbortSignal.timeout(2000) });
-                if (res.ok) {
-                    document.getElementById('py-dot').classList.add('on');
-                    document.getElementById('py-text').textContent = 'Camera Online';
-                    document.getElementById('py-badge').style.borderColor = 'var(--green)';
-                }
-            } catch(e) { document.getElementById('py-text').textContent = 'Chờ camera...'; }
+                var res = await fetch('/BaoVeXuat/CameraStatus');
+                var data = await res.json();
+                cameraRunning = data.running;
+                updateCameraUI();
+            } catch(e) {}
         }
-        setInterval(checkPythonStatus, 10000);
+
+        function updateCameraUI() {
+            var dot  = document.getElementById('cam-dot');
+            var text = document.getElementById('cam-text');
+            var btn  = document.getElementById('btn-camera');
+            if (cameraRunning) {
+                dot.className = 'conn-dot on';
+                text.textContent = 'Camera đang chạy';
+                btn.textContent = 'TẮT';
+                btn.style.color = 'var(--red)';
+                btn.style.borderColor = 'rgba(255,61,61,.3)';
+                btn.style.background  = 'rgba(255,61,61,.1)';
+            } else {
+                dot.className = 'conn-dot';
+                text.textContent = 'Camera đã tắt';
+                btn.textContent = 'BẬT';
+                btn.style.color = 'var(--green)';
+                btn.style.borderColor = 'rgba(0,230,118,.3)';
+                btn.style.background  = 'rgba(0,230,118,.1)';
+            }
+        }
+
+        async function toggleCamera() {
+            var url = cameraRunning ? '/BaoVeXuat/TatCamera' : '/BaoVeXuat/BatCamera';
+            try {
+                var res  = await fetch(url, {method:'POST'});
+                var data = await res.json();
+                addFooterLog(data.message);
+                await checkCameraStatus();
+            } catch(e) { addFooterLog('Lỗi kết nối camera!'); }
+        }
+
+        setInterval(checkCameraStatus, 5000);
     </script>
 </body>
 </html>

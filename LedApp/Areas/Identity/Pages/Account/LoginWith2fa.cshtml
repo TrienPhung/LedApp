@@ -4,37 +4,166 @@
     ViewData["Title"] = "Two-factor authentication";
 }
 
-<h1>@ViewData["Title"]</h1>
-<hr />
-<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
-            <input asp-for="RememberMe" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
-                <label asp-for="Input.TwoFactorCode" class="form-label"></label>
-                <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
-            </div>
-            <div>
-                <div class="checkbox">
-                    <label asp-for="Input.RememberMachine" class="form-label">
-                        <input asp-for="Input.RememberMachine" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMachine)
-                    </label>
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
+
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .auth-card-header {
+        padding: 24px 28px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .auth-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .auth-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .auth-card-body {
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+        color: #374151;
+    }
+
+    .btn-save {
+        width: 100%;
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+    .auth-footer {
+        padding: 16px 28px;
+        border-top: 1px solid #f3f4f6;
+        text-align: center;
+        font-size: 0.82rem;
+        color: #6b7280;
+    }
+
+        .auth-footer a {
+            color: #16a34a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <p class="auth-card-title">Two-factor authentication</p>
+            <p class="auth-card-sub">Enter your authenticator code to continue</p>
+        </div>
+        <div class="auth-card-body">
+            <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                <input asp-for="RememberMe" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:8px;"></div>
+
+                <div class="field-group" style="margin-bottom:4px;">
+                    <label class="field-label" asp-for="Input.TwoFactorCode">Authenticator code</label>
+                    <input asp-for="Input.TwoFactorCode" class="field-input"
+                           autocomplete="off" placeholder="Nhập mã xác thực..." />
+                    <span asp-validation-for="Input.TwoFactorCode" class="field-error"></span>
                 </div>
-            </div>
-            <div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-            </div>
-        </form>
+
+                <div class="checkbox-row" style="margin-bottom:16px;">
+                    <input asp-for="Input.RememberMachine" type="checkbox" />
+                    <label asp-for="Input.RememberMachine">@Html.DisplayNameFor(m => m.Input.RememberMachine)</label>
+                </div>
+
+                <button type="submit" class="btn-save">Log in</button>
+            </form>
+        </div>
+        <div class="auth-footer">
+            Không có thiết bị authenticator?
+            <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">
+                Dùng recovery code
+            </a>
+        </div>
     </div>
 </div>
-<p>
-    Don't have access to your authenticator device? You can
-    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">log in with a recovery code</a>.
-</p>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

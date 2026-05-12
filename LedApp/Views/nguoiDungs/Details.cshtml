@@ -2,60 +2,881 @@
 @{
     ViewData["Title"] = "Chi tiết nhân viên";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+    string avatarSrc = string.IsNullOrEmpty(Model.Image) ? "/uploads/avatars/default.png" : Model.Image;
+    string gioiTinhLabel = Model.GioiTinh switch
+    {
+        LedApp.Models.GioiTinhEnum.Nam => "Nam",
+        LedApp.Models.GioiTinhEnum.Nu => "Nữ",
+        LedApp.Models.GioiTinhEnum.Khac => "Khác",
+        _ => "—"
+    };
+    string gioiTinhBadge = Model.GioiTinh switch
+    {
+        LedApp.Models.GioiTinhEnum.Nam => "bp-male",
+        LedApp.Models.GioiTinhEnum.Nu => "bp-female",
+        _ => "bp-other"
+    };
 }
-<h1>Chi tiết nhân viên</h1>
-<hr />
-<div class="row">
-    <div class="col-md-2 text-center mb-3">
-        <img src="@(string.IsNullOrEmpty(Model.Image) ? "/uploads/avatars/default.png" : Model.Image)"
-             style="width:100px;height:100px;object-fit:cover;border:1px solid #ddd;border-radius:6px;" />
+
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .dx-page {
+        padding: 24px 24px 80px;
+    }
+
+    .dx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .dx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .dx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .dx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .dx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .dx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .dx-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+    }
+
+        .dx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .id-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .dx-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .btn-back, .btn-edit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all .15s;
+        box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+        .btn-back:hover, .btn-edit:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-back svg, .btn-edit svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* Stats */
+    .dx-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 640px) {
+        .dx-stats {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .stat-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        color: #111827;
+    }
+
+    .stat-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+    }
+
+    /* Grid */
+    .dx-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @@media (max-width: 768px) {
+        .dx-grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .dx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .dx-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .dx-card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f0fdf4;
+        color: #16a34a;
+        flex-shrink: 0;
+    }
+
+        .dx-card-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+    .dx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .dx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .dx-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+        .dx-row:last-child {
+            border-bottom: none;
+        }
+
+    .dx-row-label {
+        font-size: 0.82rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .dx-row-value {
+        font-size: 0.875rem;
+        color: #111827;
+        font-weight: 600;
+        text-align: right;
+        max-width: 65%;
+    }
+
+    /* Avatar panel */
+    .avatar-panel {
+        padding: 32px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .avatar-big {
+        width: 110px;
+        height: 130px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 3px solid #e5e7eb;
+        flex-shrink: 0;
+    }
+
+        .avatar-big img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .avatar-name {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #111827;
+        text-align: center;
+    }
+
+    .avatar-sub {
+        font-size: 0.82rem;
+        color: #9ca3af;
+        text-align: center;
+    }
+
+    /* Account card */
+    .account-display {
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .account-icon-wrap {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+
+        .account-icon-wrap.has-acc {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .account-icon-wrap.no-acc {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        .account-icon-wrap svg {
+            width: 26px;
+            height: 26px;
+        }
+
+    .account-text-big {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #111827;
+    }
+
+    .account-text-sub {
+        font-size: 0.82rem;
+        color: #9ca3af;
+        text-align: center;
+    }
+
+    .create-acc-action {
+        padding: 16px 20px;
+        border-top: 1px solid #f3f4f6;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-create-acc {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 22px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+        text-decoration: none;
+        background: #fffbeb;
+        color: #d97706;
+        border: 1px solid #fde68a;
+    }
+
+        .btn-create-acc:hover {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #b45309;
+            text-decoration: none;
+        }
+
+        .btn-create-acc svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* Badges */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 600;
+    }
+
+        .badge-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+    .bp-male {
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+        .bp-male::before {
+            background: #2563eb;
+        }
+
+    .bp-female {
+        background: #fdf2f8;
+        color: #9333ea;
+    }
+
+        .bp-female::before {
+            background: #9333ea;
+        }
+
+    .bp-other {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .bp-other::before {
+            background: #94a3b8;
+        }
+
+    .bp-has-account {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-has-account::before {
+            background: #16a34a;
+        }
+
+    .bp-no-account {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+        .bp-no-account::before {
+            background: #d97706;
+        }
+
+    /* Delete modal */
+    .del-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px 24px 20px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 1.1rem;
+        line-height: 1;
+        padding: 4px;
+        border-radius: 6px;
+        transition: all .15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+    .del-modal-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 8px;
+        padding-right: 24px;
+    }
+
+    .del-modal-body {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 20px;
+        line-height: 1.55;
+    }
+
+    .del-modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-mc {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-mc:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    .btn-md {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: none;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-md:hover {
+            background: #dc2626;
+        }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    /* Dark mode */
+    body.dark-mode .dx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-breadcrumb, body.dark-mode .dx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .id-badge {
+        background: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .stat-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .stat-label {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .stat-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .stat-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-card-icon {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .dx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .dx-card-sub {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .dx-row {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .dx-row-label {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .dx-row-value {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .avatar-big {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .avatar-name {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .account-text-big {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .account-icon-wrap.has-acc {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .account-icon-wrap.no-acc {
+        background: #2e1f00 !important;
+        color: #fbbf24 !important;
+    }
+
+    body.dark-mode .create-acc-action {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .btn-edit, body.dark-mode .btn-back {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal {
+        background: #1a1d27 !important;
+    }
+
+    body.dark-mode .del-modal-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .del-modal-body {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-mc {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+</style>
+
+<div class="dx-page">
+    <div class="dx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Nhân viên</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">@Model.FullName</span>
     </div>
-    <div class="col-md-10">
-        <dl class="row">
-            <dt class="col-sm-3">Họ tên</dt>
-            <dd class="col-sm-9">@Model.FullName</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.NgaySinh)</dt>
-            <dd class="col-sm-9">@(Model.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</dd>
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.SoDienThoai)</dt>
-            <dd class="col-sm-9">@(Model.SoDienThoai ?? "—")</dd>
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.GioiTinh)</dt>
-            <dd class="col-sm-9">
-                @switch (Model.GioiTinh)
-                {
-                    case LedApp.Models.GioiTinhEnum.Nam:
-                        <span class="badge bg-primary">Nam</span>
-                        break;
-                    case LedApp.Models.GioiTinhEnum.Nu:
-                        <span class="badge bg-danger">Nữ</span>
-                        break;
-                    case LedApp.Models.GioiTinhEnum.Khac:
-                        <span class="badge bg-secondary">Khác</span>
-                        break;
-                    default:
-                        <span>—</span>
-                        break;
-                }
-            </dd>
+    <div class="dx-header">
+        <div>
+            <h1>
+                @Model.FullName
+                <span class="id-badge">#@Model.Id.ToString("D3")</span>
+            </h1>
+            <p>Chi tiết hồ sơ nhân viên</p>
+        </div>
+        <div class="dx-actions">
+            <a asp-action="Index" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Quay lại
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-edit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                Sửa
+            </a>
+            <button type="button" class="btn-edit" onclick="openDel()" style="border-color:#fecaca;color:#ef4444;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Xóa
+            </button>
+        </div>
+    </div>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.DiaChi)</dt>
-            <dd class="col-sm-9">@(Model.DiaChi ?? "—")</dd>
-
-            <dt class="col-sm-3">Tài khoản</dt>
-            <dd class="col-sm-9">
+    <!-- Stats row -->
+    <div class="dx-stats">
+        <div class="stat-card">
+            <span class="stat-label">Mã nhân viên</span>
+            <span class="stat-value">@Model.Id.ToString("D3")</span>
+            <span class="stat-sub">ID định danh</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Giới tính</span>
+            <span class="stat-value" style="font-size:1rem;padding-top:6px;">
+                <span class="badge-pill @gioiTinhBadge">@gioiTinhLabel</span>
+            </span>
+            <span class="stat-sub">Thông tin cá nhân</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Tài khoản</span>
+            <span class="stat-value" style="font-size:1rem;padding-top:6px;">
                 @if (Model.User != null)
                 {
-                    <span class="badge bg-success">@Model.User.UserName</span>
-                    <small class="text-muted ms-2">@Model.User.Email</small>
+                    <span class="badge-pill bp-has-account">@Model.User.UserName</span>
                 }
                 else
                 {
-                    <span class="badge bg-warning text-dark">Chưa có tài khoản</span>
+                    <span class="badge-pill bp-no-account">Chưa có</span>
                 }
-            </dd>
-        </dl>
+            </span>
+            <span class="stat-sub">@(Model.User != null ? Model.User.Email : "Chưa liên kết")</span>
+        </div>
+    </div>
+
+    <div class="dx-grid-2">
+        <!-- Card trái: thông tin -->
+        <div class="dx-card">
+            <div class="dx-card-header">
+                <div class="dx-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                </div>
+                <div>
+                    <p class="dx-card-title">Thông tin cá nhân</p>
+                    <p class="dx-card-sub">Dữ liệu hồ sơ nhân viên</p>
+                </div>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Mã nhân viên</span>
+                <span class="dx-row-value">#@Model.Id.ToString("D3")</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Họ</span>
+                <span class="dx-row-value">@(Model.LastName ?? "—")</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Tên</span>
+                <span class="dx-row-value">@(Model.FirstName ?? "—")</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Ngày sinh</span>
+                <span class="dx-row-value">@(Model.NgaySinh?.ToString("dd/MM/yyyy") ?? "—")</span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Giới tính</span>
+                <span class="dx-row-value">
+                    <span class="badge-pill @gioiTinhBadge">@gioiTinhLabel</span>
+                </span>
+            </div>
+            <div class="dx-row">
+                <span class="dx-row-label">Số điện thoại</span>
+                <span class="dx-row-value">@(Model.SoDienThoai ?? "—")</span>
+            </div>
+            <div class="dx-row" style="align-items:flex-start;">
+                <span class="dx-row-label">Địa chỉ</span>
+                <span class="dx-row-value" style="font-weight:400;white-space:normal;">
+                    @if (!string.IsNullOrWhiteSpace(Model.DiaChi))
+                    {
+                        @Model.DiaChi
+                    }
+                    else
+                    {
+                        <span style="color:#9ca3af;font-style:italic;">Chưa có địa chỉ</span>
+                    }
+                </span>
+            </div>
+        </div>
+
+        <!-- Cột phải: Avatar + Tài khoản -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Avatar card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Ảnh đại diện</p>
+                        <p class="dx-card-sub">Hình ảnh hồ sơ nhân viên</p>
+                    </div>
+                </div>
+                <div class="avatar-panel">
+                    <div class="avatar-big">
+                        <img src="@avatarSrc" alt="@Model.FullName" />
+                    </div>
+                    <span class="avatar-name">@Model.FullName</span>
+                    <span class="avatar-sub">Nhân viên #@Model.Id.ToString("D3")</span>
+                </div>
+            </div>
+
+            <!-- Tài khoản card -->
+            <div class="dx-card">
+                <div class="dx-card-header">
+                    <div class="dx-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 0 1 21.75 8.25Z" /></svg>
+                    </div>
+                    <div>
+                        <p class="dx-card-title">Tài khoản hệ thống</p>
+                        <p class="dx-card-sub">Thông tin đăng nhập</p>
+                    </div>
+                </div>
+                <div class="account-display">
+                    @if (Model.User != null)
+                    {
+                        <div class="account-icon-wrap has-acc">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        </div>
+                        <span class="account-text-big">@Model.User.UserName</span>
+                        <span class="account-text-sub">@Model.User.Email</span>
+                        <span class="badge-pill bp-has-account">Đã liên kết tài khoản</span>
+                    }
+                    else
+                    {
+                        <div class="account-icon-wrap no-acc">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+                        </div>
+                        <span class="account-text-big">Chưa có tài khoản</span>
+                        <span class="account-text-sub">Nhân viên này chưa được<br />liên kết với tài khoản nào.</span>
+                    }
+                </div>
+                @if (Model.User == null)
+                {
+                    <div class="create-acc-action">
+                        <a asp-controller="Accounts" asp-action="Create" asp-route-nguoiDungId="@Model.Id" class="btn-create-acc">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" /></svg>
+                            Tạo tài khoản cho nhân viên này
+                        </a>
+                    </div>
+                }
+            </div>
+
+        </div>
     </div>
 </div>
-<hr />
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Sửa</a>
-<a asp-action="Index" class="btn btn-secondary btn-sm ms-2">Trở về</a>
+
+<!-- Delete modal -->
+<div class="del-overlay" id="delOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" onclick="closeDel()">×</button>
+        <div class="del-modal-title">Xóa nhân viên</div>
+        <div class="del-modal-body">
+            Bạn có chắc chắn muốn xóa nhân viên <strong>@Model.FullName</strong>?
+            Hành động này không thể hoàn tác.
+        </div>
+        <div class="del-modal-footer">
+            <button class="btn-mc" onclick="closeDel()">Hủy</button>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-md">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDel()  { document.getElementById('delOverlay').classList.add('open');    document.body.classList.add('modal-open'); }
+    function closeDel() { document.getElementById('delOverlay').classList.remove('open'); document.body.classList.remove('modal-open'); }
+    document.getElementById('delOverlay').addEventListener('click', e => { if (e.target === document.getElementById('delOverlay')) closeDel(); });
+</script>

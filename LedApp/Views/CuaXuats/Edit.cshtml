@@ -4,37 +4,502 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h5 class="mb-4">Sửa cửa xuất</h5>
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+    .px-page {
+        padding: 24px 24px 80px;
+    }
+
+    /* ── Breadcrumb ── */
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .px-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    /* ── Header ── */
+    .px-header {
+        margin-bottom: 28px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    /* ── Form card ── */
+    .form-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px 28px 24px;
+        max-width: 580px;
+    }
+
+    .form-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .form-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0 0 24px;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid #f3f4f6;
+        margin: 20px 0;
+    }
+
+    /* ── Form fields ── */
+    .field-group {
+        margin-bottom: 20px;
+    }
+
+    .field-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .field-input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color .15s,box-shadow .15s;
+        box-sizing: border-box;
+    }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input.is-invalid {
+            border-color: #ef4444;
+        }
+
+    textarea.field-input {
+        resize: vertical;
+        min-height: 90px;
+    }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+        margin-top: 4px;
+    }
+
+    /* ── Toggle switch row ── */
+    .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #f9fafb;
+    }
+
+    .toggle-row-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .toggle-row-sub {
+        font-size: 0.78rem;
+        color: #6b7280;
+    }
+
+    /* custom toggle */
+    .switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+    .switch-track {
+        width: 44px;
+        height: 24px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        transition: background .2s;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .switch-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,.2);
+        transition: transform .2s;
+    }
+
+    .switch input:checked ~ .switch-track {
+        background: #16a34a;
+    }
+
+        .switch input:checked ~ .switch-track .switch-thumb {
+            transform: translateX(20px);
+        }
+
+    .switch input:focus ~ .switch-track {
+        box-shadow: 0 0 0 3px rgba(22,163,74,.15);
+    }
+
+    /* status hint text bên cạnh toggle */
+    .toggle-status-text {
+        font-size: 0.78rem;
+        font-weight: 600;
+        margin-left: 10px;
+        white-space: nowrap;
+        transition: color .2s;
+    }
+
+        .toggle-status-text.is-active {
+            color: #16a34a;
+        }
+
+        .toggle-status-text.is-inactive {
+            color: #9ca3af;
+        }
+
+    /* ── Buttons ── */
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+        white-space: nowrap;
+    }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+        .btn-submit svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        background: #fff;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+        white-space: nowrap;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+    /* ── Validation summary ── */
+    .val-summary {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        font-size: 0.82rem;
+        color: #dc2626;
+        display: none;
+    }
+
+        .val-summary ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+    /* ── ID badge ── */
+    .id-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    /* ── Dark mode ── */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .form-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .form-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .form-card-sub {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .form-divider {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .toggle-row {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .toggle-row-label {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .toggle-row-sub {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .switch-track {
+        background: #3d4460 !important;
+    }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #d1d5db !important;
+    }
+
+        body.dark-mode .btn-cancel:hover {
+            background: #2e3248 !important;
+        }
+
+    body.dark-mode .id-badge {
+        background: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+</style>
+
+<div class="px-page">
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Cửa xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Sửa</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <h1>
+            Sửa cửa xuất
+            <span class="id-badge">#@Model.Id.ToString("D2")</span>
+        </h1>
+        <p>Cập nhật thông tin cửa xuất.</p>
+    </div>
+
+    <!-- Form card -->
+    <div class="form-card">
+        <p class="form-card-title">Thông tin cửa xuất</p>
+        <p class="form-card-sub">Chỉnh sửa các trường bên dưới và lưu để cập nhật.</p>
+
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="val-summary"></div>
             <input type="hidden" asp-for="Id" />
 
-            <div class="mb-3">
-                <label class="form-label small text-secondary">Tên cửa</label>
-                <input asp-for="Ten" class="form-control form-control-sm" />
-                <span asp-validation-for="Ten" class="text-danger small"></span>
+            <!-- Tên cửa -->
+            <div class="field-group">
+                <label class="field-label" asp-for="Ten">Tên cửa</label>
+                <input asp-for="Ten" class="field-input" />
+                <span asp-validation-for="Ten" class="field-error"></span>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label small text-secondary">Mô tả</label>
-                <textarea asp-for="Mota" class="form-control form-control-sm" rows="3"></textarea>
-                <span asp-validation-for="Mota" class="text-danger small"></span>
+            <!-- Mô tả -->
+            <div class="field-group">
+                <label class="field-label" asp-for="Mota">Mô tả</label>
+                <textarea asp-for="Mota" class="field-input"></textarea>
+                <span asp-validation-for="Mota" class="field-error"></span>
             </div>
 
-            <div class="mb-4 d-flex justify-content-between align-items-center">
-                <label class="form-label small text-secondary mb-0">Trạng thái mở</label>
-                <div class="form-check form-switch mb-0">
-                    <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" />
+            <hr class="form-divider" />
+
+            <!-- Trạng thái -->
+            <div class="field-group" style="margin-bottom:0;">
+                <div class="toggle-row">
+                    <div>
+                        <span class="toggle-row-label">Trạng thái hoạt động</span>
+                        <span class="toggle-row-sub">Bật để cửa xuất này có thể được sử dụng</span>
+                    </div>
+                    <div style="display:flex;align-items:center;">
+                        <span class="toggle-status-text @(Model.IsActive ? "is-active" : "is-inactive")" id="toggleStatusText">
+                            @(Model.IsActive ? "Đang mở" : "Đã đóng")
+                        </span>
+                        <label class="switch" style="margin-left:10px;">
+                            <input asp-for="IsActive" type="checkbox" id="toggleIsActive" />
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-sm btn-dark">Lưu sửa</button>
-                <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Hủy</a>
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
+                    Lưu thay đổi
+                </button>
+                <a asp-action="Index" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Hiện validation summary nếu có lỗi
+        const vs = document.querySelector('.val-summary');
+        if (vs && vs.innerText.trim().length > 0) vs.style.display = 'block';
+
+        // Toggle status text
+        const toggle = document.getElementById('toggleIsActive');
+        const statusText = document.getElementById('toggleStatusText');
+
+        function updateStatusText() {
+            if (toggle.checked) {
+                statusText.textContent = 'Đang mở';
+                statusText.className = 'toggle-status-text is-active';
+            } else {
+                statusText.textContent = 'Đã đóng';
+                statusText.className = 'toggle-status-text is-inactive';
+            }
+        }
+
+        toggle.addEventListener('change', updateStatusText);
+    </script>
+}

@@ -102,10 +102,7 @@ namespace LedApp.Controllers
                 existing.Image = await SaveAvatarAsync(avatarFile);
             }
 
-            // Ép EF biết entity này đã thay đổi
             _context.Entry(existing).State = EntityState.Modified;
-
-            // Bảo vệ UserId và Image khỏi bị overwrite
             _context.Entry(existing).Property(x => x.UserId).IsModified = false;
             if (avatarFile == null || avatarFile.Length == 0)
                 _context.Entry(existing).Property(x => x.Image).IsModified = false;
@@ -160,27 +157,58 @@ namespace LedApp.Controllers
             }
 
             DeleteOldAvatar(nguoi.Image);
-
             _context.nguoiDungs.Remove(nguoi);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        // ===== PRIVATE HELPERS =====
+        // ===== BULK DELETE =====
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteNguoiDungRequest request)
+        {
+            if (request?.Ids == null || !request.Ids.Any())
+                return BadRequest(new { message = "Không có ID nào được gửi lên." });
 
+            var errors = new List<string>();
+            var toDelete = new List<nguoiDungs>();
+
+            foreach (var id in request.Ids)
+            {
+                var nguoi = await _context.nguoiDungs.FindAsync(id);
+                if (nguoi == null) continue;
+
+                bool dangDungNhap = await _context.Nhaps.AnyAsync(n => n.NhanVienXacNhanId == id);
+                bool dangDungXuat = await _context.Xuats.AnyAsync(x => x.NhanVienXacNhanId == id);
+
+                if (dangDungNhap || dangDungXuat || !string.IsNullOrEmpty(nguoi.UserId))
+                {
+                    errors.Add(nguoi.FirstName + " " + nguoi.LastName);
+                    continue;
+                }
+                toDelete.Add(nguoi);
+            }
+
+            foreach (var n in toDelete) DeleteOldAvatar(n.Image);
+            _context.nguoiDungs.RemoveRange(toDelete);
+            await _context.SaveChangesAsync();
+
+            if (errors.Any())
+                return Ok(new { message = $"Đã xóa {toDelete.Count} nhân viên. Bỏ qua {errors.Count} do có ràng buộc." });
+
+            return Ok(new { message = $"Đã xóa {toDelete.Count} nhân viên." });
+        }
+
+        // ===== HELPERS =====
         private async Task<string?> SaveAvatarAsync(IFormFile? file)
         {
             if (file == null || file.Length == 0) return null;
-
             var folder = Path.Combine(_env.WebRootPath, "uploads", "avatars");
             Directory.CreateDirectory(folder);
-
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
             var fullPath = Path.Combine(folder, fileName);
-
             using var stream = new FileStream(fullPath, FileMode.Create);
             await file.CopyToAsync(stream);
-
             return $"/uploads/avatars/{fileName}";
         }
 
@@ -188,11 +216,13 @@ namespace LedApp.Controllers
         {
             if (string.IsNullOrEmpty(imagePath)) return;
             if (imagePath.Contains("default.png")) return;
-
             var oldPath = Path.Combine(_env.WebRootPath, imagePath.TrimStart('/'));
-
-            if (System.IO.File.Exists(oldPath))
-                System.IO.File.Delete(oldPath);
+            if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
         }
+    }
+
+    public class BulkDeleteNguoiDungRequest
+    {
+        public List<int> Ids { get; set; } = new();
     }
 }

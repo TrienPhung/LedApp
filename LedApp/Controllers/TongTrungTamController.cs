@@ -43,7 +43,7 @@ namespace LedApp.Controllers
             {
                 var px = xuats.FirstOrDefault(x =>
                     x.CuaXuatId == cua.Id &&
-                    x.TrangThai < (int)TrangThaiXuat.DaXuatPhat);
+                    x.TrangThai != (int)TrangThaiXuat.DaXuatPhat);
                 return new
                 {
                     cuaId = cua.Id,

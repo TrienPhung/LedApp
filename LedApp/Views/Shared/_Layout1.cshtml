@@ -1,9 +1,26 @@
-﻿    <!DOCTYPE html>
+﻿<!DOCTYPE html>
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
 
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@inject IAuthorizationService AuthorizationService
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    // Helper check permission gọn
+    async Task<bool> Can(string perm) =>
+        (await AuthorizationService.AuthorizeAsync(User, perm)).Succeeded;
+
+    // Lấy role đầu tiên của user hiện tại để hiển thị sidebar
+    var currentUser = await UserManager.GetUserAsync(User);
+    var currentRoles = currentUser != null
+        ? await UserManager.GetRolesAsync(currentUser)
+        : new List<string>();
+    var displayRole = currentRoles.FirstOrDefault() ?? "User";
+    var isAdmin = User.IsInRole("Admin");
+}
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -11,10 +28,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <title>Matrix Template - The Ultimate Multipurpose admin template</title>
-    <!-- Custom CSS -->
     <link href="~/admin/assets/libs/flot/css/float-chart.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="~/admin/dist/css/style.min.css" rel="stylesheet" />
+    <link href="~/css/permission.css" rel="stylesheet" />
     <style>
         /* ===== HEADER ===== */
         .topbar {
@@ -51,8 +67,7 @@
             }
 
         /* ===== MINI SIDEBAR ===== */
-        .mini-sidebar .left-sidebar,
-        .mini-sidebar .left-sidebar:hover {
+        .mini-sidebar .left-sidebar, .mini-sidebar .left-sidebar:hover {
             width: 65px !important;
             transition: none !important;
         }
@@ -61,8 +76,7 @@
             width: 65px !important;
         }
 
-        .mini-sidebar .left-sidebar .sidebar-nav,
-        .mini-sidebar .left-sidebar:hover .sidebar-nav {
+        .mini-sidebar .left-sidebar .sidebar-nav, .mini-sidebar .left-sidebar:hover .sidebar-nav {
             width: 65px !important;
             overflow: hidden !important;
         }
@@ -122,8 +136,7 @@
             padding: 10px 0 !important;
         }
 
-            .mini-sidebar .sidebar-user-box .hide-menu,
-            .mini-sidebar .sidebar-user-box form {
+            .mini-sidebar .sidebar-user-box .hide-menu, .mini-sidebar .sidebar-user-box form {
                 display: none !important;
             }
 
@@ -239,29 +252,23 @@
         }
 
         /* ===== SIDEBAR HIGHLIGHT ===== */
-        #sidebarnav > li.selected > a.has-arrow,
-        #sidebarnav > li.active > a.has-arrow {
+        #sidebarnav > li.selected > a.has-arrow, #sidebarnav > li.active > a.has-arrow {
             background: transparent !important;
             color: #a9b7d0 !important;
         }
 
-        #sidebarnav .first-level li.selected > a,
-        #sidebarnav .first-level li.active > a {
+        #sidebarnav .first-level li.selected > a, #sidebarnav .first-level li.active > a {
             background: rgba(0,0,0,0.15) !important;
             color: #fff !important;
         }
+
         /* ===== DARK MODE ===== */
-        body.dark-mode,
-        body.dark-mode #main-wrapper,
-        body.dark-mode .page-wrapper,
-        body.dark-mode .container-fluid {
+        body.dark-mode, body.dark-mode #main-wrapper, body.dark-mode .page-wrapper, body.dark-mode .container-fluid {
             background-color: #0f0f14 !important;
             color: #c9c9c9 !important;
         }
 
-            body.dark-mode table,
-            body.dark-mode .card,
-            body.dark-mode .table-responsive {
+            body.dark-mode table, body.dark-mode .card, body.dark-mode .table-responsive {
                 background-color: #1a1a27 !important;
                 color: #c9c9c9 !important;
             }
@@ -276,8 +283,7 @@
                     border-color: #2a2a3d !important;
                 }
 
-                body.dark-mode table td,
-                body.dark-mode table th {
+                body.dark-mode table td, body.dark-mode table th {
                     color: #c9c9c9 !important;
                     border-color: #2a2a3d !important;
                 }
@@ -305,9 +311,7 @@
                     background-color: #222235 !important;
                 }
 
-            body.dark-mode h1, body.dark-mode h2,
-            body.dark-mode h3, body.dark-mode h4,
-            body.dark-mode h5, body.dark-mode h6 {
+            body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
                 color: #e0e0e0 !important;
             }
 
@@ -318,94 +322,57 @@
 </head>
 <body>
     <div id="main-wrapper">
+        <!-- ===== HEADER ===== -->
         <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
-                    <!-- This is for the sidebar toggle which is visible on mobile only -->
                     <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                    <!-- ============================================================== -->
-                    <!-- Logo -->
-                    <!-- ============================================================== -->
                     <a class="navbar-brand" href="" style="border-bottom: 1px solid rgba(255,255,255,0.15);">
                         <b class="logo-icon p-l-10">
-                            <span style="
-                                display:inline-flex;
-                                align-items:center;
-                                justify-content:center;
-                                width:36px; height:36px;
-                                border-radius:8px;
-                                background: linear-gradient(135deg, #00b09b, #96c93d);
-                                margin-right:4px;
-                            ">
-                                <i class="mdi mdi-lightbulb-on" style="color:#fff; font-size:20px;"></i>
+                            <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#00b09b,#96c93d);margin-right:4px;">
+                                <i class="mdi mdi-lightbulb-on" style="color:#fff;font-size:20px;"></i>
                             </span>
                         </b>
-                        <span class="logo-text" style="font-weight:700; font-size:16px; letter-spacing:0.5px;">
+                        <span class="logo-text" style="font-weight:700;font-size:16px;letter-spacing:0.5px;">
                             Quản trị <span style="color:#00b09b;">Led</span>
                         </span>
                     </a>
-                    <!-- ============================================================== -->
-                    <!-- End Logo -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Toggle which is visible on mobile only -->
-                    <!-- ============================================================== -->
-                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"><i class="ti-more"></i></a>
                 </div>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
                 <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                    <!-- ============================================================== -->
-                    <!-- toggle and nav items -->
-                    <!-- ============================================================== -->
                     <ul class="navbar-nav float-left mr-auto">
-                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
-                        <!-- ============================================================== -->
-                        <!-- create new -->
-                        <!-- ============================================================== -->
-                       
-                        <!-- ============================================================== -->
-                        <!-- Search -->
-                        <!-- ============================================================== -->
+                        <li class="nav-item d-none d-md-block">
+                            <a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar">
+                                <i class="mdi mdi-menu font-24"></i>
+                            </a>
+                        </li>
                         <li class="nav-item search-box">
                             <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
                             <form class="app-search position-absolute">
-                                <input type="text" class="form-control" placeholder="Search &amp; enter"> <a class="srh-btn"><i class="ti-close"></i></a>
+                                <input type="text" class="form-control" placeholder="Search &amp; enter">
+                                <a class="srh-btn"><i class="ti-close"></i></a>
                             </form>
                         </li>
                     </ul>
-                    <!-- ============================================================== -->
-                    <!-- Right side toggle and nav items -->
-                    <!-- ============================================================== -->
                     <ul class="navbar-nav float-right">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <!-- Dark mode -->
                             <li class="nav-item d-flex align-items-center px-2">
-                                <button id="darkModeBtn" class="btn btn-link nav-link p-0" title="Dark mode" style="color:#adb5bd; font-size:18px;">
+                                <button id="darkModeBtn" class="btn btn-link nav-link p-0" title="Dark mode" style="color:#adb5bd;font-size:18px;">
                                     <i class="bi bi-moon"></i>
                                 </button>
                             </li>
-
-                            <!-- Palette -->
-                            <li class="nav-item d-flex align-items-center px-2">
-                                <button class="btn btn-link nav-link p-0" title="Theme" style="color:#adb5bd; font-size:18px;">
-                                    <i class="bi bi-palette"></i>
-                                </button>
-                            </li>
-
-                            <!-- Chuông thông báo -->
-                            <li class="nav-item d-flex align-items-center px-2">
-                                <button class="btn btn-link nav-link p-0 position-relative" title="Notifications" style="color:#adb5bd; font-size:18px;">
-                                    <i class="bi bi-bell"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:9px; padding:3px 5px;">
-                                        4
-                                    </span>
-                                </button>
-                            </li>
-
-                            <!-- Avatar dropdown -->
+                            @* <li class="nav-item d-flex align-items-center px-2"> *@
+                            @*     <button class="btn btn-link nav-link p-0" title="Theme" style="color:#adb5bd;font-size:18px;"> *@
+                            @*         <i class="bi bi-palette"></i> *@
+                            @*     </button> *@
+                            @* </li> *@
+                            @* <li class="nav-item d-flex align-items-center px-2"> *@
+                            @*     <button class="btn btn-link nav-link p-0 position-relative" title="Notifications" style="color:#adb5bd;font-size:18px;"> *@
+                            @*         <i class="bi bi-bell"></i> *@
+                            @*         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:9px;padding:3px 5px;">4</span> *@
+                            @*     </button> *@
+                            @* </li> *@
                             <li class="nav-item dropdown d-flex align-items-center px-2">
                                 @{
                                     var userName = UserManager.GetUserName(User);
@@ -413,28 +380,21 @@
                                     new string(userName.Where(char.IsLetter).Take(2).ToArray()).ToUpper();
                                     var user = await UserManager.GetUserAsync(User);
                                 }
-                                <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span style="display:inline-flex; align-items:center; justify-content:center;
-                                         width:36px; height:36px; border-radius:50%;
-                                         background-color:#b2dfdb; color:#00695c;
-                                         font-weight:600; font-size:14px;">
+                                <a class="nav-link dropdown-toggle p-0" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background-color:#b2dfdb;color:#00695c;font-weight:600;font-size:14px;">
                                         @initials
                                     </span>
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-right shadow" style="min-width:220px; border-radius:12px; padding:8px 0;">
+                                <div class="dropdown-menu dropdown-menu-right shadow" style="min-width:220px;border-radius:12px;padding:8px 0;">
                                     <div class="px-4 py-2 border-bottom">
-                                        <div style="font-weight:600; color:#212529;">@userName</div>
-                                        <div style="font-size:13px; color:#6c757d;">@user?.Email</div>
+                                        <div style="font-weight:600;color:#212529;">@userName</div>
+                                        <div style="font-size:13px;color:#6c757d;">@user?.Email</div>
                                     </div>
                                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" asp-area="Identity" asp-page="/Account/Manage/Index">
                                         <i class="bi bi-gear" style="font-size:16px;"></i> Settings
                                     </a>
-                                    <a class="dropdown-item d-flex align-items-center justify-content-between py-2" href="#">
-                                        <span class="d-flex align-items-center gap-2">
-                                            <i class="bi bi-bell" style="font-size:16px;"></i> Notifications
-                                        </span>
-                                        <span class="badge rounded-pill bg-success" style="font-size:11px;">4</span>
+                                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="/Nav">
+                                        <i class="bi bi-grid-3x3-gap" style="font-size:16px;"></i> Trang điều hướng
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout"
@@ -449,177 +409,273 @@
                     </ul>
                 </div>
             </nav>
-
-            <!-- End Sidebar scroll-->
         </header>
+
+        <!-- ===== SIDEBAR ===== -->
         <aside class="left-sidebar" data-sidebarbg="skin5">
-            <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
-                        <!-- TỔNG QUAN -->
+
+                        <!-- TỔNG QUAN — luôn hiện -->
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                                 <span class="hide-menu">Tổng quan</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a href="@Url.Action("Index", "Dashboard")" class="sidebar-link">
+                                    <a href="@Url.Action("Index","Dashboard")" class="sidebar-link">
                                         <i class="mdi mdi-view-dashboard"></i>
                                         <span class="hide-menu">Dashboard</span>
                                     </a>
                                 </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("Index","BaoCao")" class="sidebar-link">
-                                        <i class="mdi mdi-chart-bar"></i>
-                                        <span class="hide-menu">Báo cáo thống kê</span>
-                                    </a>
-                                </li>
+                                @if (await Can("BaoCao.View") || isAdmin)
+                                {
+                                    <li class="sidebar-item">
+                                        <a href="@Url.Action("Index","BaoCao")" class="sidebar-link">
+                                            <i class="mdi mdi-chart-bar"></i>
+                                            <span class="hide-menu">Báo cáo thống kê</span>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </li>
+
                         <!-- VẬN CHUYỂN VIETTEL -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <span class="hide-menu">Vận chuyển Viettel</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("Index","ImportFromApi")" class="sidebar-link">
-                                        <i class="mdi mdi-truck-delivery"></i>
-                                        <span class="hide-menu">Theo dõi xe </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (isAdmin)
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <span class="hide-menu">Vận chuyển Viettel</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="@Url.Action("Index","ImportFromApi")" class="sidebar-link">
+                                            <i class="mdi mdi-truck-delivery"></i>
+                                            <span class="hide-menu">Theo dõi xe</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
                         <!-- NHẬP KHO -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <span class="hide-menu">Nhập kho</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","Nhaps")" class="sidebar-link">
-                                        <i class="mdi mdi-relative-scale"></i><span class="hide-menu">Dữ liệu nhập</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","ChitietNhaps")" class="sidebar-link">
-                                        <i class="mdi mdi-blur-linear"></i><span class="hide-menu">Chi tiết nhập</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","CuaNhaps")" class="sidebar-link">
-                                        <i class="mdi mdi-pencil"></i><span class="hide-menu">Cửa nhập</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @{
+                            bool canNhapView = await Can("Nhap.View");
+                            bool canChiTietNhapView = await Can("ChiTietNhap.View");
+                            bool canCuaNhapView = await Can("CuaNhap.View");
+                            bool showNhapGroup = isAdmin || canNhapView || canChiTietNhapView || canCuaNhapView;
+                        }
+                        @if (showNhapGroup)
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <span class="hide-menu">Nhập kho</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    @if (isAdmin || canNhapView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","Nhaps")" class="sidebar-link">
+                                                <i class="mdi mdi-relative-scale"></i>
+                                                <span class="hide-menu">Dữ liệu nhập</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canChiTietNhapView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","ChitietNhaps")" class="sidebar-link">
+                                                <i class="mdi mdi-blur-linear"></i>
+                                                <span class="hide-menu">Chi tiết nhập</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canCuaNhapView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","CuaNhaps")" class="sidebar-link">
+                                                <i class="mdi mdi-pencil"></i>
+                                                <span class="hide-menu">Cửa nhập</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
 
                         <!-- XUẤT KHO -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <span class="hide-menu">Xuất kho</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","Xuats")" class="sidebar-link">
-                                        <i class="mdi mdi-chart-bar"></i><span class="hide-menu">Dữ liệu xuất</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","ChitietXuats")" class="sidebar-link">
-                                        <i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Chi tiết xuất</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","CuaXuats")" class="sidebar-link">
-                                        <i class="mdi mdi-border-inside"></i><span class="hide-menu">Cửa xuất</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @{
+                            bool canXuatView = await Can("Xuat.View");
+                            bool canChiTietXuatView = await Can("ChiTietXuat.View");
+                            bool canCuaXuatView = await Can("CuaXuat.View");
+                            bool showXuatGroup = isAdmin || canXuatView || canChiTietXuatView || canCuaXuatView;
+                        }
+                        @if (showXuatGroup)
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <span class="hide-menu">Xuất kho</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    @if (isAdmin || canXuatView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","Xuats")" class="sidebar-link">
+                                                <i class="mdi mdi-chart-bar"></i>
+                                                <span class="hide-menu">Dữ liệu xuất</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canChiTietXuatView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","ChitietXuats")" class="sidebar-link">
+                                                <i class="mdi mdi-chart-bubble"></i>
+                                                <span class="hide-menu">Chi tiết xuất</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canCuaXuatView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","CuaXuats")" class="sidebar-link">
+                                                <i class="mdi mdi-border-inside"></i>
+                                                <span class="hide-menu">Cửa xuất</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
 
                         <!-- QUẢN LÝ -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <span class="hide-menu">Quản lý</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("Index","DanhSachXes")" class="sidebar-link">
-                                        <i class="mdi mdi-truck"></i><span class="hide-menu">Quản lý xe</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","CanhBaos")" class="sidebar-link">
-                                        <i class="mdi mdi-alert"></i><span class="hide-menu">Cảnh báo</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","LichSuBanGiaos")" class="sidebar-link">
-                                        <i class="mdi mdi-history"></i><span class="hide-menu">Lịch sử bàn giao</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @{
+                            bool canXeView = await Can("DanhSachXe.View");
+                            bool canCanhBaoView = await Can("CanhBao.View");
+                            bool canLichSuView = await Can("LichSuBanGiao.View");
+                            bool showQuanLyGroup = isAdmin || canXeView || canCanhBaoView || canLichSuView;
+                        }
+                        @if (showQuanLyGroup)
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <span class="hide-menu">Quản lý</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    @if (isAdmin || canXeView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("Index","DanhSachXes")" class="sidebar-link">
+                                                <i class="mdi mdi-truck"></i>
+                                                <span class="hide-menu">Quản lý xe</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canCanhBaoView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","CanhBaos")" class="sidebar-link">
+                                                <i class="mdi mdi-alert"></i>
+                                                <span class="hide-menu">Cảnh báo</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (isAdmin || canLichSuView)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","LichSuBanGiaos")" class="sidebar-link">
+                                                <i class="mdi mdi-history"></i>
+                                                <span class="hide-menu">Lịch sử bàn giao</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
 
-                        <!-- HỆ THỐNG -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <span class="hide-menu">Hệ thống</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","nguoiDungs")" class="sidebar-link">
-                                        <i class="mdi mdi-account"></i><span class="hide-menu">Người dùng</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="@Url.Action("index","Accounts")" class="sidebar-link">
-                                        <i class="mdi mdi-account-key"></i><span class="hide-menu">Quản lý tài khoản</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        <!-- HỆ THỐNG — chỉ Admin -->
+                        @if (isAdmin)
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                    <span class="hide-menu">Hệ thống</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    @if (await Can("NguoiDung.View") || isAdmin)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","nguoiDungs")" class="sidebar-link">
+                                                <i class="mdi mdi-account"></i>
+                                                <span class="hide-menu">Người dùng</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (await Can("Account.View") || isAdmin)
+                                    {
+                                        <li class="sidebar-item">
+                                            <a href="@Url.Action("index","Accounts")" class="sidebar-link">
+                                                <i class="mdi mdi-account-key"></i>
+                                                <span class="hide-menu">Quản lý tài khoản</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    <li class="sidebar-item">
+                                        <a href="@Url.Action("Index","Roles")" class="sidebar-link">
+                                            <i class="mdi mdi-security"></i>
+                                            <span class="hide-menu">Quản lý Role</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="@Url.Action("Index","Permissions")" class="sidebar-link">
+                                            <i class="mdi mdi-key"></i>
+                                            <span class="hide-menu">Quản lý quyền</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="@Url.Action("Index","CauHinhs")" class="sidebar-link">
+                                            <i class="mdi mdi-settings"></i>
+                                            <span class="hide-menu">Cấu hình hệ thống</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
                     </ul>
-               </nav>
-                <!-- End Sidebar navigation -->
+                </nav>
             </div>
 
-            <!-- User box cố định cuối sidebar -->
+            <!-- User box cuối sidebar -->
             @if (SignInManager.IsSignedIn(User))
             {
                 var sidebarName = UserManager.GetUserName(User);
                 var sidebarInitials = string.IsNullOrEmpty(sidebarName) ? "?" :
-                         new string(sidebarName.Where(char.IsLetter).Take(2).ToArray()).ToUpper();
+                new string(sidebarName.Where(char.IsLetter).Take(2).ToArray()).ToUpper();
 
                 <div class="sidebar-user-box">
-                    <div style="display:flex; align-items:center; gap:10px; overflow:hidden;">
-                        <span style="display:inline-flex; align-items:center; justify-content:center;
-                     width:36px; height:36px; border-radius:50%;
-                     background-color:#1a7a5e; color:#fff;
-                     font-weight:600; font-size:14px; flex-shrink:0;">
+                    <div style="display:flex;align-items:center;gap:10px;overflow:hidden;">
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background-color:#1a7a5e;color:#fff;font-weight:600;font-size:14px;flex-shrink:0;">
                             @sidebarInitials
                         </span>
                         <div class="hide-menu" style="overflow:hidden;">
-                            <div style="font-size:13px; font-weight:600; color:#fff;
-                        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                            <div style="font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                                 @sidebarName
                             </div>
-                            <div style="font-size:11px; color:#adb5bd;">Admin</div>
+                            <!-- Role hiển thị động thay vì hardcode "Admin" -->
+                            <div style="font-size:11px;color:#adb5bd;">@displayRole</div>
                         </div>
                     </div>
                     <form asp-area="Identity" asp-page="/Account/Logout"
                           asp-route-returnUrl="@Url.Action("Index", "Administrator", new { area = "" })">
-                        <button type="submit" class="btn btn-link p-0 hide-menu" title="Log out"
-                                style="color:#adb5bd; font-size:18px;">
+                        <button type="submit" class="btn btn-link p-0 hide-menu" title="Log out" style="color:#adb5bd;font-size:18px;">
                             <i class="bi bi-box-arrow-right"></i>
                         </button>
                     </form>
                 </div>
             }
         </aside>
+
         <div class="page-wrapper">
             <div class="container-fluid">
                 @RenderBody()
@@ -634,20 +690,12 @@
     </div>
 
     <script src="~/admin/assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap tether Core JavaScript -->
     <script src="~/admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="~/admin/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/admin/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
     <script src="~/admin/assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
     <script src="~/admin/dist/js/waves.js"></script>
-    <!--Menu sidebar -->
-    @* <script src="~/admin/dist/js/sidebarmenu.js"></script> *@
-    <!--Custom JavaScript -->
     <script src="~/admin/dist/js/custom.min.js"></script>
-    <!--This page JavaScript -->
-    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
-    <!-- Charts js Files -->
     <script src="~/admin/assets/libs/flot/excanvas.js"></script>
     <script src="~/admin/assets/libs/flot/jquery.flot.js"></script>
     <script src="~/admin/assets/libs/flot/jquery.flot.pie.js"></script>
@@ -656,6 +704,7 @@
     <script src="~/admin/assets/libs/flot/jquery.flot.crosshair.js"></script>
     <script src="~/admin/assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
     <script src="~/admin/dist/js/pages/chart/chart-page-init.js"></script>
+
     <script>
         var STORAGE_KEY = 'sidebar_open_menus';
         var MINI_KEY = 'sidebar_is_mini';
@@ -663,7 +712,6 @@
         $(document).ready(function () {
             var url = window.location.pathname;
 
-            // Hàm mở sidebar
             function openSidebar() {
                 $('body').removeClass('mini-sidebar');
                 $('#main-wrapper').removeClass('mini-sidebar').attr('data-sidebartype', 'full');
@@ -677,7 +725,6 @@
                 });
             }
 
-            // Hàm đóng sidebar
             function closeSidebar() {
                 $('body').addClass('mini-sidebar');
                 $('#main-wrapper').addClass('mini-sidebar').attr('data-sidebartype', 'mini-sidebar');
@@ -687,7 +734,6 @@
                 sessionStorage.setItem(MINI_KEY, 'true');
             }
 
-            // Khôi phục trạng thái
             if (sessionStorage.getItem(MINI_KEY) === 'true') {
                 closeSidebar();
             } else {
@@ -699,7 +745,6 @@
                 });
             }
 
-            // Highlight item con active
             var openMenus = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
             $('#sidebarnav .first-level a').each(function () {
                 var href = $(this).attr('href');
@@ -711,10 +756,8 @@
                     if (sessionStorage.getItem(MINI_KEY) !== 'true') {
                         var parentUl = $(this).closest('ul.first-level');
                         parentUl.addClass('in').show();
-                        parentUl.closest('li.sidebar-item')
-                            .children('a.has-arrow').attr('aria-expanded', 'true');
-                        var idx = $('#sidebarnav > li.sidebar-item')
-                            .index(parentUl.closest('li.sidebar-item'));
+                        parentUl.closest('li.sidebar-item').children('a.has-arrow').attr('aria-expanded', 'true');
+                        var idx = $('#sidebarnav > li.sidebar-item').index(parentUl.closest('li.sidebar-item'));
                         if (openMenus.indexOf(idx) === -1) {
                             openMenus.push(idx);
                             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(openMenus));
@@ -723,33 +766,22 @@
                 }
             });
 
-            // Toggle sidebar
             $('.sidebartoggler').off('click').on('click', function (e) {
                 e.stopPropagation();
-                var isMini = $('body').hasClass('mini-sidebar') ||
-                             $('#main-wrapper').hasClass('mini-sidebar');
-                if (isMini) {
-                    openSidebar();
-                } else {
-                    closeSidebar();
-                }
+                var isMini = $('body').hasClass('mini-sidebar') || $('#main-wrapper').hasClass('mini-sidebar');
+                if (isMini) { openSidebar(); } else { closeSidebar(); }
             });
 
-            // Chặn hover
             $('.left-sidebar').off('mouseenter mouseleave');
-            setTimeout(function () {
-                $('.left-sidebar').off('mouseenter mouseleave');
-            }, 300);
+            setTimeout(function () { $('.left-sidebar').off('mouseenter mouseleave'); }, 300);
 
-            // Accordion
             $(document).on('click', '#sidebarnav a.has-arrow', function (e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 if (sessionStorage.getItem(MINI_KEY) === 'true') return;
 
                 var subMenu = $(this).next('ul.first-level');
-                var idx = $('#sidebarnav > li.sidebar-item')
-                    .index($(this).closest('li.sidebar-item'));
+                var idx = $('#sidebarnav > li.sidebar-item').index($(this).closest('li.sidebar-item'));
                 var menus = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '[]');
 
                 if (subMenu.hasClass('in')) {
@@ -764,7 +796,7 @@
                 sessionStorage.setItem(STORAGE_KEY, JSON.stringify(menus));
             });
         });
-                // Dark mode toggle
+
         var darkMode = localStorage.getItem('darkMode') === 'true';
         if (darkMode) {
             $('body').addClass('dark-mode');

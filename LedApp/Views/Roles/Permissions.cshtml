@@ -1,0 +1,679 @@
+﻿@using LedApp.Controllers
+@model RolePermissionsViewModel
+@{
+    ViewData["Title"] = $"Phân quyền: {Model.RoleName}";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
+
+    .px-page {
+        padding: 24px 24px 80px;
+    }
+
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep svg {
+            width: 13px;
+            height: 13px;
+            stroke-width: 2;
+        }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .px-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1px solid #bbf7d0;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    .btn-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+        .btn-save svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-back:hover {
+            background: #f9fafb;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .btn-back svg {
+            width: 14px;
+            height: 14px;
+        }
+
+    /* Toolbar select all */
+    .perm-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .btn-select-all {
+        padding: 6px 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 7px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-select-all:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+    .perm-count {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-left: auto;
+    }
+
+        .perm-count span {
+            font-weight: 700;
+            color: #111827;
+        }
+
+    /* Permission matrix */
+    .perm-table-wrap {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .perm-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .perm-table thead th {
+            background: #f9fafb;
+            padding: 10px 16px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+            .perm-table thead th:not(:first-child) {
+                text-align: center;
+                width: 100px;
+            }
+
+        .perm-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background .1s;
+        }
+
+            .perm-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .perm-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+            .perm-table tbody tr.group-header {
+                background: #f3f4f6;
+            }
+
+        .perm-table td {
+            padding: 12px 16px;
+        }
+
+    .perm-label {
+        font-size: 0.875rem;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .perm-value {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        font-family: monospace;
+        margin-top: 2px;
+    }
+
+    .perm-table td:not(:first-child) {
+        text-align: center;
+    }
+
+    /* Custom checkbox */
+    .perm-cb {
+        width: 18px;
+        height: 18px;
+        accent-color: #16a34a;
+        cursor: pointer;
+    }
+
+    /* Group select all row */
+    .group-check-all {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+        .group-check-all input {
+            accent-color: #16a34a !important;
+            width: 16px !important;
+            height: 16px !important;
+            cursor: pointer !important;
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            vertical-align: middle !important;
+            position: static !important;
+            float: none !important;
+        }
+
+        .group-check-all label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #374151;
+            cursor: pointer;
+            margin-bottom: 0 !important; /* ← fix Bootstrap label margin */
+            line-height: 1;
+        }
+
+    .px-alert-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #15803d;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Dark mode */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p, body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .perm-table-wrap {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .perm-table thead th {
+        background: #22263a !important;
+        color: #6b7280 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .perm-table tbody tr {
+        border-color: #2e3248 !important;
+    }
+
+        body.dark-mode .perm-table tbody tr:hover {
+            background: #22263a !important;
+        }
+
+        body.dark-mode .perm-table tbody tr.group-header {
+            background: #22263a !important;
+        }
+
+            body.dark-mode .perm-table tbody tr.group-header td {
+                color: #9ca3af !important;
+            }
+
+    body.dark-mode .perm-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .btn-select-all {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .btn-back {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .perm-count {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .perm-count span {
+            color: #e2e8f0 !important;
+        }
+
+    body.dark-mode .group-check-all label {
+        color: #9ca3af !important;
+    }
+
+    .px-search {
+        position: relative;
+        max-width: 280px;
+    }
+
+        .px-search svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        .px-search input {
+            width: 100%;
+            padding: 8px 12px 8px 34px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #111827;
+            font-size: 0.875rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+            .px-search input:focus {
+                border-color: #16a34a;
+                box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            }
+
+    .btn-reset {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-reset.show {
+            display: inline-flex;
+        }
+
+        .btn-reset:hover {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #ef4444;
+        }
+
+    body.dark-mode .px-search input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .btn-reset {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .btn-reset:hover {
+            background: #2e0f0f !important;
+            border-color: #991b1b !important;
+            color: #f87171 !important;
+        }
+</style>
+
+<div class="px-page">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="px-alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            @TempData["Success"]
+        </div>
+    }
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Quản lý Role</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Phân quyền</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <div>
+            <h1>
+                Phân quyền
+                <span class="role-badge">@Model.RoleName</span>
+            </h1>
+            <p>Chọn các quyền mặc định cho role này. Tất cả tài khoản có role này sẽ kế thừa các quyền được chọn.</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+            <a asp-action="Index" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Quay lại
+            </a>
+            <button type="submit" form="permForm" class="btn-save">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
+                Lưu thay đổi
+            </button>
+        </div>
+    </div>
+
+    <form asp-action="Permissions" method="post" id="permForm">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="roleId" value="@Model.RoleId" />
+
+        <!-- Toolbar -->
+        <div class="perm-toolbar">
+            <div class="px-search">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <input type="text" id="permSearch" placeholder="Tìm nhóm quyền..."
+                       oninput="filterPerms(this.value)" />
+            </div>
+            <button type="button" class="btn-reset" id="btnPermReset"
+                    onclick="resetPermSearch()">
+                Reset
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2" stroke="currentColor" width="13" height="13">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <button type="button" class="btn-select-all" onclick="selectAll(true)">Chọn tất cả</button>
+            <button type="button" class="btn-select-all" onclick="selectAll(false)">Bỏ chọn tất cả</button>
+            <span class="perm-count">Đã chọn: <span id="selectedCount">0</span> quyền</span>
+        </div>
+
+        <!-- Matrix table -->
+        <div class="perm-table-wrap">
+            <table class="perm-table">
+                <thead>
+                    <tr>
+                        <th style="width:40%;">Nhóm / Quyền</th>
+                        <th>View</th>
+                        <th>Create</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Khác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var group in Model.Groups)
+                    {
+                        var groupId = group.GroupName.Replace(" ", "_");
+
+                        <!-- Group header row -->
+                        <tr class="group-header">
+                            <td style="width:40%;">
+                                <div class="group-check-all">
+                                    <input type="checkbox" id="grp_@groupId"
+                                           onchange="toggleGroup('@groupId', this.checked)" />
+                                    <label for="grp_@groupId">@group.GroupName</label>
+                                </div>
+                            </td>
+                            <td colspan="5"></td>
+                        </tr>
+
+                        <!-- Sắp xếp items theo loại -->
+                        var viewItem = group.Items.FirstOrDefault(i => i.Value.EndsWith(".View"));
+                        var createItem = group.Items.FirstOrDefault(i => i.Value.EndsWith(".Create"));
+                        var editItem = group.Items.FirstOrDefault(i => i.Value.EndsWith(".Edit"));
+                        var deleteItem = group.Items.FirstOrDefault(i => i.Value.EndsWith(".Delete"));
+                        var otherItems = group.Items.Where(i =>
+                        !i.Value.EndsWith(".View") &&
+                        !i.Value.EndsWith(".Create") &&
+                        !i.Value.EndsWith(".Edit") &&
+                        !i.Value.EndsWith(".Delete")).ToList();
+
+                        <tr>
+                            <td>
+                                <div class="perm-label">@group.GroupName</div>
+                            </td>
+                            <!-- View -->
+                            <td>
+                                @if (viewItem != null)
+                                {
+                                    <input type="checkbox" class="perm-cb grp-cb-@groupId"
+                                           name="selectedPermissions"
+                                           value="@viewItem.Value"
+                                           title="@viewItem.Label"
+                                           onchange="updateCount()"
+                                    @(viewItem.IsSelected ? "checked" : "") />
+                                }
+                            </td>
+                            <!-- Create -->
+                            <td>
+                                @if (createItem != null)
+                                {
+                                    <input type="checkbox" class="perm-cb grp-cb-@groupId"
+                                           name="selectedPermissions"
+                                           value="@createItem.Value"
+                                           title="@createItem.Label"
+                                           onchange="updateCount()"
+                                    @(createItem.IsSelected ? "checked" : "") />
+                                }
+                            </td>
+                            <!-- Edit -->
+                            <td>
+                                @if (editItem != null)
+                                {
+                                    <input type="checkbox" class="perm-cb grp-cb-@groupId"
+                                           name="selectedPermissions"
+                                           value="@editItem.Value"
+                                           title="@editItem.Label"
+                                           onchange="updateCount()"
+                                    @(editItem.IsSelected ? "checked" : "") />
+                                }
+                            </td>
+                            <!-- Delete -->
+                            <td>
+                                @if (deleteItem != null)
+                                {
+                                    <input type="checkbox" class="perm-cb grp-cb-@groupId"
+                                           name="selectedPermissions"
+                                           value="@deleteItem.Value"
+                                           title="@deleteItem.Label"
+                                           onchange="updateCount()"
+                                    @(deleteItem.IsSelected ? "checked" : "") />
+                                }
+                            </td>
+                            <!-- Other -->
+                            <td>
+                                @foreach (var other in otherItems)
+                                {
+                                    <input type="checkbox" class="perm-cb grp-cb-@groupId"
+                                           name="selectedPermissions"
+                                           value="@other.Value"
+                                           title="@other.Label"
+                                           onchange="updateCount()"
+                                    @(other.IsSelected ? "checked" : "") />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Save button -->
+        <div style="margin-top:20px;display:flex;gap:10px;">
+            <button type="submit" class="btn-save">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
+                Lưu thay đổi
+            </button>
+            <a asp-action="Index" class="btn-back">Hủy</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function updateCount() {
+        const count = document.querySelectorAll('.perm-cb:checked').length;
+        document.getElementById('selectedCount').textContent = count;
+
+        // Cập nhật trạng thái checkbox group
+        document.querySelectorAll('[id^="grp_"]').forEach(grpCb => {
+            const groupId = grpCb.id.replace('grp_', '');
+            const items = document.querySelectorAll(`.grp-cb-${groupId}`);
+            const checkedItems = document.querySelectorAll(`.grp-cb-${groupId}:checked`);
+            grpCb.indeterminate = checkedItems.length > 0 && checkedItems.length < items.length;
+            grpCb.checked = checkedItems.length === items.length && items.length > 0;
+        });
+    }
+
+    function toggleGroup(groupId, checked) {
+        document.querySelectorAll(`.grp-cb-${groupId}`).forEach(cb => cb.checked = checked);
+        updateCount();
+    }
+
+    function selectAll(checked) {
+        document.querySelectorAll('.perm-cb').forEach(cb => cb.checked = checked);
+        document.querySelectorAll('[id^="grp_"]').forEach(cb => {
+            cb.checked = checked;
+            cb.indeterminate = false;
+        });
+        updateCount();
+    }
+    function filterPerms(q) {
+        q = q.trim().toLowerCase();
+        const rows = document.querySelectorAll('.perm-table tbody tr');
+        let i = 0;
+        while (i < rows.length) {
+            const row = rows[i];
+            if (row.classList.contains('group-header')) {
+                const label = row.textContent.toLowerCase();
+                const dataRow = rows[i + 1];
+                const show = !q || label.includes(q);
+                row.style.display = show ? '' : 'none';
+                if (dataRow) dataRow.style.display = show ? '' : 'none';
+                i += 2;
+            } else {
+                i++;
+            }
+        }
+        const btn = document.getElementById('btnPermReset');
+        if (q) btn.classList.add('show');
+        else btn.classList.remove('show');
+    }
+
+    function resetPermSearch() {
+        document.getElementById('permSearch').value = '';
+        filterPerms('');
+    }
+    // Init count
+    document.addEventListener('DOMContentLoaded', updateCount);
+</script>

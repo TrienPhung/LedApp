@@ -4,53 +4,409 @@
     Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
-<h1>Thêm lịch sử bàn giao</h1>
-<hr />
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .px-page {
+        padding: 24px 24px 80px;
+    }
 
-            <div class="form-group">
-                <label asp-for="LoaiPhieu" class="control-label"></label>
-                <input asp-for="LoaiPhieu" class="form-control" />
-                <span asp-validation-for="LoaiPhieu" class="text-danger"></span>
+    .px-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+        .px-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .px-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .px-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .px-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .px-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .px-header {
+        margin-bottom: 28px;
+    }
+
+        .px-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .px-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .form-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 28px 28px 24px;
+        max-width: 640px;
+    }
+
+    .form-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .form-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0 0 24px;
+    }
+
+    .form-divider {
+        border: none;
+        border-top: 1px solid #f3f4f6;
+        margin: 20px 0;
+    }
+
+    .form-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 20px;
+    }
+
+    @@media (max-width: 600px) {
+        .form-grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .field-group {
+        margin-bottom: 20px;
+    }
+
+    .field-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+        .field-label .req {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+    .field-input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        box-sizing: border-box;
+    }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .field-input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124,58,237,.1);
+        }
+
+    select.field-input {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 36px;
+    }
+
+    textarea.field-input {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+        margin-top: 4px;
+    }
+
+    .field-hint {
+        font-size: 0.76rem;
+        color: #9ca3af;
+        margin-top: 4px;
+    }
+
+    .section-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin: 0 0 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f3f4f6;
+        }
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #7c3aed;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+        white-space: nowrap;
+    }
+
+        .btn-submit:hover {
+            background: #6d28d9;
+        }
+
+        .btn-submit svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        background: #fff;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+        white-space: nowrap;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+    .val-summary {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        font-size: 0.82rem;
+        color: #dc2626;
+    }
+
+        .val-summary ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+    /* Dark mode */
+    body.dark-mode .px-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .px-header p, body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .form-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .form-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .form-card-sub {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .form-divider {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .section-title {
+        color: #9ca3af !important;
+    }
+
+        body.dark-mode .section-title::after {
+            background: #2e3248 !important;
+        }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #d1d5db !important;
+    }
+</style>
+
+<div class="px-page">
+
+    <!-- Breadcrumb -->
+    <div class="px-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Lịch sử bàn giao</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Thêm mới</span>
+    </div>
+
+    <!-- Header -->
+    <div class="px-header">
+        <h1>Thêm lịch sử bàn giao</h1>
+        <p>Ghi nhận một lần bàn giao thiết bị mới.</p>
+    </div>
+
+    <div class="form-card">
+        <p class="form-card-title">Thông tin bàn giao</p>
+        <p class="form-card-sub">Điền đầy đủ thông tin bên dưới để tạo bản ghi.</p>
+
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="val-summary" style="display:none;"></div>
+
+            <!-- Section: Phiếu -->
+            <p class="section-title">Thông tin phiếu</p>
+            <div class="form-grid-2">
+                <div class="field-group">
+                    <label class="field-label" asp-for="LoaiPhieu">Loại phiếu <span class="req">*</span></label>
+                    <input asp-for="LoaiPhieu" class="field-input" placeholder="VD: Phiếu xuất, Phiếu nhập..." />
+                    <span asp-validation-for="LoaiPhieu" class="field-error"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" asp-for="PhieuId">Phiếu ID <span class="req">*</span></label>
+                    <input asp-for="PhieuId" class="field-input" placeholder="ID phiếu liên quan..." />
+                    <span asp-validation-for="PhieuId" class="field-error"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="PhieuId" class="control-label"></label>
-                <input asp-for="PhieuId" class="form-control" />
-                <span asp-validation-for="PhieuId" class="text-danger"></span>
+
+            <div class="form-grid-2">
+                <div class="field-group">
+                    <label class="field-label" asp-for="ChiTietDonViId">Chi tiết đơn vị ID</label>
+                    <input asp-for="ChiTietDonViId" class="field-input" placeholder="ID chi tiết đơn vị..." />
+                    <span asp-validation-for="ChiTietDonViId" class="field-error"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" asp-for="DonVi">Đơn vị</label>
+                    <input asp-for="DonVi" class="field-input" placeholder="Tên đơn vị..." />
+                    <span asp-validation-for="DonVi" class="field-error"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ChiTietDonViId" class="control-label"></label>
-                <input asp-for="ChiTietDonViId" class="form-control" />
-                <span asp-validation-for="ChiTietDonViId" class="text-danger"></span>
+
+            <hr class="form-divider" />
+
+            <!-- Section: Bàn giao -->
+            <p class="section-title">Thông tin bàn giao</p>
+            <div class="form-grid-2">
+                <div class="field-group">
+                    <label class="field-label" asp-for="SoBG">Số bàn giao <span class="req">*</span></label>
+                    <input asp-for="SoBG" class="field-input" placeholder="Số bàn giao..." />
+                    <span asp-validation-for="SoBG" class="field-error"></span>
+                </div>
+                <div class="field-group">
+                    <label class="field-label" asp-for="ThoiGian">Thời gian <span class="req">*</span></label>
+                    <input asp-for="ThoiGian" class="field-input" type="datetime-local" step="60" />
+                    <span asp-validation-for="ThoiGian" class="field-error"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="DonVi" class="control-label"></label>
-                <input asp-for="DonVi" class="form-control" />
-                <span asp-validation-for="DonVi" class="text-danger"></span>
+
+            <div class="field-group">
+                <label class="field-label" asp-for="NhanVienId">Nhân viên bàn giao <span class="req">*</span></label>
+                <select asp-for="NhanVienId" class="field-input" asp-items="ViewBag.NhanVienId">
+                    <option value="">— Chọn nhân viên —</option>
+                </select>
+                <span asp-validation-for="NhanVienId" class="field-error"></span>
+                <p class="field-hint">Chỉ hiển thị nhân viên có vai trò NhanVien.</p>
             </div>
-            <div class="form-group">
-                <label asp-for="SoBG" class="control-label"></label>
-                <input asp-for="SoBG" class="form-control" />
-                <span asp-validation-for="SoBG" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NhanVienId" class="control-label"></label>
-                <select asp-for="NhanVienId" class="form-control" asp-items="ViewBag.NhanVienId"></select>
-                <span asp-validation-for="NhanVienId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ThoiGian" class="control-label"></label>
-                <input asp-for="ThoiGian" class="form-control" type="datetime-local" step="60" />
-                <span asp-validation-for="ThoiGian" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Lưu" class="btn btn-primary" />
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Tạo bản ghi
+                </button>
+                <a asp-action="Index" class="btn-cancel">Hủy</a>
             </div>
         </form>
     </div>
 </div>
-<div><a asp-action="Index">Trở về</a></div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const vs = document.querySelector('.val-summary');
+        if (vs && vs.innerText.trim().length > 0) vs.style.display = 'block';
+    </script>
+}

@@ -5,21 +5,76 @@ using LedApp.Models;
 using LedApp.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics;
 
 namespace LedApp.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "BaoVeXuat.View")]
     public class BaoVeXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _hubContext;
+     
+        private static Process? _processXuat = null;
 
         public BaoVeXuatController(ApplicationDBContext context, IHubContext<SignalServer> hubContext)
         {
             _context = context;
             _hubContext = hubContext;
         }
+      
 
+        [HttpPost]
+        public IActionResult BatCamera()
+        {
+            try
+            {
+                if (_processXuat != null && !_processXuat.HasExited)
+                    return Ok(new { status = "running", message = "Camera xuất đang chạy rồi" });
+            }
+            catch { _processXuat = null; }
+
+            try
+            {
+                _processXuat = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "python",
+                        Arguments = "camera_service.py",
+                        WorkingDirectory = @"E:\CameraAI",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    }
+                };
+                _processXuat.Start();
+                return Ok(new { status = "started", message = "Camera xuất đã bật" });
+            }
+            catch (Exception ex)
+            {
+                _processXuat = null;
+                return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult TatCamera()
+        {
+            try { if (_processXuat != null && !_processXuat.HasExited) _processXuat.Kill(entireProcessTree: true); }
+            catch { }
+            finally { _processXuat = null; }
+            return Ok(new { status = "stopped", message = "Camera xuất đã tắt" });
+        }
+
+        [HttpGet]
+        public IActionResult CameraStatus()
+        {
+            bool running = false;
+            if (_processXuat != null)
+                try { running = !_processXuat.HasExited; }
+                catch { _processXuat = null; }
+            return Ok(new { running });
+        }
         // GET: /BaoVeXuat
         public IActionResult Index()
         {
@@ -33,14 +88,12 @@ namespace LedApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetXeChoXacNhan()
         {
-            var today = DateTime.Today;
             var xes = await _context.Xuats
                 .Include(x => x.Xe).ThenInclude(xe => xe!.TaiXe)
                 .Include(x => x.CuaXuat)
                 .Include(x => x.NhanVienXacNhan)
                 .Include(x => x.ChitietXuats)
-                .Where(x => x.ThoiGianPhanCong.Date == today
-                         && x.TrangThai == (int)TrangThaiXuat.HoanThanh)
+                .Where(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh)  
                 .OrderBy(x => x.ThoiGianHoanThanh)
                 .Select(x => new
                 {
@@ -208,9 +261,9 @@ namespace LedApp.Controllers
                 .Replace(".", "").Replace("-", "").Trim();
 
             var now = DateTime.Now;
-
-            // Tìm xe có phiếu xuất HoanThanh hôm nay khớp biển số
             var today = DateTime.Today;
+
+            // ── 1. Tìm trong danh sách CHỜ RA CỔNG (HoanThanh) ──
             var xuat = await _context.Xuats
                 .AsNoTracking()
                 .Include(x => x.Xe)
@@ -221,11 +274,9 @@ namespace LedApp.Controllers
                 .FirstOrDefaultAsync(x =>
                     x.Xe!.BienSoXe.ToUpper().Replace(".", "").Replace("-", "") == bienSoChuanHoa);
 
-            KetQuaNhanDienXuat ketQua;
-
             if (xuat != null)
             {
-                ketQua = new KetQuaNhanDienXuat
+                var ketQua = new KetQuaNhanDienXuat
                 {
                     BienSo = req.BienSo,
                     TimThay = true,
@@ -233,31 +284,56 @@ namespace LedApp.Controllers
                     TenCua = xuat.CuaXuat?.Ten ?? "--",
                     TrangThai = xuat.TrangThai,
                     TrangThaiText = "Chờ ra cổng",
+                    LoaiNhanDien = "ra",   // ← THÊM
                     ThoiGian = now,
                     Confidence = req.Confidence,
                     ThongBao = $"✔ Xe {req.BienSo} — {xuat.CuaXuat?.Ten ?? "--"} — Chờ ra cổng"
                 };
+                await _hubContext.Clients.All.SendAsync("CameraXuatNhanDien", ketQua);
+                return Ok(new { message = ketQua.ThongBao, data = ketQua });
             }
-            else
+
+            // ── 2. Tìm trong danh sách ĐANG VẬN CHUYỂN (xe về bãi) ──
+            var xe = await _context.DanhSachXes
+                .AsNoTracking()
+                .Where(x => x.TrangThai == (int)TrangThaiXe.DangVanChuyen)
+                .FirstOrDefaultAsync(x =>
+                    x.BienSoXe.ToUpper().Replace(".", "").Replace("-", "") == bienSoChuanHoa);
+
+            if (xe != null)
             {
-                ketQua = new KetQuaNhanDienXuat
+                var ketQua = new KetQuaNhanDienXuat
                 {
                     BienSo = req.BienSo,
-                    TimThay = false,
-                    XuatId = null,
+                    TimThay = true,
+                    XuatId = xe.Id,   // dùng XeId để frontend highlight tab về bãi
                     TenCua = "--",
-                    TrangThai = -1,
-                    TrangThaiText = "--",
+                    TrangThai = (int)TrangThaiXe.DangVanChuyen,
+                    TrangThaiText = "Đang vận chuyển — về bãi",
+                    LoaiNhanDien = "ve",   // ← THÊM
                     ThoiGian = now,
                     Confidence = req.Confidence,
-                    ThongBao = $"✘ Xe {req.BienSo} không có trong danh sách chờ xuất!"
+                    ThongBao = $"🔄 Xe {req.BienSo} đang vận chuyển — xác nhận vào bãi!"
                 };
+                await _hubContext.Clients.All.SendAsync("CameraXuatNhanDien", ketQua);
+                return Ok(new { message = ketQua.ThongBao, data = ketQua });
             }
 
-            // Push SignalR — dùng event riêng "CameraXuatNhanDien" tránh nhầm với nhập
-            await _hubContext.Clients.All.SendAsync("CameraXuatNhanDien", ketQua);
-
-            return Ok(new { message = ketQua.ThongBao, data = ketQua });
+            // ── 3. Không tìm thấy ──
+            var miss = new KetQuaNhanDienXuat
+            {
+                BienSo = req.BienSo,
+                TimThay = false,
+                TenCua = "--",
+                TrangThai = -1,
+                TrangThaiText = "--",
+                LoaiNhanDien = "",
+                ThoiGian = now,
+                Confidence = req.Confidence,
+                ThongBao = $"✘ Xe {req.BienSo} không có trong danh sách!"
+            };
+            await _hubContext.Clients.All.SendAsync("CameraXuatNhanDien", miss);
+            return Ok(new { message = miss.ThongBao, data = miss });
         }
 
         // GET: /BaoVeXuat/Status  — Python ping để kiểm tra server online
@@ -355,6 +431,7 @@ namespace LedApp.Controllers
         public string TenCua { get; set; } = string.Empty;
         public int TrangThai { get; set; }
         public string TrangThaiText { get; set; } = string.Empty;
+        public string LoaiNhanDien { get; set; } = "";  // "ra" | "ve" | ""
         public DateTime ThoiGian { get; set; }
         public double Confidence { get; set; }
         public string ThongBao { get; set; } = string.Empty;

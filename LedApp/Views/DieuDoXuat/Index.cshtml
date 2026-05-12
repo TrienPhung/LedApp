@@ -1128,14 +1128,15 @@
                         </div>
                     </div>
                     <div class="ud-divider"></div>
-                    <a href="#" class="ud-item">
-                        <i class="bi bi-gear ud-item-icon"></i>
-                        Cài đặt
+                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="ud-item">
+                        <i class="bi bi-gear ud-item-icon"></i> Cài đặt
                     </a>
-                    <a href="#" class="ud-item">
-                        <i class="bi bi-bell ud-item-icon"></i>
-                        Thông báo
+                    <a href="/Nav" class="ud-item">
+                        <i class="bi bi-grid-3x3-gap ud-item-icon"></i> Trang điều hướng
                     </a>
+                    @* <a href="#" class="ud-item"> *@
+                    @*     <i class="bi bi-bell ud-item-icon"></i> Thông báo *@
+                    @* </a> *@
                     <div class="ud-divider"></div>
                     <form asp-area="Identity" asp-page="/Account/Logout"
                           asp-route-returnUrl="@Url.Action("Index","DieuDoXuat")" method="post">
@@ -1309,13 +1310,46 @@
                         <button onclick="loadPhieu()" style="background:var(--surface2);border:1px solid var(--border);color:var(--gold);padding:4px 10px;border-radius:3px;font-size:10px;cursor:pointer;font-family:inherit;">⟳ Làm mới</button>
                     </div>
                 </div>
-                <div class="filter-tabs">
-                    <button class="ftab active" onclick="setFilter('all',this)">Tất cả</button>
-                    <button class="ftab" onclick="setFilter(0,this)">Chờ xuất</button>
-                    <button class="ftab" onclick="setFilter(1,this)">Đang xuất</button>
-                    <button class="ftab" onclick="setFilter(2,this)">Quá giờ</button>
-                    <button class="ftab" onclick="setFilter(3,this)">Hoàn thành</button>
-                    <button class="ftab" onclick="setFilter(4,this)">Đã rời kho</button>
+                <div class="filter-tabs" style="justify-content:space-between;align-items:center;">
+                    <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                        <button class="ftab active" onclick="setFilter('all',this)">Tất cả</button>
+                        <button class="ftab" onclick="setFilter(0,this)">Chờ xuất</button>
+                        <button class="ftab" onclick="setFilter(1,this)">Đang xuất</button>
+                        <button class="ftab" onclick="setFilter(2,this)">Quá giờ</button>
+                        <button class="ftab" onclick="setFilter(3,this)">Hoàn thành</button>
+                        <button class="ftab" onclick="setFilter(4,this)">Đã rời kho</button>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <!-- Sắp xếp theo giờ phân công -->
+                        <select id="sort-select" onchange="renderTable();updateResetBtnXuat();"
+                                style="background:var(--surface2);border:1px solid var(--border);
+                                       border-radius:3px;padding:4px 10px;color:var(--text-bright);
+                                       font-size:11px;font-family:inherit;outline:none;cursor:pointer;">
+                            <option value="none">-- Sắp xếp --</option>
+                            <option value="newest">Muộn nhất</option>
+                            <option value="oldest">Sớm nhất</option>
+                        </select>
+                        <!-- Tìm kiếm biển số -->
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <i class="bi bi-search"
+                               style="position:absolute;left:8px;font-size:12px;color:var(--text-dim);pointer-events:none;"></i>
+                            <input type="text" id="search-input"
+                                   oninput="renderTable();updateResetBtnXuat();"
+                                   placeholder="Tìm biển số..."
+                                   style="background:var(--surface2);border:1px solid var(--border);
+                                          border-radius:3px;padding:4px 10px 4px 28px;color:var(--text-bright);
+                                          font-size:11px;font-family:inherit;outline:none;width:160px;"
+                                   onfocus="this.style.borderColor='var(--gold)'"
+                                   onblur="this.style.borderColor='var(--border)'" />
+                        </div>
+                        <button id="btn-reset-xuat" onclick="resetFilterXuat()"
+                                style="display:none;align-items:center;gap:5px;background:transparent;
+                                       border:1px solid var(--border);border-radius:3px;padding:4px 10px;
+                                       color:var(--text-dim);font-size:10px;font-weight:700;cursor:pointer;
+                                       font-family:inherit;transition:all .15s;white-space:nowrap;">
+                            Reset <i class="bi bi-x-lg" style="font-size:11px;"></i>
+                        </button>
+                    </div>
                 </div>
                 <div style="flex:1;min-height:300px;overflow-y:auto;">
                     <div class="table-wrap">
@@ -1614,7 +1648,8 @@
 
         conn.on('UpdateBangTongHopXuat', function() { loadPhieu(); });
         conn.on('ReceivedChitietXuat', function() { loadPhieu(); });
-
+        conn.on('Receivedxuat', function() { reloadAll(); });
+        conn.on('ReceivedXuat', function() { reloadAll(); });
         conn.start().then(function() {
             document.getElementById('sig-dot').classList.add('on');
             document.getElementById('sig-text').textContent = 'Realtime';
@@ -1641,27 +1676,50 @@
             } catch(e) {}
         }
 
+        // ── PHÂN TRANG ──
+        let currentPageXuat = 1;
+        let rowsPerPageXuat = 10;
+        let filteredDataXuat = [];
+
         function renderTable() {
-            var filtered = curFilter === 'all' ? phieuData : phieuData.filter(p => (p.trangThai ?? p.TrangThai) == curFilter);
+            let filtered = curFilter === 'all' ? phieuData : phieuData.filter(p => (p.trangThai ?? p.TrangThai) == curFilter);
+            const keyword = document.getElementById('search-input')?.value?.trim().toLowerCase() ?? '';
+            if (keyword) filtered = filtered.filter(p => (p.bienSoXe ?? p.BienSoXe ?? '').toLowerCase().includes(keyword));
+            const sort = document.getElementById('sort-select')?.value ?? 'none';
+            if (sort === 'newest') {
+                filtered = [...filtered].sort((a, b) => new Date(b.thoiGianPhanCong??b.ThoiGianPhanCong??0) - new Date(a.thoiGianPhanCong??a.ThoiGianPhanCong??0));
+            } else if (sort === 'oldest') {
+                filtered = [...filtered].sort((a, b) => new Date(a.thoiGianPhanCong??a.ThoiGianPhanCong??0) - new Date(b.thoiGianPhanCong??b.ThoiGianPhanCong??0));
+            }
+            filteredDataXuat = filtered;
+            currentPageXuat = Math.min(currentPageXuat, Math.max(1, Math.ceil(filtered.length / rowsPerPageXuat)));
+            renderTablePage();
+            renderPaginationXuat();
+        }
+
+        function renderTablePage() {
+            const filtered = filteredDataXuat;
+            const start = (currentPageXuat - 1) * rowsPerPageXuat;
+            const paged = filtered.slice(start, start + rowsPerPageXuat);
             document.getElementById('phieu-count').textContent = filtered.length + ' phiếu';
-            var tbody = document.getElementById('phieu-tbody');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có phiếu xuất hôm nay</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(p => {
-                var id        = p.id         ?? p.Id;
-                var tenCua    = p.tenCua     ?? p.TenCua     ?? '--';
-                var bienSoXe  = p.bienSoXe   ?? p.BienSoXe   ?? '--';
-                var tenTaiXe  = p.tenTaiXe   ?? p.TenTaiXe   ?? '--';
-                var trangThai = p.trangThai  ?? p.TrangThai  ?? 0;
-                var vaoCua    = p.thoiGianVaoCua  ?? p.ThoiGianVaoCua;
-                var gioiHan   = p.thoiGianGioiHan ?? p.ThoiGianGioiHan;
-                var hangHoas  = p.hangHoas   ?? p.HangHoas   ?? [];
-                var hangStr = hangHoas.length
+            const tbody = document.getElementById('phieu-tbody');
+            if (!paged.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-cell">Chưa có phiếu xuất hôm nay</td></tr>'; return; }
+            tbody.innerHTML = paged.map(p => {
+                const id        = p.id         ?? p.Id;
+                const tenCua    = p.tenCua     ?? p.TenCua     ?? '--';
+                const bienSoXe  = p.bienSoXe   ?? p.BienSoXe   ?? '--';
+                const tenTaiXe  = p.tenTaiXe   ?? p.TenTaiXe   ?? '--';
+                const trangThai = p.trangThai  ?? p.TrangThai  ?? 0;
+                const vaoCua    = p.thoiGianVaoCua  ?? p.ThoiGianVaoCua;
+                const gioiHan   = p.thoiGianGioiHan ?? p.ThoiGianGioiHan;
+                const hangHoas  = p.hangHoas   ?? p.HangHoas   ?? [];
+                const hangStr = hangHoas.length
                     ? hangHoas.map(h => '<span class="htag"><span style="color:var(--gold2);">'+(h.chuaBG??h.ChuaBG??0)+'</span>/'+(h.daBG??h.DaBG??0)+' '+(h.donVi??h.DonVi??'--')+'</span>').join('')
                     : '<span style="color:var(--text-dim);">--</span>';
-                var gioVao = vaoCua ? new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
-                var conLai = '—';
+                const gioVao = vaoCua ? new Date(vaoCua).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) : '--:--';
+                let conLai = '—';
                 if (trangThai < 3 && gioiHan) {
-                    var diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
+                    const diff = Math.round((new Date(gioiHan) - new Date()) / 60000);
                     conLai = diff > 0 ? diff + ' ph' : '<span style="color:var(--red);font-weight:700;">Quá hạn</span>';
                 }
                 return '<tr>' +
@@ -1671,13 +1729,54 @@
                     '<td><span class="sbadge tt-'+trangThai+'">'+(ttLabels[trangThai]||'--')+'</span></td>' +
                     '<td style="color:var(--text-dim);">'+gioVao+'</td>' +
                     '<td>'+conLai+'</td>' +
-                   '<td>' +
+                    '<td>' +
                     '<button class="btn-chitiet" onclick="xemChiTiet('+id+')">Chi tiết</button>' +
                     (trangThai<=2?'<button class="btn-sua" onclick="suaPhieu('+id+')">Sửa</button>':'') +
                     (trangThai<=1?'<button class="btn-huy" onclick="huyPhieu('+id+')">Hủy</button>':'') +
                     '</td>' +
                     '</tr>';
             }).join('');
+        }
+
+        function renderPaginationXuat() {
+            const total = filteredDataXuat.length;
+            const totalPages = Math.max(1, Math.ceil(total / rowsPerPageXuat));
+            const start = (currentPageXuat - 1) * rowsPerPageXuat + 1;
+            const end = Math.min(currentPageXuat * rowsPerPageXuat, total);
+            let el = document.getElementById('pg-xuat');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'pg-xuat';
+                el.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);';
+                document.getElementById('phieu-tbody').closest('table').parentElement.after(el);
+            }
+            el.innerHTML = `
+                <span>${total > 0 ? `${start}–${end} / ${total} phiếu` : '0 phiếu'}</span>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span style="font-size:10px;">Hàng/trang:</span>
+                    <select onchange="rowsPerPageXuat=parseInt(this.value);currentPageXuat=1;renderTablePage();renderPaginationXuat();"
+                        style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px 6px;color:var(--text-bright);font-size:10px;font-family:inherit;outline:none;cursor:pointer;">
+                        ${[10,20,50].map(n=>`<option value="${n}"${n===rowsPerPageXuat?' selected':''}>${n}</option>`).join('')}
+                    </select>
+                    <button onclick="if(currentPageXuat>1){currentPageXuat--;renderTablePage();renderPaginationXuat();}"
+                        style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px 8px;color:var(--text-dim);font-size:11px;cursor:pointer;font-family:inherit;"
+                        ${currentPageXuat<=1?'disabled':''}>‹</button>
+                    ${pageRangeXuat(currentPageXuat, totalPages).map(p =>
+                        p === '...' ? `<span style="color:var(--text-dim);padding:0 2px;">…</span>`
+                        : `<button onclick="currentPageXuat=${p};renderTablePage();renderPaginationXuat();"
+                            style="background:${p===currentPageXuat?'var(--gold)':'var(--surface2)'};border:1px solid ${p===currentPageXuat?'var(--gold)':'var(--border)'};border-radius:3px;padding:3px 8px;color:${p===currentPageXuat?'#0a0e18':'var(--text-bright)'};font-size:11px;cursor:pointer;font-family:inherit;font-weight:${p===currentPageXuat?'700':'400'};">${p}</button>`
+                    ).join('')}
+                    <button onclick="if(currentPageXuat<${totalPages}){currentPageXuat++;renderTablePage();renderPaginationXuat();}"
+                        style="background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:3px 8px;color:var(--text-dim);font-size:11px;cursor:pointer;font-family:inherit;"
+                        ${currentPageXuat>=totalPages?'disabled':''}>›</button>
+                </div>`;
+        }
+
+        function pageRangeXuat(cur, total) {
+            if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+            if (cur <= 4) return [1, 2, 3, 4, 5, '...', total];
+            if (cur >= total - 3) return [1, '...', total-4, total-3, total-2, total-1, total];
+            return [1, '...', cur-1, cur, cur+1, '...', total];
         }
 
         function updateStats() {
@@ -1689,10 +1788,30 @@
 
         function setFilter(val,btn) {
             curFilter=val;
+            currentPageXuat=1;
             document.querySelectorAll('.filter-tabs .ftab').forEach(b=>b.classList.remove('active'));
-            btn.classList.add('active'); renderTable();
+            btn.classList.add('active');
+            renderTable();
+            updateResetBtnXuat();
+        }
+        function updateResetBtnXuat() {
+            const hasSearch = document.getElementById('search-input').value.trim().length > 0;
+            const hasSort = document.getElementById('sort-select').value !== 'none';
+            const hasFilter = curFilter !== 'all';
+            const btn = document.getElementById('btn-reset-xuat');
+            btn.style.display = (hasSearch || hasSort || hasFilter) ? 'inline-flex' : 'none';
         }
 
+        function resetFilterXuat() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('sort-select').value = 'none';
+            curFilter = 'all';
+            currentPageXuat = 1;
+            document.querySelectorAll('.filter-tabs .ftab').forEach(b => b.classList.remove('active'));
+            document.querySelector('.ftab[onclick="setFilter(\'all\',this)"]').classList.add('active');
+            document.getElementById('btn-reset-xuat').style.display = 'none';
+            renderTable();
+        }
         function updateCuaFromPhieu() {
             document.querySelectorAll('.cua-card').forEach(c => {
                 c.className='cua-card';
@@ -1883,7 +2002,7 @@
                 '</div>' +
                 '<div style="display:flex;justify-content:flex-end;gap:8px;border-top:1px solid var(--border);padding-top:12px;">' +
                     '<button class="btn-reset" onclick="closeModal()">Hủy bỏ</button>' +
-                    '<button class="btn-submit" onclick="luuSuaPhieu('+id+')">💾 Lưu thay đổi</button>' +
+                    '<button class="btn-submit" onclick="luuSuaPhieu('+id+', this)"><i class="bi bi-floppy" style="font-size:12px;"></i> Lưu thay đổi</button>' +
                 '</div>';
             document.getElementById('modal-overlay').style.display = 'block';
             document.getElementById('modal-box').style.display = 'block';
@@ -1981,7 +2100,7 @@
             list.appendChild(row);
         }
 
-        async function luuSuaPhieu(id) {
+        async function luuSuaPhieu(id,btn) {
             var hangs = [];
             document.querySelectorAll('.sua-hang-row').forEach(r => {
                 var inputs = r.querySelectorAll('input');
@@ -1996,8 +2115,9 @@
                 ghiChu: document.getElementById('sua-ghichu').value || null,
                 hangHoas: hangs
             };
-            var btn = event.target;
-            btn.disabled = true; btn.textContent = '⏳ Đang lưu...';
+           
+             btn.disabled = true;
+             btn.innerHTML = '⏳ Đang lưu...';
             try {
                 var res = await fetch('@Url.Action("SuaPhanCong", "DieuDoXuat")', {
                     method: 'POST',
@@ -2008,7 +2128,10 @@
                 if (res.ok) { closeModal(); await reloadAll(); }
                 else { alert('❌ ' + (data.message || 'Lỗi lưu!')); }
             } catch(e) { alert('❌ Lỗi kết nối'); }
-            finally { btn.disabled = false; btn.textContent = '💾 Lưu thay đổi'; }
+            finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-floppy" style="font-size:12px;"></i> Lưu thay đổi';
+            }
         }
 
         async function huyPhieu(id){

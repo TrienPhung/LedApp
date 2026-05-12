@@ -2,6 +2,7 @@
 using LedApp.Hubs;
 using LedApp.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.EventArgs;
@@ -41,14 +42,24 @@ namespace LedApp.SubscribeTableDependencies
             {
                 using var scope = _scopeFactory.CreateScope();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-
                 var xuat = context.Xuats
+                    .Include(x => x.Xe)
                     .Where(s => s.Id == e.Entity.Id)
                     .FirstOrDefault();
-
                 if (xuat != null)
                 {
-                    _hubContext.Clients.All.SendAsync("Receivedxuat", xuat, xuat.CuaXuatId);
+                    var dto = new
+                    {
+                        id = xuat.Id,
+                        cuaXuatId = xuat.CuaXuatId,
+                        xeId = xuat.XeId,
+                        bienSoXe = xuat.Xe?.BienSoXe ?? "--",
+                        trangThai = xuat.TrangThai,
+                        thoiGianVaoCua = xuat.ThoiGianVaoCua,
+                        thoiGianGioiHan = xuat.ThoiGianGioiHan,
+                        thoiGianHoanThanh = xuat.ThoiGianHoanThanh
+                    };
+                    _hubContext.Clients.All.SendAsync("Receivedxuat", dto, xuat.CuaXuatId);
                 }
             }
         }

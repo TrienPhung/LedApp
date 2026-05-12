@@ -4,347 +4,450 @@
 }
 
 <style>
-    .db-wrap {
+    /* ── APEX TOKENS ── */
+    :root {
+        --apex-bg: #f9fafb;
+        --apex-surface: #ffffff;
+        --apex-border: #e5e7eb;
+        --apex-border-light: #f3f4f6;
+        --apex-text-primary: #111827;
+        --apex-text-secondary: #6b7280;
+        --apex-text-muted: #9ca3af;
+        --apex-green: #16a34a;
+        --apex-green-bg: #dcfce7;
+        --apex-green-soft: #f0fdf4;
+        --apex-blue: #2563eb;
+        --apex-blue-bg: #dbeafe;
+        --apex-blue-soft: #eff6ff;
+        --apex-orange: #d97706;
+        --apex-orange-bg: #fef3c7;
+        --apex-orange-soft: #fffbeb;
+        --apex-red: #dc2626;
+        --apex-red-bg: #fee2e2;
+        --apex-red-soft: #fef2f2;
+        --apex-purple: #7c3aed;
+        --apex-purple-bg: #ede9fe;
+        --apex-radius: 12px;
+        --apex-shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+        --apex-shadow-md: 0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px -1px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --apex-bg: #0f172a;
+        --apex-surface: #1e293b;
+        --apex-border: #334155;
+        --apex-border-light: #1e293b;
+        --apex-text-primary: #f1f5f9;
+        --apex-text-secondary: #94a3b8;
+        --apex-text-muted: #64748b;
+        --apex-green-soft: #052e16;
+        --apex-blue-soft: #0c1a3a;
+        --apex-orange-soft: #1c1008;
+        --apex-red-soft: #1c0808;
+        --apex-purple-bg: #1e0a4a;
+    }
+
+    .apex-wrap {
+        padding: 0 0 32px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        padding: 4px 0 20px;
+        gap: 24px;
     }
 
-    .stat-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
+    /* ── PAGE HEADER ── */
+    .apex-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding-top: 4px;
     }
 
-    .stat-card {
-        background: #fff;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
-        padding: 18px 20px;
+    .apex-header-left h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--apex-text-primary);
+        margin: 0 0 4px;
+        letter-spacing: -.3px;
+    }
+
+    .apex-header-left p {
+        font-size: 13px;
+        color: var(--apex-text-secondary);
+        margin: 0;
+    }
+
+    .apex-header-right {
         display: flex;
         align-items: center;
-        gap: 16px;
-        transition: box-shadow .2s;
-        position: relative;
-        overflow: hidden;
+        gap: 8px;
     }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            border-radius: 12px 12px 0 0;
+    .btn-apex {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid var(--apex-border);
+        background: var(--apex-surface);
+        color: var(--apex-text-secondary);
+        transition: all .15s;
+        text-decoration: none;
+    }
+
+        .btn-apex:hover {
+            background: var(--apex-border-light);
+            color: var(--apex-text-primary);
         }
 
-        .stat-card.blue::before {
-            background: #3b82f6;
+        .btn-apex.primary {
+            background: var(--apex-green);
+            border-color: var(--apex-green);
+            color: #fff;
         }
 
-        .stat-card.green::before {
-            background: #22c55e;
+            .btn-apex.primary:hover {
+                background: #15803d;
+            }
+
+    .apex-timestamp {
+        font-size: 11.5px;
+        color: var(--apex-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* ── STAT CARDS ── */
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .apex-card {
+        background: var(--apex-surface);
+        border: 1px solid var(--apex-border);
+        border-radius: var(--apex-radius);
+        padding: 20px 22px 0;
+        box-shadow: var(--apex-shadow);
+        transition: box-shadow .2s, transform .2s;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .apex-card:hover {
+            box-shadow: var(--apex-shadow-md);
+            transform: translateY(-1px);
         }
 
-        .stat-card.orange::before {
-            background: #f59e0b;
-        }
+    .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
 
-        .stat-card.red::before {
-            background: #ef4444;
-        }
+    .card-label {
+        font-size: 13px;
+        color: var(--apex-text-secondary);
+        font-weight: 500;
+    }
 
-        .stat-card.purple::before {
-            background: #8b5cf6;
-        }
-
-        .stat-card.cyan::before {
-            background: #06b6d4;
-        }
-
-        .stat-card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,.08);
-        }
-
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
+    .card-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 16px;
         flex-shrink: 0;
     }
 
-        .stat-icon.blue {
-            background: #eff6ff;
+        .card-icon.green {
+            background: var(--apex-green-soft);
         }
 
-        .stat-icon.green {
-            background: #f0fdf4;
+        .card-icon.blue {
+            background: var(--apex-blue-soft);
         }
 
-        .stat-icon.orange {
-            background: #fffbeb;
+        .card-icon.orange {
+            background: var(--apex-orange-soft);
         }
 
-        .stat-icon.red {
-            background: #fef2f2;
+        .card-icon.red {
+            background: var(--apex-red-soft);
         }
 
-        .stat-icon.purple {
-            background: #f5f3ff;
-        }
-
-        .stat-icon.cyan {
-            background: #ecfeff;
-        }
-
-    .stat-info {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .stat-num {
-        font-size: 28px;
+    .card-num {
+        font-size: 30px;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--apex-text-primary);
         line-height: 1;
+        letter-spacing: -1px;
         font-variant-numeric: tabular-nums;
+        margin-bottom: 8px;
     }
 
-    .stat-label {
+    .card-sub {
+        display: flex;
+        align-items: center;
+        gap: 6px;
         font-size: 12px;
-        color: #64748b;
-        margin-top: 4px;
+        color: var(--apex-text-secondary);
+        margin-bottom: 16px;
+        flex-wrap: wrap;
     }
 
-    .stat-sub {
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        padding: 2px 7px;
+        border-radius: 20px;
         font-size: 11px;
-        color: #94a3b8;
-        margin-top: 2px;
+        font-weight: 600;
     }
 
-    .grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        .chip.up {
+            background: var(--apex-green-bg);
+            color: var(--apex-green);
+        }
+
+        .chip.down {
+            background: var(--apex-red-bg);
+            color: var(--apex-red);
+        }
+
+        .chip.neutral {
+            background: var(--apex-border-light);
+            color: var(--apex-text-muted);
+        }
+    /* Sparkline ở bottom card */
+    .card-sparkline {
+        margin: 0 -22px;
+        height: 52px;
     }
 
-    .grid-3 {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 14px;
+        .card-sparkline canvas {
+            width: 100% !important;
+        }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        color: var(--apex-text-muted);
+        margin-bottom: 12px;
     }
 
-    .panel {
-        background: #fff;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
-        padding: 18px 20px;
+    /* ── PANEL ── */
+    .apex-panel {
+        background: var(--apex-surface);
+        border: 1px solid var(--apex-border);
+        border-radius: var(--apex-radius);
+        box-shadow: var(--apex-shadow);
+        overflow: hidden;
     }
 
-    .panel-head {
+    .panel-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
+        padding: 18px 22px 14px;
+        border-bottom: 1px solid var(--apex-border-light);
     }
 
     .panel-title {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
-        color: #1e293b;
-        letter-spacing: .3px;
+        color: var(--apex-text-primary);
     }
 
-    .panel-badge {
-        font-size: 11px;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-weight: 600;
+    .panel-subtitle {
+        font-size: 12px;
+        color: var(--apex-text-muted);
+        margin-top: 1px;
     }
 
-    .badge-blue {
-        background: #eff6ff;
-        color: #3b82f6;
+    .panel-body {
+        padding: 18px 22px;
     }
 
-    .badge-green {
-        background: #f0fdf4;
-        color: #16a34a;
-    }
-
-    .badge-orange {
-        background: #fffbeb;
-        color: #d97706;
-    }
-
-    .badge-red {
-        background: #fef2f2;
-        color: #dc2626;
-    }
-
-    /* KPI */
-    .kpi-row {
+    /* ── CHART SECTION ── */
+    .chart-main-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
+        grid-template-columns: 1fr 380px;
+        gap: 16px;
+        align-items: start;
     }
 
-    .kpi-box {
-        background: #f8fafc;
-        border: 1px solid #e8edf2;
-        border-radius: 10px;
-        padding: 14px 16px;
-        text-align: center;
+    .chart-tabs {
+        display: flex;
+        gap: 4px;
     }
 
-    .kpi-num {
-        font-size: 24px;
+    .chart-tab {
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        color: var(--apex-text-secondary);
+        background: none;
+        transition: all .15s;
+    }
+
+        .chart-tab.active {
+            background: var(--apex-text-primary);
+            color: var(--apex-surface);
+            border-color: var(--apex-text-primary);
+        }
+
+        .chart-tab:not(.active):hover {
+            background: var(--apex-border-light);
+            border-color: var(--apex-border);
+        }
+
+    .chart-area {
+        height: 230px;
+        position: relative;
+    }
+
+    .chart-legend {
+        display: flex;
+        gap: 16px;
+        font-size: 12px;
+        color: var(--apex-text-secondary);
+    }
+
+    .legend-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    /* ── DONUT + PROGRESS ── */
+    .donut-wrap {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 16px;
+    }
+
+    .donut-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .donut-center-num {
+        font-size: 22px;
         font-weight: 700;
+        color: var(--apex-text-primary);
+        line-height: 1;
     }
 
-    .kpi-lbl {
-        font-size: 11px;
-        color: #64748b;
-        margin-top: 4px;
-    }
-
-    .kpi-sub {
+    .donut-center-lbl {
         font-size: 10px;
-        color: #94a3b8;
+        color: var(--apex-text-muted);
         margin-top: 2px;
     }
 
-    /* Cửa nhập */
-    .cua-list {
+    .donut-legend-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
         display: flex;
         flex-direction: column;
         gap: 8px;
     }
 
-    .cua-item {
+    .donut-legend-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 14px;
-        background: #f8fafc;
-        border-radius: 8px;
-        border-left: 3px solid #e2e8f0;
-    }
-
-        .cua-item.active-nhap {
-            border-left-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .cua-item.active-bang {
-            border-left-color: #22c55e;
-            background: #f0fdf4;
-        }
-
-        .cua-item.active-qua {
-            border-left-color: #ef4444;
-            background: #fef2f2;
-        }
-
-    .cua-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: #1e293b;
-    }
-
-    .cua-plate {
         font-size: 12px;
-        color: #3b82f6;
-        font-weight: 700;
-        margin-top: 2px;
     }
 
-    .cua-empty {
-        font-size: 11px;
-        color: #94a3b8;
-        margin-top: 2px;
+    .donut-legend-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--apex-text-secondary);
     }
 
-    .cua-badge {
-        font-size: 10px;
-        font-weight: 700;
-        padding: 3px 10px;
-        border-radius: 20px;
-        white-space: nowrap;
+    .donut-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
     }
 
-    .cb-wait {
-        background: #eff6ff;
-        color: #3b82f6;
+    .donut-legend-pct {
+        font-weight: 600;
+        color: var(--apex-text-primary);
     }
 
-    .cb-going {
-        background: #f0fdf4;
-        color: #16a34a;
+    /* ── PROGRESS ── */
+    .prog-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
     }
 
-    .cb-over {
-        background: #fef2f2;
-        color: #dc2626;
-    }
-
-    .cb-idle {
-        background: #f1f5f9;
-        color: #94a3b8;
-    }
-
-    /* Chart */
-    .chart-wrap {
-        position: relative;
-        height: 200px;
-    }
-
-    /* Progress */
     .prog-item {
-        margin-bottom: 14px;
     }
 
     .prog-head {
         display: flex;
         justify-content: space-between;
-        font-size: 12px;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
+        font-size: 12.5px;
     }
 
     .prog-lbl {
-        color: #475569;
-        font-weight: 600;
+        font-weight: 500;
+        color: var(--apex-text-primary);
     }
 
-    .prog-val {
-        color: #94a3b8;
+    .prog-pct {
+        font-weight: 600;
+        color: var(--apex-text-secondary);
     }
 
     .prog-track {
-        height: 8px;
-        background: #f1f5f9;
-        border-radius: 4px;
+        height: 7px;
+        background: var(--apex-border-light);
+        border-radius: 99px;
         overflow: hidden;
     }
 
     .prog-bar {
         height: 100%;
-        border-radius: 4px;
-        transition: width .8s ease;
+        border-radius: 99px;
+        transition: width .8s cubic-bezier(.4,0,.2,1);
     }
 
-        .prog-bar.blue {
-            background: #3b82f6;
+        .prog-bar.green {
+            background: var(--apex-green);
         }
 
-        .prog-bar.green {
-            background: #22c55e;
+        .prog-bar.blue {
+            background: var(--apex-blue);
         }
 
         .prog-bar.orange {
@@ -352,212 +455,625 @@
         }
 
         .prog-bar.red {
-            background: #ef4444;
+            background: var(--apex-red);
         }
 
-    /* Refresh */
-    .refresh-bar {
+    .prog-sub {
+        font-size: 11px;
+        color: var(--apex-text-muted);
+        margin-top: 3px;
+    }
+
+    /* ── BOTTOM GRID ── */
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    /* ── TABLE xe chờ ── */
+    .apex-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .apex-table th {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            color: var(--apex-text-muted);
+            padding: 0 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--apex-border);
+        }
+
+            .apex-table th:first-child {
+                padding-left: 0;
+            }
+
+        .apex-table td {
+            padding: 12px 12px;
+            border-bottom: 1px solid var(--apex-border-light);
+            font-size: 13px;
+            color: var(--apex-text-primary);
+            vertical-align: middle;
+        }
+
+            .apex-table td:first-child {
+                padding-left: 0;
+            }
+
+        .apex-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .apex-table tbody tr {
+            transition: background .12s;
+            cursor: default;
+        }
+
+            .apex-table tbody tr:hover td {
+                background: var(--apex-border-light);
+            }
+
+    /* Avatar initials */
+    .av {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .vehicle-row {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        font-size: 11px;
-        color: #94a3b8;
-        padding: 0 2px;
+        gap: 10px;
     }
 
-    .btn-refresh {
-        background: none;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 4px 12px;
-        font-size: 11px;
-        color: #64748b;
-        cursor: pointer;
-        transition: all .15s;
+    .vehicle-plate {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--apex-text-primary);
+        font-family: 'Courier New', monospace;
+        letter-spacing: .5px;
     }
 
-        .btn-refresh:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
+    .vehicle-sub {
+        font-size: 11px;
+        color: var(--apex-text-muted);
+    }
+
+    /* Status badge */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+        .badge.green {
+            background: var(--apex-green-bg);
+            color: var(--apex-green);
         }
 
-    /* dark mode */
-    body.dark-mode .stat-card,
-    body.dark-mode .panel,
-    body.dark-mode .kpi-box {
-        background: #1a1a27 !important;
-        border-color: #2a2a3d !important;
+        .badge.blue {
+            background: var(--apex-blue-bg);
+            color: var(--apex-blue);
+        }
+
+        .badge.orange {
+            background: var(--apex-orange-bg);
+            color: var(--apex-orange);
+        }
+
+        .badge.red {
+            background: var(--apex-red-bg);
+            color: var(--apex-red);
+        }
+
+        .badge.gray {
+            background: var(--apex-border-light);
+            color: var(--apex-text-muted);
+        }
+
+    /* ── TIMELINE ── */
+    .timeline {
+        display: flex;
+        flex-direction: column;
     }
 
-    body.dark-mode .stat-num, body.dark-mode .panel-title, body.dark-mode .cua-name {
-        color: #e0e0e0 !important;
+    .tl-item {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--apex-border-light);
+        position: relative;
     }
 
-    body.dark-mode .kpi-box {
-        background: #222235 !important;
+        .tl-item:last-child {
+            border-bottom: none;
+        }
+
+    .tl-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        background: var(--apex-border-light);
     }
 
-    body.dark-mode .cua-item {
-        background: #222235 !important;
+    .tl-body {
+        flex: 1;
+        min-width: 0;
     }
 
-    body.dark-mode .prog-track {
-        background: #2a2a3d !important;
+    .tl-title {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--apex-text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    body.dark-mode .btn-refresh {
-        border-color: #2a2a3d;
-        color: #888;
+    .tl-desc {
+        font-size: 11.5px;
+        color: var(--apex-text-secondary);
+        margin-top: 1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tl-time {
+        font-size: 11px;
+        color: var(--apex-text-muted);
+        white-space: nowrap;
+        margin-top: 2px;
+    }
+
+    /* ── KPI mini row ── */
+    .kpi-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .kpi-mini {
+        background: var(--apex-surface);
+        border: 1px solid var(--apex-border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: var(--apex-shadow);
+        text-align: center;
+    }
+
+    .kpi-mini-num {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -.5px;
+    }
+
+    .kpi-mini-lbl {
+        font-size: 11.5px;
+        color: var(--apex-text-secondary);
+        margin-top: 5px;
+    }
+
+    .kpi-mini-sub {
+        font-size: 10.5px;
+        color: var(--apex-text-muted);
+        margin-top: 2px;
+    }
+
+    /* ── NV stats ── */
+    .nv-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--apex-border-light);
+    }
+
+        .nv-item:last-child {
+            border-bottom: none;
+        }
+
+    .nv-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .nv-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--apex-text-primary);
+    }
+
+    .nv-sub {
+        font-size: 11px;
+        color: var(--apex-text-muted);
+        margin-top: 1px;
+    }
+
+    .nv-num {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--apex-text-primary);
+        text-align: right;
+    }
+
+    .nv-unit {
+        font-size: 10px;
+        color: var(--apex-text-muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @@media (max-width: 1100px) {
+        .chart-main-grid, .bottom-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kpi-mini-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    }
+
+    /* ── DARK OVERRIDES ── */
+    body.dark-mode .apex-card,
+    body.dark-mode .apex-panel,
+    body.dark-mode .kpi-mini {
+        background: var(--apex-surface) !important;
+        border-color: var(--apex-border) !important;
+    }
+
+    body.dark-mode .apex-table tbody tr:hover td {
+        background: rgba(255,255,255,.03);
     }
 </style>
 
-<div class="db-wrap">
+<div class="apex-wrap">
 
-    <!-- REFRESH BAR -->
-    <div class="refresh-bar">
-        <span>📊 Dashboard — Dữ liệu từ DB — Cập nhật lúc <span id="cap-nhat">--:--:--</span></span>
-        <button class="btn-refresh" onclick="loadStats()">⟳ Làm mới</button>
+    <!-- ── HEADER ── -->
+    <div class="apex-header">
+        <div class="apex-header-left">
+            <h1>Bảng điều khiển</h1>
+            <p>Chào mừng trở lại. Dưới đây là hoạt động kho hôm nay.</p>
+        </div>
+        <div class="apex-header-right">
+            <span class="apex-timestamp">⏱ Cập nhật lúc <strong id="cap-nhat">--:--:--</strong></span>
+            <button class="btn-apex" onclick="loadStats()">↻ Làm mới</button>
+            <a href="@Url.Action("ExportExcel","Dashboard")" class="btn-apex primary">⬇ Xuất CSV</a>
+        </div>
     </div>
 
-    <!-- ROW 1: STAT CARDS nhập/xuất hôm nay -->
+    <!-- ── STAT CARDS ── -->
     <div>
-        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">
-            📋 Phiếu hôm nay
-        </div>
-        <div class="stat-row">
-            <div class="stat-card blue">
-                <div class="stat-icon blue">📥</div>
-                <div class="stat-info">
-                    <div class="stat-num" id="nhap-tong">--</div>
-                    <div class="stat-label">Tổng phiếu nhập</div>
-                    <div class="stat-sub" id="nhap-sub"></div>
+        <div class="section-label">📋 Phiếu hôm nay</div>
+        <div class="stat-grid">
+            <!-- Tổng nhập -->
+            <div class="apex-card">
+                <div class="card-top">
+                    <div class="card-label">Tổng phiếu nhập</div>
+                    <div class="card-icon blue">📥</div>
                 </div>
+                <div class="card-num" id="nhap-tong">--</div>
+                <div class="card-sub">
+                    <span class="chip neutral" id="nhap-dang-chip">-- đang nhập</span>
+                    <span id="nhap-qua-chip2"></span>
+                </div>
+                <div class="card-sparkline"><canvas id="spark-nhap"></canvas></div>
             </div>
-            <div class="stat-card green">
-                <div class="stat-icon green">✅</div>
-                <div class="stat-info">
-                    <div class="stat-num" id="nhap-hoanthanh">--</div>
-                    <div class="stat-label">Nhập hoàn thành</div>
-                    <div class="stat-sub" id="nhap-ht-sub"></div>
+            <!-- Nhập hoàn thành -->
+            <div class="apex-card">
+                <div class="card-top">
+                    <div class="card-label">Nhập hoàn thành</div>
+                    <div class="card-icon green">✅</div>
                 </div>
+                <div class="card-num" id="nhap-ht">--</div>
+                <div class="card-sub">
+                    <span class="chip up" id="nhap-ht-pct">--%</span>
+                    <span>tỉ lệ hoàn thành</span>
+                </div>
+                <div class="card-sparkline"><canvas id="spark-nhap-ht"></canvas></div>
             </div>
-            <div class="stat-card cyan">
-                <div class="stat-icon cyan">📤</div>
-                <div class="stat-info">
-                    <div class="stat-num" id="xuat-tong">--</div>
-                    <div class="stat-label">Tổng phiếu xuất</div>
-                    <div class="stat-sub" id="xuat-sub"></div>
+            <!-- Tổng xuất -->
+            <div class="apex-card">
+                <div class="card-top">
+                    <div class="card-label">Tổng phiếu xuất</div>
+                    <div class="card-icon blue">📤</div>
                 </div>
+                <div class="card-num" id="xuat-tong">--</div>
+                <div class="card-sub">
+                    <span class="chip neutral" id="xuat-dang-chip">-- đang xuất</span>
+                    <span id="xuat-qua-chip2"></span>
+                </div>
+                <div class="card-sparkline"><canvas id="spark-xuat"></canvas></div>
             </div>
-            <div class="stat-card red">
-                <div class="stat-icon red">⚠️</div>
-                <div class="stat-info">
-                    <div class="stat-num" id="canhbao-tong">--</div>
-                    <div class="stat-label">Cảnh báo chưa xử lý</div>
-                    <div class="stat-sub" id="canhbao-sub"></div>
+            <!-- Cảnh báo -->
+            <div class="apex-card">
+                <div class="card-top">
+                    <div class="card-label">Cảnh báo chưa xử lý</div>
+                    <div class="card-icon red">⚠️</div>
                 </div>
+                <div class="card-num" id="canhbao-num">--</div>
+                <div class="card-sub">
+                    <span class="chip down" id="canhbao-chip">-- quá giờ</span>
+                    <span>cần xử lý ngay</span>
+                </div>
+                <div class="card-sparkline"><canvas id="spark-cb"></canvas></div>
             </div>
         </div>
     </div>
 
-    <!-- ROW 2: KPI + Tích lũy -->
+    <!-- ── KPI ROW ── -->
     <div>
-        <div style="font-size:11px;color:#94a3b8;margin-bottom:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">
-            📊 Chỉ số hôm nay & tích lũy
-        </div>
-        <div class="kpi-row">
-            <div class="kpi-box">
-                <div class="kpi-num" id="kpi-nhap-tb" style="color:#3b82f6;">--</div>
-                <div class="kpi-lbl">KPI nhập TB (phút)</div>
-                <div class="kpi-sub">Thời gian bàn giao nhập</div>
+        <div class="section-label">📊 Chỉ số & tích lũy</div>
+        <div class="kpi-mini-grid">
+            <div class="kpi-mini">
+                <div class="kpi-mini-num" id="kpi-nhap" style="color:var(--apex-blue)">--</div>
+                <div class="kpi-mini-lbl">KPI nhập TB</div>
+                <div class="kpi-mini-sub">phút / lần bàn giao</div>
             </div>
-            <div class="kpi-box">
-                <div class="kpi-num" id="kpi-xuat-tb" style="color:#22c55e;">--</div>
-                <div class="kpi-lbl">KPI xuất TB (phút)</div>
-                <div class="kpi-sub">Thời gian bàn giao xuất</div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-num" id="kpi-xuat" style="color:var(--apex-green)">--</div>
+                <div class="kpi-mini-lbl">KPI xuất TB</div>
+                <div class="kpi-mini-sub">phút / lần bàn giao</div>
             </div>
-            <div class="kpi-box">
-                <div class="kpi-num" id="tich-luy-nhap" style="color:#8b5cf6;">--</div>
-                <div class="kpi-lbl">Tổng nhập tích lũy</div>
-                <div class="kpi-sub">Tất cả thời gian</div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-num" id="tl-nhap" style="color:var(--apex-purple)">--</div>
+                <div class="kpi-mini-lbl">Tổng nhập tích lũy</div>
+                <div class="kpi-mini-sub">tất cả thời gian</div>
             </div>
-            <div class="kpi-box">
-                <div class="kpi-num" id="tich-luy-xuat" style="color:#f59e0b;">--</div>
-                <div class="kpi-lbl">Tổng xuất tích lũy</div>
-                <div class="kpi-sub">Tất cả thời gian</div>
+            <div class="kpi-mini">
+                <div class="kpi-mini-num" id="tl-xuat" style="color:var(--apex-orange)">--</div>
+                <div class="kpi-mini-lbl">Tổng xuất tích lũy</div>
+                <div class="kpi-mini-sub">tất cả thời gian</div>
             </div>
         </div>
     </div>
 
-    <!-- ROW 3: Biểu đồ + Cửa nhập -->
-    <div class="grid-3">
-        <div class="panel">
-            <div class="panel-head">
-                <div class="panel-title">📈 Lượt bàn giao theo giờ hôm nay</div>
-                <div style="display:flex;gap:12px;font-size:11px;">
-                    <span style="color:#3b82f6;">● Nhập</span>
-                    <span style="color:#22c55e;">● Xuất</span>
+    <!-- ── CHART + DONUT ── -->
+    <div>
+        <div class="section-label">📈 Biểu đồ bàn giao</div>
+        <div class="chart-main-grid">
+            <!-- Bar chart theo giờ -->
+            <div class="apex-panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Lượt bàn giao theo giờ hôm nay</div>
+                        <div class="panel-subtitle">Cập nhật tự động mỗi 30 giây</div>
+                    </div>
+                    <div style="display:flex;gap:16px;align-items:center;">
+                        <div class="chart-legend">
+                            <span><span class="legend-dot" style="background:#2563eb"></span>Nhập</span>
+                            <span><span class="legend-dot" style="background:#16a34a"></span>Xuất</span>
+                        </div>
+                        <div class="chart-tabs">
+                            <button class="chart-tab active" onclick="switchChart('nhap',this)">Nhập</button>
+                            <button class="chart-tab" onclick="switchChart('xuat',this)">Xuất</button>
+                            <button class="chart-tab" onclick="switchChart('ca2',this)">Cả hai</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="chart-area"><canvas id="chart-banhgiao"></canvas></div>
                 </div>
             </div>
-            <div class="chart-wrap"><canvas id="chart-banhgiao"></canvas></div>
-        </div>
 
-        <div class="panel">
-            <div class="panel-head">
-                <div class="panel-title">🚪 Trạng thái cửa nhập</div>
-                <span class="panel-badge badge-blue" id="cua-active-count">--</span>
-            </div>
-            <div class="cua-list" id="cua-list">
-                <div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px;">Đang tải...</div>
+            <!-- Donut + Progress -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Donut tỉ lệ trạng thái nhập -->
+                <div class="apex-panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Tỉ lệ trạng thái nhập</div>
+                            <div class="panel-subtitle">Phiếu nhập hôm nay</div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="donut-wrap">
+                            <canvas id="chart-donut"></canvas>
+                            <div class="donut-center">
+                                <div class="donut-center-num" id="donut-center-num">--</div>
+                                <div class="donut-center-lbl">Tổng phiếu</div>
+                            </div>
+                        </div>
+                        <ul class="donut-legend-list" id="donut-legend">
+                            <li class="donut-legend-item">
+                                <span class="donut-legend-left"><span class="donut-dot" style="background:#16a34a"></span>Hoàn thành</span>
+                                <span class="donut-legend-pct" id="dl-ht">--%</span>
+                            </li>
+                            <li class="donut-legend-item">
+                                <span class="donut-legend-left"><span class="donut-dot" style="background:#2563eb"></span>Đang bàn giao</span>
+                                <span class="donut-legend-pct" id="dl-dang">--%</span>
+                            </li>
+                            <li class="donut-legend-item">
+                                <span class="donut-legend-left"><span class="donut-dot" style="background:#f59e0b"></span>Chờ vào cửa</span>
+                                <span class="donut-legend-pct" id="dl-cho">--%</span>
+                            </li>
+                            <li class="donut-legend-item">
+                                <span class="donut-legend-left"><span class="donut-dot" style="background:#dc2626"></span>Quá giờ</span>
+                                <span class="donut-legend-pct" id="dl-qua">--%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ROW 4: Tiến độ -->
-    <div class="grid-2">
-        <div class="panel">
-            <div class="panel-head">
-                <div class="panel-title">📥 Tiến độ nhập hôm nay</div>
-                <span class="panel-badge badge-blue" id="nhap-pct-badge">--%</span>
+    <!-- ── PROGRESS TIẾN ĐỘ ── -->
+    <div class="chart-main-grid">
+        <div class="apex-panel">
+            <div class="panel-header">
+                <div>
+                    <div class="panel-title">📥 Tiến độ nhập hôm nay</div>
+                    <div class="panel-subtitle" id="nhap-prog-subtitle">--</div>
+                </div>
+                <span class="badge blue" id="nhap-pct-badge">--%</span>
             </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">✅ Hoàn thành</span><span class="prog-val" id="nhap-prog-ht">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar green" id="nhap-bar-ht" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">📦 Đang bàn giao</span><span class="prog-val" id="nhap-prog-dang">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar blue" id="nhap-bar-dang" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">⏰ Chờ vào cửa</span><span class="prog-val" id="nhap-prog-cho">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar orange" id="nhap-bar-cho" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">🔴 Quá giờ</span><span class="prog-val" id="nhap-prog-qua">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar red" id="nhap-bar-qua" style="width:0%"></div></div>
+            <div class="panel-body">
+                <div class="prog-list">
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">✅ Hoàn thành</span>
+                            <span class="prog-pct" id="nhap-ht-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar green" id="nhap-bar-ht" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">📦 Đang bàn giao</span>
+                            <span class="prog-pct" id="nhap-dang-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar blue" id="nhap-bar-dang" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">⏰ Chờ vào cửa</span>
+                            <span class="prog-pct" id="nhap-cho-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar orange" id="nhap-bar-cho" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">🔴 Quá giờ</span>
+                            <span class="prog-pct" id="nhap-qua-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar red" id="nhap-bar-qua" style="width:0%"></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="panel">
-            <div class="panel-head">
-                <div class="panel-title">📤 Tiến độ xuất hôm nay</div>
-                <span class="panel-badge badge-green" id="xuat-pct-badge">--%</span>
+        <div class="apex-panel">
+            <div class="panel-header">
+                <div>
+                    <div class="panel-title">📤 Tiến độ xuất hôm nay</div>
+                    <div class="panel-subtitle" id="xuat-prog-subtitle">--</div>
+                </div>
+                <span class="badge green" id="xuat-pct-badge">--%</span>
             </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">✅ Hoàn thành</span><span class="prog-val" id="xuat-prog-ht">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar green" id="xuat-bar-ht" style="width:0%"></div></div>
+            <div class="panel-body">
+                <div class="prog-list">
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">✅ Hoàn thành</span>
+                            <span class="prog-pct" id="xuat-ht-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar green" id="xuat-bar-ht" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">📦 Đang bàn giao</span>
+                            <span class="prog-pct" id="xuat-dang-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar blue" id="xuat-bar-dang" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">⏰ Chờ vào cửa</span>
+                            <span class="prog-pct" id="xuat-cho-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar orange" id="xuat-bar-cho" style="width:0%"></div></div>
+                    </div>
+                    <div class="prog-item">
+                        <div class="prog-head">
+                            <span class="prog-lbl">🔴 Quá giờ</span>
+                            <span class="prog-pct" id="xuat-qua-txt">0/0</span>
+                        </div>
+                        <div class="prog-track"><div class="prog-bar red" id="xuat-bar-qua" style="width:0%"></div></div>
+                    </div>
+                </div>
             </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">📦 Đang bàn giao</span><span class="prog-val" id="xuat-prog-dang">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar blue" id="xuat-bar-dang" style="width:0%"></div></div>
+        </div>
+    </div>
+
+    <!-- ── BOTTOM: Xe chờ + Timeline + NV ── -->
+    <div>
+        <div class="section-label">🚚 Hoạt động thực tế</div>
+        <div class="bottom-grid">
+            <!-- Bảng xe đang chờ -->
+            <div class="apex-panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Xe đang chờ xử lý</div>
+                        <div class="panel-subtitle">Các xe chưa hoàn thành, sắp theo hạn giờ</div>
+                    </div>
+                    <span class="badge blue" id="xe-cho-count">-- xe</span>
+                </div>
+                <div class="panel-body" style="padding-top:8px;">
+                    <table class="apex-table">
+                        <thead>
+                            <tr>
+                                <th>Biển số xe</th>
+                                <th>Cửa</th>
+                                <th>Trạng thái</th>
+                                <th>Hạn giờ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="xe-cho-tbody">
+                            <tr><td colspan="4" style="text-align:center;color:var(--apex-text-muted);padding:24px;">Đang tải...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">⏰ Chờ vào cửa</span><span class="prog-val" id="xuat-prog-cho">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar orange" id="xuat-bar-cho" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-                <div class="prog-head"><span class="prog-lbl">🔴 Quá giờ</span><span class="prog-val" id="xuat-prog-qua">0/0</span></div>
-                <div class="prog-track"><div class="prog-bar red" id="xuat-bar-qua" style="width:0%"></div></div>
+
+            <!-- Timeline + NV stats -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+                <!-- Nhân viên top hôm nay -->
+                <div class="apex-panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Top nhân viên hôm nay</div>
+                            <div class="panel-subtitle">Theo số lượng bàn giao</div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top:4px;">
+                        <div id="nv-list">
+                            <div style="text-align:center;color:var(--apex-text-muted);font-size:12px;padding:20px 0;">Đang tải...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cửa nhập status -->
+                <div class="apex-panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">🚪 Trạng thái cửa nhập</div>
+                            <div class="panel-subtitle" id="cua-active-lbl">-- đang hoạt động</div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top:4px;">
+                        <div id="cua-list">
+                            <div style="text-align:center;color:var(--apex-text-muted);font-size:12px;padding:20px 0;">Đang tải...</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -567,136 +1083,356 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        var chart = null;
+        var barChart = null, donutChart = null, sparkCharts = {};
+        var lastData = null;
+        var chartMode = 'ca2';
 
+        // ── COLOR PALETTE ──
+        var COLORS = ['#2563eb','#16a34a','#f59e0b','#dc2626','#7c3aed','#06b6d4','#ec4899','#f97316'];
+        function avatarColor(str) {
+            if (!str) return COLORS[0];
+            var hash = 0;
+            for (var i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            return COLORS[Math.abs(hash) % COLORS.length];
+        }
+        function initials(name) {
+            if (!name) return '?';
+            var parts = name.trim().split(' ').filter(Boolean);
+            if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+            return parts[0].substring(0,2).toUpperCase();
+        }
+        function plateColor(plate) {
+            return avatarColor(plate);
+        }
+        function timeAgo(dt) {
+            if (!dt) return '';
+            var diff = (Date.now() - new Date(dt)) / 1000;
+            if (diff < 60) return 'vừa xong';
+            if (diff < 3600) return Math.floor(diff/60) + ' phút trước';
+            if (diff < 86400) return Math.floor(diff/3600) + ' giờ trước';
+            return Math.floor(diff/86400) + ' ngày trước';
+        }
+        function formatTime(dt) {
+            if (!dt) return '--:--';
+            var d = new Date(dt);
+            return d.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit', hour12:false});
+        }
+        function pct(val, total) {
+            return total > 0 ? Math.min(Math.round(val/total*100), 100) : 0;
+        }
+        function setBar(barId, txtId, val, total) {
+            document.getElementById(barId).style.width = pct(val,total) + '%';
+            document.getElementById(txtId).textContent = val + '/' + total;
+        }
+
+        // ── LOAD ──
         async function loadStats() {
             try {
                 var res = await fetch('@Url.Action("GetStats", "Dashboard")');
                 if (!res.ok) return;
                 var d = await res.json();
+                lastData = d;
                 applyStats(d);
-            } catch(e) { console.error('loadStats:', e); }
+            } catch(e) { console.error(e); }
         }
 
         function applyStats(d) {
-            var now = new Date(d.capNhat);
-            document.getElementById('cap-nhat').textContent = now.toLocaleTimeString('vi-VN',{hour12:false});
+            // timestamp
+            document.getElementById('cap-nhat').textContent =
+                new Date(d.capNhat).toLocaleTimeString('vi-VN',{hour12:false});
 
-            // NHẬP
-            var nh = d.nhap, nhT = nh.tongSo || 0;
-            document.getElementById('nhap-tong').textContent      = nhT;
-            document.getElementById('nhap-hoanthanh').textContent = nh.hoanThanh || 0;
-            document.getElementById('nhap-sub').textContent       = (nh.dangNhap||0) + ' đang nhập · ' + (nh.quaGio||0) + ' quá giờ';
-            document.getElementById('nhap-ht-sub').textContent    = nhT > 0 ? Math.round((nh.hoanThanh||0)/nhT*100) + '% hoàn thành' : '';
+            var nh = d.nhap, xu = d.xuat;
+            var nhT = nh.tongSo || 0, xuT = xu.tongSo || 0;
 
-            var nhPct = nhT > 0 ? Math.round((nh.hoanThanh||0)/nhT*100) : 0;
-            document.getElementById('nhap-pct-badge').textContent = nhPct + '%';
-            setBar('nhap-bar-ht',   'nhap-prog-ht',   nh.hoanThanh||0, nhT);
-            setBar('nhap-bar-dang', 'nhap-prog-dang',  nh.dangNhap||0,  nhT);
-            setBar('nhap-bar-cho',  'nhap-prog-cho',   nh.phanCong||0,  nhT);
-            setBar('nhap-bar-qua',  'nhap-prog-qua',   nh.quaGio||0,    nhT);
-
-            // XUẤT
-            var xu = d.xuat, xuT = xu.tongSo || 0;
+            // STAT CARDS
+            document.getElementById('nhap-tong').textContent = nhT;
+            document.getElementById('nhap-ht').textContent   = nh.hoanThanh || 0;
             document.getElementById('xuat-tong').textContent = xuT;
-            document.getElementById('xuat-sub').textContent  = (xu.dangXuat||0) + ' đang xuất · ' + (xu.quaGio||0) + ' quá giờ';
+            document.getElementById('canhbao-num').textContent = d.canhBao.tongChuaXuLy || 0;
 
-            var xuPct = xuT > 0 ? Math.round((xu.hoanThanh||0)/xuT*100) : 0;
-            document.getElementById('xuat-pct-badge').textContent = xuPct + '%';
-            setBar('xuat-bar-ht',   'xuat-prog-ht',   xu.hoanThanh||0, xuT);
-            setBar('xuat-bar-dang', 'xuat-prog-dang',  xu.dangXuat||0,  xuT);
-            setBar('xuat-bar-cho',  'xuat-prog-cho',   xu.phanCong||0,  xuT);
-            setBar('xuat-bar-qua',  'xuat-prog-qua',   xu.quaGio||0,    xuT);
+            document.getElementById('nhap-dang-chip').textContent = (nh.dangNhap||0) + ' đang nhập';
+            document.getElementById('canhbao-chip').textContent = (d.canhBao.quaGio||0) + ' quá giờ';
 
-            // CẢNH BÁO
-            document.getElementById('canhbao-tong').textContent = d.canhBao.tongChuaXuLy || 0;
-            document.getElementById('canhbao-sub').textContent  = (d.canhBao.quaGio||0) + ' quá giờ nhập';
-
-            // KPI + TÍCH LŨY
-            document.getElementById('kpi-nhap-tb').textContent   = d.kpi.nhapTb + ' ph';
-            document.getElementById('kpi-xuat-tb').textContent   = d.kpi.xuatTb + ' ph';
-            document.getElementById('tich-luy-nhap').textContent = d.tichLuy.tongNhap;
-            document.getElementById('tich-luy-xuat').textContent = d.tichLuy.tongXuat;
-
-            // CỬA NHẬP
-            renderCuaList(d.cuaNhap || []);
-
-            // BIỂU ĐỒ
-            renderChart(d.chart);
-        }
-
-        function setBar(barId, valId, val, tong) {
-            var pct = tong > 0 ? Math.min(Math.round(val/tong*100), 100) : 0;
-            document.getElementById(barId).style.width = pct + '%';
-            document.getElementById(valId).textContent = val + '/' + tong;
-        }
-
-        function renderCuaList(cuas) {
-            var el = document.getElementById('cua-list');
-            var active = cuas.filter(function(c){ return c.nhapHienTai; }).length;
-            document.getElementById('cua-active-count').textContent = active + ' đang hoạt động';
-
-            if (!cuas.length) {
-                el.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:20px;font-size:12px;">Chưa có cửa nhập</div>';
-                return;
+            var nhPct = pct(nh.hoanThanh||0, nhT);
+            document.getElementById('nhap-ht-pct').textContent = nhPct + '%';
+            if (nh.quaGio > 0) {
+                document.getElementById('nhap-qua-chip2').innerHTML =
+                    '<span class="chip down">' + nh.quaGio + ' quá giờ</span>';
+            }
+            if (xu.quaGio > 0) {
+                document.getElementById('xuat-qua-chip2').innerHTML =
+                    '<span class="chip down">' + xu.quaGio + ' quá giờ</span>';
             }
 
-            var ttMap  = {0:'Chờ vào', 1:'Đang bàn giao', 2:'Quá giờ', 3:'Hoàn thành'};
-            var clsMap = {0:'cb-wait', 1:'cb-going', 2:'cb-over', 3:'cb-idle'};
-            var cardMap = {0:'active-nhap', 1:'active-bang', 2:'active-qua', 3:'idle'};
+            // KPI
+            document.getElementById('kpi-nhap').textContent = (d.kpi.nhapTb || 0) + ' ph';
+            document.getElementById('kpi-xuat').textContent = (d.kpi.xuatTb || 0) + ' ph';
+            document.getElementById('tl-nhap').textContent  = d.tichLuy.tongNhap || 0;
+            document.getElementById('tl-xuat').textContent  = d.tichLuy.tongXuat || 0;
 
-            el.innerHTML = cuas.map(function(c) {
-                var nh = c.nhapHienTai;
-                var cardCls  = nh ? (cardMap[nh.trangThai]||'idle') : 'idle';
-                var badgeCls = nh ? (clsMap[nh.trangThai]||'cb-idle') : 'cb-idle';
-                var ttTxt    = nh ? (ttMap[nh.trangThai]||'--') : 'Trống';
-                var gioHan   = '';
-                if (nh && nh.thoiGianGioiHan) {
-                    var dt = new Date(nh.thoiGianGioiHan);
-                    gioHan = ' · hạn ' + dt.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
-                }
-                return '<div class="cua-item ' + cardCls + '">' +
-                    '<div>' +
-                        '<div class="cua-name">' + c.ten + '</div>' +
-                        (nh ? '<div class="cua-plate">' + nh.bienSoXe + gioHan + '</div>'
-                            : '<div class="cua-empty">Không có xe</div>') +
-                    '</div>' +
-                    '<span class="cua-badge ' + badgeCls + '">' + ttTxt + '</span>' +
-                '</div>';
-            }).join('');
+            // PROGRESS NHẬP
+            var nhPctBadge = pct(nh.hoanThanh||0, nhT);
+            document.getElementById('nhap-pct-badge').textContent = nhPctBadge + '%';
+            document.getElementById('nhap-prog-subtitle').textContent =
+                nhT + ' phiếu · ' + (nh.hoanThanh||0) + ' hoàn thành';
+            setBar('nhap-bar-ht',   'nhap-ht-txt',   nh.hoanThanh||0, nhT);
+            setBar('nhap-bar-dang', 'nhap-dang-txt', nh.dangNhap||0,  nhT);
+            setBar('nhap-bar-cho',  'nhap-cho-txt',  nh.phanCong||0,  nhT);
+            setBar('nhap-bar-qua',  'nhap-qua-txt',  nh.quaGio||0,    nhT);
+
+            // PROGRESS XUẤT
+            var xuPct = pct(xu.hoanThanh||0, xuT);
+            document.getElementById('xuat-pct-badge').textContent = xuPct + '%';
+            document.getElementById('xuat-prog-subtitle').textContent =
+                xuT + ' phiếu · ' + (xu.hoanThanh||0) + ' hoàn thành';
+            setBar('xuat-bar-ht',   'xuat-ht-txt',   xu.hoanThanh||0, xuT);
+            setBar('xuat-bar-dang', 'xuat-dang-txt', xu.dangXuat||0,  xuT);
+            setBar('xuat-bar-cho',  'xuat-cho-txt',  xu.phanCong||0,  xuT);
+            setBar('xuat-bar-qua',  'xuat-qua-txt',  xu.quaGio||0,    xuT);
+
+            // DONUT
+            renderDonut(nh, nhT);
+
+            // BAR CHART
+            renderBarChart(d.chart, chartMode);
+
+            // SPARKLINES (dùng chart data theo giờ)
+            renderSparklines(d.chart, nhT, xuT, d.canhBao.tongChuaXuLy||0);
+
+            // XE CHỜ
+            renderXeCho(d.xeDangCho || []);
+
+            // NHÂN VIÊN
+            renderNhanVien(d.nhanVienStats || []);
+
+            // CỬA NHẬP
+            renderCuaNhap(d.cuaNhap || []);
         }
 
-        function renderChart(data) {
-            var labels = [];
-            for (var i = 0; i < 24; i++) labels.push(i + 'h');
+        // ── DONUT ──
+        function renderDonut(nh, total) {
+            document.getElementById('donut-center-num').textContent = total;
+            var ht = nh.hoanThanh||0, dang = nh.dangNhap||0,
+                cho = nh.phanCong||0, qua = nh.quaGio||0;
+            var rem = Math.max(0, total - ht - dang - cho - qua);
+            var data = [ht, dang, cho, qua];
+            if (total === 0) data = [1, 0, 0, 0];
+
+            document.getElementById('dl-ht').textContent   = pct(ht,   total||1) + '%';
+            document.getElementById('dl-dang').textContent = pct(dang, total||1) + '%';
+            document.getElementById('dl-cho').textContent  = pct(cho,  total||1) + '%';
+            document.getElementById('dl-qua').textContent  = pct(qua,  total||1) + '%';
 
             var isDark = document.body.classList.contains('dark-mode');
-            var gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
-            var tickColor = isDark ? '#666' : '#94a3b8';
-
-            var ctx = document.getElementById('chart-banhgiao').getContext('2d');
-            if (chart) chart.destroy();
-
-            chart = new Chart(ctx, {
-                type: 'bar',
+            var ctx = document.getElementById('chart-donut').getContext('2d');
+            if (donutChart) donutChart.destroy();
+            donutChart = new Chart(ctx, {
+                type: 'doughnut',
                 data: {
-                    labels: labels,
-                    datasets: [
-                        { label:'Nhập', data: data.nhap, backgroundColor:'rgba(59,130,246,0.7)', borderRadius:4 },
-                        { label:'Xuất', data: data.xuat, backgroundColor:'rgba(34,197,94,0.7)',  borderRadius:4 }
-                    ]
+                    labels: ['Hoàn thành','Đang BG','Chờ cửa','Quá giờ'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#16a34a','#2563eb','#f59e0b','#dc2626'],
+                        borderWidth: 3,
+                        borderColor: isDark ? '#1e293b' : '#ffffff',
+                        hoverOffset: 4
+                    }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } } },
-                        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 10 } }, beginAtZero: true }
+                    cutout: '72%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ' ' + ctx.label + ': ' + ctx.raw + ' phiếu';
+                                }
+                            }
+                        }
                     }
                 }
             });
         }
 
+        // ── BAR CHART ──
+        function renderBarChart(data, mode) {
+            var labels = [];
+            for (var i = 0; i < 24; i++) labels.push(i + 'h');
+            var isDark = document.body.classList.contains('dark-mode');
+            var grid = isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.04)';
+            var tick = isDark ? '#475569' : '#9ca3af';
+            var ctx = document.getElementById('chart-banhgiao').getContext('2d');
+            if (barChart) barChart.destroy();
+
+            var datasets = [];
+            if (mode === 'nhap' || mode === 'ca2') {
+                datasets.push({
+                    label:'Nhập', data: data.nhap,
+                    backgroundColor:'rgba(37,99,235,0.75)',
+                    borderRadius: 4, borderSkipped: false
+                });
+            }
+            if (mode === 'xuat' || mode === 'ca2') {
+                datasets.push({
+                    label:'Xuất', data: data.xuat,
+                    backgroundColor:'rgba(22,163,74,0.75)',
+                    borderRadius: 4, borderSkipped: false
+                });
+            }
+
+            barChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: grid }, ticks: { color: tick, font:{size:10} } },
+                        y: { grid: { color: grid }, ticks: { color: tick, font:{size:10} }, beginAtZero: true }
+                    },
+                    interaction: { mode: 'index', intersect: false }
+                }
+            });
+        }
+
+        function switchChart(mode, btn) {
+            chartMode = mode;
+            document.querySelectorAll('.chart-tab').forEach(function(b){ b.classList.remove('active'); });
+            btn.classList.add('active');
+            if (lastData) renderBarChart(lastData.chart, mode);
+        }
+
+        // ── SPARKLINES ──
+        function mkSparkline(id, values, color) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if (sparkCharts[id]) sparkCharts[id].destroy();
+            var ctx = el.getContext('2d');
+            var isDark = document.body.classList.contains('dark-mode');
+            sparkCharts[id] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: values.map(function(_,i){ return i; }),
+                    datasets: [{
+                        data: values,
+                        borderColor: color,
+                        borderWidth: 1.5,
+                        fill: true,
+                        backgroundColor: color + '18',
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: false, maintainAspectRatio: false,
+                    plugins: { legend:{display:false}, tooltip:{enabled:false} },
+                    scales: { x:{display:false}, y:{display:false, beginAtZero:true} },
+                    animation: false
+                }
+            });
+            el.style.height = '52px';
+        }
+
+        function renderSparklines(chart, nhapTotal, xuatTotal, cbTotal) {
+            mkSparkline('spark-nhap',    chart.nhap,    '#2563eb');
+            mkSparkline('spark-nhap-ht', chart.nhap.map(function(v){ return v * 0.7; }), '#16a34a');
+            mkSparkline('spark-xuat',    chart.xuat,    '#2563eb');
+            // cảnh báo: flat-ish line
+            var cbArr = chart.nhap.map(function(){ return cbTotal; });
+            mkSparkline('spark-cb', cbArr, '#dc2626');
+        }
+
+        // ── XE CHỜ ──
+        function renderXeCho(list) {
+            document.getElementById('xe-cho-count').textContent = list.length + ' xe';
+            var ttMap  = {0:'Chờ vào cửa', 1:'Đang bàn giao', 2:'Quá giờ'};
+            var ttCls  = {0:'orange', 1:'blue', 2:'red'};
+
+            if (!list.length) {
+                document.getElementById('xe-cho-tbody').innerHTML =
+                    '<tr><td colspan="4" style="text-align:center;color:var(--apex-text-muted);padding:24px;font-size:12px;">Không có xe đang chờ</td></tr>';
+                return;
+            }
+
+            document.getElementById('xe-cho-tbody').innerHTML = list.map(function(xe) {
+                var color = plateColor(xe.bienSoXe);
+                var init  = initials(xe.bienSoXe);
+                var tt    = ttMap[xe.trangThai] || '--';
+                var cls   = ttCls[xe.trangThai] || 'gray';
+                var hanGio = xe.thoiGianGioiHan ? formatTime(xe.thoiGianGioiHan) : '--:--';
+                return '<tr>' +
+                    '<td><div class="vehicle-row">' +
+                        '<div class="av" style="background:' + color + ';border-radius:6px;">' + init + '</div>' +
+                        '<div><div class="vehicle-plate">' + xe.bienSoXe + '</div>' +
+                            '<div class="vehicle-sub">' + (xe.ghiChu || '') + '</div></div>' +
+                    '</div></td>' +
+                    '<td style="font-size:12px;color:var(--apex-text-secondary);">' + (xe.tenCua || '--') + '</td>' +
+                    '<td><span class="badge ' + cls + '">' + tt + '</span></td>' +
+                    '<td style="font-size:12.5px;font-weight:600;color:' + (xe.trangThai===2?'var(--apex-red)':'var(--apex-text-primary)') + ';">' + hanGio + '</td>' +
+                '</tr>';
+            }).join('');
+        }
+
+        // ── NHÂN VIÊN ──
+        function renderNhanVien(list) {
+            if (!list.length) {
+                document.getElementById('nv-list').innerHTML =
+                    '<div style="text-align:center;color:var(--apex-text-muted);font-size:12px;padding:16px 0;">Chưa có dữ liệu hôm nay</div>';
+                return;
+            }
+            var max = list.reduce(function(m,x){ return Math.max(m, x.tongBG); }, 1);
+            document.getElementById('nv-list').innerHTML = list.map(function(nv, i) {
+                var color = COLORS[i % COLORS.length];
+                var init  = initials(nv.tenNhanVien);
+                return '<div class="nv-item">' +
+                    '<div class="av" style="background:' + color + '">' + init + '</div>' +
+                    '<div class="nv-info">' +
+                        '<div class="nv-name">' + nv.tenNhanVien + '</div>' +
+                        '<div class="nv-sub">' + nv.soLuot + ' lượt bàn giao</div>' +
+                    '</div>' +
+                    '<div style="text-align:right;">' +
+                        '<div class="nv-num" style="color:' + color + '">' + nv.tongBG + '</div>' +
+                        '<div class="nv-unit">đơn vị</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ── CỬA NHẬP ──
+        function renderCuaNhap(cuas) {
+            var active = cuas.filter(function(c){ return c.nhapHienTai; }).length;
+            document.getElementById('cua-active-lbl').textContent = active + ' đang hoạt động';
+
+            var ttMap = {0:'Chờ vào', 1:'Đang BG', 2:'Quá giờ', 3:'Hoàn thành'};
+            var ttCls = {0:'orange', 1:'blue', 2:'red', 3:'green'};
+
+            if (!cuas.length) {
+                document.getElementById('cua-list').innerHTML =
+                    '<div style="text-align:center;color:var(--apex-text-muted);font-size:12px;padding:16px 0;">Chưa có cửa nhập</div>';
+                return;
+            }
+
+            document.getElementById('cua-list').innerHTML = cuas.map(function(c) {
+                var nh  = c.nhapHienTai;
+                var tt  = nh ? (ttMap[nh.trangThai] || '--') : 'Trống';
+                var cls = nh ? (ttCls[nh.trangThai] || 'gray') : 'gray';
+                var sub = nh ? nh.bienSoXe + (nh.thoiGianGioiHan ? ' · hạn ' + formatTime(nh.thoiGianGioiHan) : '') : 'Không có xe';
+                var color = avatarColor(c.ten);
+                return '<div class="nv-item">' +
+                    '<div class="av" style="background:' + color + ';border-radius:8px;font-size:11px;">' +
+                        (c.ten ? c.ten.replace(/[^0-9]/g,'').slice(-2) || c.ten.slice(0,2).toUpperCase() : '?') +
+                    '</div>' +
+                    '<div class="nv-info">' +
+                        '<div class="nv-name">' + (c.ten || 'Cửa ' + c.id) + '</div>' +
+                        '<div class="nv-sub" style="font-family:monospace;">' + sub + '</div>' +
+                    '</div>' +
+                    '<span class="badge ' + cls + '">' + tt + '</span>' +
+                '</div>';
+            }).join('');
+        }
+
+        // ── INIT ──
         loadStats();
         setInterval(loadStats, 30000);
     </script>

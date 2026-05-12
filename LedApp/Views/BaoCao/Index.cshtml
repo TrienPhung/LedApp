@@ -4,242 +4,403 @@
 }
 
 <style>
-    /* ── RESET & BASE ── */
-    .bc-wrap {
+    /* ══════════════════════════════════════════════
+       APEX ANALYTICS — PIXEL PERFECT CLONE
+    ══════════════════════════════════════════════ */
+    .bc {
         display: flex;
         flex-direction: column;
-        gap: 18px;
-        padding: 4px 0 32px;
-        font-family: 'Segoe UI', sans-serif;
+        gap: 20px;
+        padding: 0 0 40px;
     }
 
-    /* ── FILTER BAR ── */
-    .filter-bar {
-        background: #fff;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
-        padding: 14px 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .filter-label {
-        font-size: 12px;
-        color: #64748b;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .filter-input {
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 7px 12px;
-        font-size: 13px;
-        color: #1e293b;
-        outline: none;
-        transition: border-color .2s;
-        background: #f8fafc;
-    }
-
-        .filter-input:focus {
-            border-color: #3b82f6;
-            background: #fff;
-        }
-
-    .filter-range-btns {
-        display: flex;
-        gap: 5px;
-    }
-
-    .btn-range {
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-size: 11px;
-        color: #64748b;
-        cursor: pointer;
-        transition: all .15s;
-        font-weight: 600;
-    }
-
-        .btn-range:hover, .btn-range.active {
-            background: #eff6ff;
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-
-    .btn-loc {
-        background: #3b82f6;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 18px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background .15s;
-    }
-
-        .btn-loc:hover {
-            background: #2563eb;
-        }
-
-    .btn-excel {
-        background: #16a34a;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 18px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background .15s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        text-decoration: none;
-    }
-
-        .btn-excel:hover {
-            background: #15803d;
-            color: #fff;
-        }
-
-    .filter-period {
-        font-size: 11px;
-        color: #94a3b8;
-        margin-left: auto;
-        white-space: nowrap;
-    }
-
-    /* ── STAT CARDS (4 card như Apex Analytics) ── */
-    .stat-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-    }
-
-    .stat-card {
-        background: #fff;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
-        padding: 18px 20px;
+    /* ── HEADER ── */
+    .bc-head {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
         gap: 12px;
-        transition: box-shadow .2s;
+        flex-wrap: wrap;
+    }
+
+    .bc-head-left h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px;
+        letter-spacing: -0.3px;
+    }
+
+    .bc-head-left p {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+    }
+
+    .bc-head-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    /* Range tabs */
+    .rtabs {
+        display: flex;
+        background: #f1f5f9;
+        border-radius: 8px;
+        padding: 3px;
+        gap: 2px;
+    }
+
+    .rtab {
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        padding: 5px 13px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        cursor: pointer;
+        transition: all .15s;
+        white-space: nowrap;
+    }
+
+        .rtab:hover {
+            color: #0f172a;
+        }
+
+        .rtab.active {
+            background: #fff;
+            color: #0f172a;
+            box-shadow: 0 1px 4px rgba(0,0,0,.10);
+        }
+
+    /* Date pill */
+    .dp-wrap {
+        position: relative;
+    }
+
+    .dp-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 7px 14px;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        color: #374151;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+        transition: border-color .15s,box-shadow .15s;
+    }
+
+        .dp-pill:hover {
+            border-color: #14b8a6;
+        }
+
+        .dp-pill.open {
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20,184,166,.12);
+        }
+
+        .dp-pill svg {
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+    .dp-pill-text {
+        flex: 1;
+        min-width: 160px;
+    }
+
+    .dp-chevron {
+        color: #94a3b8;
+        font-size: 9px;
+        transition: transform .15s;
+    }
+
+    .dp-pill.open .dp-chevron {
+        transform: rotate(180deg);
+    }
+
+    /* Dropdown */
+    .dp-dd {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,.14);
+        z-index: 1000;
+        width: 300px;
+        overflow: hidden;
+    }
+
+        .dp-dd.show {
+            display: block;
+            animation: ddIn .14s ease;
+        }
+    @@keyframes ddIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-6px)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+
+    }
+
+    .dd-top {
+        padding: 14px 16px 10px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .dd-top-lbl {
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .dd-inputs {
+        display: grid;
+        grid-template-columns: 1fr 16px 1fr;
+        align-items: end;
+        gap: 6px;
+    }
+
+    .dd-inp-group label {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 4px;
+    }
+
+    .dd-inp {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 7px 10px;
+        font-size: 12px;
+        color: #374151;
+        background: #f8fafc;
+        outline: none;
+        transition: border-color .15s,background .15s;
+        cursor: pointer;
+    }
+
+        .dd-inp:focus {
+            border-color: #14b8a6;
+            background: #fff;
+        }
+
+    .dd-sep {
+        text-align: center;
+        color: #cbd5e1;
+        font-size: 13px;
+        padding-bottom: 2px;
+    }
+
+    .dd-list {
+        padding: 4px 0 6px;
+    }
+
+    .dd-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
+        cursor: pointer;
+        transition: background .1s;
+    }
+
+        .dd-item:hover {
+            background: #f0fdfa;
+            color: #0d9488;
+        }
+
+        .dd-item.active {
+            color: #0d9488;
+            font-weight: 700;
+        }
+
+    .dd-check {
+        font-size: 14px;
+        color: #14b8a6;
+        opacity: 0;
+    }
+
+    .dd-item.active .dd-check {
+        opacity: 1;
+    }
+
+    /* Excel button — Apex "+ New Order" */
+    .btn-excel {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #14b8a6;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 7px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .15s,box-shadow .15s;
+        white-space: nowrap;
+        box-shadow: 0 1px 6px rgba(20,184,166,.35);
+    }
+
+        .btn-excel:hover {
+            background: #0d9488;
+            color: #fff;
+            box-shadow: 0 3px 12px rgba(20,184,166,.45);
+        }
+
+    .btn-excel-plus {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    /* ── STAT CARDS — 4 cột giống hệt Apex ── */
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        gap: 16px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px 22px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        transition: box-shadow .2s,transform .15s;
     }
 
         .stat-card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,.07);
+            box-shadow: 0 8px 28px rgba(0,0,0,.09);
+            transform: translateY(-2px);
         }
 
-    .stat-card-left {
+    .sc-left {
         flex: 1;
+        min-width: 0;
     }
 
-    .stat-num {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1e293b;
+    .sc-num {
+        font-size: 30px;
+        font-weight: 800;
+        color: #0f172a;
         line-height: 1;
-        letter-spacing: -0.5px;
+        letter-spacing: -1px;
     }
 
-    .stat-label {
+    .sc-label {
         font-size: 12px;
         color: #64748b;
         margin-top: 6px;
         font-weight: 500;
     }
 
-    .stat-change {
-        display: flex;
+    .sc-trend {
+        display: inline-flex;
         align-items: center;
         gap: 4px;
         margin-top: 8px;
         font-size: 11px;
-        font-weight: 600;
+        font-weight: 700;
     }
 
-        .stat-change.up {
+        .sc-trend.up {
             color: #16a34a;
         }
 
-        .stat-change.down {
+        .sc-trend.down {
             color: #dc2626;
         }
-
-        .stat-change.neutral {
-            color: #64748b;
-        }
-
-    .stat-icon {
+    /* SVG icon box — giống Apex (tròn, màu nhạt) */
+    .sc-icon {
         width: 44px;
         height: 44px;
-        border-radius: 10px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
         flex-shrink: 0;
+        margin-left: 12px;
     }
 
-        .stat-icon.blue {
-            background: #eff6ff;
+        .sc-icon.teal {
+            background: #f0fdfa;
         }
 
-        .stat-icon.green {
+        .sc-icon.green {
             background: #f0fdf4;
         }
 
-        .stat-icon.red {
-            background: #fef2f2;
-        }
-
-        .stat-icon.orange {
+        .sc-icon.orange {
             background: #fff7ed;
         }
 
-    /* ── TWO COLUMN LAYOUT ── */
-    .two-col {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-    }
+        .sc-icon.blue {
+            background: #eff6ff;
+        }
 
-    /* ── PANEL BASE ── */
+        .sc-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+    /* ── PANELS ── */
     .panel {
         background: #fff;
-        border: 1px solid #e8edf2;
-        border-radius: 12px;
-        padding: 18px 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px 22px;
     }
 
     .panel-head {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        margin-bottom: 16px;
+        margin-bottom: 18px;
     }
 
     .panel-title {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 700;
-        color: #1e293b;
-        display: flex;
-        align-items: center;
-        gap: 7px;
+        color: #0f172a;
+        margin: 0;
     }
 
-    .panel-title-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
+    .panel-sub1 {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 3px;
     }
 
     .panel-sub {
@@ -247,34 +408,87 @@
         color: #94a3b8;
     }
 
-    /* ── KPI CARDS ── */
+    .ptdot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+        flex-shrink: 0;
+        vertical-align: middle;
+    }
+
+    /* ── HÀNG BÀN GIAO ── */
+    .bg-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .bg-trio {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+    }
+
+    .bg-box {
+        background: #f8fafc;
+        border: 1px solid #f1f5f9;
+        border-radius: 10px;
+        padding: 16px 12px;
+        text-align: center;
+    }
+
+    .bg-num {
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        line-height: 1;
+    }
+
+        .bg-num.teal {
+            color: #14b8a6;
+        }
+
+        .bg-num.green {
+            color: #22c55e;
+        }
+
+        .bg-num.orange {
+            color: #f97316;
+        }
+
+    .bg-lbl {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    /* ── KPI ── */
     .kpi-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
+        gap: 16px;
     }
 
-    .kpi-card {
-    }
-
-    .kpi-nums {
+    .kpi-trio {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 10px;
-        margin-top: 4px;
     }
 
-    .kpi-item {
-        text-align: center;
-        padding: 12px 8px;
+    .kpi-box {
         background: #f8fafc;
-        border-radius: 10px;
         border: 1px solid #f1f5f9;
+        border-radius: 10px;
+        padding: 14px 8px;
+        text-align: center;
     }
 
     .kpi-n {
         font-size: 20px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: -0.3px;
     }
 
@@ -297,65 +511,103 @@
         font-weight: 500;
     }
 
-    /* ── CHART PANEL ── */
+    /* ── CHART SECTION — 3fr:2fr ── */
+    .chart-section {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 16px;
+    }
+
     .chart-wrap {
         position: relative;
-        height: 210px;
+        height: 230px;
     }
 
-    /* ── BAR CHART (Top cửa) ── */
-    .bar-list {
+    .legend-row {
+        display: flex;
+        gap: 14px;
+        font-size: 11px;
+        color: #64748b;
+    }
+
+        .legend-row span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+    .ldot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Revenue by Category bars */
+    .cat-list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 13px;
     }
 
-    .bar-item {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .bar-meta {
+    .cat-meta {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: baseline;
+        margin-bottom: 5px;
     }
 
-    .bar-name {
-        font-size: 12px;
+    .cat-name {
+        font-size: 13px;
         color: #374151;
         font-weight: 500;
     }
 
-    .bar-value {
-        font-size: 12px;
-        color: #64748b;
-        font-weight: 600;
+    .cat-right {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
     }
 
-    .bar-track {
-        height: 6px;
+    .cat-val {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .cat-pct {
+        font-size: 11px;
+        color: #94a3b8;
+    }
+
+    .cat-track {
+        height: 8px;
         background: #f1f5f9;
-        border-radius: 4px;
+        border-radius: 6px;
         overflow: hidden;
     }
 
-    .bar-fill {
+    .cat-fill {
         height: 100%;
-        border-radius: 4px;
-        transition: width 0.6s cubic-bezier(.4,0,.2,1);
+        border-radius: 6px;
+        transition: width .8s cubic-bezier(.4,0,.2,1);
     }
 
-        .bar-fill.blue {
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        .cat-fill.teal {
+            background: linear-gradient(90deg,#14b8a6,#2dd4bf);
         }
 
-        .bar-fill.green {
-            background: linear-gradient(90deg, #22c55e, #4ade80);
+        .cat-fill.orange {
+            background: linear-gradient(90deg,#f97316,#fb923c);
         }
 
-    /* ── TABLE ── */
+    /* ── BOTTOM — Top Pages + Top Countries ── */
+    .bottom-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
     .bc-table {
         width: 100%;
         border-collapse: collapse;
@@ -363,20 +615,19 @@
     }
 
         .bc-table th {
-            background: #f8fafc;
-            color: #64748b;
+            padding: 8px 10px;
+            text-align: left;
             font-size: 11px;
             font-weight: 600;
+            color: #94a3b8;
             letter-spacing: .3px;
-            padding: 9px 12px;
-            text-align: left;
-            border-bottom: 1px solid #e8edf2;
+            border-bottom: 1px solid #f1f5f9;
             white-space: nowrap;
         }
 
         .bc-table td {
-            padding: 9px 12px;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 10px 10px;
+            border-bottom: 1px solid #f8fafc;
             color: #374151;
         }
 
@@ -388,6 +639,11 @@
             background: #f8fafc;
         }
 
+    .td-b {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
     .badge {
         padding: 2px 8px;
         border-radius: 5px;
@@ -396,386 +652,422 @@
         display: inline-block;
     }
 
-    .badge-ht {
+    .b-ht {
         background: #f0fdf4;
         color: #16a34a;
     }
 
-    .badge-qg {
+    .b-qg {
         background: #fef2f2;
         color: #dc2626;
     }
 
-    .badge-dang {
+    .b-da {
         background: #eff6ff;
-        color: #3b82f6;
+        color: #2563eb;
     }
 
-    /* ── XE QUÁ HẠN ── */
-    .xe-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 8px;
+    /* Top Countries style */
+    .prog-row {
+        display: flex;
+        flex-direction: column;
+        gap: 11px;
     }
 
-    .xe-qua-item {
+    .prog-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 12px 14px;
-        border-radius: 10px;
-        background: #fff5f5;
-        border: 1px solid #fecaca;
-        border-left: 3px solid #ef4444;
-        transition: box-shadow .15s;
+        gap: 10px;
     }
 
-        .xe-qua-item:hover {
-            box-shadow: 0 2px 8px rgba(239,68,68,.12);
+    .prog-label {
+        font-size: 12px;
+        color: #374151;
+        font-weight: 500;
+        min-width: 72px;
+    }
+
+    .prog-track {
+        flex: 1;
+        height: 6px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .prog-fill {
+        height: 100%;
+        border-radius: 4px;
+        background: #14b8a6;
+        transition: width .7s cubic-bezier(.4,0,.2,1);
+    }
+
+        .prog-fill.orange {
+            background: #f97316;
         }
 
-    .xe-qua-plate {
-        font-size: 14px;
+    .prog-right {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 76px;
+        justify-content: flex-end;
+    }
+
+    .prog-num {
+        font-size: 12px;
         font-weight: 700;
-        color: #dc2626;
-        font-family: 'Courier New', monospace;
-        letter-spacing: 1.5px;
+        color: #0f172a;
     }
 
-    .xe-qua-meta {
-        font-size: 10px;
-        color: #9ca3af;
-        margin-top: 2px;
-    }
-
-    .xe-qua-count {
-        font-size: 20px;
-        font-weight: 700;
-        color: #ef4444;
-        text-align: right;
-    }
-
-    .xe-qua-lbl {
-        font-size: 10px;
+    .prog-pct {
+        font-size: 11px;
         color: #94a3b8;
     }
 
-    .empty-state {
+    /* ── DON VỊ BÀN GIAO ── */
+    .donvi-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .empty {
         text-align: center;
         padding: 28px;
         color: #94a3b8;
         font-size: 12px;
     }
 
-    /* ── LEGEND DOTS ── */
-    .legend {
-        display: flex;
-        gap: 16px;
-        font-size: 11px;
-        color: #64748b;
+    /* ══════════════════════════════════════════════
+       DARK MODE
+    ══════════════════════════════════════════════ */
+    body.dark-mode .bc-head-left h1 {
+        color: #e2e8f0;
     }
 
-        .legend span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-    .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-    /* ── DARK MODE ── */
-    body.dark-mode .filter-bar,
     body.dark-mode .stat-card,
     body.dark-mode .panel {
         background: #1a1a27 !important;
         border-color: #2a2a3d !important;
     }
 
-    body.dark-mode .stat-num,
+    body.dark-mode .sc-num, .sc-label,
     body.dark-mode .panel-title,
-    body.dark-mode .bar-name {
+    body.dark-mode .cat-name, .cat-val,
+    body.dark-mode .prog-num, .td-b {
         color: #e0e0e0 !important;
     }
 
-    body.dark-mode .bc-table th {
-        background: #222235 !important;
-        color: #888 !important;
+    body.dark-mode .rtabs {
+        background: #222235;
     }
 
-    body.dark-mode .bc-table td {
-        color: #c9c9c9 !important;
-        border-color: #2a2a3d !important;
+    body.dark-mode .rtab.active {
+        background: #2a2a3d;
+        color: #e0e0e0;
+        box-shadow: none;
     }
 
-    body.dark-mode .bc-table tr:hover td {
-        background: #222235 !important;
+    body.dark-mode .dp-pill {
+        background: #1a1a27;
+        border-color: #2a2a3d;
+        color: #c9c9c9;
     }
 
-    body.dark-mode .kpi-item {
-        background: #222235 !important;
-        border-color: #2a2a3d !important;
+    body.dark-mode .dp-dd {
+        background: #1e1e2e;
+        border-color: #2a2a3d;
+        box-shadow: 0 10px 40px rgba(0,0,0,.5);
     }
 
-    body.dark-mode .filter-input {
+    body.dark-mode .dd-top {
+        border-color: #2a2a3d;
+    }
+
+    body.dark-mode .dd-inp {
         background: #0f0f14;
         border-color: #2a2a3d;
         color: #c9c9c9;
     }
 
-    body.dark-mode .btn-range {
-        background: #222235;
+    body.dark-mode .dd-item {
+        color: #c9c9c9;
+    }
+
+        body.dark-mode .dd-item:hover {
+            background: #134e4a;
+            color: #2dd4bf;
+        }
+
+    body.dark-mode .bg-box, .kpi-box {
+        background: #222235 !important;
+        border-color: #2a2a3d !important;
+    }
+
+    body.dark-mode .bc-table th {
+        color: #555;
         border-color: #2a2a3d;
-        color: #888;
     }
 
-    body.dark-mode .xe-qua-item {
-        background: #2a1010 !important;
-        border-color: #7f1d1d !important;
+    body.dark-mode .bc-table td {
+        color: #c9c9c9;
+        border-color: #222235;
     }
 
-    body.dark-mode .bar-track {
+    body.dark-mode .bc-table tr:hover td {
+        background: #222235;
+    }
+
+    body.dark-mode .cat-track, .prog-track {
         background: #2a2a3d;
     }
 
-    body.dark-mode .stat-icon.blue {
-        background: #1e3a5f;
+    body.dark-mode .sc-icon.teal {
+        background: #134e4a;
     }
 
-    body.dark-mode .stat-icon.green {
+    body.dark-mode .sc-icon.green {
         background: #14532d;
     }
 
-    body.dark-mode .stat-icon.red {
-        background: #7f1d1d;
+    body.dark-mode .sc-icon.orange {
+        background: #431407;
     }
 
-    body.dark-mode .stat-icon.orange {
-        background: #431407;
+    body.dark-mode .sc-icon.blue {
+        background: #1e3a5f;
+    }
+
+    body.dark-mode .sc-icon svg {
+        opacity: .85;
     }
 </style>
 
-<div class="bc-wrap">
+<div class="bc">
 
-    <!-- FILTER BAR -->
-    <div class="filter-bar">
-        <span class="filter-label">📅 Từ ngày</span>
-        <input type="date" class="filter-input" id="tu-ngay" />
-        <span class="filter-label">đến</span>
-        <input type="date" class="filter-input" id="den-ngay" />
+    <!-- ══ HEADER — title trái, tabs + date pill phải (Apex exact) ══ -->
+    <div class="bc-head">
+        <div class="bc-head-left">
+            <h1>Báo cáo thống kê</h1>
+            <p>Theo dõi hiệu suất bàn giao nhập xuất và các chỉ số vận hành</p>
+        </div>
+        <div class="bc-head-right">
+            <!-- Range tabs -->
+            <div class="rtabs">
+                <button class="rtab" data-key="today" onclick="qs('today',this)">Hôm nay</button>
+                <button class="rtab" data-key="7d" onclick="qs('7d',this)">7d</button>
+                <button class="rtab active" data-key="30d" onclick="qs('30d',this)">30d</button>
+                <button class="rtab" data-key="90d" onclick="qs('90d',this)">90d</button>
+                <button class="rtab" data-key="1y" onclick="qs('1y',this)">1y</button>
+            </div>
 
-        <div class="filter-range-btns">
-            <button class="btn-range" onclick="setRange(0,this)">Hôm nay</button>
-            <button class="btn-range" onclick="setRange(7,this)">7 ngày</button>
-            <button class="btn-range active" onclick="setRange(30,this)">30 ngày</button>
-            <button class="btn-range" onclick="setRange(90,this)">3 tháng</button>
-        </div>
+            <!-- Date pill + dropdown (Apex exact) -->
+            <div class="dp-wrap" id="dpw">
+                <div class="dp-pill" id="dpp" onclick="toggleDp(event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                    <span class="dp-pill-text" id="dpt">-- / -- / ---- – -- / -- / ----</span>
+                    <span class="dp-chevron">▼</span>
+                </div>
+                <div class="dp-dd" id="dpd">
+                    <div class="dd-top">
+                        <div class="dd-top-lbl">Custom range</div>
+                        <div class="dd-inputs">
+                            <div class="dd-inp-group"><label>From</label><input type="date" class="dd-inp" id="dpf" onchange="onCustom()" /></div>
+                            <div class="dd-sep">–</div>
+                            <div class="dd-inp-group"><label>To</label><input type="date" class="dd-inp" id="dpt2" onchange="onCustom()" /></div>
+                        </div>
+                    </div>
+                    <div class="dd-list">
+                        <div class="dd-item active" id="qi-30d" onclick="qs('30d',null,true)">Last 30 days  <span class="dd-check">✓</span></div>
+                        <div class="dd-item" id="qi-7d" onclick="qs('7d',null,true)">Last 7 days   <span class="dd-check">✓</span></div>
+                        <div class="dd-item" id="qi-90d" onclick="qs('90d',null,true)">Last 90 days  <span class="dd-check">✓</span></div>
+                        <div class="dd-item" id="qi-1y" onclick="qs('1y',null,true)">Last year     <span class="dd-check">✓</span></div>
+                        <div class="dd-item" id="qi-today" onclick="qs('today',null,true)">Today         <span class="dd-check">✓</span></div>
+                    </div>
+                </div>
+            </div>
 
-        <button class="btn-loc" onclick="loadBaoCao()">🔍 Lọc</button>
-        <a class="btn-excel" href="#" onclick="exportExcel(); return false;">📊 Xuất Excel</a>
-        <span class="filter-period" id="filter-period"></span>
-    </div>
-
-    <!-- STAT CARDS — 4 card kiểu Apex Analytics -->
-    <div class="stat-row">
-        <div class="stat-card">
-            <div class="stat-card-left">
-                <div class="stat-num" id="s-nhap-tong">--</div>
-                <div class="stat-label">Tổng phiếu nhập</div>
-                <div class="stat-change up" id="s-nhap-pct"></div>
-            </div>
-            <div class="stat-icon blue">📥</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-card-left">
-                <div class="stat-num" id="s-nhap-ht">--</div>
-                <div class="stat-label">Nhập hoàn thành</div>
-                <div class="stat-change up" id="s-nhap-ht-pct"></div>
-            </div>
-            <div class="stat-icon green">✅</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-card-left">
-                <div class="stat-num" id="s-xuat-tong">--</div>
-                <div class="stat-label">Tổng phiếu xuất</div>
-                <div class="stat-change up" id="s-xuat-pct"></div>
-            </div>
-            <div class="stat-icon orange">📤</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-card-left">
-                <div class="stat-num" id="s-xuat-ht">--</div>
-                <div class="stat-label">Xuất hoàn thành</div>
-                <div class="stat-change up" id="s-xuat-ht-pct"></div>
-            </div>
-            <div class="stat-icon green">✅</div>
+            <!-- Excel — Apex "+ New Order" style, màu teal -->
+            <a class="btn-excel" href="#" onclick="doExcel();return false;">
+                <span class="btn-excel-plus">+</span> Xuất Excel
+            </a>
         </div>
     </div>
 
-    <!-- KPI -->
+    <!-- ══ STAT CARDS — 4 cột với SVG icon tròn ══ -->
+    <div class="stat-grid">
+        <!-- Tổng nhập -->
+        <div class="stat-card">
+            <div class="sc-left">
+                <div class="sc-num" id="snt">--</div>
+                <div class="sc-label">Tổng phiếu nhập</div>
+                <div class="sc-trend up" id="snp"></div>
+            </div>
+            <div class="sc-icon teal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
+            </div>
+        </div>
+        <!-- Nhập hoàn thành -->
+        <div class="stat-card">
+            <div class="sc-left">
+                <div class="sc-num" id="snh">--</div>
+                <div class="sc-label">Nhập hoàn thành</div>
+                <div class="sc-trend down" id="snq"></div>
+            </div>
+            <div class="sc-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+        </div>
+        <!-- Tổng xuất -->
+        <div class="stat-card">
+            <div class="sc-left">
+                <div class="sc-num" id="sxt">--</div>
+                <div class="sc-label">Tổng phiếu xuất</div>
+                <div class="sc-trend up" id="sxp"></div>
+            </div>
+            <div class="sc-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+            </div>
+        </div>
+        <!-- Xuất hoàn thành -->
+        <div class="stat-card">
+            <div class="sc-left">
+                <div class="sc-num" id="sxh">--</div>
+                <div class="sc-label">Xuất hoàn thành</div>
+                <div class="sc-trend down" id="sxq"></div>
+            </div>
+            <div class="sc-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ HÀNG BÀN GIAO ══ -->
+    <div class="bg-row">
+        <div class="panel">
+            <div class="panel-head"><div><div class="panel-title"><span class="ptdot" style="background:#14b8a6;"></span>Hàng hóa nhập</div><div class="panel-sub1">Tình trạng bàn giao trong kỳ</div></div></div>
+            <div class="bg-trio">
+                <div class="bg-box"><div class="bg-num teal" id="bnt">--</div><div class="bg-lbl">Tổng số lượng</div></div>
+                <div class="bg-box"><div class="bg-num green" id="bnd">--</div><div class="bg-lbl">Đã bàn giao</div></div>
+                <div class="bg-box"><div class="bg-num orange" id="bnc">--</div><div class="bg-lbl">Chưa bàn giao</div></div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-head"><div><div class="panel-title"><span class="ptdot" style="background:#f97316;"></span>Hàng hóa xuất</div><div class="panel-sub1">Tình trạng bàn giao trong kỳ</div></div></div>
+            <div class="bg-trio">
+                <div class="bg-box"><div class="bg-num teal" id="bxt">--</div><div class="bg-lbl">Tổng số lượng</div></div>
+                <div class="bg-box"><div class="bg-num green" id="bxd">--</div><div class="bg-lbl">Đã bàn giao</div></div>
+                <div class="bg-box"><div class="bg-num orange" id="bxc">--</div><div class="bg-lbl">Chưa bàn giao</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ KPI ══ -->
     <div class="kpi-row">
-        <div class="panel kpi-card">
-            <div class="panel-head">
-                <div class="panel-title">
-                    <span class="panel-title-dot" style="background:#3b82f6;"></span>
-                    KPI bàn giao NHẬP (phút)
-                </div>
-            </div>
-            <div class="kpi-nums">
-                <div class="kpi-item">
-                    <div class="kpi-n blue" id="kpi-nhap-tb">--</div>
-                    <div class="kpi-l">Trung bình</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-n green" id="kpi-nhap-min">--</div>
-                    <div class="kpi-l">Nhanh nhất</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-n red" id="kpi-nhap-max">--</div>
-                    <div class="kpi-l">Chậm nhất</div>
-                </div>
+        <div class="panel">
+            <div class="panel-head"><div class="panel-title"><span class="ptdot" style="background:#3b82f6;"></span>KPI thời gian bàn giao NHẬP (phút)</div></div>
+            <div class="kpi-trio">
+                <div class="kpi-box"><div class="kpi-n blue" id="knt">--</div><div class="kpi-l">Trung bình</div></div>
+                <div class="kpi-box"><div class="kpi-n green" id="knn">--</div><div class="kpi-l">Nhanh nhất</div></div>
+                <div class="kpi-box"><div class="kpi-n red" id="knx">--</div><div class="kpi-l">Chậm nhất</div></div>
             </div>
         </div>
-        <div class="panel kpi-card">
-            <div class="panel-head">
-                <div class="panel-title">
-                    <span class="panel-title-dot" style="background:#22c55e;"></span>
-                    KPI bàn giao XUẤT (phút)
-                </div>
-            </div>
-            <div class="kpi-nums">
-                <div class="kpi-item">
-                    <div class="kpi-n blue" id="kpi-xuat-tb">--</div>
-                    <div class="kpi-l">Trung bình</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-n green" id="kpi-xuat-min">--</div>
-                    <div class="kpi-l">Nhanh nhất</div>
-                </div>
-                <div class="kpi-item">
-                    <div class="kpi-n red" id="kpi-xuat-max">--</div>
-                    <div class="kpi-l">Chậm nhất</div>
-                </div>
+        <div class="panel">
+            <div class="panel-head"><div class="panel-title"><span class="ptdot" style="background:#f97316;"></span>KPI thời gian bàn giao XUẤT (phút)</div></div>
+            <div class="kpi-trio">
+                <div class="kpi-box"><div class="kpi-n blue" id="kxt">--</div><div class="kpi-l">Trung bình</div></div>
+                <div class="kpi-box"><div class="kpi-n green" id="kxn">--</div><div class="kpi-l">Nhanh nhất</div></div>
+                <div class="kpi-box"><div class="kpi-n red" id="kxx">--</div><div class="kpi-l">Chậm nhất</div></div>
             </div>
         </div>
     </div>
 
-    <!-- CHART + TOP CỬA (2 cột như Apex) -->
-    <div class="two-col">
-
-        <!-- Biểu đồ theo ngày -->
+    <!-- ══ CHART (line) + REVENUE BY CATEGORY ══ -->
+    <div class="chart-section">
+        <!-- Line chart — giống Apex "Page Views Over Time" -->
         <div class="panel">
             <div class="panel-head">
-                <div class="panel-title">
-                    <span class="panel-title-dot" style="background:#8b5cf6;"></span>
-                    Số lượt bàn giao theo ngày
+                <div>
+                    <div class="panel-title" style="margin-bottom:3px;"><span class="ptdot" style="background:#8b5cf6;"></span>Số lượt bàn giao theo ngày</div>
+                    <div class="panel-sub1">Xu hướng nhập xuất trong kỳ</div>
                 </div>
-                <div class="legend">
-                    <span><span class="dot" style="background:#3b82f6;"></span>Nhập</span>
-                    <span><span class="dot" style="background:#22c55e;"></span>Xuất</span>
+                <div class="legend-row">
+                    <span><span class="ldot" style="background:#14b8a6;"></span>Nhập</span>
+                    <span><span class="ldot" style="background:#f97316;"></span>Xuất</span>
                 </div>
             </div>
-            <div class="chart-wrap">
-                <canvas id="chart-ngay"></canvas>
-            </div>
+            <div class="chart-wrap"><canvas id="chNgay"></canvas></div>
         </div>
 
-        <!-- Top cửa nhập & xuất kiểu "Revenue by Category" của Apex -->
-        <div style="display:flex;flex-direction:column;gap:14px;">
-            <div class="panel" style="flex:1;">
-                <div class="panel-head">
-                    <div class="panel-title">
-                        <span class="panel-title-dot" style="background:#3b82f6;"></span>
-                        Top cửa nhập
-                    </div>
-                    <span class="panel-sub">Theo số phiếu</span>
-                </div>
-                <div class="bar-list" id="top-cua-nhap">
-                    <div class="empty-state">Đang tải...</div>
+        <!-- Revenue by Category — Top cửa nhập -->
+        <div class="panel">
+            <div class="panel-head">
+                <div>
+                    <div class="panel-title" style="margin-bottom:3px;"><span class="ptdot" style="background:#14b8a6;"></span>Top cửa nhập</div>
+                    <div class="panel-sub1">Phân bổ theo số phiếu</div>
                 </div>
             </div>
-            <div class="panel" style="flex:1;">
-                <div class="panel-head">
-                    <div class="panel-title">
-                        <span class="panel-title-dot" style="background:#22c55e;"></span>
-                        Top cửa xuất
-                    </div>
-                    <span class="panel-sub">Theo số phiếu</span>
-                </div>
-                <div class="bar-list" id="top-cua-xuat">
-                    <div class="empty-state">Đang tải...</div>
-                </div>
-            </div>
+            <div id="tcn"><div class="empty">Đang tải...</div></div>
         </div>
     </div>
 
-    <!-- CHI TIẾT NHẬP / XUẤT -->
-    <div class="two-col">
+    <!-- ══ BOTTOM — Top Pages + Top Countries ══ -->
+    <div class="bottom-section">
+        <!-- Chi tiết nhập — Top Pages style -->
         <div class="panel">
             <div class="panel-head">
-                <div class="panel-title">
-                    <span class="panel-title-dot" style="background:#3b82f6;"></span>
-                    Chi tiết nhập theo ngày
+                <div>
+                    <div class="panel-title" style="margin-bottom:3px;"><span class="ptdot" style="background:#14b8a6;"></span>Chi tiết nhập theo ngày</div>
+                    <div class="panel-sub1">Thống kê phiếu nhập từng ngày</div>
                 </div>
             </div>
-            <div style="max-height:260px;overflow-y:auto;">
+            <div style="max-height:270px;overflow-y:auto;">
                 <table class="bc-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày</th>
-                            <th>Tổng</th>
-                            <th>Hoàn thành</th>
-                            <th>Quá giờ</th>
-                            <th>Đang nhập</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tb-nhap">
-                        <tr><td colspan="5" class="empty-state">Đang tải...</td></tr>
-                    </tbody>
+                    <thead><tr><th>Ngày</th><th>Tổng</th><th>HT</th><th>Quá giờ</th><th>Đã BG</th><th>Chưa BG</th></tr></thead>
+                    <tbody id="tbn"><tr><td colspan="6" class="empty">Đang tải...</td></tr></tbody>
                 </table>
             </div>
         </div>
+
+        <!-- Top cửa xuất — Top Countries style + chi tiết xuất bên dưới -->
         <div class="panel">
             <div class="panel-head">
-                <div class="panel-title">
-                    <span class="panel-title-dot" style="background:#22c55e;"></span>
-                    Chi tiết xuất theo ngày
+                <div>
+                    <div class="panel-title" style="margin-bottom:3px;"><span class="ptdot" style="background:#f97316;"></span>Top cửa xuất</div>
+                    <div class="panel-sub1">Phân bổ theo số phiếu xuất</div>
                 </div>
             </div>
-            <div style="max-height:260px;overflow-y:auto;">
-                <table class="bc-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày</th>
-                            <th>Tổng</th>
-                            <th>Hoàn thành</th>
-                            <th>Quá giờ</th>
-                            <th>Đang xuất</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tb-xuat">
-                        <tr><td colspan="5" class="empty-state">Đang tải...</td></tr>
-                    </tbody>
-                </table>
+            <div class="prog-row" id="tcx"><div class="empty">Đang tải...</div></div>
+            <div style="margin-top:20px;">
+                <div style="font-size:12px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+                    <span class="ptdot" style="background:#f97316;"></span>Chi tiết xuất theo ngày
+                </div>
+                <div style="max-height:190px;overflow-y:auto;">
+                    <table class="bc-table">
+                        <thead><tr><th>Ngày</th><th>Tổng</th><th>HT</th><th>Quá giờ</th><th>Đã BG</th><th>Chưa BG</th></tr></thead>
+                        <tbody id="tbx"><tr><td colspan="6" class="empty">Đang tải...</td></tr></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- XE QUÁ HẠN -->
-    <div class="panel">
-        <div class="panel-head">
-            <div class="panel-title">
-                <span class="panel-title-dot" style="background:#ef4444;"></span>
-                🚨 Xe hay quá hạn trong kỳ (Top 10)
+    <!-- ══ ĐƠN VỊ BÀN GIAO ══ -->
+    <div class="donvi-row">
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title"><span class="ptdot" style="background:#14b8a6;"></span>Bàn giao nhập theo đơn vị</div>
+                <span class="panel-sub">Tỉ lệ hoàn thành</span>
             </div>
-            <span class="panel-sub">Dựa trên cảnh báo quá hạn nhập</span>
+            <div class="prog-row" id="dvn"><div class="empty">Đang tải...</div></div>
         </div>
-        <div id="xe-qua-list">
-            <div class="empty-state">Đang tải...</div>
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-title"><span class="ptdot" style="background:#f97316;"></span>Bàn giao xuất theo đơn vị</div>
+                <span class="panel-sub">Tỉ lệ hoàn thành</span>
+            </div>
+            <div class="prog-row" id="dvx"><div class="empty">Đang tải...</div></div>
         </div>
     </div>
 
@@ -784,246 +1076,253 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        var chartInstance = null;
+        var CI = null;
 
-        // ── DATE HELPERS ──
-        function fmt(d) {
-            return d.getFullYear() + '-'
-                + String(d.getMonth() + 1).padStart(2, '0') + '-'
-                + String(d.getDate()).padStart(2, '0');
+        /* ── HELPERS ── */
+        function fi(d){ return d.getFullYear()+'-'+pd(d.getMonth()+1)+'-'+pd(d.getDate()); }
+        function pd(n){ return String(n).padStart(2,'0'); }
+        function fv(s){ if(!s)return '--'; var p=s.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+        function pct(a,b){ return b===0?'0%':Math.round(a/b*100)+'%'; }
+        function num(n){ return (n||0).toLocaleString('vi-VN'); }
+        function $s(id,v){ var e=document.getElementById(id); if(e)e.textContent=v; }
+        function $h(id,v){ var e=document.getElementById(id); if(e)e.innerHTML=v; }
+
+        /* ── INIT — default 30d ── */
+        (function(){ applyKey('30d'); syncTab('30d'); syncItem('30d'); load(); })();
+
+        function applyKey(k){
+            var now=new Date(), f=new Date(now);
+            if(k==='7d')   f.setDate(now.getDate()-7);
+            else if(k==='30d')  f.setDate(now.getDate()-30);
+            else if(k==='90d')  f.setDate(now.getDate()-90);
+            else if(k==='1y')   f.setFullYear(now.getFullYear()-1);
+            var fs=fi(f), ts=fi(now);
+            document.getElementById('dpf').value=fs;
+            document.getElementById('dpt2').value=ts;
+            document.getElementById('dpt').textContent=fv(fs)+' – '+fv(ts);
+        }
+        function syncTab(k){
+            document.querySelectorAll('.rtab').forEach(function(b){ b.classList.toggle('active',b.dataset.key===k); });
+        }
+        function syncItem(k){
+            var m={'today':'qi-today','7d':'qi-7d','30d':'qi-30d','90d':'qi-90d','1y':'qi-1y'};
+            document.querySelectorAll('.dd-item').forEach(function(e){ e.classList.remove('active'); });
+            var el=m[k]?document.getElementById(m[k]):null;
+            if(el) el.classList.add('active');
         }
 
-        function setRange(days, btn) {
-            var now  = new Date();
-            var from = new Date();
-            from.setDate(now.getDate() - days);
-            document.getElementById('tu-ngay').value  = fmt(from);
-            document.getElementById('den-ngay').value = fmt(now);
-            document.querySelectorAll('.btn-range').forEach(function(b){ b.classList.remove('active'); });
-            btn.classList.add('active');
+        /* ── DROPDOWN ── */
+        function toggleDp(e){
+            e.stopPropagation();
+            var dd=document.getElementById('dpd'), p=document.getElementById('dpp');
+            var o=dd.classList.contains('show');
+            dd.classList.toggle('show',!o); p.classList.toggle('open',!o);
+        }
+        document.addEventListener('click',function(e){
+            if(!document.getElementById('dpw').contains(e.target)){
+                document.getElementById('dpd').classList.remove('show');
+                document.getElementById('dpp').classList.remove('open');
+            }
+        });
+
+        /* ── QUICK SELECT ── */
+        function qs(k,btn,fromList){
+            applyKey(k); syncTab(k); syncItem(k);
+            if(fromList){ document.getElementById('dpd').classList.remove('show'); document.getElementById('dpp').classList.remove('open'); }
+            load();
         }
 
-        // Init 30 ngày
-        (function () {
-            var now  = new Date();
-            var from = new Date();
-            from.setDate(now.getDate() - 30);
-            document.getElementById('tu-ngay').value  = fmt(from);
-            document.getElementById('den-ngay').value = fmt(now);
-        })();
-
-        // ── LOAD BÁO CÁO ──
-        async function loadBaoCao() {
-            var tu  = document.getElementById('tu-ngay').value;
-            var den = document.getElementById('den-ngay').value;
-            if (!tu || !den) { alert('Vui lòng chọn khoảng thời gian!'); return; }
-
-            document.getElementById('filter-period').textContent = 'Đang tải...';
-            try {
-                var url = '@Url.Action("GetBaoCao", "BaoCao")?tuNgay=' + tu + '&denNgay=' + den;
-                var res = await fetch(url);
-                if (!res.ok) { console.error('HTTP', res.status); return; }
-                var data = await res.json();
-                applyData(data);
-            } catch (e) {
-                console.error('loadBaoCao:', e);
-                document.getElementById('filter-period').textContent = 'Lỗi tải dữ liệu';
-            }
+        /* ── CUSTOM ── */
+        function onCustom(){
+            var fs=document.getElementById('dpf').value, ts=document.getElementById('dpt2').value;
+            if(!fs||!ts) return;
+            document.getElementById('dpt').textContent=fv(fs)+' – '+fv(ts);
+            document.querySelectorAll('.rtab').forEach(function(b){ b.classList.remove('active'); });
+            document.querySelectorAll('.dd-item').forEach(function(e){ e.classList.remove('active'); });
+            load();
         }
 
-        function pct(a, b) {
-            return b === 0 ? '0%' : Math.round(a / b * 100) + '%';
+        /* ── LOAD ── */
+        async function load(){
+            var tu=document.getElementById('dpf').value, den=document.getElementById('dpt2').value;
+            if(!tu||!den) return;
+            try{
+                var r=await fetch('@Url.Action("GetBaoCao", "BaoCao")?tuNgay='+tu+'&denNgay='+den);
+                if(!r.ok) return;
+                render(await r.json());
+            }catch(e){ console.error(e); }
         }
 
-        function applyData(d) {
-            document.getElementById('filter-period').textContent = 'Kỳ: ' + d.tuNgay + ' → ' + d.denNgay;
+        /* ── RENDER ── */
+        function render(d){
+            var th=d.tongHop, k=th.kpi;
 
-            var th = d.tongHop;
+            // Stat cards
+            $s('snt',th.tongNhap);
+            $h('snp','<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1,8 5,2 9,8" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linejoin="round"/></svg> '+pct(th.nhapHoanThanh,th.tongNhap)+' hoàn thành');
+            $s('snh',th.nhapHoanThanh);
+            $h('snq','<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1,2 5,8 9,2" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linejoin="round"/></svg> '+th.nhapQuaGio+' quá giờ');
+            $s('sxt',th.tongXuat);
+            $h('sxp','<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1,8 5,2 9,8" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-linejoin="round"/></svg> '+pct(th.xuatHoanThanh,th.tongXuat)+' hoàn thành');
+            $s('sxh',th.xuatHoanThanh);
+            $h('sxq','<svg width="10" height="10" viewBox="0 0 10 10"><polyline points="1,2 5,8 9,2" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linejoin="round"/></svg> '+th.xuatQuaGio+' quá giờ');
 
-            // ── STAT CARDS ──
-            document.getElementById('s-nhap-tong').textContent = th.tongNhap;
-            document.getElementById('s-nhap-pct').textContent  = pct(th.nhapHoanThanh, th.tongNhap) + ' hoàn thành';
-            document.getElementById('s-nhap-ht').textContent   = th.nhapHoanThanh;
-            document.getElementById('s-nhap-ht-pct').textContent = th.nhapQuaGio + ' quá giờ';
+            // Hàng bàn giao
+            $s('bnt',num(th.tongHangNhap)); $s('bnd',num(th.tongDaBGNhap)); $s('bnc',num(th.tongChuaBGNhap));
+            $s('bxt',num(th.tongHangXuat)); $s('bxd',num(th.tongDaBGXuat)); $s('bxc',num(th.tongChuaBGXuat));
 
-            document.getElementById('s-xuat-tong').textContent = th.tongXuat;
-            document.getElementById('s-xuat-pct').textContent  = pct(th.xuatHoanThanh, th.tongXuat) + ' hoàn thành';
-            document.getElementById('s-xuat-ht').textContent   = th.xuatHoanThanh;
-            document.getElementById('s-xuat-ht-pct').textContent = th.xuatQuaGio + ' quá giờ';
+            // KPI
+            $s('knt',k.nhapTb+' ph'); $s('knn',k.nhapMin+' ph'); $s('knx',k.nhapMax+' ph');
+            $s('kxt',k.xuatTb+' ph'); $s('kxn',k.xuatMin+' ph'); $s('kxx',k.xuatMax+' ph');
 
-            // ── KPI ──
-            var kpi = th.kpi;
-            document.getElementById('kpi-nhap-tb').textContent  = kpi.nhapTb + ' ph';
-            document.getElementById('kpi-nhap-min').textContent = kpi.nhapMin + ' ph';
-            document.getElementById('kpi-nhap-max').textContent = kpi.nhapMax + ' ph';
-            document.getElementById('kpi-xuat-tb').textContent  = kpi.xuatTb + ' ph';
-            document.getElementById('kpi-xuat-min').textContent = kpi.xuatMin + ' ph';
-            document.getElementById('kpi-xuat-max').textContent = kpi.xuatMax + ' ph';
+            // Chart (LINE — giống Apex)
+            renderChart(d.chart||[]);
 
-            // ── BIỂU ĐỒ ──
-            renderChart(d.chart || []);
+            // Top cửa nhập — Revenue by Category
+            renderCat('tcn', d.topCuaNhap||[], 'teal');
 
-            // ── TOP CỬA NHẬP (bar list kiểu Apex) ──
-            var topNhapEl = document.getElementById('top-cua-nhap');
-            if (!d.topCuaNhap || !d.topCuaNhap.length) {
-                topNhapEl.innerHTML = '<div class="empty-state">Không có dữ liệu</div>';
-            } else {
-                var maxNhap = Math.max.apply(null, d.topCuaNhap.map(function(x){ return x.soPhieu; }));
-                topNhapEl.innerHTML = d.topCuaNhap.map(function(x) {
-                    var w = maxNhap > 0 ? Math.round(x.soPhieu / maxNhap * 100) : 0;
-                    return '<div class="bar-item">' +
-                        '<div class="bar-meta">' +
-                            '<span class="bar-name">' + x.ten + '</span>' +
-                            '<span class="bar-value">' + x.soPhieu + ' phiếu</span>' +
-                        '</div>' +
-                        '<div class="bar-track"><div class="bar-fill blue" style="width:' + w + '%"></div></div>' +
-                    '</div>';
-                }).join('');
-            }
+            // Top cửa xuất — Top Countries
+            renderProg('tcx', d.topCuaXuat||[], 'orange');
 
-            // ── TOP CỬA XUẤT ──
-            var topXuatEl = document.getElementById('top-cua-xuat');
-            if (!d.topCuaXuat || !d.topCuaXuat.length) {
-                topXuatEl.innerHTML = '<div class="empty-state">Không có dữ liệu</div>';
-            } else {
-                var maxXuat = Math.max.apply(null, d.topCuaXuat.map(function(x){ return x.soPhieu; }));
-                topXuatEl.innerHTML = d.topCuaXuat.map(function(x) {
-                    var w = maxXuat > 0 ? Math.round(x.soPhieu / maxXuat * 100) : 0;
-                    return '<div class="bar-item">' +
-                        '<div class="bar-meta">' +
-                            '<span class="bar-name">' + x.ten + '</span>' +
-                            '<span class="bar-value">' + x.soPhieu + ' phiếu</span>' +
-                        '</div>' +
-                        '<div class="bar-track"><div class="bar-fill green" style="width:' + w + '%"></div></div>' +
-                    '</div>';
-                }).join('');
-            }
+            // Tables
+            renderTable('tbn', d.chitietNhap||[]);
+            renderTable('tbx', d.chitietXuat||[]);
 
-            // ── BẢNG NHẬP ──
-            // FIX: dùng đúng camelCase từ JSON (ngay, tongSo, hoanThanh, quaGio, dangNhap)
-            var tbNhap = document.getElementById('tb-nhap');
-            if (!d.chitietNhap || !d.chitietNhap.length) {
-                tbNhap.innerHTML = '<tr><td colspan="5" class="empty-state">Không có dữ liệu</td></tr>';
-            } else {
-                tbNhap.innerHTML = d.chitietNhap.map(function(r) {
-                    return '<tr>' +
-                        '<td>' + (r.ngay || '--') + '</td>' +
-                        '<td><strong>' + (r.tongSo || 0) + '</strong></td>' +
-                        '<td><span class="badge badge-ht">' + (r.hoanThanh || 0) + '</span></td>' +
-                        '<td><span class="badge badge-qg">' + (r.quaGio || 0) + '</span></td>' +
-                        '<td><span class="badge badge-dang">' + (r.dangNhap || 0) + '</span></td>' +
-                    '</tr>';
-                }).join('');
-            }
-
-            // ── BẢNG XUẤT ──
-            var tbXuat = document.getElementById('tb-xuat');
-            if (!d.chitietXuat || !d.chitietXuat.length) {
-                tbXuat.innerHTML = '<tr><td colspan="5" class="empty-state">Không có dữ liệu</td></tr>';
-            } else {
-                tbXuat.innerHTML = d.chitietXuat.map(function(r) {
-                    return '<tr>' +
-                        '<td>' + (r.ngay || '--') + '</td>' +
-                        '<td><strong>' + (r.tongSo || 0) + '</strong></td>' +
-                        '<td><span class="badge badge-ht">' + (r.hoanThanh || 0) + '</span></td>' +
-                        '<td><span class="badge badge-qg">' + (r.quaGio || 0) + '</span></td>' +
-                        '<td><span class="badge badge-dang">' + (r.dangXuat || 0) + '</span></td>' +
-                    '</tr>';
-                }).join('');
-            }
-
-            // ── XE QUÁ HẠN ──
-            var xeEl = document.getElementById('xe-qua-list');
-            if (!d.xeQuaHan || !d.xeQuaHan.length) {
-                xeEl.innerHTML = '<div class="empty-state">✅ Không có cảnh báo trong kỳ</div>';
-            } else {
-                xeEl.innerHTML = '<div class="xe-grid">' +
-                    d.xeQuaHan.map(function(x) {
-                        var lc = x.lanCuoi ? new Date(x.lanCuoi).toLocaleDateString('vi-VN') : '--';
-                        return '<div class="xe-qua-item">' +
-                            '<div>' +
-                                '<div class="xe-qua-plate">' + (x.bienSo || '--') + '</div>' +
-                                '<div class="xe-qua-meta">Cửa ' + (x.cua || '--') + ' · Lần cuối: ' + lc + '</div>' +
-                            '</div>' +
-                            '<div>' +
-                                '<div class="xe-qua-count">' + (x.soLan || 0) + '</div>' +
-                                '<div class="xe-qua-lbl">lần quá hạn</div>' +
-                            '</div>' +
-                        '</div>';
-                    }).join('') +
-                '</div>';
-            }
+            // Đơn vị
+            renderDonVi('dvn', d.donViNhap||[]);
+            renderDonVi('dvx', d.donViXuat||[]);
         }
 
-        // ── BIỂU ĐỒ ──
-        function renderChart(data) {
-            var isDark     = document.body.classList.contains('dark-mode');
-            var gridColor  = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
-            var tickColor  = isDark ? '#555' : '#94a3b8';
+        /* ── LINE CHART — giống Apex "Page Views Over Time" ── */
+        function renderChart(data){
+            var isDark=document.body.classList.contains('dark-mode');
+            var gc=isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.04)';
+            var tc=isDark?'#555':'#94a3b8';
+            var ctx=document.getElementById('chNgay').getContext('2d');
+            if(CI) CI.destroy();
 
-            var ctx = document.getElementById('chart-ngay').getContext('2d');
-            if (chartInstance) chartInstance.destroy();
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: data.map(function(d){ return d.ngay; }),
-                    datasets: [
+            CI=new Chart(ctx,{
+                type:'line',
+                data:{
+                    labels:data.map(function(d){return d.ngay;}),
+                    datasets:[
                         {
-                            label: 'Nhập',
-                            data: data.map(function(d){ return d.nhap; }),
-                            backgroundColor: 'rgba(59,130,246,0.8)',
-                            borderRadius: 4,
-                            borderSkipped: false,
+                            label:'Nhập',
+                            data:data.map(function(d){return d.nhap;}),
+                            borderColor:'#14b8a6', borderWidth:2.5,
+                            pointRadius:3, pointBackgroundColor:'#14b8a6',
+                            tension:0.4, fill:true,
+                            backgroundColor:function(ctx){
+                                var g=ctx.chart.ctx.createLinearGradient(0,0,0,200);
+                                g.addColorStop(0,'rgba(20,184,166,0.25)');
+                                g.addColorStop(1,'rgba(20,184,166,0)');
+                                return g;
+                            }
                         },
                         {
-                            label: 'Xuất',
-                            data: data.map(function(d){ return d.xuat; }),
-                            backgroundColor: 'rgba(34,197,94,0.8)',
-                            borderRadius: 4,
-                            borderSkipped: false,
+                            label:'Xuất',
+                            data:data.map(function(d){return d.xuat;}),
+                            borderColor:'#f97316', borderWidth:2.5,
+                            pointRadius:3, pointBackgroundColor:'#f97316',
+                            tension:0.4, fill:true,
+                            backgroundColor:function(ctx){
+                                var g=ctx.chart.ctx.createLinearGradient(0,0,0,200);
+                                g.addColorStop(0,'rgba(249,115,22,0.18)');
+                                g.addColorStop(1,'rgba(249,115,22,0)');
+                                return g;
+                            }
                         }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: isDark ? '#1e1e2e' : '#fff',
-                            titleColor: isDark ? '#e0e0e0' : '#1e293b',
-                            bodyColor: isDark ? '#aaa' : '#64748b',
-                            borderColor: isDark ? '#2a2a3d' : '#e2e8f0',
-                            borderWidth: 1,
-                            padding: 10,
-                            cornerRadius: 8
+                options:{
+                    responsive:true, maintainAspectRatio:false,
+                    interaction:{ mode:'index', intersect:false },
+                    plugins:{
+                        legend:{display:false},
+                        tooltip:{
+                            backgroundColor:isDark?'#1e1e2e':'#fff',
+                            titleColor:isDark?'#e0e0e0':'#1e293b',
+                            bodyColor:isDark?'#aaa':'#64748b',
+                            borderColor:isDark?'#2a2a3d':'#e2e8f0',
+                            borderWidth:1, padding:12, cornerRadius:8,
+                            callbacks:{label:function(c){return ' '+c.dataset.label+': '+c.parsed.y+' lượt';}}
                         }
                     },
-                    scales: {
-                        x: {
-                            grid: { color: gridColor },
-                            ticks: { color: tickColor, font: { size: 10 }, maxRotation: 45 }
-                        },
-                        y: {
-                            grid: { color: gridColor },
-                            ticks: { color: tickColor, font: { size: 10 } },
-                            beginAtZero: true
-                        }
+                    scales:{
+                        x:{grid:{color:gc},ticks:{color:tc,font:{size:10},maxRotation:45,maxTicksLimit:15}},
+                        y:{grid:{color:gc},ticks:{color:tc,font:{size:10}},beginAtZero:true}
                     }
                 }
             });
         }
 
-        // ── XUẤT EXCEL ──
-        function exportExcel() {
-            var tu  = document.getElementById('tu-ngay').value;
-            var den = document.getElementById('den-ngay').value;
-            if (!tu || !den) { alert('Vui lòng chọn khoảng thời gian!'); return; }
-            window.location.href = '@Url.Action("ExportExcel", "BaoCao")?tuNgay=' + tu + '&denNgay=' + den;
+        /* ── REVENUE BY CATEGORY ── */
+        function renderCat(id,data,color){
+            var el=document.getElementById(id);
+            if(!data.length){el.innerHTML='<div class="empty">Không có dữ liệu</div>';return;}
+            var max=Math.max.apply(null,data.map(function(x){return x.soPhieu;}));
+            el.innerHTML='<div class="cat-list">'+data.map(function(x){
+                var w=max>0?Math.round(x.soPhieu/max*100):0;
+                return '<div>'+
+                    '<div class="cat-meta">'+
+                        '<span class="cat-name">'+x.ten+'</span>'+
+                        '<div class="cat-right"><span class="cat-val">'+x.soPhieu+' phiếu</span><span class="cat-pct">'+pct(x.hoanThanh,x.soPhieu)+'</span></div>'+
+                    '</div>'+
+                    '<div class="cat-track"><div class="cat-fill '+color+'" style="width:'+w+'%"></div></div>'+
+                '</div>';
+            }).join('')+'</div>';
         }
 
-        // ── INIT ──
-        loadBaoCao();
+        /* ── TOP COUNTRIES PROGRESS ── */
+        function renderProg(id,data,color){
+            var el=document.getElementById(id);
+            if(!data.length){el.innerHTML='<div class="empty">Không có dữ liệu</div>';return;}
+            var total=data.reduce(function(s,x){return s+x.soPhieu;},0);
+            el.innerHTML=data.map(function(x){
+                var w=total>0?Math.round(x.soPhieu/total*100):0;
+                return '<div class="prog-item">'+
+                    '<span class="prog-label">'+x.ten+'</span>'+
+                    '<div class="prog-track"><div class="prog-fill '+color+'" style="width:'+w+'%"></div></div>'+
+                    '<div class="prog-right"><span class="prog-num">'+x.soPhieu+'</span><span class="prog-pct">'+w+'%</span></div>'+
+                '</div>';
+            }).join('');
+        }
+
+        /* ── TABLE ── */
+        function renderTable(id,data){
+            var el=document.getElementById(id);
+            if(!data.length){el.innerHTML='<tr><td colspan="6" class="empty">Không có dữ liệu</td></tr>';return;}
+            el.innerHTML=data.map(function(r){
+                return '<tr>'+
+                    '<td>'+r.ngay+'</td>'+
+                    '<td class="td-b">'+r.tongSo+'</td>'+
+                    '<td><span class="badge b-ht">'+r.hoanThanh+'</span></td>'+
+                    '<td><span class="badge b-qg">'+r.quaGio+'</span></td>'+
+                    '<td><span class="badge b-da">'+num(r.daBG)+'</span></td>'+
+                    '<td style="color:#f97316;font-weight:700;">'+num(r.chuaBG)+'</td>'+
+                '</tr>';
+            }).join('');
+        }
+
+        /* ── ĐƠN VỊ ── */
+        function renderDonVi(id,data){
+            var el=document.getElementById(id);
+            if(!data.length){el.innerHTML='<div class="empty">Không có dữ liệu</div>';return;}
+            el.innerHTML=data.map(function(x){
+                var ti=x.tongSo>0?Math.round(x.daBG/x.tongSo*100):0;
+                return '<div class="prog-item">'+
+                    '<span class="prog-label" style="min-width:90px;">'+x.donVi+'</span>'+
+                    '<div class="prog-track"><div class="prog-fill" style="width:'+ti+'%"></div></div>'+
+                    '<div class="prog-right"><span class="prog-num">'+num(x.daBG)+'/'+num(x.tongSo)+'</span><span class="prog-pct">'+ti+'%</span></div>'+
+                '</div>';
+            }).join('');
+        }
+
+        /* ── EXCEL ── */
+        function doExcel(){
+            var tu=document.getElementById('dpf').value, den=document.getElementById('dpt2').value;
+            if(!tu||!den){alert('Chưa chọn thời gian!');return;}
+            window.location.href='@Url.Action("ExportExcel", "BaoCao")?tuNgay='+tu+'&denNgay='+den;
+        }
     </script>
 }

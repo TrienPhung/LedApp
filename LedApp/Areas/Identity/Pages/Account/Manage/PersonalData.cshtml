@@ -5,20 +5,131 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<style>
+    .manage-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+    .manage-card-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .manage-card-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .manage-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .manage-card-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .personal-data-desc {
+        font-size: 0.875rem;
+        color: #374151;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .personal-data-warn {
+        font-size: 0.875rem;
+        color: #dc2626;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: background .15s;
+    }
+
+    .btn-primary {
+        background: #16a34a;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background: #15803d;
+            color: #fff;
+        }
+
+    .btn-danger {
+        background: #ef4444;
+        color: #fff;
+    }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+    body.dark-mode .manage-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .personal-data-desc {
+        color: #d1d5db !important;
+    }
+</style>
+
+<div class="manage-card">
+    <div class="manage-card-header">
+        <p class="manage-card-title">Personal data</p>
+        <p class="manage-card-sub">Download or delete your personal account data</p>
+    </div>
+    <div class="manage-card-body">
+        <p class="personal-data-desc">
+            Your account contains personal data that you have given us. This page allows you to download or delete that data.
         </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+        <p class="personal-data-warn">
+            <i class="bi bi-exclamation-triangle-fill" style="margin-right: 6px;"></i>
+            Deleting this data will permanently remove your account, and this cannot be recovered.
         </p>
+        <div class="btn-group">
+            <form id="download-data" asp-page="DownloadPersonalData" method="post">
+                <button class="btn-action btn-primary" type="submit">Download</button>
+            </form>
+            <a id="delete" asp-page="DeletePersonalData" class="btn-action btn-danger">Delete account</a>
+        </div>
     </div>
 </div>
 

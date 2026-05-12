@@ -1,57 +1,871 @@
 ﻿@model LedApp.Models.Xuat
 @{
-    ViewData["Title"] = "Chi tiết phiếu xuất";
+    ViewData["Title"] = "Chi tiết phiếu xuất #" + Model.Id;
     Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    string badgeClass = Model.TrangThai switch
+    {
+        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "bp-phan-cong",
+        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "bp-ban-giao",
+        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "bp-qua-tg",
+        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "bp-hoan-thanh",
+        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "bp-xuat-phat",
+        _ => "bp-phan-cong"
+    };
+    string badgeLabel = Model.TrangThai switch
+    {
+        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "Đã phân công",
+        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "Đang bàn giao",
+        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "Quá thời gian",
+        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "Hoàn thành",
+        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "Đã xuất phát",
+        _ => "—"
+    };
 }
-<h1>Chi tiết phiếu xuất #@Model.Id</h1>
-<hr />
-<dl class="row">
-    <dt class="col-sm-3">Cửa xuất</dt>
-    <dd class="col-sm-9">@(Model.CuaXuat?.Ten ?? $"X-{Model.CuaXuatId:D2}")</dd>
-    <dt class="col-sm-3">Biển số xe</dt>
-    <dd class="col-sm-9">@(Model.Xe?.BienSoXe ?? "—")</dd>
-    <dt class="col-sm-3">Nhân viên xác nhận</dt>
-    <dd class="col-sm-9">@(Model.NhanVienXacNhan?.FullName ?? "—")</dd>
-    <dt class="col-sm-3">Trạng thái</dt>
-    <dd class="col-sm-9">
-        @switch (Model.TrangThai)
-        {
-            case (int)LedApp.Models.TrangThaiXuat.DaPhanCong:
-                <span class="badge bg-secondary">Đã phân công</span>
-                break;
-            case (int)LedApp.Models.TrangThaiXuat.DangBanGiao:
-                <span class="badge bg-primary">Đang bàn giao</span>
-                break;
-            case (int)LedApp.Models.TrangThaiXuat.QuaThoiGian:
-                <span class="badge bg-danger">Quá thời gian</span>
-                break;
-            case (int)LedApp.Models.TrangThaiXuat.HoanThanh:
-                <span class="badge bg-success">Hoàn thành</span>
-                break;
-            case (int)LedApp.Models.TrangThaiXuat.DaXuatPhat:
-                <span class="badge bg-dark">Đã xuất phát</span>
-                break;
+
+<style>
+    /* ── APEX TOKENS ── */
+    :root {
+        --ap-bg: #f9fafb;
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-green: #16a34a;
+        --ap-green-bg: #dcfce7;
+        --ap-blue: #2563eb;
+        --ap-blue-bg: #dbeafe;
+        --ap-red: #dc2626;
+        --ap-red-bg: #fee2e2;
+        --ap-orange: #d97706;
+        --ap-orange-bg: #fef3c7;
+        --ap-purple: #7c3aed;
+        --ap-purple-bg: #ede9fe;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+        --ap-shadow-md: 0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -1px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-bg: #0f172a;
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .dt-wrap {
+        padding: 0 0 40px;
+    }
+
+    /* ── Breadcrumb ── */
+    .dt-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .dt-breadcrumb a {
+            color: var(--ap-text-2);
+            text-decoration: none;
         }
-    </dd>
-    <dt class="col-sm-3">Thời gian phân công</dt>
-    <dd class="col-sm-9">@Model.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</dd>
-    <dt class="col-sm-3">Thời gian vào cửa</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianVaoCua?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">Thời gian giới hạn</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianGioiHan?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">Thời gian hoàn thành</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianHoanThanh?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">Thời gian xuất phát</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianXuatPhat?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">Địa điểm giao</dt>
-    <dd class="col-sm-9">@(Model.DiaDiemGiao ?? "—")</dd>
-    <dt class="col-sm-3">TG dự kiến về bãi</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianDuKienVeBai?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">TG thực tế về bãi</dt>
-    <dd class="col-sm-9">@(Model.ThoiGianVeBai?.ToString("dd/MM/yyyy HH:mm") ?? "—")</dd>
-    <dt class="col-sm-3">Ghi chú</dt>
-    <dd class="col-sm-9">@(Model.GhiChu ?? "—")</dd>
-</dl>
-<hr />
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">Sửa</a>
-<a asp-action="Index" class="btn btn-secondary btn-sm ms-2">Trở về</a>
+
+            .dt-breadcrumb a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .dt-breadcrumb .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .dt-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+            }
+
+        .dt-breadcrumb .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    /* ── Page header ── */
+    .dt-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+        .dt-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ap-text-1);
+            margin: 0;
+            letter-spacing: -.3px;
+        }
+
+    .dt-header-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    /* Buttons */
+    .btn-apex {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: 1px solid var(--ap-border);
+        background: var(--ap-surface);
+        color: var(--ap-text-2);
+        transition: all .15s;
+        box-shadow: var(--ap-shadow);
+    }
+
+        .btn-apex:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+            text-decoration: none;
+        }
+
+        .btn-apex svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .btn-apex.edit {
+            color: var(--ap-text-1);
+        }
+
+            .btn-apex.edit:hover {
+                background: var(--ap-border-lt);
+                border-color: #d1d5db;
+            }
+
+        .btn-apex.danger {
+            background: var(--ap-red);
+            border-color: var(--ap-red);
+            color: #fff;
+        }
+
+            .btn-apex.danger:hover {
+                background: #b91c1c;
+                border-color: #b91c1c;
+                color: #fff;
+            }
+
+    /* ── Main layout ── */
+    .dt-grid {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 16px;
+        align-items: start;
+    }
+    @@media (max-width: 900px) {
+        .dt-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    /* ── Panel ── */
+    .ap-panel {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .ap-panel:last-child {
+            margin-bottom: 0;
+        }
+
+    .ap-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+    .ap-panel-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+    }
+
+    .ap-panel-body {
+        padding: 0;
+    }
+
+    /* ── Detail rows ── */
+    .detail-row {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+        align-items: start;
+        gap: 12px;
+        transition: background .1s;
+    }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row:hover {
+            background: var(--ap-border-lt);
+        }
+
+    .detail-key {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--ap-text-2);
+        padding-top: 1px;
+    }
+
+    .detail-val {
+        font-size: 13.5px;
+        color: var(--ap-text-1);
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+        .detail-val.muted {
+            color: var(--ap-text-3);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .detail-val.mono {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            letter-spacing: .5px;
+        }
+
+    /* ── Badge pills ── */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+        .badge-pill::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+    .bp-phan-cong {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+        .bp-phan-cong::before {
+            background: #94a3b8;
+        }
+
+    .bp-ban-giao {
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+        .bp-ban-giao::before {
+            background: #3b82f6;
+        }
+
+    .bp-qua-tg {
+        background: #fef2f2;
+        color: #ef4444;
+    }
+
+        .bp-qua-tg::before {
+            background: #ef4444;
+        }
+
+    .bp-hoan-thanh {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+        .bp-hoan-thanh::before {
+            background: #16a34a;
+        }
+
+    .bp-xuat-phat {
+        background: #f5f3ff;
+        color: #7c3aed;
+    }
+
+        .bp-xuat-phat::before {
+            background: #7c3aed;
+        }
+
+    /* ── Sidebar card ── */
+    .sidebar-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 16px 20px;
+    }
+
+    .meta-item {
+    }
+
+    .meta-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--ap-text-3);
+        margin-bottom: 5px;
+    }
+
+    .meta-value {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+    }
+
+        .meta-value.muted {
+            color: var(--ap-text-3);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+    /* ── Timeline sidebar ── */
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .tl-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+        .tl-row:last-child {
+            border-bottom: none;
+        }
+
+    .tl-dot-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+        padding-top: 3px;
+    }
+
+    .tl-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid;
+        flex-shrink: 0;
+        background: var(--ap-surface);
+    }
+
+        .tl-dot.filled {
+            background: currentColor;
+        }
+
+    .tl-line {
+        width: 2px;
+        height: 100%;
+        min-height: 20px;
+        background: var(--ap-border);
+        margin-top: 4px;
+        flex: 1;
+    }
+
+    .tl-body {
+        flex: 1;
+    }
+
+    .tl-title {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+    }
+
+    .tl-time {
+        font-size: 11.5px;
+        color: var(--ap-text-2);
+        margin-top: 2px;
+    }
+
+        .tl-time.pending {
+            color: var(--ap-text-3);
+            font-style: italic;
+        }
+
+    /* ── Dark mode ── */
+    body.dark-mode .ap-panel {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .detail-row:hover {
+        background: rgba(255,255,255,.03);
+    }
+
+    body.dark-mode .btn-apex {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-2) !important;
+    }
+
+        body.dark-mode .btn-apex.danger {
+            background: var(--ap-red) !important;
+            border-color: var(--ap-red) !important;
+            color: #fff !important;
+        }
+
+    /* ── Delete modal ── */
+    .del-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: var(--ap-surface);
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: var(--ap-text-3);
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        padding: 4px 6px;
+        border-radius: 6px;
+        transition: all .15s;
+    }
+
+        .del-modal-close:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+        }
+
+    .del-modal h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ap-text-1);
+        margin: 0 0 8px;
+    }
+
+    .del-modal p {
+        font-size: 13px;
+        color: var(--ap-text-2);
+        line-height: 1.55;
+        margin: 0 0 20px;
+    }
+
+    .del-modal-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--ap-border);
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: var(--ap-border-lt);
+        }
+
+    .btn-confirm-del {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        background: var(--ap-red);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-confirm-del:hover {
+            background: #b91c1c;
+        }
+</style>
+
+<div class="dt-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="dt-breadcrumb">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="Xuats" asp-action="Index">Phiếu xuất</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Phiếu xuất #@Model.Id</span>
+    </div>
+
+    <!-- Page header -->
+    <div class="dt-header">
+        <h1>Phiếu xuất #@Model.Id</h1>
+        <div class="dt-header-actions">
+            <a asp-action="Index" class="btn-apex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Trở về
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-apex edit" perm="Xuat.Edit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                Edit
+            </a>
+            <button class="btn-apex danger" perm="Xuat.Delete" onclick="openDelModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <!-- 2-column grid -->
+    <div class="dt-grid">
+
+        <!-- LEFT: Main details -->
+        <div>
+            <!-- Thông tin chung -->
+            <div class="ap-panel">
+                <div class="ap-panel-head">
+                    <span class="ap-panel-title">Thông tin phiếu xuất</span>
+                    <span class="badge-pill @badgeClass">@badgeLabel</span>
+                </div>
+                <div class="ap-panel-body">
+                    <div class="detail-row">
+                        <span class="detail-key">Cửa xuất</span>
+                        <span class="detail-val">@(Model.CuaXuat?.Ten ?? $"X-{Model.CuaXuatId:D2}")</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Biển số xe</span>
+                        <span class="detail-val mono">@(Model.Xe?.BienSoXe ?? "—")</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Nhân viên xác nhận</span>
+                        <span class="detail-val">
+                            @if (Model.NhanVienXacNhan != null)
+                            {
+                                <span>@Model.NhanVienXacNhan.FullName</span>
+                            }
+                            else
+                            {
+                                <span class="muted">Chưa có</span>
+                            }
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Địa điểm giao</span>
+                        <span class="detail-val @(Model.DiaDiemGiao == null ? "muted" : "")">
+                            @(Model.DiaDiemGiao ?? "—")
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Ghi chú</span>
+                        <span class="detail-val @(Model.GhiChu == null ? "muted" : "")">
+                            @(Model.GhiChu ?? "—")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thời gian -->
+            <div class="ap-panel">
+                <div class="ap-panel-head">
+                    <span class="ap-panel-title">📅 Thời gian</span>
+                </div>
+                <div class="ap-panel-body">
+                    <div class="detail-row">
+                        <span class="detail-key">Thời gian phân công</span>
+                        <span class="detail-val">@Model.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm")</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Thời gian vào cửa</span>
+                        @if (Model.ThoiGianVaoCua.HasValue)
+                        {
+                            <span class="detail-val">@Model.ThoiGianVaoCua.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">Chưa vào cửa</span>
+                        }
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Thời gian giới hạn</span>
+                        @if (Model.ThoiGianGioiHan.HasValue)
+                        {
+                            var isOver = Model.ThoiGianGioiHan.Value < DateTime.Now
+                            && Model.TrangThai != (int)LedApp.Models.TrangThaiXuat.HoanThanh
+                            && Model.TrangThai != (int)LedApp.Models.TrangThaiXuat.DaXuatPhat;
+                            <span class="detail-val" style="color: @(isOver ? "var(--ap-red)" : "inherit")">
+                                @Model.ThoiGianGioiHan.Value.ToString("dd/MM/yyyy HH:mm")
+                                @if (isOver)
+                                {
+                                    <span style="font-size:11px;margin-left:6px;" class="badge-pill bp-qua-tg">Quá giờ</span>
+                                }
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">—</span>
+                        }
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Thời gian hoàn thành</span>
+                        @if (Model.ThoiGianHoanThanh.HasValue)
+                        {
+                            <span class="detail-val">@Model.ThoiGianHoanThanh.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">Chưa hoàn thành</span>
+                        }
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Thời gian xuất phát</span>
+                        @if (Model.ThoiGianXuatPhat.HasValue)
+                        {
+                            <span class="detail-val">@Model.ThoiGianXuatPhat.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">Chưa xuất phát</span>
+                        }
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">TG dự kiến về bãi</span>
+                        @if (Model.ThoiGianDuKienVeBai.HasValue)
+                        {
+                            <span class="detail-val">@Model.ThoiGianDuKienVeBai.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">—</span>
+                        }
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">TG thực tế về bãi</span>
+                        @if (Model.ThoiGianVeBai.HasValue)
+                        {
+                            <span class="detail-val">@Model.ThoiGianVeBai.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span class="detail-val muted">Chưa về bãi</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Sidebar -->
+        <div>
+            <!-- Trạng thái nhanh -->
+            <div class="ap-panel">
+                <div class="ap-panel-head">
+                    <span class="ap-panel-title">Trạng thái</span>
+                </div>
+                <div class="sidebar-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Trạng thái hiện tại</div>
+                        <span class="badge-pill @badgeClass" style="font-size:13px;padding:6px 12px;">@badgeLabel</span>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Mã phiếu</div>
+                        <div class="meta-value" style="font-family:monospace;">#@Model.Id</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Cửa xuất</div>
+                        <div class="meta-value">@(Model.CuaXuat?.Ten ?? $"X-{Model.CuaXuatId:D2}")</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Xe</div>
+                        <div class="meta-value mono">@(Model.Xe?.BienSoXe ?? "—")</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline tiến độ -->
+            <div class="ap-panel">
+                <div class="ap-panel-head">
+                    <span class="ap-panel-title">🕐 Tiến độ</span>
+                </div>
+                <div class="timeline">
+                    <!-- Phân công -->
+                    <div class="tl-row">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot filled" style="color: var(--ap-green); border-color: var(--ap-green);"></div>
+                        </div>
+                        <div class="tl-body">
+                            <div class="tl-title">Đã phân công</div>
+                            <div class="tl-time">@Model.ThoiGianPhanCong.ToString("HH:mm — dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+                    <!-- Vào cửa -->
+                    <div class="tl-row">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot @(Model.ThoiGianVaoCua.HasValue ? "filled" : "")"
+                                 style="color: var(--ap-blue); border-color: @(Model.ThoiGianVaoCua.HasValue ? "var(--ap-blue)" : "var(--ap-border)");"></div>
+                        </div>
+                        <div class="tl-body">
+                            <div class="tl-title">Vào cửa</div>
+                            @if (Model.ThoiGianVaoCua.HasValue)
+                            {
+                                <div class="tl-time">@Model.ThoiGianVaoCua.Value.ToString("HH:mm — dd/MM/yyyy")</div>
+                            }
+                            else
+                            {
+                                <div class="tl-time pending">Chưa vào cửa</div>
+                            }
+                        </div>
+                    </div>
+                    <!-- Hoàn thành -->
+                    <div class="tl-row">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot @(Model.ThoiGianHoanThanh.HasValue ? "filled" : "")"
+                                 style="color: var(--ap-green); border-color: @(Model.ThoiGianHoanThanh.HasValue ? "var(--ap-green)" : "var(--ap-border)");"></div>
+                        </div>
+                        <div class="tl-body">
+                            <div class="tl-title">Hoàn thành bàn giao</div>
+                            @if (Model.ThoiGianHoanThanh.HasValue)
+                            {
+                                <div class="tl-time">@Model.ThoiGianHoanThanh.Value.ToString("HH:mm — dd/MM/yyyy")</div>
+                            }
+                            else
+                            {
+                                <div class="tl-time pending">Chưa hoàn thành</div>
+                            }
+                        </div>
+                    </div>
+                    <!-- Xuất phát -->
+                    <div class="tl-row">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot @(Model.ThoiGianXuatPhat.HasValue ? "filled" : "")"
+                                 style="color: var(--ap-purple); border-color: @(Model.ThoiGianXuatPhat.HasValue ? "var(--ap-purple)" : "var(--ap-border)");"></div>
+                        </div>
+                        <div class="tl-body">
+                            <div class="tl-title">Xuất phát</div>
+                            @if (Model.ThoiGianXuatPhat.HasValue)
+                            {
+                                <div class="tl-time">@Model.ThoiGianXuatPhat.Value.ToString("HH:mm — dd/MM/yyyy")</div>
+                            }
+                            else
+                            {
+                                <div class="tl-time pending">Chưa xuất phát</div>
+                            }
+                        </div>
+                    </div>
+                    <!-- Về bãi -->
+                    <div class="tl-row">
+                        <div class="tl-dot-wrap">
+                            <div class="tl-dot @(Model.ThoiGianVeBai.HasValue ? "filled" : "")"
+                                 style="color: var(--ap-orange); border-color: @(Model.ThoiGianVeBai.HasValue ? "var(--ap-orange)" : "var(--ap-border)");"></div>
+                        </div>
+                        <div class="tl-body">
+                            <div class="tl-title">Về bãi</div>
+                            @if (Model.ThoiGianVeBai.HasValue)
+                            {
+                                <div class="tl-time">@Model.ThoiGianVeBai.Value.ToString("HH:mm — dd/MM/yyyy")</div>
+                            }
+                            else
+                            {
+                                <div class="tl-time pending">Chưa về bãi</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="del-overlay" id="delOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" onclick="closeDelModal()">×</button>
+        <h3>Xóa phiếu xuất</h3>
+        <p>Bạn có chắc chắn muốn xóa phiếu xuất <strong>#@Model.Id</strong>? Hành động này không thể hoàn tác.</p>
+        <div class="del-modal-foot">
+            <button class="btn-cancel" onclick="closeDelModal()">Hủy</button>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-confirm-del">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDelModal() {
+        document.getElementById('delOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeDelModal() {
+        document.getElementById('delOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.getElementById('delOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeDelModal();
+    });
+</script>

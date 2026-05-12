@@ -29,7 +29,7 @@ namespace LedApp.Services
             while (!stoppingToken.IsCancellationRequested)
             {
                 await KiemTraQuaGio();
-                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
             }
         }
 
@@ -45,6 +45,7 @@ namespace LedApp.Services
                 // Tìm phiếu quá giờ nhưng CHƯA được nhân viên báo
                 // (tức là vẫn còn TrangThai = DangBanGiao, chưa chuyển sang QuaThoiGian)
                 var phieuQuaGio = await context.Xuats
+                      .Include(x => x.Xe)
                     .Where(x => x.ThoiGianPhanCong.Date == today
                              && x.TrangThai == (int)TrangThaiXuat.DangBanGiao
                              && x.ThoiGianGioiHan.HasValue
@@ -55,32 +56,30 @@ namespace LedApp.Services
 
                 foreach (var xuat in phieuQuaGio)
                 {
-                    // Kiểm tra đã có CanhBao chưa — tránh duplicate
                     var daCoCanh = await context.CanhBaos
                         .AnyAsync(c => c.PhieuId == xuat.Id
                                     && c.LoaiPhieu == "XUAT"
                                     && c.LoaiCanhBao == "QuaHanXuat");
-                    if (daCoCanh) continue; // nhân viên đã báo rồi, bỏ qua
+                    if (daCoCanh) continue;
 
-                    // Backup: nhân viên mất kết nối, background tự xử lý
                     xuat.TrangThai = (int)TrangThaiXuat.QuaThoiGian;
 
                     context.CanhBaos.Add(new CanhBao
                     {
                         LoaiPhieu = "XUAT",
                         PhieuId = xuat.Id,
-                        LoaiCanhBao = "QuaHanXuat", // dùng cùng tên với nhân viên
+                        LoaiCanhBao = "QuaHanXuat",
                         ThoiGian = now,
-                        GhiChu = $"Xe:{xuat.XeId}|Cua:{xuat.CuaXuatId}|GioiHan:{xuat.ThoiGianGioiHan:HH:mm}",
+                        GhiChu = $"Xe:{xuat.Xe?.BienSoXe ?? xuat.XeId?.ToString()}|Cua:{xuat.CuaXuatId}|GioiHan:{xuat.ThoiGianGioiHan:HH:mm}",
                         TrangThai = (int)TrangThaiCanhBao.ChuaXuLy
                     });
 
                     await context.SaveChangesAsync();
 
-                    // Push SignalR đồng bộ tất cả màn hình
+                    // Chỉ push 1 lần duy nhất với đầy đủ thông tin
                     await _hubContext.Clients.All.SendAsync("ReceivedXuat", new
                     {
-                        bienSoXe = (string?)null,
+                        bienSoXe = xuat.Xe?.BienSoXe ?? "--",
                         trangThai = (int)TrangThaiXuat.QuaThoiGian,
                         thoiGianVaoCua = xuat.ThoiGianVaoCua,
                         thoiGianGioiHan = xuat.ThoiGianGioiHan

@@ -1,4 +1,5 @@
-﻿using LedApp.DTOs;
+﻿using System.Diagnostics;
+using LedApp.DTOs;
 using LedApp.Hubs;
 using LedApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -9,12 +10,13 @@ using Newtonsoft.Json;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "BaoVe")]
+    [Authorize(Policy = "BaoVeNhap.View")]
     public class BaoVeNhapController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHubContext<SignalServer> _hubContext;
         private readonly ILogger<BaoVeNhapController> _logger;
+        private static Process? _pythonProcess = null;
 
         public BaoVeNhapController(
             IHttpClientFactory httpClientFactory,
@@ -24,6 +26,58 @@ namespace LedApp.Controllers
             _httpClientFactory = httpClientFactory;
             _hubContext = hubContext;
             _logger = logger;
+        }
+        [HttpPost]
+        public IActionResult BatCamera()
+        {
+            try
+            {
+                if (_pythonProcess != null && !_pythonProcess.HasExited)
+                    return Ok(new { status = "running", message = "Camera đang chạy rồi" });
+
+                _pythonProcess = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "python",
+                        Arguments = "camera_service_v4.py",
+                        WorkingDirectory = @"E:\CameraAI",  
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    }
+                };
+                _pythonProcess.Start();
+                return Ok(new { status = "started", message = "Camera đã bật" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult TatCamera()
+        {
+            try
+            {
+                if (_pythonProcess == null || _pythonProcess.HasExited)
+                    return Ok(new { status = "stopped", message = "Camera chưa chạy" });
+
+                _pythonProcess.Kill(entireProcessTree: true);
+                _pythonProcess = null;
+                return Ok(new { status = "stopped", message = "Camera đã tắt" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult CameraStatus()
+        {
+            bool running = _pythonProcess != null && !_pythonProcess.HasExited;
+            return Ok(new { running });
         }
         public IActionResult Index()
         {
@@ -194,6 +248,21 @@ namespace LedApp.Controllers
             4 => "Hoàn thành",
             _ => "--"
         };
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> CheckViettelApi()
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("ViettelApi");
+                var res = await client.GetAsync("api/DanhSachXes/dashboard");
+                return Ok(new { online = res.IsSuccessStatusCode });
+            }
+            catch
+            {
+                return Ok(new { online = false });
+            }
+        }
     }
 
     // ── REQUEST / RESPONSE MODELS ──

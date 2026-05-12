@@ -10690,11 +10690,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
+      "projectUniqueName": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
       "projectName": "Viettel_post_API",
-      "projectPath": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
+      "projectPath": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Viettel_post_API.csproj",
       "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-      "outputPath": "E:\\CodeLVTN\\LedApp_Api\\Viettel_Post_API_SignalServer\\Viettel_post_API\\Viettel_post_API\\obj\\",
+      "outputPath": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -249,11 +249,19 @@
                     <span class="input-group-addon">
                         <i class="icon_key_alt"></i>
                     </span>
-                    <input asp-for="Input.Password"
-                           class="form-control"
-                           placeholder="Password"
-                           autocomplete="current-password"
-                           aria-required="true" />
+                    <div style="position:relative;display:table-cell;width:100%;">
+                        <input asp-for="Input.Password"
+                               class="form-control"
+                               id="passwordInput"
+                               placeholder="Password"
+                               autocomplete="current-password"
+                               aria-required="true"
+                               style="padding-right:40px!important;" />
+                        <span onclick="togglePassword()"
+                              style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:#8b9199;font-size:15px;z-index:10;">
+                            <i class="fa fa-eye" id="toggleIcon"></i>
+                        </span>
+                    </div>
                 </div>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
 
@@ -290,5 +298,18 @@
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }
+    <script>
+        function togglePassword() {
+            var input = document.getElementById('passwordInput');
+            var icon = document.getElementById('toggleIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
 </body>
 </html>

@@ -26,6 +26,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietXuats
+        [Authorize(Policy = "ChiTietXuat.View")]
         public async Task<IActionResult> Index()
         {
             var data = await _context.Xuats
@@ -39,6 +40,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietXuats/Details/5
+        [Authorize(Policy = "ChiTietXuat.View")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.ChitietXuats == null)
@@ -53,6 +55,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietXuats/Create
+        [Authorize(Policy = "ChiTietXuat.Create")]
         public IActionResult Create()
         {
             var xuatList = _context.Xuats
@@ -69,6 +72,7 @@ namespace LedApp.Controllers
 
         // POST: ChitietXuats/Create
         [HttpPost]
+        [Authorize(Policy = "ChiTietXuat.Create")]
         public async Task<IActionResult> Create([Bind("Id,XuatId,DonVi,ChuaBG,DaBG")] ChitietXuat chitietXuat)
         {
             try
@@ -93,6 +97,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietXuats/Edit/5
+        [Authorize(Policy = "ChiTietXuat.Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.ChitietXuats == null)
@@ -114,6 +119,7 @@ namespace LedApp.Controllers
 
         // POST: ChitietXuats/Edit/5
         [HttpPost]
+        [Authorize(Policy = "ChiTietXuat.Edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,XuatId,DonVi,ChuaBG,DaBG")] ChitietXuat chitietXuat)
         {
             if (id != chitietXuat.Id) return NotFound();
@@ -139,6 +145,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietXuats/Delete/5
+        [Authorize(Policy = "ChiTietXuat.Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.ChitietXuats == null)
@@ -154,6 +161,7 @@ namespace LedApp.Controllers
 
         // POST: ChitietXuats/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "ChiTietXuat.Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.ChitietXuats == null)
@@ -167,10 +175,24 @@ namespace LedApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [Authorize(Policy = "ChiTietXuat.Delete")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteCtRequest request)
+        {
+            if (request?.Ids == null || !request.Ids.Any()) return BadRequest();
+            var items = _context.ChitietXuats.Where(c => request.Ids.Contains(c.Id));
+            _context.ChitietXuats.RemoveRange(items);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        
 
         private bool ChitietXuatExists(int id)
         {
             return (_context.ChitietXuats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
+    public class BulkDeleteCtRequest { public List<int> Ids { get; set; } = new(); }
 }

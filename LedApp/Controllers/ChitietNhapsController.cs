@@ -31,6 +31,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietNhaps
+        [Authorize(Policy = "ChiTietNhap.View")]
         public async Task<IActionResult> Index()
         {
             var data = await _context.Nhaps
@@ -42,6 +43,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietNhaps/Details/5
+        [Authorize(Policy = "ChiTietNhap.View")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -56,6 +58,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietNhaps/Create
+        [Authorize(Policy = "ChiTietNhap.Create")]
         public IActionResult Create()
         {
             ViewData["NhapId"] = GetNhapSelectList();
@@ -64,6 +67,7 @@ namespace LedApp.Controllers
 
         // POST: ChitietNhaps/Create
         [HttpPost]
+        [Authorize(Policy = "ChiTietNhap.Create")]
         public async Task<IActionResult> Create([Bind("NhapId,DonVi,ChuaBG,DaBG")] ChitietNhap chitietNhap)
         {
             try
@@ -80,6 +84,7 @@ namespace LedApp.Controllers
         }
 
         // GET: ChitietNhaps/Edit/5
+        [Authorize(Policy = "ChiTietNhap.Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -90,11 +95,13 @@ namespace LedApp.Controllers
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (chitietNhap == null) return NotFound();
+            ViewData["NhapId"] = GetNhapSelectList(chitietNhap.NhapId);
             return View(chitietNhap);
         }
 
         // POST: ChitietNhaps/Edit/5
         [HttpPost]
+        [Authorize(Policy = "ChiTietNhap.Edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NhapId,DonVi,ChuaBG,DaBG")] ChitietNhap chitietNhap)
         {
             if (id != chitietNhap.Id) return NotFound();
@@ -121,11 +128,13 @@ namespace LedApp.Controllers
                     .Include(c => c.Nhap)
                         .ThenInclude(n => n.CuaNhap)
                     .FirstOrDefaultAsync(c => c.Id == id);
+                ViewData["NhapId"] = GetNhapSelectList(chitiet?.NhapId);
                 return View(chitiet);
             }
         }
 
         // GET: ChitietNhaps/Delete/5
+        [Authorize(Policy = "ChiTietNhap.Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -141,6 +150,8 @@ namespace LedApp.Controllers
 
         // POST: ChitietNhaps/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "ChiTietNhap.Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var chitietNhap = await _context.ChitietNhaps.FindAsync(id);
@@ -151,10 +162,23 @@ namespace LedApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [Authorize(Policy = "ChiTietNhap.Delete")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteCnRequest request)
+        {
+            if (request?.Ids == null || !request.Ids.Any()) return BadRequest();
+            var items = _context.ChitietNhaps.Where(c => request.Ids.Contains(c.Id));
+            _context.ChitietNhaps.RemoveRange(items);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
+       
         private bool ChitietNhapExists(int id)
         {
             return (_context.ChitietNhaps?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
+    public class BulkDeleteCnRequest { public List<int> Ids { get; set; } = new(); }
 }

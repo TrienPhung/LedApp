@@ -2,88 +2,992 @@
 @{
     ViewData["Title"] = "Sửa tài khoản";
     Layout = "~/Views/Shared/_Layout1.cshtml";
+    string initials = Model.NguoiDung != null
+        ? (Model.NguoiDung.FirstName?.Length > 0 ? Model.NguoiDung.FirstName[0].ToString().ToUpper() : "?")
+        : (Model.UserName.Length > 0 ? Model.UserName[0].ToString().ToUpper() : "?");
 }
 
-<h1>Sửa tài khoản</h1>
-<hr />
-<div class="row">
-    <div class="col-md-5">
+<style>
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
+    }
 
-        @if (Model.NguoiDung != null)
-        {
-            <div class="d-flex align-items-center gap-3 mb-4 p-3"
-                 style="background:#f8f9fa;border-radius:8px;border:1px solid #dee2e6;">
-                <img src="@(Model.NguoiDung.Image ?? "/uploads/avatars/default.png")"
-                     style="width:56px;height:56px;object-fit:cover;border-radius:50%;border:1px solid #ddd;" />
-                <div>
-                    <div class="fw-semibold">@Model.NguoiDung.FullName</div>
-                    <div class="text-muted" style="font-size:13px;">Nhân viên liên kết</div>
-                </div>
-            </div>
+    .fx-page {
+        padding: 24px 24px 80px;
+    }
+
+    .fx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+
+        .fx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
         }
 
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <input type="hidden" asp-for="UserId" />
+            .fx-breadcrumb a:hover {
+                color: #111827;
+            }
 
-            <div class="form-group mb-3">
-                <label asp-for="UserName" class="control-label">Username</label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+        .fx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
 
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" class="form-control" type="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+            .fx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
 
-            <div class="form-group mb-3">
-                <label asp-for="NewPassword" class="control-label">
-                    Mật khẩu mới <small class="text-muted">(để trống nếu không đổi)</small>
-                </label>
-                <div style="position:relative;">
-                    <input asp-for="NewPassword" class="form-control" type="password"
-                           id="newPasswordInput" placeholder="Nhập mật khẩu mới..."
-                           style="padding-right:40px;" />
-                    <i class="mdi mdi-eye" onclick="togglePass('newPasswordInput', this)"
-                       style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                  cursor:pointer;color:#6c757d;font-size:18px;"></i>
-                </div>
-                <span asp-validation-for="NewPassword" class="text-danger"></span>
-            </div>
+        .fx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
 
-            <div class="form-group mb-3">
-                <label asp-for="Role" class="control-label">Role</label>
-                <select asp-for="Role" class="form-control">
-                    <option value="">-- Không gán role --</option>
-                    @foreach (var r in Model.AvailableRoles)
-                    {
-                        <option value="@r" selected="@(r == Model.Role ? "selected" : null)">@r</option>
-                    }
-                </select>
-            </div>
+    .fx-header {
+        margin-bottom: 28px;
+    }
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Lưu thay đổi" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
-            </div>
-        </form>
+        .fx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+        }
+
+        .fx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .fx-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    @@media(max-width:900px) {
+        .fx-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .fx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .fx-card:last-child {
+            margin-bottom: 0;
+        }
+
+    .fx-card-header {
+        padding: 16px 22px 12px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .fx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .fx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .fx-card-body {
+        padding: 20px 22px;
+    }
+
+    .field-group {
+        margin-bottom: 18px;
+    }
+
+        .field-group:last-child {
+            margin-bottom: 0;
+        }
+
+    .field-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .field-input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s,box-shadow .15s;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+        margin-top: 4px;
+    }
+
+    select.field-input {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+    }
+
+    .pw-wrap {
+        position: relative;
+    }
+
+        .pw-wrap .field-input {
+            padding-right: 40px;
+        }
+
+    .pw-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #9ca3af;
+        font-size: 18px;
+    }
+
+    /* Profile chip */
+    .profile-chip {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: #f9fafb;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 18px;
+    }
+
+    .profile-chip-ph {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f0fdf4;
+        color: #16a34a;
+        font-size: 0.95rem;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .profile-chip-name {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .profile-chip-sub {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    /* Role info */
+    .role-info-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-top: 8px;
+    }
+
+        .role-info-box p {
+            font-size: 0.78rem;
+            color: #15803d;
+            margin: 0 0 6px;
+            font-weight: 600;
+        }
+
+    .role-perm-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .role-perm-tag {
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 5px;
+    }
+
+    /* Permissions tabs */
+    .perm-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .perm-tab {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all .15s;
+    }
+
+        .perm-tab.active {
+            color: #16a34a;
+            border-bottom-color: #16a34a;
+            font-weight: 600;
+        }
+
+    .perm-tab-content {
+        display: none;
+    }
+
+        .perm-tab-content.active {
+            display: block;
+        }
+
+    .perm-section {
+        margin-bottom: 20px;
+    }
+
+        .perm-section:last-child {
+            margin-bottom: 0;
+        }
+
+    .perm-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .perm-section-title {
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .perm-section-selall {
+        font-size: 0.72rem;
+        color: #16a34a;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+        .perm-section-selall:hover {
+            text-decoration: underline;
+        }
+
+    .perm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .perm-cb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .perm-cb:hover {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .perm-cb.checked {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .perm-cb.deny {
+            border-color: #e5e7eb;
+        }
+
+            .perm-cb.deny.checked {
+                border-color: #ef4444;
+                background: #fef2f2;
+            }
+
+        .perm-cb.role-has {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+            opacity: 0.7;
+        }
+
+        .perm-cb input[type=checkbox] {
+            width: 15px;
+            height: 15px;
+            accent-color: #16a34a;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .perm-cb.deny input[type=checkbox] {
+            accent-color: #ef4444;
+        }
+
+    .perm-cb-label {
+        font-size: 0.78rem;
+        color: #374151;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* Cửa */
+    .cua-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .cua-cb {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .cua-cb:hover {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .cua-cb.checked {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .cua-cb input[type=checkbox] {
+            width: 14px;
+            height: 14px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+
+    .cua-cb-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #374151;
+        cursor: pointer;
+    }
+
+    .fx-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-submit:hover {
+            background: #15803d;
+        }
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        background: #fff;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
+        }
+
+    .val-summary {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 18px;
+        font-size: 0.82rem;
+        color: #dc2626;
+        display: none;
+    }
+
+        .val-summary ul {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+    .info-hint {
+        font-size: 0.76rem;
+        color: #6b7280;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 14px;
+        line-height: 1.5;
+    }
+
+        .info-hint strong {
+            color: #374151;
+        }
+
+    /* Dark mode */
+    body.dark-mode .fx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .fx-header p, body.dark-mode .fx-breadcrumb, body.dark-mode .fx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .fx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .fx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .fx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .profile-chip {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .profile-chip-name {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .profile-chip-ph {
+        background: #052e16 !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .perm-cb {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .perm-cb-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .perm-cb:hover, body.dark-mode .perm-cb.checked {
+        border-color: #16a34a !important;
+        background: #052e16 !important;
+    }
+
+    body.dark-mode .perm-cb.deny.checked {
+        border-color: #ef4444 !important;
+        background: #2e0f0f !important;
+    }
+
+    body.dark-mode .cua-cb {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .cua-cb-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .cua-cb:hover, body.dark-mode .cua-cb.checked {
+        border-color: #16a34a !important;
+        background: #052e16 !important;
+    }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .perm-section-title {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .perm-tab {
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .perm-tab.active {
+            color: #4ade80 !important;
+            border-bottom-color: #16a34a !important;
+        }
+
+    body.dark-mode .role-info-box {
+        background: #052e16 !important;
+        border-color: #166534 !important;
+    }
+
+        body.dark-mode .role-info-box p {
+            color: #4ade80 !important;
+        }
+
+    body.dark-mode .role-perm-tag {
+        background: #14532d !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .info-hint {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
+</style>
+
+<div class="fx-page">
+    <div class="fx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Tài khoản</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Sửa</span>
     </div>
+
+    <div class="fx-header">
+        <h1>Sửa tài khoản</h1>
+        <p>Cập nhật thông tin và phân quyền cho tài khoản.</p>
+    </div>
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="fx-layout">
+
+            <!-- CỘT TRÁI -->
+            <div>
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <p class="fx-card-title">Thông tin tài khoản</p>
+                        <p class="fx-card-sub">Cập nhật thông tin đăng nhập</p>
+                    </div>
+                    <div class="fx-card-body">
+                        <div asp-validation-summary="ModelOnly" class="val-summary"></div>
+
+                        @if (Model.NguoiDung != null)
+                        {
+                            <div class="profile-chip">
+                                <div class="profile-chip-ph">@initials</div>
+                                <div>
+                                    <p class="profile-chip-name">@Model.NguoiDung.FullName</p>
+                                    <p class="profile-chip-sub">Nhân viên liên kết</p>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="UserName">Username <span style="color:#ef4444;">*</span></label>
+                            <input asp-for="UserName" class="field-input" />
+                            <span asp-validation-for="UserName" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Email">Email <span style="color:#ef4444;">*</span></label>
+                            <input asp-for="Email" class="field-input" type="email" />
+                            <span asp-validation-for="Email" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="NewPassword">
+                                Mật khẩu mới
+                                <span style="color:#9ca3af;font-weight:400;font-size:0.75rem;">(để trống nếu không đổi)</span>
+                            </label>
+                            <div class="pw-wrap">
+                                <input asp-for="NewPassword" class="field-input" type="password" id="pwInput" placeholder="Nhập mật khẩu mới..." />
+                                <i class="mdi mdi-eye pw-eye" onclick="togglePw('pwInput',this)"></i>
+                            </div>
+                            <span asp-validation-for="NewPassword" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Role">Role <span style="color:#ef4444;">*</span></label>
+                            <select asp-for="Role" class="field-input" id="roleSelect" onchange="onRoleChange(this.value)">
+                                @foreach (var r in Model.AvailableRoles)
+                                {
+                                    <option value="@r" selected="@(r == Model.Role)">@r</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Role" class="field-error"></span>
+                            <!-- Hiển thị quyền mặc định của role hiện tại -->
+                            @if (Model.RolePermissions.Any())
+                            {
+                                <div class="role-info-box" id="roleInfoBox">
+                                    <p>Quyền mặc định từ role <strong>@Model.Role</strong>:</p>
+                                    <div class="role-perm-list" id="rolePermList">
+                                        @foreach (var p in Model.RolePermissions)
+                                        {
+                                            <span class="role-perm-tag">@p</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="role-info-box" id="roleInfoBox" style="display:none;">
+                                    <p>Quyền mặc định từ role:</p>
+                                    <div class="role-perm-list" id="rolePermList"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cửa xuất -->
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <p class="fx-card-title">Cửa xuất được phép</p>
+                        <p class="fx-card-sub">Cửa xuất nhân viên được thao tác</p>
+                    </div>
+                    <div class="fx-card-body">
+                        <div class="cua-grid">
+                            @foreach (var c in Model.CuaXuats)
+                            {
+                                bool isChecked = Model.SelectedCuaXuatIds?.Contains(c.Id) ?? false;
+                                <label class="cua-cb @(isChecked ? "checked" : "")">
+                                    <input type="checkbox" name="SelectedCuaXuatIds" value="@c.Id" @(isChecked ? "checked" : "") />
+                                    <span class="cua-cb-label">@c.Ten</span>
+                                </label>
+                            }
+                        </div>
+                        @if (!Model.CuaXuats.Any())
+                        {
+                            <p style="color:#9ca3af;font-size:0.82rem;margin:0;">Chưa có cửa xuất nào.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Cửa nhập -->
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <p class="fx-card-title">Cửa nhập được phép</p>
+                        <p class="fx-card-sub">Cửa nhập nhân viên được thao tác</p>
+                    </div>
+                    <div class="fx-card-body">
+                        <div class="cua-grid">
+                            @foreach (var c in Model.CuaNhaps)
+                            {
+                                bool isChecked = Model.SelectedCuaNhapIds?.Contains(c.Id) ?? false;
+                                <label class="cua-cb @(isChecked ? "checked" : "")">
+                                    <input type="checkbox" name="SelectedCuaNhapIds" value="@c.Id" @(isChecked ? "checked" : "") />
+                                    <span class="cua-cb-label">@c.Ten</span>
+                                </label>
+                            }
+                        </div>
+                        @if (!Model.CuaNhaps.Any())
+                        {
+                            <p style="color:#9ca3af;font-size:0.82rem;margin:0;">Chưa có cửa nhập nào.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: Override permissions -->
+            <div class="fx-card" style="margin-bottom:0;">
+                <div class="fx-card-header">
+                    <p class="fx-card-title">Override quyền cá nhân</p>
+                    <p class="fx-card-sub">Thêm/bớt quyền ngoài quyền mặc định của role</p>
+                </div>
+                <div class="fx-card-body">
+                    <div class="info-hint">
+                        Quyền mặc định đã được gán ở <strong>Role</strong>. Chỉ cần override khi user này cần <strong>thêm</strong> hoặc <strong>thu hồi</strong> quyền so với role.
+                    </div>
+
+                    <div class="perm-tabs">
+                        <div class="perm-tab active" onclick="switchTab('extra')">➕ Thêm quyền (Extra)</div>
+                        <div class="perm-tab" onclick="switchTab('deny')">🚫 Thu hồi quyền (Deny)</div>
+                    </div>
+
+                    <!-- Tab Extra -->
+                    <div class="perm-tab-content active" id="tab-extra">
+                        <p style="font-size:0.78rem;color:#6b7280;margin-bottom:14px;">Quyền được grant thêm ngoài role. User sẽ CÓ các quyền này dù role không có.</p>
+                        @if (!Model.ExtraPermissionGroups.Any())
+                        {
+                            <p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">
+                                Chưa có quyền Extra nào. Vào <strong>Quản lý quyền</strong> để thêm.
+                            </p>
+                        }
+                        @foreach (var group in Model.ExtraPermissionGroups)
+                        {
+                            <div class="perm-section">
+                                <div class="perm-section-header">
+                                    <p class="perm-section-title">@group.GroupName</p>
+                                    <span class="perm-section-selall"
+                                          onclick="selectGroupExtra('@group.GroupName.Replace(" ","_")', true)">
+                                        Chọn tất cả
+                                    </span>
+                                </div>
+                                <div class="perm-grid">
+                                    @foreach (var item in group.Items)
+                                    {
+                                        bool isExtra = Model.SelectedExtraPermissions?.Contains(item.Value) ?? false;
+                                        <label class="perm-cb @(isExtra ? "checked" : "")"
+                                               id="extra_label_@item.Value.Replace(".","_")">
+                                            <input type="checkbox" name="SelectedExtraPermissions" value="@item.Value"
+                                                   class="grp-extra-@group.GroupName.Replace(" ","_")"
+                                            @(isExtra ? "checked" : "")
+                                                   onchange="syncCbClass(this, false)" />
+                                            <span class="perm-cb-label">@item.Label</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Tab Deny -->
+                    <div class="perm-tab-content" id="tab-deny">
+                        <p style="font-size:0.78rem;color:#ef4444;margin-bottom:14px;">
+                            Quyền bị thu hồi khỏi role. User sẽ KHÔNG CÓ các quyền này dù role có.
+                        </p>
+                        <div id="deny-container">
+                            @if (!Model.DenyPermissionGroups.Any())
+                            {
+                                <p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">
+                                    Role này chưa có quyền nào để thu hồi.
+                                </p>
+                            }
+                            @foreach (var group in Model.DenyPermissionGroups)
+                            {
+                                <div class="perm-section">
+                                    <div class="perm-section-header">
+                                        <p class="perm-section-title">@group.GroupName</p>
+                                    </div>
+                                    <div class="perm-grid">
+                                        @foreach (var item in group.Items)
+                                        {
+                                            bool isDeny = Model.SelectedDenyPermissions?.Contains(item.Value) ?? false;
+                                            <label class="perm-cb deny @(isDeny ? "checked" : "")">
+                                                <input type="checkbox" name="SelectedDenyPermissions" value="@item.Value"
+                                                @(isDeny ? "checked" : "")
+                                                       onchange="syncCbClass(this)" />
+                                                <span class="perm-cb-label">@item.Label</span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fx-actions">
+            <button type="submit" class="btn-submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" /></svg>
+                Lưu thay đổi
+            </button>
+            <a asp-action="Index" class="btn-cancel">Hủy</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
     <script>
-        function togglePass(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('mdi-eye', 'mdi-eye-off');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('mdi-eye-off', 'mdi-eye');
+        function togglePw(id, icon) {
+            const inp = document.getElementById(id);
+            if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('mdi-eye','mdi-eye-off'); }
+            else { inp.type = 'password'; icon.classList.replace('mdi-eye-off','mdi-eye'); }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.perm-tab').forEach((t, i) => {
+                t.classList.toggle('active', (i === 0 && tab === 'extra') || (i === 1 && tab === 'deny'));
+            });
+            document.getElementById('tab-extra').classList.toggle('active', tab === 'extra');
+            document.getElementById('tab-deny').classList.toggle('active', tab === 'deny');
+        }
+
+        function syncCbClass(cb, isDeny) {
+            const label = cb.closest('.perm-cb');
+            label.classList.toggle('checked', cb.checked);
+        }
+
+        function selectGroupExtra(groupId, checked) {
+            document.querySelectorAll(`.grp-extra-${groupId}`).forEach(cb => {
+                cb.checked = checked;
+                cb.closest('.perm-cb').classList.toggle('checked', checked);
+            });
+        }
+
+        async function onRoleChange(roleName) {
+            const box = document.getElementById('roleInfoBox');
+            const list = document.getElementById('rolePermList');
+            const denyContainer = document.getElementById('deny-container');
+
+            if (!roleName) {
+                box.style.display = 'none';
+                if (denyContainer) denyContainer.innerHTML =
+                    '<p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">Chọn Role trước.</p>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/Roles/GetRolePermissions?roleName=${encodeURIComponent(roleName)}`);
+                if (!res.ok) return;
+                const perms = await res.json();
+
+                // Hiển thị quyền mặc định
+                list.innerHTML = perms.length
+                    ? perms.map(p => `<span class="role-perm-tag">${p}</span>`).join('')
+                    : '<span style="font-size:0.75rem;color:#9ca3af;">Role này chưa có quyền mặc định</span>';
+                box.style.display = 'block';
+
+                if (!denyContainer) return;
+
+                if (!perms.length) {
+                    denyContainer.innerHTML =
+                        '<p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">Role này chưa có quyền nào để thu hồi.</p>';
+                    return;
+                }
+
+                // Gọi API lấy label + groupName
+                const labelRes = await fetch(
+                    `/Permissions/GetPermissionLabels?values=${perms.map(p => encodeURIComponent(p)).join('&values=')}`
+                );
+                let labelMap = {};   // value → label
+                let groupMap = {};   // value → groupName
+
+                if (labelRes.ok) {
+                    const labels = await labelRes.json();
+                    labels.forEach(l => {
+                        labelMap[l.value] = l.label;
+                        groupMap[l.value] = l.groupName; // ← dùng groupName từ DB
+                    });
+                }
+
+                // Group theo groupName từ DB (đúng tên, có dấu)
+                const grouped = {};
+                perms.forEach(p => {
+                    const group = groupMap[p] || p.split('.')[0];
+                    if (!grouped[group]) grouped[group] = [];
+                    grouped[group].push(p);
+                });
+
+                denyContainer.innerHTML = Object.entries(grouped).map(([group, items]) => `
+                    <div class="perm-section">
+                        <div class="perm-section-header">
+                            <p class="perm-section-title">${group}</p>
+                        </div>
+                        <div class="perm-grid">
+                            ${items.map(p => `
+                                <label class="perm-cb deny">
+                                    <input type="checkbox" name="SelectedDenyPermissions" value="${p}"
+                                           onchange="syncCbClass(this)" />
+                                    <span class="perm-cb-label">${labelMap[p] || p}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error(e);
+                box.style.display = 'none';
             }
         }
+
+        // Sync checked class khi load
+        document.querySelectorAll('.perm-cb input, .cua-cb input').forEach(cb => {
+            if (cb.checked) cb.closest('.perm-cb, .cua-cb')?.classList.add('checked');
+            cb.addEventListener('change', () => {
+                cb.closest('.perm-cb, .cua-cb')?.classList.toggle('checked', cb.checked);
+            });
+        });
+
+        const vs = document.querySelector('.val-summary');
+        if (vs && vs.innerText.trim()) vs.style.display = 'block';
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

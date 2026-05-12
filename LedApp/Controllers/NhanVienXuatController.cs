@@ -1,45 +1,61 @@
 ﻿using LedApp.Data;
+using LedApp.Helpers;
 using LedApp.Hubs;
 using LedApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "NhanVien")]
     public class NhanVienXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
         private readonly IHubContext<SignalServer> _hubContext;
         private readonly ILogger<NhanVienXuatController> _logger;
         private readonly string _connectionString;
+        private readonly UserManager<AppUser> _userManager;
 
 
         public NhanVienXuatController(
             ApplicationDBContext context,
             IHubContext<SignalServer> hubContext,
             ILogger<NhanVienXuatController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            UserManager<AppUser> userManager)
         {
             _context = context;
             _hubContext = hubContext;
             _logger = logger;
             _connectionString = configuration.GetConnectionString("DefaultConnection")!;
+            _userManager = userManager;
         }
 
         // GET: /NhanVienXuat/CuaXuat?cuaXuatId=x
         public async Task<IActionResult> CuaXuat(int cuaXuatId)
         {
+            var allowedIds = await PermissionChecker
+                .GetAllowedCuaXuatIds(User, _userManager, _context);
+
+            // Không có cửa nào → về login
+            if (!allowedIds.Any())
+                return Challenge();
+
+            // Sai cửa → redirect về cửa đúng
+            if (!allowedIds.Contains(cuaXuatId))
+                return RedirectToAction("CuaXuat", new { cuaXuatId = allowedIds[0] });
+
             var cua = await _context.CuaXuats.FindAsync(cuaXuatId);
             if (cua == null) return NotFound();
+
             ViewBag.CuaXuatId = cuaXuatId;
             ViewBag.TenCua = cua.Ten;
-
-            // Claims — không cần inject thêm gì
             ViewBag.UserName = User.Identity?.Name ?? "";
-            ViewBag.UserEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+            ViewBag.UserEmail = User.FindFirst(
+                System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+
             return View();
         }
 
@@ -95,6 +111,7 @@ namespace LedApp.Controllers
             {
                 var xuat = await _context.Xuats
                     .AsTracking()
+                    .Include(x => x.Xe)
                     .FirstOrDefaultAsync(x => x.Id == req.XuatId);
 
                 if (xuat == null)
@@ -302,6 +319,7 @@ namespace LedApp.Controllers
                 // ← THÊM AsTracking() rõ ràng và reload fresh
                 var xuat = await _context.Xuats
                     .AsTracking()
+                    .Include(x => x.Xe)
                     .FirstOrDefaultAsync(x => x.Id == req.XuatId);  // ← đổi FindAsync → FirstOrDefaultAsync
 
                 if (xuat == null)
@@ -348,7 +366,7 @@ namespace LedApp.Controllers
                 // LUÔN push SignalR dù có update hay không
                 await _hubContext.Clients.All.SendAsync("ReceivedXuat", new
                 {
-                    bienSoXe = xuat.XeId?.ToString(),
+                    bienSoXe = xuat.Xe?.BienSoXe ?? "--",
                     thoiGianVaoCua = xuat.ThoiGianVaoCua,
                     thoiGianGioiHan = xuat.ThoiGianGioiHan,
                     trangThai = xuat.TrangThai

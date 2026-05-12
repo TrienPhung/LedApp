@@ -21,20 +21,15 @@ namespace LedApp.Controllers
 
         public IActionResult Index() => View();
 
-        // ── GET /BaoCao/GetBaoCao?tuNgay=&denNgay=
         [HttpGet]
         public async Task<IActionResult> GetBaoCao(string? tuNgay, string? denNgay)
         {
             try
             {
-                var from = string.IsNullOrEmpty(tuNgay)
-                    ? DateTime.Today.AddDays(-30)
-                    : DateTime.Parse(tuNgay);
-                var to = string.IsNullOrEmpty(denNgay)
-                    ? DateTime.Today.AddDays(1)
-                    : DateTime.Parse(denNgay).AddDays(1);
+                var from = string.IsNullOrEmpty(tuNgay) ? DateTime.Today.AddDays(-30) : DateTime.Parse(tuNgay);
+                var to = string.IsNullOrEmpty(denNgay) ? DateTime.Today.AddDays(1) : DateTime.Parse(denNgay).AddDays(1);
 
-                // ── 1. TỔNG NHẬP ──
+                // ── NHẬP ──
                 var nhaps = await _context.Nhaps
                     .AsNoTracking()
                     .Include(n => n.ChitietNhaps)
@@ -50,7 +45,13 @@ namespace LedApp.Controllers
                      n.ThoiGianHoanThanh.HasValue && n.ThoiGianGioiHan.HasValue &&
                      n.ThoiGianHoanThanh > n.ThoiGianGioiHan));
 
-                // KPI nhập (phút: ThoiGianVaoCua → ThoiGianHoanThanh)
+                // Hàng hóa nhập
+                var allChiNhap = nhaps.SelectMany(n => n.ChitietNhaps ?? new List<ChitietNhap>()).ToList();
+                var tongDaBGNhap = allChiNhap.Sum(c => c.DaBG);
+                var tongChuaBGNhap = allChiNhap.Sum(c => c.ChuaBG);
+                var tongHangNhap = tongDaBGNhap + tongChuaBGNhap;
+
+                // KPI nhập
                 var nhapCoTG = nhaps
                     .Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
                     .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes)
@@ -59,7 +60,7 @@ namespace LedApp.Controllers
                 var kpiNhapMin = nhapCoTG.Any() ? Math.Round(nhapCoTG.Min(), 1) : 0;
                 var kpiNhapMax = nhapCoTG.Any() ? Math.Round(nhapCoTG.Max(), 1) : 0;
 
-                // ── 2. TỔNG XUẤT ──
+                // ── XUẤT ──
                 var xuats = await _context.Xuats
                     .AsNoTracking()
                     .Include(x => x.ChitietXuats)
@@ -77,6 +78,12 @@ namespace LedApp.Controllers
                     (x.ThoiGianHoanThanh.HasValue && x.ThoiGianGioiHan.HasValue &&
                      x.ThoiGianHoanThanh > x.ThoiGianGioiHan));
 
+                // Hàng hóa xuất
+                var allChiXuat = xuats.SelectMany(x => x.ChitietXuats ?? new List<ChitietXuat>()).ToList();
+                var tongDaBGXuat = allChiXuat.Sum(c => c.DaBG);
+                var tongChuaBGXuat = allChiXuat.Sum(c => c.ChuaBG);
+                var tongHangXuat = tongDaBGXuat + tongChuaBGXuat;
+
                 // KPI xuất
                 var xuatCoTG = xuats
                     .Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
@@ -86,44 +93,12 @@ namespace LedApp.Controllers
                 var kpiXuatMin = xuatCoTG.Any() ? Math.Round(xuatCoTG.Min(), 1) : 0;
                 var kpiXuatMax = xuatCoTG.Any() ? Math.Round(xuatCoTG.Max(), 1) : 0;
 
-                // ── 3. XE HAY QUÁ HẠN (từ bảng CanhBao) ──
-                // CanhBao.GhiChu lưu dạng "Xe:29H-12345|Cua:1|GioiHan:..."
-                var canhBaos = await _context.CanhBaos
-                    .AsNoTracking()
-                    .Where(c => c.LoaiCanhBao == "QuaHanNhap"
-                             && c.ThoiGian >= from && c.ThoiGian < to)
-                    .ToListAsync();
-
-                var xeQuaHanList = canhBaos
-                    .GroupBy(c => c.GhiChu)
-                    .Select(g =>
-                    {
-                        var parts = (g.Key ?? "").Split('|');
-                        var bienSo = parts.FirstOrDefault(p => p.StartsWith("Xe:"))?.Replace("Xe:", "") ?? "--";
-                        var cua = parts.FirstOrDefault(p => p.StartsWith("Cua:"))?.Replace("Cua:", "") ?? "--";
-                        return new
-                        {
-                            bienSo,
-                            cua,
-                            soLan = g.Count(),
-                            lanCuoi = g.Max(x => x.ThoiGian)
-                        };
-                    })
-                    .OrderByDescending(x => x.soLan)
-                    .Take(10)
-                    .ToList();
-
-                // ── 4. BIỂU ĐỒ NHẬP/XUẤT THEO NGÀY (từ LichSuBanGiao) ──
+                // ── CHART THEO NGÀY ──
                 var lichSu = await _context.LichSuBanGiaos
                     .AsNoTracking()
                     .Where(l => l.ThoiGian >= from && l.ThoiGian < to)
                     .GroupBy(l => new { l.ThoiGian.Date, l.LoaiPhieu })
-                    .Select(g => new
-                    {
-                        Ngay = g.Key.Date,
-                        Loai = g.Key.LoaiPhieu,
-                        SoLuot = g.Count()
-                    })
+                    .Select(g => new { Ngay = g.Key.Date, Loai = g.Key.LoaiPhieu, SoLuot = g.Count() })
                     .OrderBy(g => g.Ngay)
                     .ToListAsync();
 
@@ -138,7 +113,55 @@ namespace LedApp.Controllers
                     });
                 }
 
-                // ── 5. CHI TIẾT NHẬP theo ngày ──
+                // ── TOP CỬA ──
+                var topCuaNhap = nhaps
+                    .GroupBy(n => n.CuaNhap?.Ten ?? "Không rõ")
+                    .Select(g => new
+                    {
+                        ten = g.Key,
+                        soPhieu = g.Count(),
+                        hoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh),
+                        daBG = g.SelectMany(n => n.ChitietNhaps ?? new List<ChitietNhap>()).Sum(c => c.DaBG),
+                        chuaBG = g.SelectMany(n => n.ChitietNhaps ?? new List<ChitietNhap>()).Sum(c => c.ChuaBG)
+                    })
+                    .OrderByDescending(g => g.soPhieu).Take(5).ToList();
+
+                var topCuaXuat = xuats
+                    .GroupBy(x => x.CuaXuat?.Ten ?? "Không rõ")
+                    .Select(g => new
+                    {
+                        ten = g.Key,
+                        soPhieu = g.Count(),
+                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat),
+                        daBG = g.SelectMany(x => x.ChitietXuats ?? new List<ChitietXuat>()).Sum(c => c.DaBG),
+                        chuaBG = g.SelectMany(x => x.ChitietXuats ?? new List<ChitietXuat>()).Sum(c => c.ChuaBG)
+                    })
+                    .OrderByDescending(g => g.soPhieu).Take(5).ToList();
+
+                // ── ĐƠN VỊ BÀN GIAO ──
+                var donViNhap = allChiNhap
+                    .GroupBy(c => c.DonVi)
+                    .Select(g => new
+                    {
+                        donVi = g.Key,
+                        daBG = g.Sum(c => c.DaBG),
+                        chuaBG = g.Sum(c => c.ChuaBG),
+                        tongSo = g.Sum(c => c.DaBG + c.ChuaBG)
+                    })
+                    .OrderByDescending(g => g.tongSo).ToList();
+
+                var donViXuat = allChiXuat
+                    .GroupBy(c => c.DonVi)
+                    .Select(g => new
+                    {
+                        donVi = g.Key,
+                        daBG = g.Sum(c => c.DaBG),
+                        chuaBG = g.Sum(c => c.ChuaBG),
+                        tongSo = g.Sum(c => c.DaBG + c.ChuaBG)
+                    })
+                    .OrderByDescending(g => g.tongSo).ToList();
+
+                // ── CHI TIẾT THEO NGÀY ──
                 var chitietNhap = nhaps
                     .GroupBy(n => n.ThoiGianPhanCong.Date)
                     .Select(g => new
@@ -147,52 +170,25 @@ namespace LedApp.Controllers
                         tongSo = g.Count(),
                         hoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh),
                         quaGio = g.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian),
-                        dangNhap = g.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao)
+                        dangNhap = g.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao),
+                        daBG = g.SelectMany(n => n.ChitietNhaps ?? new List<ChitietNhap>()).Sum(c => c.DaBG),
+                        chuaBG = g.SelectMany(n => n.ChitietNhaps ?? new List<ChitietNhap>()).Sum(c => c.ChuaBG)
                     })
-                    .OrderByDescending(g => g.ngay)
-                    .ToList();
+                    .OrderByDescending(g => g.ngay).ToList();
 
-                // ── 6. CHI TIẾT XUẤT theo ngày ──
                 var chitietXuat = xuats
                     .GroupBy(x => x.ThoiGianPhanCong.Date)
                     .Select(g => new
                     {
                         ngay = g.Key.ToString("dd/MM/yyyy"),
                         tongSo = g.Count(),
-                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
-                                               || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat),
+                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat),
                         quaGio = g.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian),
-                        dangXuat = g.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao)
+                        dangXuat = g.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao),
+                        daBG = g.SelectMany(x => x.ChitietXuats ?? new List<ChitietXuat>()).Sum(c => c.DaBG),
+                        chuaBG = g.SelectMany(x => x.ChitietXuats ?? new List<ChitietXuat>()).Sum(c => c.ChuaBG)
                     })
-                    .OrderByDescending(g => g.ngay)
-                    .ToList();
-
-                // ── 7. TOP CỬA NHẬP (cho chart Revenue by Category kiểu Apex) ──
-                var topCuaNhap = nhaps
-                    .GroupBy(n => n.CuaNhap?.Ten ?? "Không rõ")
-                    .Select(g => new
-                    {
-                        ten = g.Key,
-                        soPhieu = g.Count(),
-                        hoanThanh = g.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh)
-                    })
-                    .OrderByDescending(g => g.soPhieu)
-                    .Take(5)
-                    .ToList();
-
-                // ── 8. TOP CỬA XUẤT ──
-                var topCuaXuat = xuats
-                    .GroupBy(x => x.CuaXuat?.Ten ?? "Không rõ")
-                    .Select(g => new
-                    {
-                        ten = g.Key,
-                        soPhieu = g.Count(),
-                        hoanThanh = g.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh
-                                              || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
-                    })
-                    .OrderByDescending(g => g.soPhieu)
-                    .Take(5)
-                    .ToList();
+                    .OrderByDescending(g => g.ngay).ToList();
 
                 return Ok(new
                 {
@@ -204,10 +200,16 @@ namespace LedApp.Controllers
                         nhapHoanThanh,
                         nhapQuaGio,
                         nhapDangXuLy = nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.DangBanGiao),
+                        tongHangNhap,
+                        tongDaBGNhap,
+                        tongChuaBGNhap,
                         tongXuat,
                         xuatHoanThanh,
                         xuatQuaGio,
                         xuatDangXuLy = xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.DangBanGiao),
+                        tongHangXuat,
+                        tongDaBGXuat,
+                        tongChuaBGXuat,
                         kpi = new
                         {
                             nhapTb = kpiNhapTb,
@@ -221,9 +223,10 @@ namespace LedApp.Controllers
                     chart = chartData,
                     topCuaNhap,
                     topCuaXuat,
+                    donViNhap,
+                    donViXuat,
                     chitietNhap,
-                    chitietXuat,
-                    xeQuaHan = xeQuaHanList
+                    chitietXuat
                 });
             }
             catch (Exception ex)
@@ -233,217 +236,118 @@ namespace LedApp.Controllers
             }
         }
 
-        // ── GET /BaoCao/ExportExcel?tuNgay=&denNgay=
         [HttpGet]
         public async Task<IActionResult> ExportExcel(string? tuNgay, string? denNgay)
         {
-            var from = string.IsNullOrEmpty(tuNgay)
-                ? DateTime.Today.AddDays(-30)
-                : DateTime.Parse(tuNgay);
-            var to = string.IsNullOrEmpty(denNgay)
-                ? DateTime.Today.AddDays(1)
-                : DateTime.Parse(denNgay).AddDays(1);
+            var from = string.IsNullOrEmpty(tuNgay) ? DateTime.Today.AddDays(-30) : DateTime.Parse(tuNgay);
+            var to = string.IsNullOrEmpty(denNgay) ? DateTime.Today.AddDays(1) : DateTime.Parse(denNgay).AddDays(1);
 
-            var nhaps = await _context.Nhaps
-                .AsNoTracking()
-                .Include(n => n.CuaNhap)
+            var nhaps = await _context.Nhaps.AsNoTracking()
+                .Include(n => n.CuaNhap).Include(n => n.ChitietNhaps)
                 .Where(n => n.ThoiGianPhanCong >= from && n.ThoiGianPhanCong < to)
-                .OrderByDescending(n => n.ThoiGianPhanCong)
-                .ToListAsync();
+                .OrderByDescending(n => n.ThoiGianPhanCong).ToListAsync();
 
-            var xuats = await _context.Xuats
-                .AsNoTracking()
-                .Include(x => x.CuaXuat)
-                .Include(x => x.Xe)
+            var xuats = await _context.Xuats.AsNoTracking()
+                .Include(x => x.CuaXuat).Include(x => x.Xe).Include(x => x.ChitietXuats)
                 .Where(x => x.ThoiGianPhanCong >= from && x.ThoiGianPhanCong < to)
-                .OrderByDescending(x => x.ThoiGianPhanCong)
-                .ToListAsync();
-
-            var canhBaos = await _context.CanhBaos
-                .AsNoTracking()
-                .Where(c => c.LoaiCanhBao == "QuaHanNhap"
-                         && c.ThoiGian >= from && c.ThoiGian < to)
-                .OrderByDescending(c => c.ThoiGian)
-                .ToListAsync();
+                .OrderByDescending(x => x.ThoiGianPhanCong).ToListAsync();
 
             using var wb = new XLWorkbook();
 
-            // ── Sheet 1: Tổng hợp ──
+            void StyleHeader(IXLCell c, string hex)
+            {
+                c.Style.Font.Bold = true;
+                c.Style.Fill.BackgroundColor = XLColor.FromHtml(hex);
+                c.Style.Font.FontColor = XLColor.White;
+                c.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            }
+
+            // Sheet 1: Tổng hợp
             var ws1 = wb.Worksheets.Add("Tổng hợp");
             ws1.Cell("A1").Value = $"BÁO CÁO THỐNG KÊ — Từ {from:dd/MM/yyyy} đến {to.AddDays(-1):dd/MM/yyyy}";
-            ws1.Cell("A1").Style.Font.Bold = true;
-            ws1.Cell("A1").Style.Font.FontSize = 14;
-            ws1.Range("A1:F1").Merge();
+            ws1.Cell("A1").Style.Font.Bold = true; ws1.Cell("A1").Style.Font.FontSize = 14;
+            ws1.Range("A1:E1").Merge();
+            new[] { "Chỉ số", "Nhập", "Xuất" }.Select((h, i) => { ws1.Cell(3, i + 1).Value = h; StyleHeader(ws1.Cell(3, i + 1), "#0f172a"); return 0; }).ToList();
 
-            var headers1 = new[] { "Chỉ số", "Nhập", "Xuất" };
-            for (int i = 0; i < headers1.Length; i++)
-            {
-                ws1.Cell(3, i + 1).Value = headers1[i];
-                ws1.Cell(3, i + 1).Style.Font.Bold = true;
-                ws1.Cell(3, i + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#1e3a5f");
-                ws1.Cell(3, i + 1).Style.Font.FontColor = XLColor.White;
-                ws1.Cell(3, i + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            }
+            var nhKpi = nhaps.Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
+                .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes).DefaultIfEmpty(0).ToList();
+            var xuKpi = xuats.Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
+                .Select(x => (x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes).DefaultIfEmpty(0).ToList();
 
-            var nhapKpi = nhaps
-                .Where(n => n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
-                .Select(n => (n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes)
-                .DefaultIfEmpty(0).ToList();
-            var xuatKpi = xuats
-                .Where(x => x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
-                .Select(x => (x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes)
-                .DefaultIfEmpty(0).ToList();
-
-            var rows1 = new[]
-            {
-                new[] { "Tổng phiếu",
-                    nhaps.Count.ToString(),
-                    xuats.Count.ToString() },
-                new[] { "Hoàn thành",
-                    nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.HoanThanh).ToString(),
-                    xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat).ToString() },
-                new[] { "Quá giờ",
-                    nhaps.Count(n => n.TrangThai == (int)TrangThaiNhap.QuaThoiGian).ToString(),
-                    xuats.Count(x => x.TrangThai == (int)TrangThaiXuat.QuaThoiGian).ToString() },
-                new[] { "KPI Trung bình (phút)",
-                    Math.Round(nhapKpi.Average(), 1).ToString(),
-                    Math.Round(xuatKpi.Average(), 1).ToString() },
-                new[] { "KPI Nhanh nhất (phút)",
-                    Math.Round(nhapKpi.Min(), 1).ToString(),
-                    Math.Round(xuatKpi.Min(), 1).ToString() },
-                new[] { "KPI Chậm nhất (phút)",
-                    Math.Round(nhapKpi.Max(), 1).ToString(),
-                    Math.Round(xuatKpi.Max(), 1).ToString() },
+            var rows = new[]{
+                ("Tổng phiếu", nhaps.Count.ToString(), xuats.Count.ToString()),
+                ("Hoàn thành", nhaps.Count(n=>n.TrangThai==(int)TrangThaiNhap.HoanThanh).ToString(),
+                    xuats.Count(x=>x.TrangThai==(int)TrangThaiXuat.HoanThanh||x.TrangThai==(int)TrangThaiXuat.DaXuatPhat).ToString()),
+                ("Quá giờ", nhaps.Count(n=>n.TrangThai==(int)TrangThaiNhap.QuaThoiGian).ToString(),
+                    xuats.Count(x=>x.TrangThai==(int)TrangThaiXuat.QuaThoiGian).ToString()),
+                ("Tổng hàng (đv)", nhaps.SelectMany(n=>n.ChitietNhaps??new List<ChitietNhap>()).Sum(c=>c.DaBG+c.ChuaBG).ToString(),
+                    xuats.SelectMany(x=>x.ChitietXuats??new List<ChitietXuat>()).Sum(c=>c.DaBG+c.ChuaBG).ToString()),
+                ("Đã bàn giao", nhaps.SelectMany(n=>n.ChitietNhaps??new List<ChitietNhap>()).Sum(c=>c.DaBG).ToString(),
+                    xuats.SelectMany(x=>x.ChitietXuats??new List<ChitietXuat>()).Sum(c=>c.DaBG).ToString()),
+                ("Chưa bàn giao", nhaps.SelectMany(n=>n.ChitietNhaps??new List<ChitietNhap>()).Sum(c=>c.ChuaBG).ToString(),
+                    xuats.SelectMany(x=>x.ChitietXuats??new List<ChitietXuat>()).Sum(c=>c.ChuaBG).ToString()),
+                ("KPI Trung bình (ph)", Math.Round(nhKpi.Average(),1).ToString(), Math.Round(xuKpi.Average(),1).ToString()),
+                ("KPI Nhanh nhất (ph)", Math.Round(nhKpi.Min(),1).ToString(), Math.Round(xuKpi.Min(),1).ToString()),
+                ("KPI Chậm nhất (ph)", Math.Round(nhKpi.Max(),1).ToString(), Math.Round(xuKpi.Max(),1).ToString()),
             };
-
-            for (int r = 0; r < rows1.Length; r++)
-                for (int c = 0; c < rows1[r].Length; c++)
-                {
-                    ws1.Cell(r + 4, c + 1).Value = rows1[r][c];
-                    if (c > 0) ws1.Cell(r + 4, c + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                }
+            for (int r = 0; r < rows.Length; r++)
+            {
+                ws1.Cell(r + 4, 1).Value = rows[r].Item1;
+                ws1.Cell(r + 4, 2).Value = rows[r].Item2; ws1.Cell(r + 4, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                ws1.Cell(r + 4, 3).Value = rows[r].Item3; ws1.Cell(r + 4, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            }
             ws1.Columns().AdjustToContents();
 
-            // ── Sheet 2: Chi tiết nhập ──
+            // Sheet 2: Chi tiết nhập
             var ws2 = wb.Worksheets.Add("Chi tiết nhập");
-            var hdNhap = new[] { "STT", "Biển số xe", "Cửa nhập", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG bàn giao (phút)", "Trạng thái" };
-            for (int i = 0; i < hdNhap.Length; i++)
-            {
-                ws2.Cell(1, i + 1).Value = hdNhap[i];
-                ws2.Cell(1, i + 1).Style.Font.Bold = true;
-                ws2.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#1e3a5f");
-                ws2.Cell(1, i + 1).Style.Font.FontColor = XLColor.White;
-            }
-
-            var ttNhapMap = new Dictionary<int, string>
-            {
-                { (int)TrangThaiNhap.DaPhanCong,  "Đã phân công" },
-                { (int)TrangThaiNhap.DangBanGiao, "Đang bàn giao" },
-                { (int)TrangThaiNhap.QuaThoiGian, "Quá giờ" },
-                { (int)TrangThaiNhap.HoanThanh,   "Hoàn thành" }
-            };
-
+            var hdN = new[] { "STT", "Biển số", "Cửa nhập", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG BG (ph)", "Đã BG", "Chưa BG", "Trạng thái" };
+            for (int i = 0; i < hdN.Length; i++) { ws2.Cell(1, i + 1).Value = hdN[i]; StyleHeader(ws2.Cell(1, i + 1), "#1e3a5f"); }
+            var ttN = new Dictionary<int, string> { { 0, "Đã phân công" }, { 1, "Đang bàn giao" }, { 2, "Quá giờ" }, { 3, "Hoàn thành" } };
             for (int i = 0; i < nhaps.Count; i++)
             {
                 var n = nhaps[i];
-                double tgBG = (n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue)
-                    ? Math.Round((n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
-
-                ws2.Cell(i + 2, 1).Value = i + 1;
-                ws2.Cell(i + 2, 2).Value = n.BienSoXe;
-                ws2.Cell(i + 2, 3).Value = n.CuaNhap?.Ten ?? "--";
+                double tg = (n.ThoiGianVaoCua.HasValue && n.ThoiGianHoanThanh.HasValue) ? Math.Round((n.ThoiGianHoanThanh!.Value - n.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
+                ws2.Cell(i + 2, 1).Value = i + 1; ws2.Cell(i + 2, 2).Value = n.BienSoXe; ws2.Cell(i + 2, 3).Value = n.CuaNhap?.Ten ?? "--";
                 ws2.Cell(i + 2, 4).Value = n.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm");
                 ws2.Cell(i + 2, 5).Value = n.ThoiGianVaoCua?.ToString("HH:mm") ?? "--";
                 ws2.Cell(i + 2, 6).Value = n.ThoiGianGioiHan?.ToString("HH:mm") ?? "--";
                 ws2.Cell(i + 2, 7).Value = n.ThoiGianHoanThanh?.ToString("HH:mm") ?? "--";
-                ws2.Cell(i + 2, 8).Value = tgBG > 0 ? tgBG.ToString() : "--";
-                ws2.Cell(i + 2, 9).Value = ttNhapMap.GetValueOrDefault(n.TrangThai, "--");
-
-                if (n.TrangThai == (int)TrangThaiNhap.QuaThoiGian)
-                    ws2.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");
-                else if (n.TrangThai == (int)TrangThaiNhap.HoanThanh)
-                    ws2.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#f0fff4");
+                ws2.Cell(i + 2, 8).Value = tg > 0 ? tg.ToString() : "--";
+                ws2.Cell(i + 2, 9).Value = n.ChitietNhaps?.Sum(c => c.DaBG) ?? 0;
+                ws2.Cell(i + 2, 10).Value = n.ChitietNhaps?.Sum(c => c.ChuaBG) ?? 0;
+                ws2.Cell(i + 2, 11).Value = ttN.GetValueOrDefault(n.TrangThai, "--");
+                if (n.TrangThai == (int)TrangThaiNhap.QuaThoiGian) ws2.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");
+                else if (n.TrangThai == (int)TrangThaiNhap.HoanThanh) ws2.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#f0fff4");
             }
             ws2.Columns().AdjustToContents();
 
-            // ── Sheet 3: Chi tiết xuất ──
+            // Sheet 3: Chi tiết xuất
             var ws3 = wb.Worksheets.Add("Chi tiết xuất");
-            var hdXuat = new[] { "STT", "Biển số xe", "Cửa xuất", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG bàn giao (phút)", "Trạng thái" };
-            for (int i = 0; i < hdXuat.Length; i++)
-            {
-                ws3.Cell(1, i + 1).Value = hdXuat[i];
-                ws3.Cell(1, i + 1).Style.Font.Bold = true;
-                ws3.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#0f6e56");
-                ws3.Cell(1, i + 1).Style.Font.FontColor = XLColor.White;
-            }
-
-            var ttXuatMap = new Dictionary<int, string>
-            {
-                { (int)TrangThaiXuat.DaPhanCong,  "Đã phân công" },
-                { (int)TrangThaiXuat.DangBanGiao, "Đang bàn giao" },
-                { (int)TrangThaiXuat.QuaThoiGian, "Quá giờ" },
-                { (int)TrangThaiXuat.HoanThanh,   "Hoàn thành" },
-                { (int)TrangThaiXuat.DaXuatPhat,  "Đã xuất phát" }
-            };
-
+            var hdX = new[] { "STT", "Biển số", "Cửa xuất", "Phân công", "Vào cửa", "Giới hạn", "Hoàn thành", "TG BG (ph)", "Đã BG", "Chưa BG", "Trạng thái" };
+            for (int i = 0; i < hdX.Length; i++) { ws3.Cell(1, i + 1).Value = hdX[i]; StyleHeader(ws3.Cell(1, i + 1), "#0f6e56"); }
+            var ttX = new Dictionary<int, string> { { 0, "Đã phân công" }, { 1, "Đang bàn giao" }, { 2, "Quá giờ" }, { 3, "Hoàn thành" }, { 4, "Đã xuất phát" } };
             for (int i = 0; i < xuats.Count; i++)
             {
                 var x = xuats[i];
-                double tgBG = (x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue)
-                    ? Math.Round((x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
-
-                ws3.Cell(i + 2, 1).Value = i + 1;
-                ws3.Cell(i + 2, 2).Value = x.Xe?.BienSoXe ?? "--";
-                ws3.Cell(i + 2, 3).Value = x.CuaXuat?.Ten ?? "--";
+                double tg = (x.ThoiGianVaoCua.HasValue && x.ThoiGianHoanThanh.HasValue) ? Math.Round((x.ThoiGianHoanThanh!.Value - x.ThoiGianVaoCua!.Value).TotalMinutes, 1) : 0;
+                ws3.Cell(i + 2, 1).Value = i + 1; ws3.Cell(i + 2, 2).Value = x.Xe?.BienSoXe ?? "--"; ws3.Cell(i + 2, 3).Value = x.CuaXuat?.Ten ?? "--";
                 ws3.Cell(i + 2, 4).Value = x.ThoiGianPhanCong.ToString("dd/MM/yyyy HH:mm");
                 ws3.Cell(i + 2, 5).Value = x.ThoiGianVaoCua?.ToString("HH:mm") ?? "--";
                 ws3.Cell(i + 2, 6).Value = x.ThoiGianGioiHan?.ToString("HH:mm") ?? "--";
                 ws3.Cell(i + 2, 7).Value = x.ThoiGianHoanThanh?.ToString("HH:mm") ?? "--";
-                ws3.Cell(i + 2, 8).Value = tgBG > 0 ? tgBG.ToString() : "--";
-                ws3.Cell(i + 2, 9).Value = ttXuatMap.GetValueOrDefault(x.TrangThai, "--");
-
-                if (x.TrangThai == (int)TrangThaiXuat.QuaThoiGian)
-                    ws3.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");
-                else if (x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
-                    ws3.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#f0fff4");
+                ws3.Cell(i + 2, 8).Value = tg > 0 ? tg.ToString() : "--";
+                ws3.Cell(i + 2, 9).Value = x.ChitietXuats?.Sum(c => c.DaBG) ?? 0;
+                ws3.Cell(i + 2, 10).Value = x.ChitietXuats?.Sum(c => c.ChuaBG) ?? 0;
+                ws3.Cell(i + 2, 11).Value = ttX.GetValueOrDefault(x.TrangThai, "--");
+                if (x.TrangThai == (int)TrangThaiXuat.QuaThoiGian) ws3.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");
+                else if (x.TrangThai == (int)TrangThaiXuat.HoanThanh || x.TrangThai == (int)TrangThaiXuat.DaXuatPhat) ws3.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#f0fff4");
             }
             ws3.Columns().AdjustToContents();
 
-            // ── Sheet 4: Xe quá hạn ──
-            var ws4 = wb.Worksheets.Add("Xe quá hạn");
-            var hdCB = new[] { "STT", "Biển số", "Cửa", "Thời gian cảnh báo", "Ghi chú" };
-            for (int i = 0; i < hdCB.Length; i++)
-            {
-                ws4.Cell(1, i + 1).Value = hdCB[i];
-                ws4.Cell(1, i + 1).Style.Font.Bold = true;
-                ws4.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#7f1d1d");
-                ws4.Cell(1, i + 1).Style.Font.FontColor = XLColor.White;
-            }
-
-            for (int i = 0; i < canhBaos.Count; i++)
-            {
-                var cb = canhBaos[i];
-                var parts = (cb.GhiChu ?? "").Split('|');
-                var bienSo = parts.FirstOrDefault(p => p.StartsWith("Xe:"))?.Replace("Xe:", "") ?? "--";
-                var cua = parts.FirstOrDefault(p => p.StartsWith("Cua:"))?.Replace("Cua:", "") ?? "--";
-
-                ws4.Cell(i + 2, 1).Value = i + 1;
-                ws4.Cell(i + 2, 2).Value = bienSo;
-                ws4.Cell(i + 2, 3).Value = cua;
-                ws4.Cell(i + 2, 4).Value = cb.ThoiGian.ToString("dd/MM/yyyy HH:mm");
-                ws4.Cell(i + 2, 5).Value = cb.GhiChu ?? "";
-                ws4.Row(i + 2).Style.Fill.BackgroundColor = XLColor.FromHtml("#fff0f0");
-            }
-            ws4.Columns().AdjustToContents();
-
             using var stream = new MemoryStream();
-            wb.SaveAs(stream);
-            stream.Position = 0;
-
-            var fileName = $"BaoCao_{from:ddMMyyyy}_{to.AddDays(-1):ddMMyyyy}.xlsx";
-            return File(stream.ToArray(),
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                fileName);
+            wb.SaveAs(stream); stream.Position = 0;
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"BaoCao_{from:ddMMyyyy}_{to.AddDays(-1):ddMMyyyy}.xlsx");
         }
     }
 }

@@ -28,7 +28,6 @@ namespace LedApp.Controllers
             _userManager = userManager;
         }
 
-        // Thêm vào cuối controller, trước XuatExists
         private async Task<List<nguoiDungs>> GetDanhSachQuanLy()
         {
             var userIds = (await _userManager.GetUsersInRoleAsync("QuanLy"))
@@ -41,6 +40,8 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats
+        // Index - xem danh sách
+        [Authorize(Policy = "Xuat.View")]
         public async Task<IActionResult> Index()
         {
             var applicationDBContext = _context.Xuats
@@ -51,6 +52,8 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats/Details/5
+        // Details - xem chi tiết
+        [Authorize(Policy = "Xuat.View")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -66,25 +69,25 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats/Create
-        // GET: Create
+        // Create GET
+        [Authorize(Policy = "Xuat.Create")]
         public async Task<IActionResult> Create()
         {
             ViewData["CuaXuatId"] = new SelectList(_context.CuaXuats, "Id", "Ten");
-
-            // Thêm AsNoTracking() để đảm bảo lấy dữ liệu mới nhất
             ViewData["XeId"] = new SelectList(
                 await _context.DanhSachXes
                     .AsNoTracking()
                     .Where(x => x.TrangThai == (int)TrangThaiXe.TrongBai)
                     .ToListAsync(),
                 "Id", "BienSoXe");
-
             ViewData["NhanVienXacNhanId"] = new SelectList(
                 await GetDanhSachQuanLy(), "Id", "FullName");
             return View();
         }
 
+        // POST: Xuats/Create
         [HttpPost]
+        [Authorize(Policy = "Xuat.Create")]
         public async Task<IActionResult> Create(
             [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,ThoiGianGioiHan,DiaDiemGiao,NhanVienXacNhanId,GhiChu")] Xuat xuat)
         {
@@ -127,7 +130,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats/Edit/5
-        // GET: Edit
+        [Authorize(Policy = "Xuat.Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -146,6 +149,7 @@ namespace LedApp.Controllers
 
         // POST: Xuats/Edit/5
         [HttpPost]
+        [Authorize(Policy = "Xuat.Edit")]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,CuaXuatId,XeId,ThoiGianPhanCong,ThoiGianVaoCua,ThoiGianGioiHan," +
           "ThoiGianHoanThanh,ThoiGianXuatPhat,ThoiGianDuKienVeBai,ThoiGianVeBai," +
@@ -156,11 +160,9 @@ namespace LedApp.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                // Lấy bản ghi cũ để so sánh XeId
                 var xuatCu = await _context.Xuats.AsNoTracking()
                                  .FirstOrDefaultAsync(x => x.Id == id);
 
-                // Xe bị thay → trả xe cũ về TrongBai
                 if (xuatCu?.XeId != null && xuatCu.XeId != xuat.XeId)
                 {
                     var xeCu = await _context.DanhSachXes.AsTracking()
@@ -172,7 +174,6 @@ namespace LedApp.Controllers
                     }
                 }
 
-                // Xe mới được gán → cập nhật trạng thái xe mới
                 if (xuat.XeId.HasValue && xuat.XeId != xuatCu?.XeId)
                 {
                     var xeMoi = await _context.DanhSachXes.AsTracking()
@@ -202,6 +203,7 @@ namespace LedApp.Controllers
         }
 
         // GET: Xuats/Delete/5
+        [Authorize(Policy = "Xuat.Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -218,6 +220,7 @@ namespace LedApp.Controllers
 
         // POST: Xuats/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "Xuat.Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
@@ -226,17 +229,14 @@ namespace LedApp.Controllers
                 var xuat = await _context.Xuats.FindAsync(id);
                 if (xuat != null)
                 {
-                    //  LẤY XeId TRƯỚC KHI XÓA
                     var xeId = xuat.XeId;
                     var trangThaiXuat = xuat.TrangThai;
-                    // Xóa ChitietXuat trước
+
                     var chitiets = _context.ChitietXuats.Where(c => c.XuatId == id);
                     _context.ChitietXuats.RemoveRange(chitiets);
-
                     _context.Xuats.Remove(xuat);
                     await _context.SaveChangesAsync();
 
-                    //  CẬP NHẬT XE SAU KHI XÓA XONG
                     if (xeId.HasValue && trangThaiXuat != (int)TrangThaiXuat.DaXuatPhat)
                     {
                         var conPhieuKhac = await _context.Xuats
@@ -267,7 +267,63 @@ namespace LedApp.Controllers
             }
         }
 
-        // Helper: build và push tổng hợp xuất qua IHubContext
+        // POST: Xuats/BulkDelete
+        [HttpPost]
+        [Authorize(Policy = "Xuat.Delete")]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteRequest request)
+        {
+            if (request?.Ids == null || !request.Ids.Any())
+                return BadRequest(new { message = "Không có ID nào được gửi lên." });
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                foreach (var id in request.Ids)
+                {
+                    var xuat = await _context.Xuats.FindAsync(id);
+                    if (xuat == null) continue;
+
+                    var xeId = xuat.XeId;
+                    var trangThaiXuat = xuat.TrangThai;
+
+                    // Xóa ChitietXuat trước
+                    var chitiets = _context.ChitietXuats.Where(c => c.XuatId == id);
+                    _context.ChitietXuats.RemoveRange(chitiets);
+                    _context.Xuats.Remove(xuat);
+                    await _context.SaveChangesAsync();
+
+                    // Trả xe về TrongBai nếu chưa xuất phát và không còn phiếu khác
+                    if (xeId.HasValue && trangThaiXuat != (int)TrangThaiXuat.DaXuatPhat)
+                    {
+                        var conPhieuKhac = await _context.Xuats
+                            .AnyAsync(x => x.XeId == xeId.Value);
+
+                        if (!conPhieuKhac)
+                        {
+                            var xe = await _context.DanhSachXes
+                                .FirstOrDefaultAsync(x => x.Id == xeId.Value);
+                            if (xe != null)
+                            {
+                                xe.TrangThai = (int)TrangThaiXe.TrongBai;
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+                }
+
+                await transaction.CommitAsync();
+                await PushTongHopXuat();
+                return Ok(new { message = $"Đã xóa {request.Ids.Count} phiếu xuất." });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        // Helper: push tổng hợp xuất qua SignalR
         private async Task PushTongHopXuat()
         {
             var today = DateTime.Today;
@@ -328,5 +384,11 @@ namespace LedApp.Controllers
         {
             return (_context.Xuats?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+    }
+
+    // Request model cho BulkDelete
+    public class BulkDeleteRequest
+    {
+        public List<int> Ids { get; set; } = new();
     }
 }

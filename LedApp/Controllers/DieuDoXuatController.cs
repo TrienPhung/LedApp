@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LedApp.Controllers
 {
-    [Authorize(Roles = "QuanLy")]
+    [Authorize(Policy = "DieuDoXuat.View")]
     public class DieuDoXuatController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -518,7 +518,7 @@ namespace LedApp.Controllers
         public string? GhiChu { get; set; }
         public List<SuaHangHoaInput>? HangHoas { get; set; }
     }
-
+    
     public class SuaHangHoaInput
     {
         public int Id { get; set; }

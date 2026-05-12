@@ -1,5 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -9,19 +9,95 @@
     }
 }
 
-<h1>Manage your account</h1>
+<style>
+    .manage-heading {
+        margin-bottom: 4px;
+    }
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
+        .manage-heading h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+        }
+
+        .manage-heading p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .manage-tabs {
+        display: flex;
+        gap: 2px;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 28px;
+        padding: 0 28px;
+    }
+
+    .manage-tab {
+        padding: 10px 18px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #6b7280;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all .15s;
+        white-space: nowrap;
+    }
+
+        .manage-tab:hover {
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .manage-tab.active {
+            color: #16a34a;
+            border-bottom-color: #16a34a;
+            font-weight: 600;
+        }
+
+    .manage-body {
+        padding: 0  28px;
+        max-width: 860px;
+    }
+
+    body.dark-mode .manage-heading h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .manage-heading p {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .manage-tabs {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .manage-tab {
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .manage-tab.active {
+            color: #4ade80 !important;
+            border-bottom-color: #16a34a !important;
+        }
+</style>
+
+<div style="padding: 28px 28px 8px;">
+    <div class="manage-heading">
+        <h1>Settings</h1>
+        <p>Manage your account settings and preferences.</p>
     </div>
+</div>
+
+<div class="manage-tabs">
+    <partial name="_ManageNav" />
+</div>
+
+<div class="manage-body">
+    @RenderBody()
 </div>
 
 @section Scripts {

@@ -4,7 +4,92 @@
     ViewData["Title"] = "Locked out";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
-</header>
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
+
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+    }
+
+    .auth-card-body {
+        padding: 40px 28px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .error-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        color: #d97706;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+    }
+
+    .error-sub {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #16a34a;
+        color: #fff;
+        text-decoration: none;
+        transition: background .15s;
+    }
+
+        .btn-back:hover {
+            background: #15803d;
+            color: #fff;
+        }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-body">
+            <div class="error-icon">
+                <i class="bi bi-lock"></i>
+            </div>
+            <p class="error-title">Account Locked Out</p>
+            <p class="error-sub">This account has been locked out. Please try again later.</p>
+            <a asp-page="./Login" class="btn-back">
+                <i class="bi bi-arrow-left"></i>
+                Quay lại đăng nhập
+            </a>
+        </div>
+    </div>
+</div>

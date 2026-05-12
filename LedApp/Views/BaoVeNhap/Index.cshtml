@@ -1064,7 +1064,7 @@
         .xe-item {
             background: var(--surface2);
             border: 1px solid var(--border2);
-            border-left: 3px solid var(--blue);
+            @* border-left: 3px solid var(--blue); *@
             border-radius: 7px;
             padding: 12px 14px;
             cursor: pointer;
@@ -1081,7 +1081,7 @@
             }
 
             .xe-item.wait-mid {
-                border-left-color: var(--gold);
+                @* border-left-color: var(--gold); *@
             }
 
             .xe-item.wait-high {
@@ -1380,6 +1380,32 @@
             letter-spacing: 0.5px;
             transition: background .3s;
         }
+
+        .xe-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            margin: 2px 0;
+        }
+
+            .xe-group-header.grp-ok {
+                background: rgba(0,230,118,.06);
+                color: var(--green);
+                border: 1px solid rgba(0,230,118,.15);
+            }
+
+            .xe-group-header.grp-danger {
+                background: rgba(255,61,61,.06);
+                color: var(--red);
+                border: 1px solid rgba(255,61,61,.15);
+            }
     </style>
 </head>
 <body>
@@ -1431,11 +1457,8 @@
                             </div>
                         </div>
                         <div class="ud-divider"></div>
-                        <a href="#" class="ud-item">
-                            <i class="bi bi-gear"></i> Cài đặt
-                        </a>
-                        <a href="#" class="ud-item">
-                            <i class="bi bi-bell"></i> Thông báo
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="ud-item">
+                            <i class="bi bi-gear"></i> Cài đặt 
                         </a>
                         <div class="ud-divider"></div>
                         <form asp-area="Identity" asp-page="/Account/Logout"
@@ -1460,7 +1483,15 @@
                     <div class="cam-corner bl"></div><div class="cam-corner br"></div>
                     <div class="scan-line"></div>
                     <div class="cam-label">📷 WEBCAM FEED</div>
-                    <div class="cam-status"><span class="conn-dot on"></span><span>Python service xử lý</span></div>
+                    <div class="cam-status">
+                        <span class="conn-dot" id="cam-dot"></span>
+                        <span id="cam-text">Đang kiểm tra...</span>
+                        <button id="btn-camera" onclick="toggleCamera()"
+                                style="margin-left:8px;background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);
+                                border-radius:4px;color:var(--green);font-size:10px;padding:2px 8px;cursor:pointer;">
+                            BẬT
+                        </button>
+                    </div>
                     <div class="cam-placeholder">
                         <div class="cam-placeholder-icon">🎥</div>
                         <div class="cam-placeholder-text">Camera đang chạy trong Python</div>
@@ -1643,14 +1674,24 @@
             if (isNaN(dk)) return null;
             var diffMs = Date.now() - dk.getTime();
             var diffMin = Math.round(diffMs / 60000);
+
             if (diffMin < 0) {
+                // Chưa đến giờ
                 var con = Math.abs(diffMin);
-                if (con >= 60) { var hc = Math.floor(con/60), mc = con%60; return { text:'còn '+hc+'h'+(mc>0?mc+'p':''), cls:'low' }; }
+                if (con >= 1440) { var nd=Math.floor(con/1440); return { text:'còn '+nd+' ngày', cls:'low' }; }
+                if (con >= 60)   { var hc=Math.floor(con/60),mc=con%60; return { text:'còn '+hc+'h'+(mc>0?mc+'p':''), cls:'low' }; }
                 return { text:'còn '+con+' phút', cls:'low' };
-            } else if (diffMin === 0) { return { text:'đúng giờ', cls:'low' };
-            } else if (diffMin < 60)  { return { text:'trễ '+diffMin+' phút', cls:'mid' };
-            } else if (diffMin < 240) { var h=Math.floor(diffMin/60),m=diffMin%60; return { text:'trễ '+h+'h'+(m>0?m+'p':'')+' ⚠', cls:'high' };
-            } else { var h2=Math.floor(diffMin/60),m2=diffMin%60; return { text:'QUÁ HẠN '+h2+'h'+(m2>0?m2+'p':'')+' ❗', cls:'high' }; }
+            }
+            if (diffMin === 0) return { text:'đúng giờ', cls:'low' };
+
+            var diffH = diffMin / 60;
+            var diffD = diffMin / 1440;
+
+            if (diffMin < 60)  return { text:'trễ '+diffMin+' phút', cls:'mid' };
+            if (diffH  < 24)   { var h=Math.floor(diffH),m=diffMin%60; return { text:'trễ '+h+'h'+(m>0?m+'p':'')+' ⚠', cls:'mid' }; }
+            // Từ 1 ngày trở lên mới là QUÁ HẠN
+            var d=Math.floor(diffD), hh=Math.floor((diffMin%1440)/60);
+            return { text:'QUÁ HẠN '+d+'ng'+(hh>0?hh+'h':'')+' ❗', cls:'high' };
         }
 
         function refreshWaitTimes() {
@@ -1713,23 +1754,72 @@
 
         function renderXeList() {
             var el = document.getElementById('xe-list');
+
+            if (!xeList.length) {
+                el.innerHTML = '<div class="xe-empty"><div class="xe-empty-icon">✅</div><span>Không có xe đang chờ</span></div>';
+                document.getElementById('xe-count').textContent = '0';
+                updateSearchCount(); return;
+            }
+
+            // ── SẮP XẾP ──────────────────────────────────────────────
+            var today = new Date(); today.setHours(0,0,0,0);
+            var tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+
+            var sorted = [...xeList].sort(function(a, b) {
+                var da = a.ngayDuKien ? new Date(a.ngayDuKien) : new Date('9999-01-01');
+                var db = b.ngayDuKien ? new Date(b.ngayDuKien) : new Date('9999-01-01');
+                var now = Date.now();
+
+                var isQuaHanA = da < today;
+                var isQuaHanB = db < today;
+
+                // Quá hạn luôn xuống cuối
+                if (isQuaHanA && !isQuaHanB) return 1;
+                if (!isQuaHanA && isQuaHanB) return -1;
+
+                // Cả 2 đều quá hạn → trễ ít hơn lên trước (ngày lớn hơn trước)
+                if (isQuaHanA && isQuaHanB) return db - da;
+
+                // Cả 2 đều chưa quá hạn → ngày/giờ gần nhất lên trước
+                return da - db;
+            });
+
+            // ── PHÂN NHÓM ────────────────────────────────────────────
+            var sapVe  = sorted.filter(x => { var w=tinhThoiGianCho(x.ngayDuKien); return !w || !w.text.includes('QUÁ HẠN'); });
+            var quaHan = sorted.filter(x => { var w=tinhThoiGianCho(x.ngayDuKien); return w && w.text.includes('QUÁ HẠN'); });
+
             document.getElementById('xe-count').textContent = xeList.length;
-            if (!xeList.length) { el.innerHTML='<div class="xe-empty"><div class="xe-empty-icon">✅</div><span>Không có xe đang chờ</span></div>'; updateSearchCount(); return; }
-            el.innerHTML = xeList.map(function(xe) {
-                var ngay = xe.ngayDuKien ? new Date(xe.ngayDuKien) : null;
-                var timeStr = ngay ? ngay.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})+' '+ngay.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'}) : '--';
-                var waitHtml='', waitCls='';
-                var w = tinhThoiGianCho(xe.ngayDuKien);
-                if (w) { waitHtml='<span class="xe-wait '+w.cls+'">⏳ '+w.text+'</span>'; waitCls='wait-'+w.cls; }
-                var hangs = (xe.hangHoas||[]).map(function(h){ return '<span class="xe-hang">📦 '+h.SoLuong+' '+h.DonVi+'</span>'; }).join('');
-                return '<div class="xe-item '+waitCls+'" id="xe-item-'+xe.chuyenId+'" data-chuyen-id="'+xe.chuyenId+'" data-bien-so="'+xe.bienSo+'" data-ngay="'+(xe.ngayDuKien||'')+'" onclick="chonXe(this)">'+
-                    '<div class="xe-row1"><span class="xe-bienso">'+xe.bienSo+'</span>'+waitHtml+'</div>'+
-                    '<div class="xe-meta">👤 '+(xe.tenLaiXe||'--')+'<span class="xe-meta-sep">|</span>🏢 '+(xe.maChiNhanh||'--')+'</div>'+
-                    '<span class="xe-time">🕐 DK về: '+timeStr+'</span>'+
-                    (hangs?'<div class="xe-hanghoa">'+hangs+'</div>':'')+
-                '</div>';
-            }).join('');
+
+            var html = '';
+            if (sapVe.length) {
+                html += '<div class="xe-group-header grp-ok"><span>📅 Sắp về / Đúng hạn</span><span>'+sapVe.length+'</span></div>';
+                html += sapVe.map(renderXeItem).join('');
+            }
+            if (quaHan.length) {
+                html += '<div class="xe-group-header grp-danger"><span>⚠ Quá hạn — báo quản lý</span><span>'+quaHan.length+'</span></div>';
+                html += quaHan.map(renderXeItem).join('');
+            }
+
+            el.innerHTML = html;
             applySearch(searchVal);
+        }
+
+        function renderXeItem(xe) {
+            var ngay = xe.ngayDuKien ? new Date(xe.ngayDuKien) : null;
+            var timeStr = ngay ? ngay.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})
+                                +' '+ngay.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'}) : '--';
+            var waitHtml='', waitCls='';
+            var w = tinhThoiGianCho(xe.ngayDuKien);
+            if (w) { waitHtml='<span class="xe-wait '+w.cls+'">⏳ '+w.text+'</span>'; waitCls='wait-'+w.cls; }
+            var hangs = (xe.hangHoas||[]).map(h=>'<span class="xe-hang">📦 '+h.SoLuong+' '+h.DonVi+'</span>').join('');
+            return '<div class="xe-item '+waitCls+'" id="xe-item-'+xe.chuyenId
+                +'" data-chuyen-id="'+xe.chuyenId+'" data-bien-so="'+xe.bienSo
+                +'" data-ngay="'+(xe.ngayDuKien||'')+'" onclick="chonXe(this)">'
+                +'<div class="xe-row1"><span class="xe-bienso">'+xe.bienSo+'</span>'+waitHtml+'</div>'
+                +'<div class="xe-meta">👤 '+(xe.tenLaiXe||'--')+'<span class="xe-meta-sep">|</span>🏢 '+(xe.maChiNhanh||'--')+'</div>'
+                +'<span class="xe-time">🕐 DK về: '+timeStr+'</span>'
+                +(hangs?'<div class="xe-hanghoa">'+hangs+'</div>':'')
+                +'</div>';
         }
 
         function onSearchInput(val) {
@@ -1783,47 +1873,118 @@
         }
 
         document.getElementById('manual-bienso').addEventListener('keydown',function(e){if(e.key==='Enter'){xacNhanThuCong();}});
+        document.getElementById('manual-bienso').addEventListener('input', function() {
+            var val = this.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+            var hint = document.getElementById('manual-hint');
+            var btn  = document.getElementById('btn-xacnhan');
 
+            // Reset
+            btn.disabled = false;
+
+            if (!val) {
+                this.style.borderColor = '';
+                hint.textContent = 'Nhập biển số rồi bấm xác nhận';
+                hint.style.color = '';
+                return;
+            }
+
+            if (val.length < 6) {
+                this.style.borderColor = '';
+                hint.textContent = 'Đang nhập...';
+                hint.style.color = 'var(--text2)';
+                return;
+            }
+
+            var found = xeList.find(function(x) {
+                return x.bienSo.replace(/[-. ]/g,'').toUpperCase() === val;
+            });
+
+            if (found) {
+                this.style.borderColor = 'var(--green)';
+                hint.textContent = '✔ ' + found.bienSo + ' — ' + (found.tenLaiXe||'--') + ' | bấm xác nhận';
+                hint.style.color = 'var(--green)';
+            } else {
+                this.style.borderColor = 'var(--red)';
+                hint.textContent = '✘ Biển số chưa có trong danh sách — kiểm tra lại';
+                hint.style.color = 'var(--red)';
+                // KHÔNG disable — vẫn cho bấm, xacNhanThuCong() sẽ xử lý
+            }
+        });
         async function checkPythonStatus() {
             try {
-                var res=await fetch('@Url.Action("Status", "BaoVeNhap")',{signal:AbortSignal.timeout(2000)});
-                if(res.ok){document.getElementById('py-dot').classList.add('on');document.getElementById('py-text').textContent='API Online';document.getElementById('py-badge').style.borderColor='var(--green)';}
-            } catch(e){document.getElementById('py-text').textContent='Chờ Python...';}
+                var res = await fetch('@Url.Action("CheckViettelApi", "BaoVeNhap")',
+                                     {signal: AbortSignal.timeout(3000)});
+                var data = await res.json();
+                if(data.online) {
+                    document.getElementById('py-dot').classList.add('on');
+                    document.getElementById('py-dot').classList.remove('err');
+                    document.getElementById('py-text').textContent = 'API Online';
+                    document.getElementById('py-badge').style.borderColor = 'var(--green)';
+                } else {
+                    document.getElementById('py-dot').classList.remove('on');
+                    document.getElementById('py-dot').classList.add('err');
+                    document.getElementById('py-text').textContent = 'API Offline';
+                    document.getElementById('py-badge').style.borderColor = 'var(--red)';
+                }
+            } catch(e) {
+                document.getElementById('py-dot').classList.remove('on');
+                document.getElementById('py-dot').classList.add('err');
+                document.getElementById('py-text').textContent = 'API Offline';
+                document.getElementById('py-badge').style.borderColor = 'var(--red)';
+            }
         }
         setInterval(checkPythonStatus, 10000);
 
-        function handleNhanDien(data) {
-            var bienSo=data.bienSo||'--', timThay=data.timThay||false, loai=data.loaiPhieu||'--';
-            var tenCua=data.tenCua||'--', thongBao=data.thongBao||'--', conf=data.confidence||0;
-            var thoiGian=data.thoiGian?new Date(data.thoiGian).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'--:--:--';
-            var ttMap={0:'Chưa về',1:'Đang về',2:'Đã đến',3:'Đang nhập hàng',4:'Hoàn thành'};
-            var ttText=loai==='XE'?(ttMap[data.trangThai]||'--'):'--';
-            document.getElementById('result-card').className='result-card '+(timThay?'found':'notfound');
-            document.getElementById('r-bienso').textContent=bienSo;
-            document.getElementById('r-bienso').className='result-bienso';
-            document.getElementById('r-conf').innerHTML='Confidence: <span>'+(conf*100).toFixed(0)+'%</span>';
-            document.getElementById('r-loai').textContent=loai==='--'?'--':('Xe nhập'+(data.phieuId?' #'+data.phieuId:''));
-            document.getElementById('r-cua').textContent=tenCua;
-            document.getElementById('r-tt').textContent=ttText;
-            document.getElementById('r-time').textContent=thoiGian;
-            var msgEl=document.getElementById('r-msg');
-            msgEl.textContent=thongBao;
-            msgEl.className='result-msg '+(timThay?'msg-found':'msg-notfound');
-            statTong++; confList.push(conf);
-            if(timThay)statFound++;else statNotFound++;
-            document.getElementById('s-tong').textContent=statTong;
-            document.getElementById('s-found').textContent=statFound;
-            document.getElementById('s-notfound').textContent=statNotFound;
-            var avg=confList.reduce(function(a,b){return a+b;},0)/confList.length;
-            document.getElementById('s-conf').textContent=(avg*100).toFixed(0)+'%';
-            addLog(thoiGian,bienSo,thongBao,timThay);
+        function formatBienSo(plate) {
+            if (!plate || plate === '--') return plate;
+            var parts = plate.split('-');
+            // 3 phần: 50-AA-379.79 → 50-AA 379.79
+            if (parts.length === 3) return parts[0] + '-' + parts[1] + ' ' + parts[2];
+            // 2 phần: 50-AA379.79 → tách số ra → 50-AA 379.79
+            if (parts.length === 2) {
+                var m = parts[1].match(/^([A-Z]+\d?)(\d{3,5}.*)$/);
+                if (m) return parts[0] + '-' + m[1] + ' ' + m[2];
+            }
+            return plate;
         }
+        function handleNhanDien(data) {
+                    var bienSo=data.bienSo||'--', timThay=data.timThay||false, loai=data.loaiPhieu||'--';
+                    var tenCua=data.tenCua||'--', thongBao=data.thongBao||'--', conf=data.confidence||0;
+                    var thoiGian=data.thoiGian?new Date(data.thoiGian).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'--:--:--';
+                    var ttMap={0:'Chưa về',1:'Đang về',2:'Đã đến',3:'Đang nhập hàng',4:'Hoàn thành'};
+                    var ttText=loai==='XE'?(ttMap[data.trangThai]||'--'):'--';
+                    document.getElementById('result-card').className='result-card '+(timThay?'found':'notfound');
+                    document.getElementById('r-bienso').textContent=formatBienSo(bienSo);
+                    document.getElementById('r-bienso').className='result-bienso';
+                    document.getElementById('r-conf').innerHTML='Confidence: <span>'+(conf*100).toFixed(0)+'%</span>';
+                    document.getElementById('r-loai').textContent=loai==='--'?'--':('Xe nhập'+(data.phieuId?' #'+data.phieuId:''));
+                    document.getElementById('r-cua').textContent=tenCua;
+                    document.getElementById('r-tt').textContent=ttText;
+                    document.getElementById('r-time').textContent=thoiGian;
+                    var msgEl=document.getElementById('r-msg');
+                    msgEl.textContent=thongBao;
+                    msgEl.className='result-msg '+(timThay?'msg-found':'msg-notfound');
+                    statTong++; confList.push(conf);
+                    if(timThay)statFound++;else statNotFound++;
+                    document.getElementById('s-tong').textContent=statTong;
+                    document.getElementById('s-found').textContent=statFound;
+                    document.getElementById('s-notfound').textContent=statNotFound;
+                    var avg=confList.reduce(function(a,b){return a+b;},0)/confList.length;
+                    document.getElementById('s-conf').textContent=(avg*100).toFixed(0)+'%';
+
+                    // ── LUÔN FILL BIỂN SỐ VÀO INPUT DÙ TÌM THẤY HAY KHÔNG ──
+                    var inputEl = document.getElementById('manual-bienso');
+                    inputEl.value = formatBienSo(data.bienSo || '');
+                    inputEl.dispatchEvent(new Event('input')); // trigger validate real-time
+
+                    addLog(thoiGian,bienSo,thongBao,timThay);
+                }
 
         function addLog(time,plate,msg,timThay) {
             var body=document.getElementById('log-body');
             if(body.querySelector('div[style]'))body.innerHTML='';
             var row=document.createElement('div'); row.className='log-row';
-            row.innerHTML='<span class="log-time">'+time+'</span><span class="log-plate">'+plate+'</span><span class="log-msg">'+msg+'</span><span class="log-badge '+(timThay?'badge-found':'badge-notfound')+'">'+(timThay?'OK':'MISS')+'</span>';
+            row.innerHTML='<span class="log-time">'+time+'</span><span class="log-plate">'+formatBienSo(plate)+'</span><span class="log-msg">'+msg+'</span><span class="log-badge '+(timThay?'badge-found':'badge-notfound')+'">'+(timThay?'OK':'MISS')+'</span>';
             body.insertBefore(row,body.firstChild);
             while(body.children.length>50)body.removeChild(body.lastChild);
             logData.unshift({time,plate,msg,timThay});
@@ -1831,11 +1992,61 @@
             var hmBody=document.getElementById('hm-body');
             if(hmBody.querySelector('.hm-empty'))hmBody.innerHTML='';
             var hmRow=document.createElement('div'); hmRow.className='hm-row';
-            hmRow.innerHTML='<span class="hm-time">'+time+'</span><span class="hm-plate '+(timThay?'':'miss')+'">'+plate+'</span><span class="hm-badge '+(timThay?'hm-ok':'hm-miss')+'">'+(timThay?'✔ CÓ':'✘ KHÔNG')+'</span>';
+            hmRow.innerHTML='<span class="hm-time">'+time+'</span><span class="hm-plate '+(timThay?'':'miss')+'">'+formatBienSo(plate)+'</span><span class="hm-badge '+(timThay?'hm-ok':'hm-miss')+'">'+(timThay?'✔ CÓ':'✘ KHÔNG')+'</span>';
             hmBody.insertBefore(hmRow,hmBody.firstChild);
             while(hmBody.children.length>8)hmBody.removeChild(hmBody.lastChild);
             document.getElementById('hm-count').textContent=logData.length+' lượt';
         }
+                var cameraRunning = false;
+
+        async function checkCameraStatus() {
+            try {
+                var res = await fetch('@Url.Action("CameraStatus", "BaoVeNhap")');
+                var data = await res.json();
+                cameraRunning = data.running;
+                updateCameraUI();
+            } catch(e) {}
+        }
+
+        function updateCameraUI() {
+            var dot  = document.getElementById('cam-dot');
+            var text = document.getElementById('cam-text');
+            var btn  = document.getElementById('btn-camera');
+            if (cameraRunning) {
+                dot.className  = 'conn-dot on';
+                text.textContent = 'Camera đang chạy';
+                btn.textContent  = 'TẮT';
+                btn.style.color  = 'var(--red)';
+                btn.style.borderColor = 'rgba(255,61,61,.3)';
+                btn.style.background  = 'rgba(255,61,61,.1)';
+            } else {
+                dot.className  = 'conn-dot';
+                text.textContent = 'Camera đã tắt';
+                btn.textContent  = 'BẬT';
+                btn.style.color  = 'var(--green)';
+                btn.style.borderColor = 'rgba(0,230,118,.3)';
+                btn.style.background  = 'rgba(0,230,118,.1)';
+            }
+        }
+
+        async function toggleCamera() {
+   
+            var url = cameraRunning
+                ? '@Url.Action("TatCamera", "BaoVeNhap")'
+                : '@Url.Action("BatCamera", "BaoVeNhap")';
+            try {
+                var res = await fetch(url, { method: 'POST' });
+                var data = await res.json();
+                showToast(data.message, res.ok ? 'success' : 'error');
+                await checkCameraStatus();
+            } catch(e) {
+                showToast('Lỗi kết nối!', 'error');
+            }
+        }
+
+        // Kiểm tra mỗi 5 giây
+        setInterval(checkCameraStatus, 5000);
+        checkCameraStatus();
     </script>
 </body>
 </html>

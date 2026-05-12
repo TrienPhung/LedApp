@@ -1,0 +1,460 @@
+﻿@model LedApp.Models.CauHinh
+@{
+    ViewData["Title"] = "Chi tiết cấu hình #" + Model.Id;
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    :root {
+        --ap-bg: #f9fafb;
+        --ap-surface: #ffffff;
+        --ap-border: #e5e7eb;
+        --ap-border-lt: #f3f4f6;
+        --ap-text-1: #111827;
+        --ap-text-2: #6b7280;
+        --ap-text-3: #9ca3af;
+        --ap-green: #16a34a;
+        --ap-red: #dc2626;
+        --ap-radius: 12px;
+        --ap-shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+    }
+
+    body.dark-mode {
+        --ap-bg: #0f172a;
+        --ap-surface: #1e293b;
+        --ap-border: #334155;
+        --ap-border-lt: #1e293b;
+        --ap-text-1: #f1f5f9;
+        --ap-text-2: #94a3b8;
+        --ap-text-3: #64748b;
+    }
+
+    .dt-wrap {
+        padding: 0 0 40px;
+    }
+
+    .dt-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--ap-text-2);
+        margin-bottom: 14px;
+    }
+
+        .dt-breadcrumb a {
+            color: var(--ap-text-2);
+            text-decoration: none;
+        }
+
+            .dt-breadcrumb a:hover {
+                color: var(--ap-text-1);
+            }
+
+        .dt-breadcrumb .sep {
+            color: var(--ap-text-3);
+            display: flex;
+            align-items: center;
+        }
+
+            .dt-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+            }
+
+        .dt-breadcrumb .cur {
+            color: var(--ap-text-1);
+            font-weight: 600;
+        }
+
+    .dt-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+        .dt-header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ap-text-1);
+            margin: 0;
+            letter-spacing: -.3px;
+        }
+
+    .dt-header-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn-apex {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: 1px solid var(--ap-border);
+        background: var(--ap-surface);
+        color: var(--ap-text-2);
+        transition: all .15s;
+        box-shadow: var(--ap-shadow);
+    }
+
+        .btn-apex:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+            text-decoration: none;
+        }
+
+        .btn-apex svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .btn-apex.danger {
+            background: var(--ap-red);
+            border-color: var(--ap-red);
+            color: #fff;
+        }
+
+            .btn-apex.danger:hover {
+                background: #b91c1c;
+                border-color: #b91c1c;
+                color: #fff;
+            }
+
+    .dt-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 16px;
+        align-items: start;
+    }
+
+    @@media (max-width: 900px) {
+        .dt-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .ap-panel {
+        background: var(--ap-surface);
+        border: 1px solid var(--ap-border);
+        border-radius: var(--ap-radius);
+        box-shadow: var(--ap-shadow);
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .ap-panel:last-child {
+            margin-bottom: 0;
+        }
+
+    .ap-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+    }
+
+    .ap-panel-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+    }
+
+    .ap-panel-body {
+        padding: 0;
+    }
+
+    .detail-row {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--ap-border-lt);
+        align-items: start;
+        gap: 12px;
+        transition: background .1s;
+    }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row:hover {
+            background: var(--ap-border-lt);
+        }
+
+    .detail-key {
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--ap-text-2);
+        padding-top: 1px;
+    }
+
+    .detail-val {
+        font-size: 13.5px;
+        color: var(--ap-text-1);
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+        .detail-val.mono {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            letter-spacing: .5px;
+        }
+
+        .detail-val.muted {
+            color: var(--ap-text-3);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+    .sidebar-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 16px 20px;
+    }
+
+    .meta-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--ap-text-3);
+        margin-bottom: 5px;
+    }
+
+    .meta-value {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--ap-text-1);
+    }
+
+    .del-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .del-overlay.open {
+            display: flex;
+        }
+
+    .del-modal {
+        background: var(--ap-surface);
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 380px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        position: relative;
+    }
+
+    .del-modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: none;
+        border: none;
+        color: var(--ap-text-3);
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+        padding: 4px 6px;
+        border-radius: 6px;
+        transition: all .15s;
+    }
+
+        .del-modal-close:hover {
+            background: var(--ap-border-lt);
+            color: var(--ap-text-1);
+        }
+
+    .del-modal h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--ap-text-1);
+        margin: 0 0 8px;
+    }
+
+    .del-modal p {
+        font-size: 13px;
+        color: var(--ap-text-2);
+        line-height: 1.55;
+        margin: 0 0 20px;
+    }
+
+    .del-modal-foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .btn-cancel {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--ap-border);
+        background: var(--ap-surface);
+        color: var(--ap-text-1);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: var(--ap-border-lt);
+        }
+
+    .btn-confirm-del {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        background: var(--ap-red);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+    }
+
+        .btn-confirm-del:hover {
+            background: #b91c1c;
+        }
+
+    body.dark-mode .ap-panel {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+    }
+
+    body.dark-mode .detail-row:hover {
+        background: rgba(255,255,255,.03);
+    }
+
+    body.dark-mode .btn-apex {
+        background: var(--ap-surface) !important;
+        border-color: var(--ap-border) !important;
+        color: var(--ap-text-2) !important;
+    }
+
+        body.dark-mode .btn-apex.danger {
+            background: var(--ap-red) !important;
+            border-color: var(--ap-red) !important;
+            color: #fff !important;
+        }
+</style>
+
+<div class="dt-wrap">
+
+    <!-- Breadcrumb -->
+    <div class="dt-breadcrumb">
+        <a href="/Dashboard">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-controller="CauHinhs" asp-action="Index">Cấu hình hệ thống</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Cấu hình #@Model.Id</span>
+    </div>
+
+    <!-- Page header -->
+    <div class="dt-header">
+        <h1>Cấu hình #@Model.Id</h1>
+        <div class="dt-header-actions">
+            <a asp-action="Index" class="btn-apex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+                Trở về
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn-apex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                Edit
+            </a>
+            <button class="btn-apex danger" onclick="openDelModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <div class="dt-grid">
+        <!-- LEFT -->
+        <div>
+            <div class="ap-panel">
+                <div class="ap-panel-head">
+                    <span class="ap-panel-title">Thông tin cấu hình</span>
+                </div>
+                <div class="ap-panel-body">
+                    <div class="detail-row">
+                        <span class="detail-key">Mã cấu hình</span>
+                        <span class="detail-val mono">#@Model.Id</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Key</span>
+                        <span class="detail-val mono">@Model.Key</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-key">Value</span>
+                        <span class="detail-val @(string.IsNullOrEmpty(Model.Value) ? "muted" : "")">@(string.IsNullOrEmpty(Model.Value) ? "—" : Model.Value)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+            <div class="ap-panel">
+                <div class="ap-panel-head"><span class="ap-panel-title">Tóm tắt</span></div>
+                <div class="sidebar-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Mã</div>
+                        <div class="meta-value" style="font-family:monospace;">#@Model.Id</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Key</div>
+                        <div class="meta-value" style="font-family:'Courier New',monospace;font-size:12px;">@Model.Key</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Value</div>
+                        <div class="meta-value">@(string.IsNullOrEmpty(Model.Value) ? "—" : Model.Value)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="del-overlay" id="delOverlay">
+    <div class="del-modal">
+        <button class="del-modal-close" onclick="closeDelModal()">×</button>
+        <h3>Xóa cấu hình</h3>
+        <p>Bạn có chắc chắn muốn xóa cấu hình <strong>#@Model.Id — @Model.Key</strong>? Hành động này không thể hoàn tác.</p>
+        <div class="del-modal-foot">
+            <button class="btn-cancel" onclick="closeDelModal()">Hủy</button>
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-confirm-del">Xóa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openDelModal() { document.getElementById('delOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeDelModal() { document.getElementById('delOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+    document.getElementById('delOverlay').addEventListener('click', function(e) { if (e.target === this) closeDelModal(); });
+</script>

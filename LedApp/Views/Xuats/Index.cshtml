@@ -1,1652 +1,2018 @@
-﻿@model IEnumerable<LedApp.Models.Xuat>
-@{
-    ViewData["Title"] = "Quản lý phiếu xuất";
-    Layout = "~/Views/Shared/_Layout1.cshtml";
-}
-
-<style>
-    .page-wrapper > .container-fluid {
-        padding: 0 !important;
+﻿    @model IEnumerable<LedApp.Models.Xuat>
+    @{
+        ViewData["Title"] = "Quản lý phiếu xuất";
+        Layout = "~/Views/Shared/_Layout1.cshtml";
     }
 
-    .px-page {
-        padding: 24px 24px 80px;
-    }
+    <style>
+        .page-wrapper > .container-fluid {
+            padding: 0 !important;
+        }
 
-    /* ── Breadcrumb ── */
-    .px-breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.82rem;
-        color: #6b7280;
-        margin-bottom: 12px;
-        line-height: 1;
-    }
+        .px-page {
+            padding: 24px 24px 80px;
+        }
 
-        .px-breadcrumb a {
+        /* ── Breadcrumb ── */
+        .px-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
             color: #6b7280;
-            text-decoration: none;
+            margin-bottom: 12px;
             line-height: 1;
         }
 
-            .px-breadcrumb a:hover {
-                color: #111827;
+            .px-breadcrumb a {
+                color: #6b7280;
+                text-decoration: none;
+                line-height: 1;
             }
 
-        .px-breadcrumb .sep {
+                .px-breadcrumb a:hover {
+                    color: #111827;
+                }
+
+            .px-breadcrumb .sep {
+                display: inline-flex;
+                align-items: center;
+                color: #9ca3af;
+                line-height: 1;
+            }
+
+                .px-breadcrumb .sep svg {
+                    width: 13px;
+                    height: 13px;
+                    stroke-width: 2;
+                    display: block;
+                }
+
+            .px-breadcrumb .cur {
+                color: #111827;
+                font-weight: 600;
+                line-height: 1;
+            }
+
+        /* ── Header ── */
+        .px-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+            .px-header h1 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #111827;
+                margin: 0 0 3px;
+                line-height: 1.2;
+            }
+
+            .px-header p {
+                color: #6b7280;
+                font-size: 0.875rem;
+                margin: 0;
+            }
+
+        .btn-add {
             display: inline-flex;
             align-items: center;
-            color: #9ca3af;
-            line-height: 1;
+            gap: 6px;
+            background: #16a34a;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background .15s;
         }
 
-            .px-breadcrumb .sep svg {
-                width: 13px;
-                height: 13px;
-                stroke-width: 2;
-                display: block;
+            .btn-add:hover {
+                background: #15803d;
+                color: #fff;
+                text-decoration: none;
             }
 
-        .px-breadcrumb .cur {
-            color: #111827;
-            font-weight: 600;
-            line-height: 1;
+            .btn-add svg {
+                width: 15px;
+                height: 15px;
+            }
+
+        /* ── Toolbar ── */
+        .px-toolbar-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
-    /* ── Header ── */
-    .px-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 24px;
-    }
-
-        .px-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #111827;
-            margin: 0 0 3px;
-            line-height: 1.2;
+        .px-toolbar-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 10px;
         }
 
-        .px-header p {
+        .filter-tabs {
+            display: inline-flex;
+            gap: 2px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .filter-tab {
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 500;
             color: #6b7280;
-            font-size: 0.875rem;
-            margin: 0;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            transition: all .15s;
+            line-height: 1.4;
+            white-space: nowrap;
         }
 
-    .btn-add {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: #16a34a;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.875rem;
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        white-space: nowrap;
-        transition: background .15s;
-    }
+            .filter-tab:hover {
+                color: #374151;
+                background: rgba(255,255,255,0.5);
+            }
 
-        .btn-add:hover {
-            background: #15803d;
-            color: #fff;
-            text-decoration: none;
+            .filter-tab.active {
+                background: #fff;
+                color: #111827;
+                border-color: #e5e7eb;
+                font-weight: 600;
+                box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+            }
+
+        /* ── Search ── */
+        .px-search {
+            position: relative;
+            flex: 1;
+            max-width: 480px;
         }
 
-        .btn-add svg {
-            width: 15px;
-            height: 15px;
+            .px-search svg {
+                position: absolute;
+                left: 11px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #9ca3af;
+                width: 15px;
+                height: 15px;
+                pointer-events: none;
+            }
+
+            .px-search input {
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                background: #fff;
+                color: #111827;
+                font-size: 0.875rem;
+                padding: 9px 14px 9px 34px;
+                width: 100%;
+                outline: none;
+                transition: border-color .15s, box-shadow .15s;
+            }
+
+                .px-search input::placeholder {
+                    color: #9ca3af;
+                }
+
+                .px-search input:focus {
+                    border-color: #16a34a;
+                    box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+                }
+
+        .px-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-    /* ── Toolbar ── */
-    .px-toolbar-top {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-        gap: 6px;
-        flex-wrap: wrap;
-    }
-
-    .px-toolbar-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-        gap: 10px;
-    }
-
-    /* ── Filter tabs — Apex segmented control ──
-           Container: gray bg + border
-           Active: white bg + border + shadow (raised pill)
-           Inactive: transparent, no border
-        */
-    .filter-tabs {
-        display: inline-flex;
-        gap: 2px;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 3px;
-    }
-
-    .filter-tab {
-        padding: 5px 14px;
-        border-radius: 6px;
-        font-size: 0.82rem;
-        font-weight: 500;
-        color: #6b7280;
-        cursor: pointer;
-        border: 1px solid transparent;
-        background: transparent;
-        transition: all .15s;
-        line-height: 1.4;
-        white-space: nowrap;
-    }
-
-        .filter-tab:hover {
-            color: #374151;
-            background: rgba(255,255,255,0.5);
-        }
-
-        .filter-tab.active {
-            background: #fff;
-            color: #111827;
-            border-color: #e5e7eb;
-            font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
-        }
-
-    /* ── Search ── */
-    .px-search {
-        position: relative;
-        flex: 1;
-        max-width: 480px;
-    }
-
-        .px-search svg {
-            position: absolute;
-            left: 11px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            width: 15px;
-            height: 15px;
-            pointer-events: none;
-        }
-
-        .px-search input {
+        .tb-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             background: #fff;
-            color: #111827;
-            font-size: 0.875rem;
-            padding: 9px 14px 9px 34px;
-            width: 100%;
-            outline: none;
-            transition: border-color .15s, box-shadow .15s;
+            color: #374151;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .15s;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
         }
 
-            .px-search input::placeholder {
-                color: #9ca3af;
+            .tb-btn:hover {
+                background: #f9fafb;
+                border-color: #d1d5db;
+                color: #111827;
             }
 
-            .px-search input:focus {
-                border-color: #16a34a;
-                box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            .tb-btn svg {
+                width: 14px;
+                height: 14px;
+                color: #6b7280;
             }
 
-    .px-toolbar-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .tb-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 14px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        background: #fff;
-        color: #374151;
-        font-size: 0.82rem;
-        font-weight: 500;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all .15s;
-        white-space: nowrap;
-        box-shadow: 0 1px 2px rgba(0,0,0,.04);
-    }
-
-        .tb-btn:hover {
-            background: #f9fafb;
-            border-color: #d1d5db;
-            color: #111827;
+        /* ── Columns dropdown ── */
+        .columns-wrap {
+            position: relative;
         }
 
-        .tb-btn svg {
-            width: 14px;
-            height: 14px;
+        .col-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            z-index: 200;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            min-width: 190px;
+            overflow: hidden;
+        }
+
+            .col-dropdown.open {
+                display: block;
+            }
+
+        .col-dropdown-title {
+            padding: 10px 14px 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #9ca3af;
+        }
+
+        .col-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 14px;
+            cursor: pointer;
+            transition: background .1s;
+        }
+
+            .col-item:hover {
+                background: #f9fafb;
+            }
+
+            .col-item span {
+                font-size: 0.82rem;
+                color: #374151;
+                font-weight: 500;
+            }
+
+        .col-check {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #16a34a;
+            opacity: 0;
+            transition: opacity .12s;
+        }
+
+            .col-check svg {
+                width: 14px;
+                height: 14px;
+            }
+
+        .col-item.col-visible .col-check {
+            opacity: 1;
+        }
+
+        .col-hidden {
+            display: none !important;
+        }
+
+        /* ── Empty search state ── */
+        .no-results-row td {
+            padding: 48px 20px;
+            text-align: center !important;
             color: #6b7280;
+            font-size: 0.875rem;
         }
 
-    /* ── Columns dropdown ── */
-    .columns-wrap {
-        position: relative;
-    }
-
-    .col-dropdown {
-        display: none;
-        position: absolute;
-        top: calc(100% + 6px);
-        right: 0;
-        z-index: 200;
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.1);
-        min-width: 190px;
-        overflow: hidden;
-    }
-
-        .col-dropdown.open {
-            display: block;
+        /* ── Category dropdown ── */
+        .category-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-    .col-dropdown-title {
-        padding: 10px 14px 6px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-        color: #9ca3af;
-    }
-
-    .col-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 14px;
-        cursor: pointer;
-        transition: background .1s;
-    }
-
-        .col-item:hover {
-            background: #f9fafb;
+        .btn-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #374151;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .15s;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
         }
 
-        .col-item span {
+            .btn-category:hover {
+                background: #f9fafb;
+                border-color: #d1d5db;
+                color: #111827;
+            }
+
+            .btn-category.has-filter {
+                border-color: #16a34a;
+                color: #16a34a;
+            }
+
+            .btn-category svg {
+                width: 14px;
+                height: 14px;
+            }
+
+        .cat-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: #111827;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 999px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+        }
+
+            .cat-badge.show {
+                display: inline-flex;
+            }
+
+        .btn-reset {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fff;
+            color: #374151;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all .15s;
+            box-shadow: 0 1px 2px rgba(0,0,0,.04);
+        }
+
+            .btn-reset.show {
+                display: inline-flex;
+            }
+
+            .btn-reset:hover {
+                background: #fef2f2;
+                border-color: #fecaca;
+                color: #ef4444;
+            }
+
+            .btn-reset svg {
+                width: 13px;
+                height: 13px;
+            }
+
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            z-index: 200;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            min-width: 220px;
+        }
+
+            .category-dropdown.open {
+                display: block;
+            }
+
+        .cat-search-wrap {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+            .cat-search-wrap svg {
+                width: 14px;
+                height: 14px;
+                color: #9ca3af;
+                flex-shrink: 0;
+            }
+
+            .cat-search-wrap input {
+                border: none;
+                outline: none;
+                font-size: 0.82rem;
+                color: #111827;
+                background: transparent;
+                width: 100%;
+            }
+
+                .cat-search-wrap input::placeholder {
+                    color: #9ca3af;
+                }
+
+        .cat-list {
+            padding: 4px 0;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .cat-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background .1s;
+            gap: 8px;
+        }
+
+            .cat-item:hover {
+                background: #f9fafb;
+            }
+
+        .cat-item-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cat-radio {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #d1d5db;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all .15s;
+            background: #fff;
+            cursor: pointer;
+        }
+
+            .cat-radio.checked {
+                border-color: #16a34a;
+                background: #16a34a;
+            }
+
+                .cat-radio.checked::after {
+                    content: '';
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #fff;
+                }
+
+        .cat-item span {
             font-size: 0.82rem;
             color: #374151;
             font-weight: 500;
         }
 
-    .col-check {
-        width: 16px;
-        height: 16px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #16a34a;
-        opacity: 0;
-        transition: opacity .12s;
-    }
-
-        .col-check svg {
-            width: 14px;
-            height: 14px;
-        }
-
-    .col-item.col-visible .col-check {
-        opacity: 1;
-    }
-
-    .col-hidden {
-        display: none !important;
-    }
-
-    /* ── Empty search state ── */
-    .no-results-row td {
-        padding: 48px 20px;
-        text-align: center;
-        color: #6b7280;
-        font-size: 0.875rem;
-    }
-
-    /* ── Category dropdown (Apex style) ── */
-    .category-wrap {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn-category {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 14px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        background: #fff;
-        color: #374151;
-        font-size: 0.82rem;
-        font-weight: 500;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all .15s;
-        box-shadow: 0 1px 2px rgba(0,0,0,.04);
-    }
-
-        .btn-category:hover {
-            background: #f9fafb;
-            border-color: #d1d5db;
-            color: #111827;
-        }
-
-        .btn-category.has-filter {
-            border-color: #16a34a;
-            color: #16a34a;
-        }
-
-        .btn-category svg {
-            width: 14px;
-            height: 14px;
-        }
-
-    /* Badge count on Category button */
-    .cat-badge {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        background: #111827;
-        color: #fff;
-        font-size: 0.7rem;
-        font-weight: 700;
-        border-radius: 999px;
-        min-width: 18px;
-        height: 18px;
-        padding: 0 5px;
-    }
-
-        .cat-badge.show {
-            display: inline-flex;
-        }
-
-    /* Reset button (appears when filter active) */
-    .btn-reset {
-        display: none;
-        align-items: center;
-        gap: 5px;
-        padding: 8px 12px;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        background: #fff;
-        color: #374151;
-        font-size: 0.82rem;
-        font-weight: 500;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: all .15s;
-        box-shadow: 0 1px 2px rgba(0,0,0,.04);
-    }
-
-        .btn-reset.show {
-            display: inline-flex;
-        }
-
-        .btn-reset:hover {
-            background: #fef2f2;
-            border-color: #fecaca;
-            color: #ef4444;
-        }
-
-        .btn-reset svg {
-            width: 13px;
-            height: 13px;
-        }
-
-    .category-dropdown {
-        display: none;
-        position: absolute;
-        top: calc(100% + 6px);
-        left: 0;
-        z-index: 200;
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.1);
-        min-width: 220px;
-    }
-
-        .category-dropdown.open {
-            display: block;
-        }
-
-    .cat-search-wrap {
-        padding: 8px 10px;
-        border-bottom: 1px solid #f3f4f6;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-    }
-
-        .cat-search-wrap svg {
-            width: 14px;
-            height: 14px;
+        .cat-count {
+            font-size: 0.75rem;
             color: #9ca3af;
+            background: #f3f4f6;
+            border-radius: 999px;
+            padding: 1px 7px;
+            font-weight: 500;
             flex-shrink: 0;
         }
 
-        .cat-search-wrap input {
-            border: none;
-            outline: none;
+        .cat-clear {
+            display: none;
+            padding: 8px 12px;
+            border-top: 1px solid #f3f4f6;
             font-size: 0.82rem;
-            color: #111827;
-            background: transparent;
-            width: 100%;
+            color: #6b7280;
+            text-align: center;
+            cursor: pointer;
+            transition: all .15s;
+            font-weight: 500;
         }
 
-            .cat-search-wrap input::placeholder {
-                color: #9ca3af;
+            .cat-clear:hover {
+                color: #ef4444;
+                background: #fef2f2;
             }
 
-    .cat-list {
-        padding: 4px 0;
-        max-height: 220px;
-        overflow-y: auto;
-    }
-
-    .cat-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 12px;
-        cursor: pointer;
-        transition: background .1s;
-        gap: 8px;
-    }
-
-        .cat-item:hover {
-            background: #f9fafb;
+        /* ── Table card ── */
+        .px-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
-    .cat-item-left {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* Apex-style circle radio (not checkbox) */
-    .cat-radio {
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        border: 2px solid #d1d5db;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        transition: all .15s;
-        background: #fff;
-        cursor: pointer;
-    }
-
-        .cat-radio.checked {
-            border-color: #16a34a;
-            background: #16a34a;
+        .px-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
         }
 
-            .cat-radio.checked::after {
+            .px-table thead th {
+                background: #f9fafb;
+                color: #374151;
+                font-size: 0.72rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .04em;
+                padding: 10px 12px;
+                border-bottom: 1px solid #e5e7eb;
+                white-space: normal;
+                line-height: 1.3;
+                min-width: 70px;
+                user-select: none;
+            }
+
+                .px-table thead th:first-child {
+                    width: 40px;
+                }
+
+        .th-inner {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+            .th-inner:hover {
+                color: #111827;
+            }
+
+        .sort-icon {
+            display: inline-flex;
+            opacity: 0.35;
+            flex-shrink: 0;
+            transition: opacity .15s;
+        }
+
+            .sort-icon svg {
+                width: 12px;
+                height: 12px;
+                display: block;
+            }
+
+        .th-inner:hover .sort-icon {
+            opacity: 0.65;
+        }
+
+        .sort-icon.active {
+            opacity: 1;
+            color: #16a34a;
+        }
+
+        .px-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background .1s;
+        }
+
+            .px-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .px-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+        .px-table td {
+            padding: 12px 12px;
+            color: #111827;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .td-bienso {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .td-time {
+            color: #6b7280;
+            font-size: 0.81rem;
+        }
+
+        .px-table input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+
+        /* ── Badges ── */
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+            .badge-pill::before {
                 content: '';
                 width: 6px;
                 height: 6px;
                 border-radius: 50%;
-                background: #fff;
+                display: inline-block;
+                flex-shrink: 0;
             }
 
-    .cat-item span {
-        font-size: 0.82rem;
-        color: #374151;
-        font-weight: 500;
-    }
+        .bp-phan-cong {
+            background: #f1f5f9;
+            color: #64748b;
+        }
 
-    .cat-count {
-        font-size: 0.75rem;
-        color: #9ca3af;
-        background: #f3f4f6;
-        border-radius: 999px;
-        padding: 1px 7px;
-        font-weight: 500;
-        flex-shrink: 0;
-    }
+            .bp-phan-cong::before {
+                background: #94a3b8;
+            }
 
-    /* Clear filters at bottom of dropdown */
-    .cat-clear {
-        display: none; /* hidden by default, shown via JS when filter active */
-        padding: 8px 12px;
-        border-top: 1px solid #f3f4f6;
-        font-size: 0.82rem;
-        color: #6b7280;
-        text-align: center;
-        cursor: pointer;
-        transition: all .15s;
-        font-weight: 500;
-    }
+        .bp-ban-giao {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
 
-        .cat-clear:hover {
+            .bp-ban-giao::before {
+                background: #3b82f6;
+            }
+
+        .bp-qua-tg {
+            background: #fef2f2;
             color: #ef4444;
-            background: #fef2f2;
         }
 
-    /* ── Table card ── */
-    .px-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    .px-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.875rem;
-    }
-
-        .px-table thead th {
-            background: #f9fafb;
-            color: #374151;
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .04em;
-            padding: 10px 12px;
-            border-bottom: 1px solid #e5e7eb;
-            white-space: normal;
-            line-height: 1.3;
-            min-width: 70px;
-            user-select: none;
-        }
-
-            .px-table thead th:first-child {
-                width: 40px;
+            .bp-qua-tg::before {
+                background: #ef4444;
             }
 
-    .th-inner {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        cursor: pointer;
-    }
-
-        .th-inner:hover {
-            color: #111827;
+        .bp-hoan-thanh {
+            background: #f0fdf4;
+            color: #16a34a;
         }
 
-    .sort-icon {
-        display: inline-flex;
-        opacity: 0.35;
-        flex-shrink: 0;
-    }
+            .bp-hoan-thanh::before {
+                background: #16a34a;
+            }
 
-        .sort-icon svg {
-            width: 12px;
-            height: 12px;
-            display: block;
+        .bp-xuat-phat {
+            background: #f5f3ff;
+            color: #7c3aed;
         }
 
-    .th-inner:hover .sort-icon {
-        opacity: 0.65;
-    }
+            .bp-xuat-phat::before {
+                background: #7c3aed;
+            }
 
-    .px-table tbody tr {
-        border-bottom: 1px solid #f3f4f6;
-        transition: background .1s;
-    }
-
-        .px-table tbody tr:last-child {
-            border-bottom: none;
+        .th-action {
+            width: 48px;
+            text-align: right !important;
         }
 
-        .px-table tbody tr:hover {
-            background: #f9fafb;
+        .px-table td:last-child {
+            text-align: right;
         }
 
-    .px-table td {
-        padding: 12px 12px;
-        color: #111827;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
-
-    .td-bienso {
-        font-weight: 600;
-        color: #111827;
-    }
-
-    .td-time {
-        color: #6b7280;
-        font-size: 0.81rem;
-    }
-
-    .px-table input[type=checkbox] {
-        width: 16px;
-        height: 16px;
-        accent-color: #16a34a;
-        cursor: pointer;
-    }
-
-    /* ── Badges ── */
-    .badge-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 0.76rem;
-        font-weight: 600;
-    }
-
-        .badge-pill::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
+        /* ── Bulk bar ── */
+        .bulk-bar {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
         }
 
-    .bp-phan-cong {
-        background: #f1f5f9;
-        color: #64748b;
-    }
-
-        .bp-phan-cong::before {
-            background: #94a3b8;
-        }
-
-    .bp-ban-giao {
-        background: #eff6ff;
-        color: #3b82f6;
-    }
-
-        .bp-ban-giao::before {
-            background: #3b82f6;
-        }
-
-    .bp-qua-tg {
-        background: #fef2f2;
-        color: #ef4444;
-    }
-
-        .bp-qua-tg::before {
-            background: #ef4444;
-        }
-
-    .bp-hoan-thanh {
-        background: #f0fdf4;
-        color: #16a34a;
-    }
-
-        .bp-hoan-thanh::before {
-            background: #16a34a;
-        }
-
-    .bp-xuat-phat {
-        background: #f5f3ff;
-        color: #7c3aed;
-    }
-
-        .bp-xuat-phat::before {
-            background: #7c3aed;
-        }
-
-    /* ── Kebab / Row action menu ── */
-    .row-action-wrap {
-        position: relative;
-        display: inline-flex;
-    }
-
-    .kebab-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 7px;
-        border: 1px solid transparent;
-        background: transparent;
-        color: #9ca3af;
-        cursor: pointer;
-        transition: all .15s;
-    }
-
-        .kebab-btn:hover {
-            background: #f3f4f6;
+        .bulk-bar-info {
+            font-size: 0.875rem;
             color: #374151;
-            border-color: #e5e7eb;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
-    .row-action-menu {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: calc(100% + 4px);
-        z-index: 300;
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(0,0,0,.1);
-        min-width: 140px;
-        overflow: hidden;
-    }
+            .bulk-bar-info span {
+                color: #111827;
+                font-weight: 700;
+            }
 
-        .row-action-menu.open {
-            display: block;
+        .btn-bulk-delete {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+            white-space: nowrap;
         }
 
-    .ram-item {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 9px 14px;
-        font-size: 0.82rem;
-        color: #374151;
-        font-weight: 500;
-        text-decoration: none;
-        transition: background .1s;
-        cursor: pointer;
-        white-space: nowrap;
-    }
+            .btn-bulk-delete:hover {
+                background: #dc2626;
+            }
 
-        .ram-item:hover {
-            background: #f9fafb;
-            color: #111827;
-            text-decoration: none;
-        }
+            .btn-bulk-delete svg {
+                width: 14px;
+                height: 14px;
+            }
 
-        .ram-item svg {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-        }
-
-    .ram-delete {
-        color: #ef4444;
-    }
-
-        .ram-delete:hover {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-
-    /* ── Pagination ── */
-    .px-pagination {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 14px 16px;
-        border-top: 1px solid #e5e7eb;
-        font-size: 0.82rem;
-        color: #6b7280;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .pg-controls {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .pg-rows {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-        .pg-rows select {
-            border: 1px solid #e5e7eb;
+        .btn-bulk-clear {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 6px 8px;
             border-radius: 6px;
-            padding: 4px 8px;
+            transition: all .15s;
+        }
+
+            .btn-bulk-clear:hover {
+                color: #111827;
+                background: #f3f4f6;
+            }
+
+            .btn-bulk-clear svg {
+                width: 14px;
+                height: 14px;
+            }
+
+        .px-table tbody tr.row-selected {
+            background: #f0fdf4 !important;
+        }
+
+        /* ── Kebab ── */
+        .row-action-wrap {
+            position: relative;
+            display: inline-flex;
+        }
+
+        .kebab-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+            .kebab-btn:hover {
+                background: #f3f4f6;
+                color: #374151;
+                border-color: #e5e7eb;
+            }
+
+        .row-action-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            z-index: 300;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            min-width: 140px;
+            overflow: hidden;
+        }
+
+            .row-action-menu.open {
+                display: block;
+            }
+
+            .row-action-menu.drop-up {
+                bottom: calc(100% + 4px);
+                top: auto;
+            }
+
+            .row-action-menu.drop-down {
+                top: calc(100% + 4px);
+                bottom: auto;
+            }
+
+        .ram-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 14px;
             font-size: 0.82rem;
             color: #374151;
-            outline: none;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .1s;
             cursor: pointer;
+            white-space: nowrap;
         }
 
-    .pg-btn {
-        padding: 5px 12px;
-        border-radius: 6px;
-        border: 1px solid #e5e7eb;
-        background: #fff;
-        color: #374151;
-        font-size: 0.82rem;
-        cursor: pointer;
-        transition: all .12s;
-    }
+            .ram-item:hover {
+                background: #f9fafb;
+                color: #111827;
+                text-decoration: none;
+            }
 
-        .pg-btn:hover:not(:disabled) {
-            background: #f3f4f6;
+            .ram-item svg {
+                width: 14px;
+                height: 14px;
+                flex-shrink: 0;
+            }
+
+        .ram-delete {
+            color: #ef4444;
         }
 
-        .pg-btn:disabled {
-            opacity: .4;
-            cursor: not-allowed;
+            .ram-delete:hover {
+                background: #fef2f2;
+                color: #dc2626;
+            }
+
+        /* ── Pagination ── */
+        .px-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.82rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-    .pg-num {
-        min-width: 32px;
-        height: 32px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        border: 1px solid #e5e7eb;
-        background: #fff;
-        color: #374151;
-        font-size: 0.82rem;
-        cursor: pointer;
-        transition: all .12s;
-    }
-
-        .pg-num:hover {
-            background: #f3f4f6;
+        .pg-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .pg-num.active {
-            background: #16a34a;
-            border-color: #16a34a;
-            color: #fff;
-            font-weight: 600;
+        .pg-rows {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-    /* ── Empty state ── */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #9ca3af;
-    }
+            .pg-rows select {
+                border: 1px solid #e5e7eb;
+                border-radius: 6px;
+                padding: 4px 8px;
+                font-size: 0.82rem;
+                color: #374151;
+                outline: none;
+                cursor: pointer;
+            }
 
-        .empty-state svg {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 12px;
-            opacity: .4;
+        .pg-btn {
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all .12s;
         }
 
-        .empty-state p {
+            .pg-btn:hover:not(:disabled) {
+                background: #f3f4f6;
+            }
+
+            .pg-btn:disabled {
+                opacity: .4;
+                cursor: not-allowed;
+            }
+
+        .pg-num {
+            min-width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all .12s;
+        }
+
+            .pg-num:hover {
+                background: #f3f4f6;
+            }
+
+            .pg-num.active {
+                background: #16a34a;
+                border-color: #16a34a;
+                color: #fff;
+                font-weight: 600;
+            }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+            .empty-state svg {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 12px;
+                opacity: .4;
+            }
+
+            .empty-state p {
+                font-size: 0.875rem;
+                margin: 0;
+            }
+
+        /* ── Alert ── */
+        .px-alert {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
             font-size: 0.875rem;
-            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-    /* ── Alert ── */
-    .px-alert {
-        background: #fef2f2;
-        border: 1px solid #fecaca;
-        color: #dc2626;
-        border-radius: 8px;
-        padding: 12px 16px;
-        margin-bottom: 16px;
-        font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+        /* ── Delete confirm modal (Apex style) ── */
+        .del-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
 
-    /* ── Dark mode ── */
-    body.dark-mode .px-header h1 {
-        color: #e2e8f0 !important;
-    }
+            .del-modal-overlay.open {
+                display: flex;
+            }
 
-    body.dark-mode .px-header p {
-        color: #9ca3af !important;
-    }
+        .del-modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px 24px 20px;
+            max-width: 380px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,.2);
+            position: relative;
+        }
 
-    body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
-        color: #9ca3af !important;
-    }
+        .del-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all .15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    body.dark-mode .filter-tabs {
-        background: #22263a !important;
-        border-color: #2e3248 !important;
-    }
+            .del-modal-close:hover {
+                background: #f3f4f6;
+                color: #374151;
+            }
 
-    body.dark-mode .filter-tab {
-        color: #9ca3af !important;
-    }
+        .del-modal-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            padding-right: 24px;
+        }
 
-        body.dark-mode .filter-tab:hover {
+        .del-modal-body {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.55;
+        }
+
+        .del-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .btn-modal-cancel {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+            .btn-modal-cancel:hover {
+                background: #f9fafb;
+                border-color: #d1d5db;
+            }
+
+        .btn-modal-confirm {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+            .btn-modal-confirm:hover {
+                background: #dc2626;
+            }
+
+        /* ── Body scroll lock ── */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* ── Dark mode ── */
+        body.dark-mode .px-header h1 {
             color: #e2e8f0 !important;
-            background: rgba(255,255,255,.05) !important;
         }
 
-        body.dark-mode .filter-tab.active {
+        body.dark-mode .px-header p {
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode .px-breadcrumb, body.dark-mode .px-breadcrumb a {
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode .filter-tabs {
+            background: #22263a !important;
+            border-color: #2e3248 !important;
+        }
+
+        body.dark-mode .filter-tab {
+            color: #9ca3af !important;
+        }
+
+            body.dark-mode .filter-tab:hover {
+                color: #e2e8f0 !important;
+                background: rgba(255,255,255,.05) !important;
+            }
+
+            body.dark-mode .filter-tab.active {
+                background: #2e3248 !important;
+                border-color: #3d4460 !important;
+                color: #e2e8f0 !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,.3) !important;
+            }
+
+        body.dark-mode .px-search input {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .tb-btn, body.dark-mode .btn-category, body.dark-mode .btn-reset {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+            color: #9ca3af !important;
+            box-shadow: none !important;
+        }
+
+            body.dark-mode .tb-btn:hover, body.dark-mode .btn-category:hover {
+                background: #22263a !important;
+                color: #e2e8f0 !important;
+            }
+
+        body.dark-mode .category-dropdown {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+        }
+
+        body.dark-mode .cat-search-wrap {
+            border-color: #2e3248 !important;
+        }
+
+            body.dark-mode .cat-search-wrap input {
+                color: #e2e8f0 !important;
+            }
+
+        body.dark-mode .cat-item:hover {
+            background: #22263a !important;
+        }
+
+        body.dark-mode .cat-item span {
+            color: #d1d5db !important;
+        }
+
+        body.dark-mode .cat-count {
             background: #2e3248 !important;
+            color: #6b7280 !important;
+        }
+
+        body.dark-mode .cat-clear {
+            border-color: #2e3248 !important;
+            color: #9ca3af !important;
+        }
+
+            body.dark-mode .cat-clear:hover {
+                background: #2e3248 !important;
+                color: #f87171 !important;
+            }
+
+        body.dark-mode .px-card {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+        }
+
+        body.dark-mode .px-table thead th {
+            background: #22263a !important;
+            color: #6b7280 !important;
+            border-color: #2e3248 !important;
+        }
+
+        body.dark-mode .px-table tbody tr {
+            border-color: #2e3248 !important;
+        }
+
+            body.dark-mode .px-table tbody tr:hover {
+                background: #22263a !important;
+            }
+
+        body.dark-mode .px-table td {
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .td-bienso {
+            color: #f1f5f9 !important;
+        }
+
+        body.dark-mode .td-time {
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode .px-pagination {
+            border-color: #2e3248 !important;
+            color: #9ca3af !important;
+        }
+
+        body.dark-mode .pg-btn, body.dark-mode .pg-num {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .pg-rows select {
+            background: #1a1d27 !important;
+            border-color: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-mode .pg-num.active {
+            background: #16a34a !important;
+            border-color: #16a34a !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .cat-radio {
             border-color: #3d4460 !important;
-            color: #e2e8f0 !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,.3) !important;
-        }
-
-    body.dark-mode .px-search input {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-        color: #e2e8f0 !important;
-    }
-
-    body.dark-mode .tb-btn, body.dark-mode .btn-category, body.dark-mode .btn-reset {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-        color: #9ca3af !important;
-        box-shadow: none !important;
-    }
-
-        body.dark-mode .tb-btn:hover, body.dark-mode .btn-category:hover {
-            background: #22263a !important;
-            color: #e2e8f0 !important;
-        }
-
-    body.dark-mode .category-dropdown {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-    }
-
-    body.dark-mode .cat-search-wrap {
-        border-color: #2e3248 !important;
-    }
-
-        body.dark-mode .cat-search-wrap input {
-            color: #e2e8f0 !important;
-        }
-
-    body.dark-mode .cat-item:hover {
-        background: #22263a !important;
-    }
-
-    body.dark-mode .cat-item span {
-        color: #d1d5db !important;
-    }
-
-    body.dark-mode .cat-count {
-        background: #2e3248 !important;
-        color: #6b7280 !important;
-    }
-
-    body.dark-mode .cat-clear {
-        border-color: #2e3248 !important;
-        color: #9ca3af !important;
-    }
-
-        body.dark-mode .cat-clear:hover {
-            background: #2e3248 !important;
-            color: #f87171 !important;
-        }
-
-    body.dark-mode .px-card {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-    }
-
-    body.dark-mode .px-table thead th {
-        background: #22263a !important;
-        color: #6b7280 !important;
-        border-color: #2e3248 !important;
-    }
-
-    body.dark-mode .px-table tbody tr {
-        border-color: #2e3248 !important;
-    }
-
-        body.dark-mode .px-table tbody tr:hover {
             background: #22263a !important;
         }
 
-    body.dark-mode .px-table td {
-        color: #e2e8f0 !important;
-    }
+        body.dark-mode .cat-badge {
+            background: #e2e8f0 !important;
+            color: #111827 !important;
+        }
 
-    body.dark-mode .td-bienso {
-        color: #f1f5f9 !important;
-    }
+        body.dark-mode .del-modal {
+            background: #1a1d27 !important;
+        }
 
-    body.dark-mode .td-time {
-        color: #9ca3af !important;
-    }
-
-    body.dark-mode .act-btn {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-        color: #9ca3af !important;
-    }
-
-        body.dark-mode .act-btn:hover {
-            background: #22263a !important;
+        body.dark-mode .del-modal-title {
             color: #e2e8f0 !important;
         }
 
-    body.dark-mode .px-pagination {
-        border-color: #2e3248 !important;
-        color: #9ca3af !important;
-    }
+        body.dark-mode .del-modal-body {
+            color: #9ca3af !important;
+        }
 
-    body.dark-mode .pg-btn, body.dark-mode .pg-num {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-        color: #e2e8f0 !important;
-    }
+        body.dark-mode .btn-modal-cancel {
+            background: #22263a !important;
+            border-color: #2e3248 !important;
+            color: #e2e8f0 !important;
+        }
+    </style>
 
-    body.dark-mode .pg-rows select {
-        background: #1a1d27 !important;
-        border-color: #2e3248 !important;
-        color: #e2e8f0 !important;
-    }
+    <div class="px-page">
 
-    body.dark-mode .pg-num.active {
-        background: #16a34a !important;
-        border-color: #16a34a !important;
-        color: #fff !important;
-    }
-
-    body.dark-mode .cat-radio {
-        border-color: #3d4460 !important;
-        background: #22263a !important;
-    }
-
-    body.dark-mode .cat-badge {
-        background: #e2e8f0 !important;
-        color: #111827 !important;
-    }
-</style>
-
-<div class="px-page">
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="px-alert">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
-            @TempData["Error"]
-        </div>
-    }
-
-    <!-- Breadcrumb -->
-    <div class="px-breadcrumb">
-        <a href="/">Dashboard</a>
-        <span class="sep">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
-        </span>
-        <span class="cur">Phiếu xuất</span>
-    </div>
-
-    <!-- Header -->
-    <div class="px-header">
-        <div>
-            <h1>Quản lý phiếu xuất</h1>
-            <p>Theo dõi và quản lý toàn bộ phiếu xuất kho.</p>
-        </div>
-        <a asp-action="Create" class="btn-add">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-            Thêm phiếu mới
-        </a>
-    </div>
-
-    <!-- Toolbar row 1: filter tabs -->
-    <div class="px-toolbar-top">
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">Tất cả</button>
-            <button class="filter-tab" data-filter="phan-cong">Đã phân công</button>
-            <button class="filter-tab" data-filter="ban-giao">Đang bàn giao</button>
-            <button class="filter-tab" data-filter="hoan-thanh">Hoàn thành</button>
-            <button class="filter-tab" data-filter="xuat-phat">Đã xuất phát</button>
-            <button class="filter-tab" data-filter="qua-tg">Quá thời gian</button>
-        </div>
-    </div>
-
-    <!-- Toolbar row 2: search + category + reset + actions -->
-    <div class="px-toolbar-bottom">
-        <div style="display:flex;align-items:center;gap:8px;flex:1;">
-            <div class="px-search">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                <input type="text" id="searchInput" placeholder="Tìm biển số, cửa xuất..." />
+        @if (TempData["Error"] != null)
+        {
+            <div class="px-alert">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+                @TempData["Error"]
             </div>
+        }
 
-            <!-- Category dropdown -->
-            <div class="category-wrap" id="categoryWrap">
-                <button class="btn-category" id="categoryBtn" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                    Trạng thái
-                    <span class="cat-badge" id="catBadge"></span>
-                </button>
+        <!-- Breadcrumb -->
+        <div class="px-breadcrumb">
+            <a href="/">Dashboard</a>
+            <span class="sep">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+            </span>
+            <span class="cur">Phiếu xuất</span>
+        </div>
 
-                <div class="category-dropdown" id="categoryDropdown">
-                    <div class="cat-search-wrap">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
-                        <input type="text" id="catSearchInput" placeholder="Trạng thái" />
-                    </div>
-                    <div class="cat-list" id="catList">
-                        <div class="cat-item" data-filter="phan-cong">
-                            <div class="cat-item-left">
-                                <div class="cat-radio" id="radio-phan-cong"></div>
-                                <span>Đã phân công</span>
-                            </div>
-                            <span class="cat-count" id="count-phan-cong">0</span>
-                        </div>
-                        <div class="cat-item" data-filter="ban-giao">
-                            <div class="cat-item-left">
-                                <div class="cat-radio" id="radio-ban-giao"></div>
-                                <span>Đang bàn giao</span>
-                            </div>
-                            <span class="cat-count" id="count-ban-giao">0</span>
-                        </div>
-                        <div class="cat-item" data-filter="hoan-thanh">
-                            <div class="cat-item-left">
-                                <div class="cat-radio" id="radio-hoan-thanh"></div>
-                                <span>Hoàn thành</span>
-                            </div>
-                            <span class="cat-count" id="count-hoan-thanh">0</span>
-                        </div>
-                        <div class="cat-item" data-filter="xuat-phat">
-                            <div class="cat-item-left">
-                                <div class="cat-radio" id="radio-xuat-phat"></div>
-                                <span>Đã xuất phát</span>
-                            </div>
-                            <span class="cat-count" id="count-xuat-phat">0</span>
-                        </div>
-                        <div class="cat-item" data-filter="qua-tg">
-                            <div class="cat-item-left">
-                                <div class="cat-radio" id="radio-qua-tg"></div>
-                                <span>Quá thời gian</span>
-                            </div>
-                            <span class="cat-count" id="count-qua-tg">0</span>
-                        </div>
-                    </div>
-                    <div class="cat-clear" id="catClear">Xóa bộ lọc</div>
+        <!-- Header -->
+        <div class="px-header">
+            <div>
+                <h1>Quản lý phiếu xuất</h1>
+                <p>Theo dõi và quản lý toàn bộ phiếu xuất kho.</p>
+            </div>
+        <a asp-action="Create" class="btn-add" perm="Xuat.Create">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Thêm phiếu mới
+            </a>
+        </div>
+
+        <!-- Toolbar row 1: filter tabs -->
+        <div class="px-toolbar-top">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">Tất cả</button>
+                <button class="filter-tab" data-filter="phan-cong">Đã phân công</button>
+                <button class="filter-tab" data-filter="ban-giao">Đang bàn giao</button>
+                <button class="filter-tab" data-filter="hoan-thanh">Hoàn thành</button>
+                <button class="filter-tab" data-filter="xuat-phat">Đã xuất phát</button>
+                <button class="filter-tab" data-filter="qua-tg">Quá thời gian</button>
+            </div>
+        </div>
+
+        <!-- Toolbar row 2 -->
+        <div class="px-toolbar-bottom" id="toolbarBottom">
+
+            <!-- LEFT: Normal mode -->
+            <div id="normalBar" style="display:flex;align-items:center;gap:8px;flex:1;">
+                <div class="px-search">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                    <input type="text" id="searchInput" placeholder="Tìm biển số, cửa xuất..." />
                 </div>
-            </div>
-
-            <!-- Reset button (shown when filter active) -->
-            <button class="btn-reset" id="btnReset" type="button">
-                Reset
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-            </button>
-        </div>
-
-        <div class="px-toolbar-actions">
-            <!-- Columns toggle dropdown -->
-            <div class="columns-wrap" id="columnsWrap">
-                <button class="tb-btn" id="columnsBtn" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
-                    Columns
-                </button>
-                <div class="col-dropdown" id="colDropdown">
-                    <div class="col-dropdown-title">Toggle columns</div>
-                    <div class="col-item col-visible" data-col="cua-xuat">
-                        <span>Cửa xuất</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="bien-so">
-                        <span>Biển số xe</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="phan-cong-time">
-                        <span>TG phân công</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="vao-cua-time">
-                        <span>TG vào cửa</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="gioi-han-time">
-                        <span>TG giới hạn</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="hoan-thanh-time">
-                        <span>TG hoàn thành</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="xuat-phat-time">
-                        <span>TG xuất phát</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                    <div class="col-item col-visible" data-col="trang-thai">
-                        <span>Trạng thái</span>
-                        <span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span>
-                    </div>
-                </div>
-            </div>
-            <button class="tb-btn" id="exportBtn" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
-                Export
-            </button>
-            <!-- Toast notification -->
-            <div id="exportToast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:#111827;color:#fff;border-radius:10px;padding:12px 18px;font-size:0.875rem;font-weight:500;display:none;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#16a34a" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                <span id="exportToastMsg"></span>
-                <button onclick="document.getElementById('exportToast').style.display='none'" style="background:none;border:none;color:#9ca3af;cursor:pointer;margin-left:8px;font-size:1rem;line-height:1;">×</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Table -->
-    <div class="px-card">
-        <table class="px-table">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id="checkAll" /></th>
-                    <th data-col-th="cua-xuat"><span class="th-inner">Cửa xuất <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="bien-so"><span class="th-inner">Biển số xe <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="phan-cong-time"><span class="th-inner">Thời gian<br />phân công <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="vao-cua-time"><span class="th-inner">Thời gian<br />vào cửa <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="gioi-han-time"><span class="th-inner">Thời gian<br />giới hạn <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="hoan-thanh-time"><span class="th-inner">Thời gian<br />hoàn thành <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="xuat-phat-time"><span class="th-inner">Thời gian<br />xuất phát <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th data-col-th="trang-thai"><span class="th-inner">Trạng thái <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="xuatBody">
-                @if (!Model.Any())
-                {
-                    <tr>
-                        <td colspan="10">
-                            <div class="empty-state">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" /></svg>
-                                <p>Chưa có phiếu xuất nào.</p>
+                <div style="display:flex;align-items:center;gap:8px;" id="catResetGroup">
+                    <div class="category-wrap" id="categoryWrap">
+                        <button class="btn-category" id="categoryBtn" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                            Trạng thái
+                            <span class="cat-badge" id="catBadge"></span>
+                        </button>
+                        <div class="category-dropdown" id="categoryDropdown">
+                            <div class="cat-search-wrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                                <input type="text" id="catSearchInput" placeholder="Trạng thái" />
                             </div>
-                        </td>
-                    </tr>
-                }
-                @foreach (var item in Model)
-                {
-                    string badgeClass = item.TrangThai switch
-                    {
-                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "bp-phan-cong",
-                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "bp-ban-giao",
-                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "bp-qua-tg",
-                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "bp-hoan-thanh",
-                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "bp-xuat-phat",
-                        _ => "bp-phan-cong"
-                    };
-                    string badgeLabel = item.TrangThai switch
-                    {
-                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "Đã phân công",
-                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "Đang bàn giao",
-                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "Quá thời gian",
-                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "Hoàn thành",
-                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "Đã xuất phát",
-                        _ => "—"
-                    };
-                    string filterKey = item.TrangThai switch
-                    {
-                        (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "phan-cong",
-                        (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "ban-giao",
-                        (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "qua-tg",
-                        (int)LedApp.Models.TrangThaiXuat.HoanThanh => "hoan-thanh",
-                        (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "xuat-phat",
-                        _ => ""
-                    };
-
-                    <tr data-filter="@filterKey"
-                        data-search="@((item.Xe?.BienSoXe ?? "") + " " + (item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}"))">
-                        <td><input type="checkbox" class="row-check" /></td>
-                        <td data-col-td="cua-xuat" style="color:#374151;">@(item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}")</td>
-                        <td data-col-td="bien-so" class="td-bienso">@(item.Xe?.BienSoXe ?? "—")</td>
-                        <td data-col-td="phan-cong-time" class="td-time">@item.ThoiGianPhanCong.ToString("dd/MM HH:mm")</td>
-                        <td data-col-td="vao-cua-time" class="td-time">@(item.ThoiGianVaoCua?.ToString("dd/MM HH:mm") ?? "—")</td>
-                        <td data-col-td="gioi-han-time" class="td-time">@(item.ThoiGianGioiHan?.ToString("dd/MM HH:mm") ?? "—")</td>
-                        <td data-col-td="hoan-thanh-time" class="td-time">@(item.ThoiGianHoanThanh?.ToString("dd/MM HH:mm") ?? "—")</td>
-                        <td data-col-td="xuat-phat-time" class="td-time">@(item.ThoiGianXuatPhat?.ToString("dd/MM HH:mm") ?? "—")</td>
-                        <td data-col-td="trang-thai"><span class="badge-pill @badgeClass">@badgeLabel</span></td>
-                        <td>
-                            <div class="row-action-wrap">
-                                <button class="kebab-btn" type="button" title="Actions">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
-                                </button>
-                                <div class="row-action-menu">
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="ram-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
-                                        View
-                                    </a>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="ram-item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
-                                        Edit
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="ram-item ram-delete">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
-                                        Delete
-                                    </a>
+                            <div class="cat-list" id="catList">
+                                <div class="cat-item" data-filter="phan-cong">
+                                    <div class="cat-item-left"><div class="cat-radio" id="radio-phan-cong"></div><span>Đã phân công</span></div>
+                                    <span class="cat-count" id="count-phan-cong">0</span>
+                                </div>
+                                <div class="cat-item" data-filter="ban-giao">
+                                    <div class="cat-item-left"><div class="cat-radio" id="radio-ban-giao"></div><span>Đang bàn giao</span></div>
+                                    <span class="cat-count" id="count-ban-giao">0</span>
+                                </div>
+                                <div class="cat-item" data-filter="hoan-thanh">
+                                    <div class="cat-item-left"><div class="cat-radio" id="radio-hoan-thanh"></div><span>Hoàn thành</span></div>
+                                    <span class="cat-count" id="count-hoan-thanh">0</span>
+                                </div>
+                                <div class="cat-item" data-filter="xuat-phat">
+                                    <div class="cat-item-left"><div class="cat-radio" id="radio-xuat-phat"></div><span>Đã xuất phát</span></div>
+                                    <span class="cat-count" id="count-xuat-phat">0</span>
+                                </div>
+                                <div class="cat-item" data-filter="qua-tg">
+                                    <div class="cat-item-left"><div class="cat-radio" id="radio-qua-tg"></div><span>Quá thời gian</span></div>
+                                    <span class="cat-count" id="count-qua-tg">0</span>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <!-- Pagination -->
-        <div class="px-pagination">
-            <div class="pg-info" id="pgInfo">Showing 0 results</div>
-            <div style="display:flex;align-items:center;gap:16px;">
-                <div class="pg-rows">
-                    Rows
-                    <select id="rowsPerPage">
-                        <option value="10" selected>10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                    </select>
+                            <div class="cat-clear" id="catClear">Xóa bộ lọc</div>
+                        </div>
+                    </div>
+                    <button class="btn-reset" id="btnReset" type="button">
+                        Reset
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
-                <div class="pg-controls" id="pgControls"></div>
+            </div>
+
+            <!-- LEFT: Bulk mode -->
+            <div id="bulkBar" style="display:none;align-items:center;gap:10px;flex:1;">
+                <span class="bulk-bar-info"><span id="bulkCount">0</span> selected</span>
+            <button class="btn-bulk-delete" id="btnBulkDelete" type="button" perm="Xuat.Delete">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                    Delete (<span id="bulkDeleteCount">0</span>)
+                </button>
+                <button class="btn-bulk-clear" id="btnBulkClear" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+                    Clear
+                </button>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="px-toolbar-actions">
+                <div class="columns-wrap" id="columnsWrap">
+                    <button class="tb-btn" id="columnsBtn" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 4.5v15m6-15v15m-10.875 0h15.75c.621 0 1.125-.504 1.125-1.125V5.625c0-.621-.504-1.125-1.125-1.125H4.125C3.504 4.5 3 5.004 3 5.625v12.75c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                        Columns
+                    </button>
+                    <div class="col-dropdown" id="colDropdown">
+                        <div class="col-dropdown-title">Toggle columns</div>
+                        <div class="col-item col-visible" data-col="cua-xuat"><span>Cửa xuất</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="bien-so"><span>Biển số xe</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="phan-cong-time"><span>TG phân công</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="vao-cua-time"><span>TG vào cửa</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="gioi-han-time"><span>TG giới hạn</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="hoan-thanh-time"><span>TG hoàn thành</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="xuat-phat-time"><span>TG xuất phát</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                        <div class="col-item col-visible" data-col="trang-thai"><span>Trạng thái</span><span class="col-check"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg></span></div>
+                    </div>
+                </div>
+                <button class="tb-btn" id="exportBtn" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                    Export
+                </button>
+                <div id="exportToast" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9999;background:#111827;color:#fff;border-radius:10px;padding:12px 18px;font-size:0.875rem;font-weight:500;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.2);">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#16a34a" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                    <span id="exportToastMsg"></span>
+                    <button onclick="document.getElementById('exportToast').style.display='none'" style="background:none;border:none;color:#9ca3af;cursor:pointer;margin-left:8px;font-size:1rem;line-height:1;">×</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="px-card">
+            <table class="px-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="checkAll" /></th>
+                        <th data-col-th="cua-xuat"><span class="th-inner">Cửa xuất <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="bien-so"><span class="th-inner">Biển số xe <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="phan-cong-time"><span class="th-inner">Thời gian<br />phân công <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="vao-cua-time"><span class="th-inner">Thời gian<br />vào cửa <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="gioi-han-time"><span class="th-inner">Thời gian<br />giới hạn <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="hoan-thanh-time"><span class="th-inner">Thời gian<br />hoàn thành <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="xuat-phat-time"><span class="th-inner">Thời gian<br />xuất phát <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th data-col-th="trang-thai"><span class="th-inner">Trạng thái <span class="sort-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></svg></span></span></th>
+                        <th class="th-action"></th>
+                    </tr>
+                </thead>
+                <tbody id="xuatBody">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="10">
+                                <div class="empty-state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z" /></svg>
+                                    <p>Chưa có phiếu xuất nào.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model)
+                    {
+                        string badgeClass = item.TrangThai switch
+                        {
+                            (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "bp-phan-cong",
+                            (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "bp-ban-giao",
+                            (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "bp-qua-tg",
+                            (int)LedApp.Models.TrangThaiXuat.HoanThanh => "bp-hoan-thanh",
+                            (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "bp-xuat-phat",
+                            _ => "bp-phan-cong"
+                        };
+                        string badgeLabel = item.TrangThai switch
+                        {
+                            (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "Đã phân công",
+                            (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "Đang bàn giao",
+                            (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "Quá thời gian",
+                            (int)LedApp.Models.TrangThaiXuat.HoanThanh => "Hoàn thành",
+                            (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "Đã xuất phát",
+                            _ => "—"
+                        };
+                        string filterKey = item.TrangThai switch
+                        {
+                            (int)LedApp.Models.TrangThaiXuat.DaPhanCong => "phan-cong",
+                            (int)LedApp.Models.TrangThaiXuat.DangBanGiao => "ban-giao",
+                            (int)LedApp.Models.TrangThaiXuat.QuaThoiGian => "qua-tg",
+                            (int)LedApp.Models.TrangThaiXuat.HoanThanh => "hoan-thanh",
+                            (int)LedApp.Models.TrangThaiXuat.DaXuatPhat => "xuat-phat",
+                            _ => ""
+                        };
+
+                        <tr data-filter="@filterKey"
+                            data-id="@item.Id"
+                            data-search="@((item.Xe?.BienSoXe ?? "") + " " + (item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}"))">
+                            <td><input type="checkbox" class="row-check" /></td>
+                            <td data-col-td="cua-xuat" style="color:#374151;">@(item.CuaXuat?.Ten ?? $"X-{item.CuaXuatId:D2}")</td>
+                            <td data-col-td="bien-so" class="td-bienso">@(item.Xe?.BienSoXe ?? "—")</td>
+                            <td data-col-td="phan-cong-time" class="td-time">@item.ThoiGianPhanCong.ToString("dd/MM HH:mm")</td>
+                            <td data-col-td="vao-cua-time" class="td-time">@(item.ThoiGianVaoCua?.ToString("dd/MM HH:mm") ?? "—")</td>
+                            <td data-col-td="gioi-han-time" class="td-time">@(item.ThoiGianGioiHan?.ToString("dd/MM HH:mm") ?? "—")</td>
+                            <td data-col-td="hoan-thanh-time" class="td-time">@(item.ThoiGianHoanThanh?.ToString("dd/MM HH:mm") ?? "—")</td>
+                            <td data-col-td="xuat-phat-time" class="td-time">@(item.ThoiGianXuatPhat?.ToString("dd/MM HH:mm") ?? "—")</td>
+                            <td data-col-td="trang-thai"><span class="badge-pill @badgeClass">@badgeLabel</span></td>
+                            <td>
+                                <div class="row-action-wrap">
+                                    <button class="kebab-btn" type="button" title="Actions">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="16" height="16"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
+                                    </button>
+                                    <div class="row-action-menu">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="ram-item" perm="Xuat.View">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                                            View
+                                        </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="ram-item" perm="Xuat.Edit">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" /></svg>
+                                            Edit
+                                        </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="ram-item ram-delete" perm="Xuat.Delete">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="px-pagination">
+                <div class="pg-info" id="pgInfo">Showing 0 results</div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <div class="pg-rows">
+                        Rows
+                        <select id="rowsPerPage">
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="pg-controls" id="pgControls"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xóa đơn -->
+        <div class="del-modal-overlay" id="delModalOverlay">
+            <div class="del-modal">
+                <button class="del-modal-close" id="delModalClose">×</button>
+                <div class="del-modal-title">Xóa phiếu xuất</div>
+                <div class="del-modal-body">
+                    Bạn có chắc chắn muốn xóa phiếu này không? Hành động này không thể hoàn tác.
+                </div>
+                <div class="del-modal-footer">
+                    <button class="btn-modal-cancel" id="delModalCancel">Cancel</button>
+                    <form id="delConfirmForm" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn-modal-confirm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal xóa nhiều -->
+        <div class="del-modal-overlay" id="bulkDelModalOverlay">
+            <div class="del-modal">
+                <button class="del-modal-close" id="bulkDelModalClose">×</button>
+                <div class="del-modal-title">Xóa phiếu xuất đã chọn</div>
+                <div class="del-modal-body">
+                    Bạn có chắc chắn muốn xóa <strong id="bulkDelCount">0</strong> phiếu xuất đã chọn? Hành động này không thể hoàn tác.
+                </div>
+                <div class="del-modal-footer">
+                    <button class="btn-modal-cancel" id="bulkDelModalCancel">Cancel</button>
+                    <button class="btn-modal-confirm" id="bulkDelModalConfirm">Delete</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    (function () {
-        const allRows = Array.from(document.querySelectorAll('#xuatBody tr[data-filter]'));
-        const searchInput = document.getElementById('searchInput');
-        const rowsPerPageSel = document.getElementById('rowsPerPage');
-        const pgInfo = document.getElementById('pgInfo');
-        const pgControls = document.getElementById('pgControls');
-        const categoryBtn = document.getElementById('categoryBtn');
-        const categoryDropdown = document.getElementById('categoryDropdown');
-        const catSearchInput = document.getElementById('catSearchInput');
-        const catBadge = document.getElementById('catBadge');
-        const btnReset = document.getElementById('btnReset');
-        const catClear = document.getElementById('catClear');
-        const columnsBtn = document.getElementById('columnsBtn');
-        const colDropdown = document.getElementById('colDropdown');
-        const xuatBody = document.getElementById('xuatBody');
+    <script>
+        (function () {
+            const allRows = Array.from(document.querySelectorAll('#xuatBody tr[data-filter]'));
+            const searchInput = document.getElementById('searchInput');
+            const rowsPerPageSel = document.getElementById('rowsPerPage');
+            const pgInfo = document.getElementById('pgInfo');
+            const pgControls = document.getElementById('pgControls');
+            const categoryBtn = document.getElementById('categoryBtn');
+            const categoryDropdown = document.getElementById('categoryDropdown');
+            const catSearchInput = document.getElementById('catSearchInput');
+            const catBadge = document.getElementById('catBadge');
+            const btnReset = document.getElementById('btnReset');
+            const catClear = document.getElementById('catClear');
+            const columnsBtn = document.getElementById('columnsBtn');
+            const colDropdown = document.getElementById('colDropdown');
+            const xuatBody = document.getElementById('xuatBody');
 
-        let currentPage = 1;
-        let activeTabFilter = 'all';
-        let activeCatFilters = new Set();
+            let currentPage = 1;
+            let activeTabFilter = 'all';
+            let activeCatFilters = new Set();
+            let sortCol = null;
+            let sortDir = 'asc';
 
-        // ── Count records per filter key ──
-        const filterCounts = {};
-        allRows.forEach(r => {
-            const k = r.dataset.filter;
-            filterCounts[k] = (filterCounts[k] || 0) + 1;
-        });
-        ['phan-cong','ban-giao','hoan-thanh','xuat-phat','qua-tg'].forEach(k => {
-            const el = document.getElementById('count-' + k);
-            if (el) el.textContent = filterCounts[k] || 0;
-        });
-
-        // ── Filter tabs ──
-        document.querySelectorAll('.filter-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                activeTabFilter = tab.dataset.filter;
-                currentPage = 1;
-                render();
+            // ── Count records per filter key ──
+            const filterCounts = {};
+            allRows.forEach(r => {
+                const k = r.dataset.filter;
+                filterCounts[k] = (filterCounts[k] || 0) + 1;
             });
-        });
+            ['phan-cong','ban-giao','hoan-thanh','xuat-phat','qua-tg'].forEach(k => {
+                const el = document.getElementById('count-' + k);
+                if (el) el.textContent = filterCounts[k] || 0;
+            });
 
-        // ── Category dropdown toggle ──
-        categoryBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            colDropdown.classList.remove('open');
-            categoryDropdown.classList.toggle('open');
-        });
+            // ── Filter tabs ──
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    activeTabFilter = tab.dataset.filter;
+                    currentPage = 1;
+                    render();
+                });
+            });
 
-        // ── Category item click ──
-        document.querySelectorAll('#catList .cat-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const f = item.dataset.filter;
-                const radio = document.getElementById('radio-' + f);
-                if (activeCatFilters.has(f)) {
-                    activeCatFilters.delete(f);
-                    radio.classList.remove('checked');
-                } else {
-                    activeCatFilters.add(f);
-                    radio.classList.add('checked');
-                }
+            // ── Category dropdown ──
+            categoryBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                colDropdown.classList.remove('open');
+                categoryDropdown.classList.toggle('open');
+            });
+
+            document.querySelectorAll('#catList .cat-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const f = item.dataset.filter;
+                    const radio = document.getElementById('radio-' + f);
+                    if (activeCatFilters.has(f)) {
+                        activeCatFilters.delete(f);
+                        radio.classList.remove('checked');
+                    } else {
+                        activeCatFilters.add(f);
+                        radio.classList.add('checked');
+                    }
+                    updateCategoryUI();
+                    currentPage = 1;
+                    render();
+                });
+            });
+
+            catSearchInput.addEventListener('input', () => {
+                const q = catSearchInput.value.toLowerCase();
+                document.querySelectorAll('#catList .cat-item').forEach(item => {
+                    const label = item.querySelector('span').textContent.toLowerCase();
+                    item.style.display = label.includes(q) ? '' : 'none';
+                });
+            });
+
+            catClear.addEventListener('click', (e) => {
+                e.stopPropagation();
+                activeCatFilters.clear();
+                document.querySelectorAll('#catList .cat-radio').forEach(r => r.classList.remove('checked'));
                 updateCategoryUI();
                 currentPage = 1;
                 render();
             });
-        });
 
-        catSearchInput.addEventListener('input', () => {
-            const q = catSearchInput.value.toLowerCase();
-            document.querySelectorAll('#catList .cat-item').forEach(item => {
-                const label = item.querySelector('span').textContent.toLowerCase();
-                item.style.display = label.includes(q) ? '' : 'none';
-            });
-        });
-
-        // ── Clear filters — dropdown stays OPEN ──
-        catClear.addEventListener('click', (e) => {
-            e.stopPropagation();
-            activeCatFilters.clear();
-            document.querySelectorAll('#catList .cat-radio').forEach(r => r.classList.remove('checked'));
-            updateCategoryUI();
-            currentPage = 1;
-            render();
-        });
-
-        // ── Reset button — resets EVERYTHING ──
-        btnReset.addEventListener('click', () => {
-            activeCatFilters.clear();
-            document.querySelectorAll('#catList .cat-radio').forEach(r => r.classList.remove('checked'));
-            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
-            activeTabFilter = 'all';
-            searchInput.value = '';
-            updateCategoryUI();
-            categoryDropdown.classList.remove('open');
-            currentPage = 1;
-            render();
-        });
-
-        function updateCategoryUI() {
-            const hasSearch = searchInput.value.trim().length > 0;
-            const hasCat = activeCatFilters.size > 0;
-            const hasAny = hasSearch || hasCat;
-
-            if (hasCat) {
-                catBadge.textContent = activeCatFilters.size;
-                catBadge.classList.add('show');
-                categoryBtn.classList.add('has-filter');
-                catClear.style.display = 'block';
-            } else {
-                catBadge.classList.remove('show');
-                categoryBtn.classList.remove('has-filter');
-                catClear.style.display = 'none';
-            }
-            // Reset button shows if search OR cat filter active
-            if (hasAny) btnReset.classList.add('show');
-            else btnReset.classList.remove('show');
-        }
-
-        // ── Search → show/hide reset ──
-        searchInput.addEventListener('input', () => {
-            updateCategoryUI();
-            currentPage = 1;
-            render();
-        });
-        rowsPerPageSel.addEventListener('change', () => { currentPage = 1; render(); });
-        document.getElementById('checkAll').addEventListener('change', function () {
-            document.querySelectorAll('.row-check').forEach(c => c.checked = this.checked);
-        });
-
-        // ── Columns dropdown toggle ──
-        columnsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            categoryDropdown.classList.remove('open');
-            colDropdown.classList.toggle('open');
-        });
-
-        // ── Column toggle items ──
-        document.querySelectorAll('#colDropdown .col-item').forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const col = item.dataset.col;
-                const isVisible = item.classList.contains('col-visible');
-                if (isVisible) {
-                    item.classList.remove('col-visible');
-                    // hide all th and td with this col
-                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.add('col-hidden'));
-                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.add('col-hidden'));
-                } else {
-                    item.classList.add('col-visible');
-                    document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
-                    document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
-                }
-            });
-        });
-
-        // ── Close dropdowns on outside click ──
-        document.addEventListener('click', (e) => {
-            if (!document.getElementById('categoryWrap').contains(e.target))
+            btnReset.addEventListener('click', () => {
+                activeCatFilters.clear();
+                document.querySelectorAll('#catList .cat-radio').forEach(r => r.classList.remove('checked'));
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+                activeTabFilter = 'all';
+                searchInput.value = '';
+                updateCategoryUI();
                 categoryDropdown.classList.remove('open');
-            if (!document.getElementById('columnsWrap').contains(e.target))
-                colDropdown.classList.remove('open');
-        });
-
-        // ── No results row ──
-        let noResultsRow = null;
-        function ensureNoResultsRow() {
-            if (!noResultsRow) {
-                noResultsRow = document.createElement('tr');
-                noResultsRow.className = 'no-results-row';
-                noResultsRow.innerHTML = '<td colspan="11">Không tìm thấy kết quả nào.</td>';
-            }
-            return noResultsRow;
-        }
-
-        function getFiltered() {
-            const q = searchInput.value.toLowerCase();
-            return allRows.filter(row => {
-                const tabMatch = activeTabFilter === 'all' || row.dataset.filter === activeTabFilter;
-                const catMatch = activeCatFilters.size === 0 || activeCatFilters.has(row.dataset.filter);
-                const searchMatch = !q || row.dataset.search.toLowerCase().includes(q);
-                return tabMatch && catMatch && searchMatch;
+                currentPage = 1;
+                render();
             });
-        }
 
-        function render() {
-            const visibleRows = getFiltered();
-            const rpp = parseInt(rowsPerPageSel.value);
-            const totalPages = Math.max(1, Math.ceil(visibleRows.length / rpp));
-            currentPage = Math.min(currentPage, totalPages);
-            const start = (currentPage - 1) * rpp;
-            const end = start + rpp;
-
-            allRows.forEach(r => r.style.display = 'none');
-
-            // Remove existing no-results row
-            const existing = xuatBody.querySelector('.no-results-row');
-            if (existing) existing.remove();
-
-            if (visibleRows.length === 0) {
-                // Show no-results row
-                const nr = ensureNoResultsRow();
-                xuatBody.appendChild(nr);
-                pgInfo.textContent = 'Showing 0 results';
-            } else {
-                visibleRows.slice(start, end).forEach(r => r.style.display = '');
-                const from = start + 1;
-                const to = Math.min(end, visibleRows.length);
-                pgInfo.textContent = 'Showing ' + from + '–' + to + ' of ' + visibleRows.length + ' results';
+            function updateCategoryUI() {
+                const hasSearch = searchInput.value.trim().length > 0;
+                const hasCat = activeCatFilters.size > 0;
+                if (hasCat) {
+                    catBadge.textContent = activeCatFilters.size;
+                    catBadge.classList.add('show');
+                    categoryBtn.classList.add('has-filter');
+                    catClear.style.display = 'block';
+                } else {
+                    catBadge.classList.remove('show');
+                    categoryBtn.classList.remove('has-filter');
+                    catClear.style.display = 'none';
+                }
+                if (hasSearch || hasCat) btnReset.classList.add('show');
+                else btnReset.classList.remove('show');
             }
 
-            pgControls.innerHTML = '';
-            const prev = document.createElement('button');
-            prev.className = 'pg-btn'; prev.textContent = 'Previous'; prev.disabled = currentPage === 1;
-            prev.onclick = () => { currentPage--; render(); };
-            pgControls.appendChild(prev);
+            searchInput.addEventListener('input', () => { updateCategoryUI(); currentPage = 1; render(); });
+            rowsPerPageSel.addEventListener('change', () => { currentPage = 1; render(); });
 
-            pageRange(currentPage, totalPages).forEach(p => {
-                if (p === '...') {
-                    const dot = document.createElement('span');
-                    dot.textContent = '…'; dot.style.cssText = 'padding:0 4px;color:#9ca3af;';
-                    pgControls.appendChild(dot);
+            // ── Bulk selection ──
+            const bulkBar = document.getElementById('bulkBar');
+            const normalBar = document.getElementById('normalBar');
+            const bulkCount = document.getElementById('bulkCount');
+            const bulkDeleteCount = document.getElementById('bulkDeleteCount');
+            const checkAll = document.getElementById('checkAll');
+
+            function updateBulkUI() {
+                const checked = Array.from(document.querySelectorAll('.row-check:checked'));
+                const count = checked.length;
+                document.querySelectorAll('#xuatBody tr[data-filter]').forEach(row => {
+                    const cb = row.querySelector('.row-check');
+                    row.classList.toggle('row-selected', cb && cb.checked);
+                });
+                if (count > 0) {
+                    bulkCount.textContent = count;
+                    bulkDeleteCount.textContent = count;
+                    normalBar.style.display = 'none';
+                    bulkBar.style.display = 'flex';
+                    const total = document.querySelectorAll('.row-check').length;
+                    checkAll.indeterminate = count > 0 && count < total;
+                    checkAll.checked = count === total && total > 0;
                 } else {
-                    const btn = document.createElement('button');
-                    btn.className = 'pg-num' + (p === currentPage ? ' active' : '');
-                    btn.textContent = p; btn.onclick = () => { currentPage = p; render(); };
-                    pgControls.appendChild(btn);
+                    normalBar.style.display = 'flex';
+                    bulkBar.style.display = 'none';
+                    checkAll.indeterminate = false;
+                    checkAll.checked = false;
+                }
+            }
+
+            checkAll.addEventListener('change', function () {
+                getFiltered().forEach(row => {
+                    const cb = row.querySelector('.row-check');
+                    if (cb) cb.checked = this.checked;
+                });
+                updateBulkUI();
+            });
+
+            document.getElementById('xuatBody').addEventListener('change', (e) => {
+                if (e.target.classList.contains('row-check')) updateBulkUI();
+            });
+
+            document.getElementById('btnBulkClear').addEventListener('click', () => {
+                document.querySelectorAll('.row-check').forEach(c => c.checked = false);
+                updateBulkUI();
+            });
+
+            // ── Columns dropdown ──
+            columnsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                categoryDropdown.classList.remove('open');
+                colDropdown.classList.toggle('open');
+            });
+
+            document.querySelectorAll('#colDropdown .col-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const col = item.dataset.col;
+                    const isVisible = item.classList.contains('col-visible');
+                    if (isVisible) {
+                        item.classList.remove('col-visible');
+                        document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                        document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.add('col-hidden'));
+                    } else {
+                        item.classList.add('col-visible');
+                        document.querySelectorAll(`[data-col-th="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                        document.querySelectorAll(`[data-col-td="${col}"]`).forEach(el => el.classList.remove('col-hidden'));
+                    }
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('categoryWrap').contains(e.target))
+                    categoryDropdown.classList.remove('open');
+                if (!document.getElementById('columnsWrap').contains(e.target))
+                    colDropdown.classList.remove('open');
+            });
+
+            // ── Sort columns ──
+            document.querySelectorAll('.th-inner').forEach(inner => {
+                inner.addEventListener('click', () => {
+                    const th = inner.closest('th');
+                    const col = th.dataset.colTh;
+                    if (!col) return;
+
+                    if (sortCol === col) {
+                        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortCol = col;
+                        sortDir = 'asc';
+                    }
+
+                    // Reset all sort icons
+                    document.querySelectorAll('.th-inner').forEach(i => {
+                        const icon = i.querySelector('.sort-icon');
+                        icon.classList.remove('active');
+                        icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>`;
+                    });
+
+                    // Set active icon
+                    const activeIcon = inner.querySelector('.sort-icon');
+                    activeIcon.classList.add('active');
+                    activeIcon.innerHTML = sortDir === 'asc'
+                        ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 9 5-5 5 5"/></svg>`
+                        : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/></svg>`;
+
+                    // Sort rows
+                    allRows.sort((a, b) => {
+                        const aEl = a.querySelector(`[data-col-td="${col}"]`);
+                        const bEl = b.querySelector(`[data-col-td="${col}"]`);
+                        const aVal = aEl ? aEl.textContent.trim() : '';
+                        const bVal = bEl ? bEl.textContent.trim() : '';
+                        const cmp = aVal.localeCompare(bVal, 'vi', { numeric: true });
+                        return sortDir === 'asc' ? cmp : -cmp;
+                    });
+
+                    allRows.forEach(r => xuatBody.appendChild(r));
+                    currentPage = 1;
+                    render();
+                });
+            });
+
+            // ── No results row ──
+            let noResultsRow = null;
+            function ensureNoResultsRow() {
+                if (!noResultsRow) {
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.className = 'no-results-row';
+               noResultsRow.innerHTML = '<td colspan="11" style="text-align:center;padding:48px 20px;color:#6b7280;font-size:0.875rem;">Không tìm thấy kết quả nào.</td>';
+                }
+                return noResultsRow;
+            }
+
+            function getFiltered() {
+                const q = searchInput.value.toLowerCase();
+                return allRows.filter(row => {
+                    const tabMatch = activeTabFilter === 'all' || row.dataset.filter === activeTabFilter;
+                    const catMatch = activeCatFilters.size === 0 || activeCatFilters.has(row.dataset.filter);
+                    const searchMatch = !q || row.dataset.search.toLowerCase().includes(q);
+                    return tabMatch && catMatch && searchMatch;
+                });
+            }
+
+            function render() {
+                const visibleRows = getFiltered();
+                const rpp = parseInt(rowsPerPageSel.value);
+                const totalPages = Math.max(1, Math.ceil(visibleRows.length / rpp));
+                currentPage = Math.min(currentPage, totalPages);
+                const start = (currentPage - 1) * rpp;
+                const end = start + rpp;
+
+                allRows.forEach(r => r.style.display = 'none');
+                const existing = xuatBody.querySelector('.no-results-row');
+                if (existing) existing.remove();
+
+                if (visibleRows.length === 0) {
+                    xuatBody.appendChild(ensureNoResultsRow());
+                    pgInfo.textContent = 'Showing 0 results';
+                } else {
+                    visibleRows.slice(start, end).forEach(r => r.style.display = '');
+                    pgInfo.textContent = 'Showing ' + (start + 1) + '–' + Math.min(end, visibleRows.length) + ' of ' + visibleRows.length + ' results';
+                }
+
+                pgControls.innerHTML = '';
+                const prev = document.createElement('button');
+                prev.className = 'pg-btn'; prev.textContent = 'Previous'; prev.disabled = currentPage === 1;
+                prev.onclick = () => { currentPage--; render(); };
+                pgControls.appendChild(prev);
+
+                pageRange(currentPage, totalPages).forEach(p => {
+                    if (p === '...') {
+                        const dot = document.createElement('span');
+                        dot.textContent = '…'; dot.style.cssText = 'padding:0 4px;color:#9ca3af;';
+                        pgControls.appendChild(dot);
+                    } else {
+                        const btn = document.createElement('button');
+                        btn.className = 'pg-num' + (p === currentPage ? ' active' : '');
+                        btn.textContent = p; btn.onclick = () => { currentPage = p; render(); };
+                        pgControls.appendChild(btn);
+                    }
+                });
+
+                const next = document.createElement('button');
+                next.className = 'pg-btn'; next.textContent = 'Next'; next.disabled = currentPage === totalPages;
+                next.onclick = () => { currentPage++; render(); };
+                pgControls.appendChild(next);
+            }
+
+            function pageRange(cur, total) {
+                if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+                if (cur <= 4) return [1, 2, 3, 4, 5, '...', total];
+                if (cur >= total - 3) return [1, '...', total-4, total-3, total-2, total-1, total];
+                return [1, '...', cur-1, cur, cur+1, '...', total];
+            }
+
+            render();
+
+            // ── Kebab menus ──
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.row-action-wrap'))
+                    document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+            });
+
+            document.querySelectorAll('.kebab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const menu = btn.nextElementSibling;
+                    const isOpen = menu.classList.contains('open');
+                    document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+                    if (!isOpen) {
+                        const rect = btn.getBoundingClientRect();
+                        const spaceBelow = window.innerHeight - rect.bottom;
+                        const visibleRows = Array.from(document.querySelectorAll('#xuatBody tr[data-filter]'))
+                            .filter(r => r.style.display !== 'none');
+                        const currentRow = btn.closest('tr');
+                        const isLastRow = visibleRows.length > 0 && visibleRows[visibleRows.length - 1] === currentRow;
+                        menu.classList.remove('drop-up', 'drop-down');
+                        menu.classList.add((isLastRow || spaceBelow < 160) ? 'drop-up' : 'drop-down');
+                        menu.classList.add('open');
+                    }
+                });
+            });
+
+            // ── Modal xóa đơn ──
+            const delModalOverlay = document.getElementById('delModalOverlay');
+
+            function openDelModal(deleteUrl) {
+                document.getElementById('delConfirmForm').action = deleteUrl;
+                delModalOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+            }
+            function closeDelModal() {
+                delModalOverlay.classList.remove('open');
+                document.body.classList.remove('modal-open');
+            }
+            document.getElementById('delModalClose').addEventListener('click', closeDelModal);
+            document.getElementById('delModalCancel').addEventListener('click', closeDelModal);
+            delModalOverlay.addEventListener('click', (e) => { if (e.target === delModalOverlay) closeDelModal(); });
+
+            document.querySelectorAll('.ram-delete').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
+                    openDelModal(link.href);
+                });
+            });
+
+            // ── Modal xóa nhiều ──
+            const bulkDelModalOverlay = document.getElementById('bulkDelModalOverlay');
+            const bulkDelModalConfirm = document.getElementById('bulkDelModalConfirm');
+            const bulkDelCount = document.getElementById('bulkDelCount');
+
+            function openBulkDelModal() {
+                const count = document.querySelectorAll('.row-check:checked').length;
+                bulkDelCount.textContent = count;
+                bulkDelModalOverlay.classList.add('open');
+                document.body.classList.add('modal-open');
+            }
+            function closeBulkDelModal() {
+                bulkDelModalOverlay.classList.remove('open');
+                document.body.classList.remove('modal-open');
+            }
+            document.getElementById('bulkDelModalClose').addEventListener('click', closeBulkDelModal);
+            document.getElementById('bulkDelModalCancel').addEventListener('click', closeBulkDelModal);
+            bulkDelModalOverlay.addEventListener('click', (e) => { if (e.target === bulkDelModalOverlay) closeBulkDelModal(); });
+
+            document.getElementById('btnBulkDelete').addEventListener('click', openBulkDelModal);
+
+            bulkDelModalConfirm.addEventListener('click', async () => {
+                const checkedRows = Array.from(document.querySelectorAll('.row-check:checked'));
+                const ids = checkedRows.map(cb => parseInt(cb.closest('tr').dataset.id)).filter(id => !isNaN(id));
+
+                if (ids.length === 0) { closeBulkDelModal(); return; }
+
+                bulkDelModalConfirm.disabled = true;
+                bulkDelModalConfirm.textContent = 'Đang xóa...';
+
+                try {
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+                    const res = await fetch('/Xuats/BulkDelete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        },
+                        body: JSON.stringify({ ids })
+                    });
+
+                    if (res.ok) {
+                        checkedRows.forEach(cb => {
+                            const row = cb.closest('tr');
+                            const idx = allRows.indexOf(row);
+                            if (idx > -1) allRows.splice(idx, 1);
+                            row.remove();
+                        });
+                        closeBulkDelModal();
+                        updateBulkUI();
+                        render();
+                    } else {
+                        alert('Xóa thất bại. Vui lòng thử lại.');
+                        closeBulkDelModal();
+                    }
+                } catch {
+                    alert('Lỗi kết nối server.');
+                    closeBulkDelModal();
+                } finally {
+                    bulkDelModalConfirm.disabled = false;
+                    bulkDelModalConfirm.textContent = 'Delete';
                 }
             });
 
-            const next = document.createElement('button');
-            next.className = 'pg-btn'; next.textContent = 'Next'; next.disabled = currentPage === totalPages;
-            next.onclick = () => { currentPage++; render(); };
-            pgControls.appendChild(next);
-        }
-
-        function pageRange(cur, total) {
-            if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
-            if (cur <= 4) return [1, 2, 3, 4, 5, '...', total];
-            if (cur >= total - 3) return [1, '...', total-4, total-3, total-2, total-1, total];
-            return [1, '...', cur-1, cur, cur+1, '...', total];
-        }
-
-        render();
-
-        // ── Kebab row action menus ──
-        document.addEventListener('click', (e) => {
-            // close all open row menus unless clicking inside one
-            if (!e.target.closest('.row-action-wrap')) {
-                document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
-            }
-        });
-        document.querySelectorAll('.kebab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const menu = btn.nextElementSibling;
-                const isOpen = menu.classList.contains('open');
-                // close all first
-                document.querySelectorAll('.row-action-menu.open').forEach(m => m.classList.remove('open'));
-                if (!isOpen) menu.classList.add('open');
-            });
-        });
-
-        // ── Export CSV — only visible columns ──
-        document.getElementById('exportBtn').addEventListener('click', () => {
-            const visibleRows = getFiltered();
-
-            // Collect visible col keys from dropdown (col-visible items)
-            const visibleColKeys = Array.from(document.querySelectorAll('#colDropdown .col-item.col-visible'))
-                .map(item => item.dataset.col);
-
-            // Map col key → header label
-            const colLabels = {
-                'cua-xuat': 'Cửa xuất', 'bien-so': 'Biển số xe',
-                'phan-cong-time': 'TG phân công', 'vao-cua-time': 'TG vào cửa',
-                'gioi-han-time': 'TG giới hạn', 'hoan-thanh-time': 'TG hoàn thành',
-                'xuat-phat-time': 'TG xuất phát', 'trang-thai': 'Trạng thái'
-            };
-
-            const headers = visibleColKeys.map(k => colLabels[k] || k);
-
-            const rows = visibleRows.map(row => {
-                return visibleColKeys.map(key => {
-                    const td = row.querySelector(`[data-col-td="${key}"]`);
-                    const val = td ? td.textContent.trim() : '';
-                    return `"${val.replace(/"/g, '""')}"`;
-                }).join(',');
+            // ── Export CSV ──
+            document.getElementById('exportBtn').addEventListener('click', () => {
+                const visibleRows = getFiltered();
+                const visibleColKeys = Array.from(document.querySelectorAll('#colDropdown .col-item.col-visible'))
+                    .map(item => item.dataset.col);
+                const colLabels = {
+                    'cua-xuat': 'Cửa xuất', 'bien-so': 'Biển số xe',
+                    'phan-cong-time': 'TG phân công', 'vao-cua-time': 'TG vào cửa',
+                    'gioi-han-time': 'TG giới hạn', 'hoan-thanh-time': 'TG hoàn thành',
+                    'xuat-phat-time': 'TG xuất phát', 'trang-thai': 'Trạng thái'
+                };
+                const headers = visibleColKeys.map(k => colLabels[k] || k);
+                const rows = visibleRows.map(row =>
+                    visibleColKeys.map(key => {
+                        const td = row.querySelector(`[data-col-td="${key}"]`);
+                        const val = td ? td.textContent.trim() : '';
+                        return `"${val.replace(/"/g, '""')}"`;
+                    }).join(',')
+                );
+                const csv = [headers.map(h => `"${h}"`).join(','), ...rows].join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'phieu-xuat.csv'; a.click();
+                URL.revokeObjectURL(url);
+                const toast = document.getElementById('exportToast');
+                document.getElementById('exportToastMsg').textContent = `Exported ${visibleRows.length} rows to CSV`;
+                toast.style.display = 'flex';
+                setTimeout(() => { toast.style.display = 'none'; }, 3500);
             });
 
-            const csv = [headers.map(h => `"${h}"`).join(','), ...rows].join('\n');
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'phieu-xuat.csv'; a.click();
-            URL.revokeObjectURL(url);
-
-            // Show toast
-            const toast = document.getElementById('exportToast');
-            document.getElementById('exportToastMsg').textContent = `Exported ${visibleRows.length} rows to CSV`;
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3500);
-        });
-
-    })();
-</script>
+        })();
+    </script>

@@ -24,7 +24,7 @@
             --border2: #1a3a5c;
             --gold: #f59e0b;
             --gold2: #fbbf24;
-            --gold-dim: #0a0800;
+            --gold-dim: #1a1200;
             --green: #22c55e;
             --green-dim: #061a08;
             --red: #ef4444;
@@ -187,16 +187,12 @@
                 color: var(--gold);
             }
 
-            .banner-label .bl-over {
-                color: var(--red);
+            .banner-label .bl-gate {
+                color: var(--gold);
             }
 
             .banner-label .bl-driver {
                 color: var(--gold2);
-            }
-
-            .banner-label .bl-gate {
-                color: var(--gold);
             }
 
         .load-row {
@@ -351,11 +347,7 @@
             min-height: 18px;
         }
 
-            .banner-sub .bs-idx {
-                color: var(--gold2);
-            }
-
-        /* ── TABLE HEADER — 8 cột ── */
+        /* ── TABLE HEADER ── */
         .tbl-head {
             display: grid;
             grid-template-columns: 110px 190px 170px 1fr 110px 110px 180px 110px;
@@ -391,23 +383,17 @@
             padding: 0 40px 0 36px;
             transition: background .3s;
         }
-
-            .row.r-pending {
-                border-left-color: var(--gold);
-                background: #0a0800;
-                opacity: .85;
-            }
-
-            .row.r-wait {
-                border-left-color: #1a5a2a;
-                background: #060e08;
-            }
-
+            /* tt=0 VÀO CỬA NGAY — vàng sáng nổi bật */
             .row.r-active {
                 border-left-color: var(--gold);
-                background: #080f1a;
+                background: var(--gold-dim);
             }
-
+            /* tt=1 ĐANG XUẤT HÀNG */
+            .row.r-going {
+                border-left-color: var(--gold2);
+                background: #0a0f00;
+            }
+            /* tt=2 QUÁ GIỜ */
             .row.r-over {
                 border-left-color: var(--red);
                 background: var(--red-dim);
@@ -424,6 +410,12 @@
                 border-left-color: #2a1a4a;
                 background: #040408;
                 opacity: .35;
+            }
+
+            .row.r-pending {
+                border-left-color: var(--text-dim);
+                background: #060810;
+                opacity: .7;
             }
 
         @@keyframes rowpulse {
@@ -501,38 +493,31 @@
             flex-shrink: 0;
         }
 
-        .b-pending {
-            background: #1a1000;
-            color: var(--gold);
-            border: 1px solid #4a3000;
-        }
-
-            .b-pending .bdot {
-                background: var(--gold);
-                animation: blink 1s infinite;
-            }
-
-        .b-wait {
-            background: #081828;
-            color: #4a8ab0;
-            border: 1px solid #1a3a5c;
-        }
-
-            .b-wait .bdot {
-                background: #4a6a8a;
-            }
-
-        .b-active {
+        /* tt=0 VÀO CỬA NGAY */
+        .b-now {
             background: #1a1400;
             color: var(--gold2);
+            border: 1px solid #4a3a00;
+        }
+
+            .b-now .bdot {
+                background: var(--gold);
+                animation: blink .8s infinite;
+            }
+
+        /* tt=1 ĐANG XUẤT HÀNG */
+        .b-going {
+            background: #1a1400;
+            color: var(--gold);
             border: 1px solid #3a2a00;
         }
 
-            .b-active .bdot {
+            .b-going .bdot {
                 background: var(--gold);
                 animation: blink 1.5s infinite;
             }
 
+        /* tt=2 QUÁ GIỜ */
         .b-over {
             background: #2a0808;
             color: #ff8a80;
@@ -562,6 +547,16 @@
 
             .b-roi .bdot {
                 background: var(--purple);
+            }
+
+        .b-pending {
+            background: #080f1a;
+            color: #4a6a8a;
+            border: 1px solid #1a3a5c;
+        }
+
+            .b-pending .bdot {
+                background: #4a6a8a;
             }
 
         /* TIMER */
@@ -742,7 +737,6 @@
 <body>
     <div class="screen">
 
-        <!-- HEADER -->
         <div class="hdr">
             <div class="hdr-left">
                 <div class="hdr-icon">🚛</div>
@@ -763,7 +757,7 @@
             </div>
         </div>
 
-        <!-- BANNER -->
+        <!-- BANNER: chỉ hiện khi có xe VÀO CỬA NGAY (tt=0) đã đến giờ phân công -->
         <div class="banner-wrap" id="banner-wrap">
             <div class="banner-label" id="banner-label">TRẠNG THÁI: —</div>
             <div class="load-row">
@@ -782,7 +776,6 @@
             <div class="banner-sub" id="banner-sub"></div>
         </div>
 
-        <!-- TABLE HEADER — 8 cột -->
         <div class="tbl-head">
             <div class="th">Cửa xuất</div>
             <div class="th">Biển số xe</div>
@@ -803,11 +796,12 @@
 
         <div class="ticker">
             <span class="ticker-inner">
-                ▸ Xe vào đúng cửa được phân công
+                ▸ Tài xế tìm biển số xe của bạn trên bảng
+                <span class="tg">►</span> Nhìn cột đầu tiên để biết cửa xuất
+                <span class="tg">►</span> Vào đúng cửa được phân công — không vào cửa khác
                 <span class="tg">►</span> Kiểm tra hàng hóa trước khi xuất phát
                 <span class="tg">►</span> Xuất phát đúng giờ quy định
                 <span class="tg">►</span> Không đỗ xe chắn lối đi
-                <span class="tg">►</span> Liên hệ điều độ nếu cần thay đổi
                 <span class="tg">►</span> Driver: Proceed to assigned gate and verify cargo before departure
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
@@ -815,10 +809,11 @@
 
     </div>
     <script>
-        var timerMap  = {};
-        var prevSig   = {};
-        var bannerRows = [];
-        var bannerIdx  = 0;
+        var timerMap      = {};
+        var prevSig       = {};
+        var bannerRows    = [];
+        var lastRows      = [];
+        var lastBannerKey = '';
 
         // ── FLIP
         function flipInText(el, newText, charDelay) {
@@ -849,7 +844,7 @@
         function fmt(d) {
             if (!d) return '--:--';
             var dt = new Date(d);
-            return String(dt.getHours()).padStart(2, '0') + ':' + String(dt.getMinutes()).padStart(2, '0');
+            return String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
         }
 
         // ── ĐỒNG HỒ
@@ -870,7 +865,7 @@
                 var diff = Math.floor((new Date(timerMap[key]) - new Date()) / 1000);
                 if (diff > 0) {
                     var m = Math.floor(diff / 60), s = diff % 60;
-                    el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+                    el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
                     el.className   = 'timer ' + (diff > 600 ? 'tok' : diff > 180 ? 'twarn' : 'tover');
                 } else {
                     el.textContent = 'QUÁ HẠN';
@@ -879,21 +874,34 @@
             });
         }
 
-        // ── BANNER — hiện xe ĐANG XUẤT HÀNG (tt=1) và QUÁ GIỜ (tt=2), rotate nếu nhiều
-        // Sửa thành:
-        function updateBanner(rows) {
-            bannerRows = (rows || []).filter(function(r) {
-                return (r.trangThai === 0 || r.trangThai === 1 || r.trangThai === 2)
-                    && r.bienSoXe && r.bienSoXe.trim();
+        // ── BANNER: chỉ hiện tt=0 (VÀO CỬA NGAY) đã đến giờ phân công
+        // Không hiện tt=1 (đang xuất), tt=2 (quá giờ) hay bất kỳ trạng thái nào khác
+        setInterval(function() {
+            var now = new Date();
+
+            var candidates = (lastRows || []).filter(function(r) {
+                if (!r.bienSoXe || !r.bienSoXe.trim() || r.bienSoXe === '--') return false;
+                if (r.trangThai === 0 && r.thoiGianPhanCong)
+                    return new Date(r.thoiGianPhanCong) <= now;
+                return false;
             });
-            // tt=2 (quá giờ) lên trước, tt=0 (vào cửa ngay) lên thứ 2, tt=1 sau
-            bannerRows.sort(function(a, b) {
-                var order = { 2: 0, 0: 1, 1: 2 };
-                return (order[a.trangThai] ?? 9) - (order[b.trangThai] ?? 9);
+
+            // Chỉ lấy xe mới nhất đến giờ
+            var latest = null;
+            candidates.forEach(function(r) {
+                if (!latest || new Date(r.thoiGianPhanCong) > new Date(latest.thoiGianPhanCong))
+                    latest = r;
             });
-            if (bannerIdx >= bannerRows.length) bannerIdx = 0;
-            renderBanner();
-        }
+
+            var newRows = latest ? [latest] : [];
+            var newKey  = newRows.map(function(r){ return r.xuatId + '|' + r.trangThai; }).join(',');
+
+            if (newKey !== lastBannerKey) {
+                lastBannerKey = newKey;
+                bannerRows    = newRows;
+                renderBanner();
+            }
+        }, 1000);
 
         function renderBanner() {
             var plateEl = document.getElementById('banner-plate');
@@ -909,39 +917,22 @@
                 return;
             }
 
-            var r  = bannerRows[bannerIdx];
-            var tt = r.trangThai;
-            flipInText(plateEl, r.bienSoXe,  50);
-            flipInText(gateEl,  r.tenCua,    50);
+            var r = bannerRows[0];
+            flipInText(plateEl, r.bienSoXe, 50);
+            flipInText(gateEl,  r.tenCua,   50);
 
-            var statusTxt, statusCls;
-              if      (tt === 2) { statusTxt = 'QUÁ GIỜ XUẤT';   statusCls = 'bl-over';   }
-              else if (tt === 0) { statusTxt = 'VÀO CỬA NGAY';   statusCls = 'bl-gate';   }
-              else               { statusTxt = 'ĐANG XUẤT HÀNG'; statusCls = 'bl-status'; }
-
-              labelEl.innerHTML =
-                  'TRẠNG THÁI: <span class="' + statusCls + '">' + statusTxt + '</span>'
-                  + (r.tenLaiXe ? ' — tài xế <span class="bl-driver">' + r.tenLaiXe + '</span>' : '')
-                  + ' → vào cửa <span class="bl-gate">' + r.tenCua + '</span>';
-
-            subEl.innerHTML = bannerRows.length > 1
-                ? '<span class="bs-idx">' + (bannerIdx + 1) + ' / ' + bannerRows.length + '</span> xe đang xuất hàng — tự động chuyển'
-                : '';
+            labelEl.innerHTML =
+                'TRẠNG THÁI: <span class="bl-gate">VÀO CỬA NGAY</span>'
+                + (r.tenLaiXe ? ' — tài xế <span class="bl-driver">' + r.tenLaiXe + '</span>' : '')
+                + ' → vào cửa <span class="bl-gate">' + r.tenCua + '</span>';
+            subEl.innerHTML = '';
         }
-
-        // Rotate mỗi 4 giây
-        setInterval(function() {
-            if (bannerRows.length > 1) {
-                bannerIdx = (bannerIdx + 1) % bannerRows.length;
-                renderBanner();
-            }
-        }, 4000);
 
         // ── BADGE
         function getBadge(tt) {
             if (tt === -2) return '<span class="badge b-pending"><span class="bdot"></span>CHỜ PHÂN CÔNG</span>';
-            if (tt ===  0) return '<span class="badge b-wait"><span class="bdot"></span>CHỜ XUẤT</span>';
-            if (tt ===  1) return '<span class="badge b-active"><span class="bdot"></span>ĐANG XUẤT HÀNG</span>';
+            if (tt ===  0) return '<span class="badge b-now"><span class="bdot"></span>VÀO CỬA NGAY</span>';
+            if (tt ===  1) return '<span class="badge b-going"><span class="bdot"></span>ĐANG XUẤT HÀNG</span>';
             if (tt ===  2) return '<span class="badge b-over"><span class="bdot"></span>QUÁ GIỜ XUẤT</span>';
             if (tt ===  3) return '<span class="badge b-done"><span class="bdot"></span>HOÀN THÀNH</span>';
             if (tt ===  4) return '<span class="badge b-roi"><span class="bdot"></span>ĐÃ RỜI KHO</span>';
@@ -950,8 +941,8 @@
 
         function getRowClass(tt) {
             if (tt === -2) return 'row r-pending';
-            if (tt ===  0) return 'row r-wait';
-            if (tt ===  1) return 'row r-active';
+            if (tt ===  0) return 'row r-active';
+            if (tt ===  1) return 'row r-going';
             if (tt ===  2) return 'row r-over';
             if (tt ===  3) return 'row r-done';
             if (tt ===  4) return 'row r-roi';
@@ -959,9 +950,9 @@
         }
 
         function getCuaClass(tt) {
-            if (tt === 2)           return 'cua cua-red';
-            if (tt === 3 || tt === 4) return 'cua cua-done';
-            if (tt === -2)          return 'cua cua-dim';
+            if (tt === 2)               return 'cua cua-red';
+            if (tt === 3 || tt === 4)   return 'cua cua-done';
+            if (tt === -2)              return 'cua cua-dim';
             return 'cua cua-gold';
         }
 
@@ -971,19 +962,22 @@
             var tbody = document.getElementById('tbl-body');
 
             if (!rows || !rows.length) {
-                tbody.innerHTML = '<div class="row r-wait"><div class="td empty-msg">KHÔNG CÓ XE NÀO — ĐANG CHỜ PHÂN CÔNG</div></div>';
-                prevSig = {};
-                updateBanner([]);
+                tbody.innerHTML = '<div class="row r-pending"><div class="td empty-msg">KHÔNG CÓ XE NÀO — ĐANG CHỜ PHÂN CÔNG</div></div>';
+                prevSig  = {};
+                lastRows = [];
+                renderBanner();
                 return;
             }
 
-            // Priority sort: 2 > 1 > 0 > -2 > 3 > 4
-            var priority = { 2:0, 1:1, 0:2, '-2':3, 3:4, 4:5 };
+            // Sort: 2 > 0 > 1 > -2 > 3 > 4
+            var priority = { 2:0, 0:1, 1:2, '-2':3, 3:4, 4:5 };
             rows.sort(function(a, b) {
                 var pa = priority[String(a.trangThai)] !== undefined ? priority[String(a.trangThai)] : 6;
                 var pb = priority[String(b.trangThai)] !== undefined ? priority[String(b.trangThai)] : 6;
                 return pa !== pb ? pa - pb : (a.thoiGianPhanCong||'').localeCompare(b.thoiGianPhanCong||'');
             });
+
+            lastRows = rows; // lưu cache cho banner
 
             var newIds = rows.map(function(r) { return String(r.xuatId); });
 
@@ -996,17 +990,15 @@
             rows.forEach(function(r, idx) {
                 var id  = String(r.xuatId);
                 var tt  = r.trangThai;
-                var sig = id + '|' + tt + '|' + (r.bienSoXe || '') + '|' + (r.thoiGianVaoCua || '') + '|' + (r.thoiGianGioiHan || '');
+                var sig = id + '|' + tt + '|' + (r.bienSoXe||'') + '|' + (r.thoiGianVaoCua||'') + '|' + (r.thoiGianGioiHan||'');
                 var isNew     = !existing[id];
                 var hasChange = prevSig[id] !== sig;
                 prevSig[id]   = sig;
 
-                // Đăng ký timer cho xe đang xuất và quá giờ
                 if (r.thoiGianGioiHan && (tt === 1 || tt === 2)) {
                     timerMap['tm-' + r.xuatId] = r.thoiGianGioiHan;
                 }
 
-                // Cột cuối: timer nếu đang xuất/quá giờ, giờ vào cửa nếu có, dash nếu không
                 var timerOrTime;
                 if (tt === 1 || tt === 2) {
                     timerOrTime = '<span class="timer tdash" id="tm-' + r.xuatId + '">--:--</span>';
@@ -1024,6 +1016,7 @@
                     var row = document.createElement('div');
                     row.className  = getRowClass(tt);
                     row.dataset.id = id;
+                    row.dataset.tt = tt;
                     row.innerHTML =
                         '<div class="td">' + tenCuaHtml + '</div>' +
                         '<div class="td"><div class="bienso" id="bs-' + id + '">' + (r.bienSoXe || '--') + '</div></div>' +
@@ -1051,20 +1044,38 @@
 
                 } else if (hasChange) {
                     var row = existing[id];
-                    row.className = getRowClass(tt);
+                    var prevTT = parseInt(row.dataset.tt || '-99');
+                    row.className  = getRowClass(tt);
+                    row.dataset.tt = tt;
+
                     var cuaTd = row.querySelector('.td:first-child');
                     if (cuaTd) cuaTd.innerHTML = tenCuaHtml;
+
                     var bdgEl = document.getElementById('bdg-' + id);
                     if (bdgEl) bdgEl.innerHTML = getBadge(tt);
+
                     var bsEl = document.getElementById('bs-' + id);
-                    if (bsEl && bsEl.textContent.trim() !== (r.bienSoXe || '--')) flipInText(bsEl, r.bienSoXe || '--', 60);
+                    if (bsEl && bsEl.textContent.trim() !== (r.bienSoXe || '--'))
+                        flipInText(bsEl, r.bienSoXe || '--', 60);
+
                     var lastTd = row.querySelector('.td:last-child');
                     if (lastTd) lastTd.innerHTML = timerOrTime;
+
+                    // Flash vàng khi xe vừa được phân công (chuyển từ trạng thái khác sang tt=0)
+                    if (prevTT !== 0 && tt === 0) {
+                        row.style.transition = 'none';
+                        row.style.background = '#2a1e00';
+                        row.style.borderLeftColor = '#fbbf24';
+                        setTimeout(function(r) {
+                            r.style.transition = 'background 3s ease, border-left-color 1s ease';
+                            r.style.background = '';
+                            r.style.borderLeftColor = '';
+                        }, 5000, row);
+                    }
                 }
             });
 
             updateTimers();
-            updateBanner(rows);
         }
 
         // ── SIGNALR
@@ -1075,6 +1086,7 @@
 
         conn.on('UpdateBangTongHopXuat', function() { loadData(); });
         conn.on('ReceivedXuat',          function() { loadData(); });
+        conn.on('ReceivedChitietXuat',   function() { loadData(); });
         conn.on('TrangThaiXeUpdated',    function() { loadData(); });
         conn.on('ReloadDashboard',       function() { loadData(); });
 

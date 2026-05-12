@@ -4,46 +4,230 @@
     ViewData["Title"] = "Register";
 }
 
+<style>
+    .auth-wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 16px;
+    }
 
+    .auth-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 480px;
+    }
 
-<div class="row">
-    <div class="col-md-8">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="FirstName" aria-required="true" placeholder="Nhập Họ" />
-                <label asp-for="Input.FirstName">Nhập họ</label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.LastName" class="form-control" autocomplete="LastName" aria-required="true" placeholder="Nhập Tên" />
-                <label asp-for="Input.LastName">Nhập tên</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="Input.Email"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.Password"></label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="Input.ConfirmPassword"></label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+    .auth-card-header {
+        padding: 24px 28px 20px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .auth-card-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 4px;
+    }
+
+    .auth-card-sub {
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    .auth-card-body {
+        padding: 24px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field-label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .field-input {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s, box-shadow .15s;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+        }
+
+        .field-input::placeholder {
+            color: #9ca3af;
+        }
+
+    .pw-wrap {
+        position: relative;
+    }
+
+        .pw-wrap .field-input {
+            padding-right: 42px;
+        }
+
+    .pw-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #9ca3af;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+        .pw-eye:hover {
+            color: #6b7280;
+        }
+
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+    }
+
+    .btn-save {
+        width: 100%;
+        background: #16a34a;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s;
+        margin-top: 4px;
+    }
+
+        .btn-save:hover {
+            background: #15803d;
+        }
+
+    .auth-footer {
+        padding: 16px 28px;
+        border-top: 1px solid #f3f4f6;
+        text-align: center;
+        font-size: 0.82rem;
+        color: #6b7280;
+    }
+
+        .auth-footer a {
+            color: #16a34a;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-card-header">
+            <p class="auth-card-title">Create an account</p>
+            <p class="auth-card-sub">Điền thông tin để tạo tài khoản mới</p>
+        </div>
+        <div class="auth-card-body">
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:8px;"></div>
+
+                <div class="field-row" style="margin-bottom:2px;">
+                    <div class="field-group">
+                        <label class="field-label" asp-for="Input.FirstName">Họ</label>
+                        <input asp-for="Input.FirstName" class="field-input"
+                               autocomplete="given-name" placeholder="Nhập họ..." />
+                        <span asp-validation-for="Input.FirstName" class="field-error"></span>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" asp-for="Input.LastName">Tên</label>
+                        <input asp-for="Input.LastName" class="field-input"
+                               autocomplete="family-name" placeholder="Nhập tên..." />
+                        <span asp-validation-for="Input.LastName" class="field-error"></span>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" asp-for="Input.Email">Email</label>
+                    <input asp-for="Input.Email" class="field-input"
+                           autocomplete="username" aria-required="true"
+                           placeholder="Nhập địa chỉ email..." />
+                    <span asp-validation-for="Input.Email" class="field-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" asp-for="Input.Password">Mật khẩu</label>
+                    <div class="pw-wrap">
+                        <input asp-for="Input.Password" class="field-input" id="regPw"
+                               autocomplete="new-password" aria-required="true"
+                               placeholder="Nhập mật khẩu..." />
+                        <span class="pw-eye mdi mdi-eye" onclick="togglePw('regPw',this)"></span>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="field-error"></span>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" asp-for="Input.ConfirmPassword">Xác nhận mật khẩu</label>
+                    <div class="pw-wrap">
+                        <input asp-for="Input.ConfirmPassword" class="field-input" id="regConfirmPw"
+                               autocomplete="new-password" aria-required="true"
+                               placeholder="Nhập lại mật khẩu..." />
+                        <span class="pw-eye mdi mdi-eye" onclick="togglePw('regConfirmPw',this)"></span>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="field-error"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="btn-save">Create account</button>
+            </form>
+        </div>
+        <div class="auth-footer">
+            Đã có tài khoản? <a asp-page="./Login">Đăng nhập</a>
+        </div>
     </div>
 </div>
-    
-
 
 @section Scripts {
+    <script>
+        function togglePw(id, icon) {
+            const inp = document.getElementById(id);
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.classList.replace('mdi-eye', 'mdi-eye-off');
+            } else {
+                inp.type = 'password';
+                icon.classList.replace('mdi-eye-off', 'mdi-eye');
+            }
+        }
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }

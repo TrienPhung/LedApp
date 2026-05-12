@@ -5,327 +5,1087 @@
 }
 
 <style>
-    .custom-select-wrapper {
-        position: relative;
-        user-select: none;
+    .page-wrapper > .container-fluid {
+        padding: 0 !important;
     }
 
-    .custom-select-trigger {
+    .fx-page {
+        padding: 24px 24px 80px;
+    }
+
+    .fx-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.82rem;
+        color: #6b7280;
+        margin-bottom: 12px;
+    }
+
+        .fx-breadcrumb a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+            .fx-breadcrumb a:hover {
+                color: #111827;
+            }
+
+        .fx-breadcrumb .sep {
+            display: inline-flex;
+            align-items: center;
+            color: #9ca3af;
+        }
+
+            .fx-breadcrumb .sep svg {
+                width: 13px;
+                height: 13px;
+                stroke-width: 2;
+                display: block;
+            }
+
+        .fx-breadcrumb .cur {
+            color: #111827;
+            font-weight: 600;
+        }
+
+    .fx-header {
+        margin-bottom: 28px;
+    }
+
+        .fx-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0 0 4px;
+        }
+
+        .fx-header p {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+    .fx-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    @@media(max-width:900px) {
+        .fx-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .fx-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 16px;
+    }
+
+        .fx-card:last-child {
+            margin-bottom: 0;
+        }
+
+    .fx-card-header {
+        padding: 16px 22px 12px;
+        border-bottom: 1px solid #f3f4f6;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 38px;
-        padding: 0 12px;
-        border: 1px solid #ced4da;
-        border-radius: 6px;
-        background: #fff;
-        cursor: pointer;
-        font-size: 14px;
-        color: #212529;
-        transition: border-color .2s, box-shadow .2s;
     }
 
-        .custom-select-trigger:hover {
-            border-color: #86b7fe;
+    .fx-card-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 2px;
+    }
+
+    .fx-card-sub {
+        font-size: 0.78rem;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .fx-card-body {
+        padding: 20px 22px;
+    }
+
+    .field-group {
+        margin-bottom: 18px;
+    }
+
+        .field-group:last-child {
+            margin-bottom: 0;
         }
 
-        .custom-select-trigger.open {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
-            border-radius: 6px 6px 0 0;
+    .field-label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .field-input {
+        width: 100%;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #111827;
+        font-size: 0.875rem;
+        padding: 9px 14px;
+        outline: none;
+        transition: border-color .15s,box-shadow .15s;
+        box-sizing: border-box;
+    }
+
+        .field-input:focus {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
         }
 
-        .custom-select-trigger .placeholder {
-            color: #adb5bd;
+        .field-input::placeholder {
+            color: #9ca3af;
         }
 
-        .custom-select-trigger .clear-btn {
-            color: #adb5bd;
-            font-size: 16px;
-            margin-right: 6px;
-            line-height: 1;
-            cursor: pointer;
+    .field-error {
+        font-size: 0.78rem;
+        color: #ef4444;
+        margin-top: 4px;
+    }
+
+    select.field-input {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 30px;
+    }
+
+    .pw-wrap {
+        position: relative;
+    }
+
+        .pw-wrap .field-input {
+            padding-right: 40px;
         }
 
-            .custom-select-trigger .clear-btn:hover {
-                color: #e74c3c;
-            }
+    .pw-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #9ca3af;
+        font-size: 18px;
+    }
 
-        .custom-select-trigger .arrow {
-            font-size: 12px;
-            color: #6c757d;
-            transition: transform .2s;
+    /* Custom select nhân viên */
+    .csel-wrapper {
+        position: relative;
+    }
+
+    .csel-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: #111827;
+        transition: border-color .15s;
+    }
+
+        .csel-trigger:hover {
+            border-color: #16a34a;
         }
 
-        .custom-select-trigger.open .arrow {
-            transform: rotate(180deg);
+        .csel-trigger.open {
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22,163,74,.1);
+            border-radius: 8px 8px 0 0;
         }
 
-    .custom-select-dropdown {
+        .csel-trigger .placeholder {
+            color: #9ca3af;
+        }
+
+    .csel-dropdown {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        border: 1px solid #86b7fe;
+        border: 1px solid #16a34a;
         border-top: none;
-        border-radius: 0 0 6px 6px;
+        border-radius: 0 0 8px 8px;
         background: #fff;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 16px rgba(0,0,0,.1);
         z-index: 9999;
     }
 
-        .custom-select-dropdown.open {
+        .csel-dropdown.open {
             display: block;
         }
 
-    .custom-select-search {
+    .csel-search {
         padding: 8px;
         border-bottom: 1px solid #f0f0f0;
     }
 
-        .custom-select-search input {
+        .csel-search input {
             width: 100%;
             padding: 6px 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 0.82rem;
             box-sizing: border-box;
             outline: none;
         }
 
-            .custom-select-search input:focus {
-                border-color: #86b7fe;
-                box-shadow: 0 0 0 2px rgba(13,110,253,0.15);
+            .csel-search input:focus {
+                border-color: #16a34a;
             }
 
-    .custom-select-list {
-        max-height: 200px;
+    .csel-list {
+        max-height: 180px;
         overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: #ced4da #f8f9fa;
     }
 
-        .custom-select-list::-webkit-scrollbar {
-            width: 6px;
+    .csel-option {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: background .12s;
+    }
+
+        .csel-option:hover {
+            background: #f0fdf4;
+            color: #16a34a;
         }
 
-        .custom-select-list::-webkit-scrollbar-track {
-            background: #f8f9fa;
+        .csel-option.selected {
+            background: #f0fdf4;
+            color: #16a34a;
+            font-weight: 600;
         }
 
-        .custom-select-list::-webkit-scrollbar-thumb {
-            background: #ced4da;
-            border-radius: 3px;
+        .csel-option.no-result {
+            color: #9ca3af;
+            cursor: default;
         }
 
-            .custom-select-list::-webkit-scrollbar-thumb:hover {
-                background: #adb5bd;
+            .csel-option.no-result:hover {
+                background: none;
             }
 
-    .custom-select-option {
+    /* Role info badge */
+    .role-info-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-top: 8px;
+    }
+
+        .role-info-box p {
+            font-size: 0.78rem;
+            color: #15803d;
+            margin: 0 0 6px;
+            font-weight: 600;
+        }
+
+    .role-perm-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    .role-perm-tag {
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 2px 8px;
+        border-radius: 5px;
+    }
+
+    /* Permissions */
+    .perm-tabs {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .perm-tab {
         padding: 8px 14px;
-        font-size: 14px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all .15s;
+    }
+
+        .perm-tab.active {
+            color: #16a34a;
+            border-bottom-color: #16a34a;
+            font-weight: 600;
+        }
+
+    .perm-tab-content {
+        display: none;
+    }
+
+        .perm-tab-content.active {
+            display: block;
+        }
+
+    .perm-section {
+        margin-bottom: 20px;
+    }
+
+        .perm-section:last-child {
+            margin-bottom: 0;
+        }
+
+    .perm-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .perm-section-title {
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: #9ca3af;
+        margin: 0;
+    }
+
+    .perm-section-selall {
+        font-size: 0.72rem;
+        color: #16a34a;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+        .perm-section-selall:hover {
+            text-decoration: underline;
+        }
+
+    .perm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .perm-cb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .perm-cb:hover {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .perm-cb.checked {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .perm-cb.deny {
+            border-color: #fecaca;
+            background: #fef2f2;
+        }
+
+        .perm-cb input[type=checkbox] {
+            width: 15px;
+            height: 15px;
+            accent-color: #16a34a;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .perm-cb.deny input[type=checkbox] {
+            accent-color: #ef4444;
+        }
+
+    .perm-cb-label {
+        font-size: 0.78rem;
+        color: #374151;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    /* Cửa checkboxes */
+    .cua-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .cua-cb {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        transition: all .12s;
+    }
+
+        .cua-cb:hover {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .cua-cb.checked {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+
+        .cua-cb input[type=checkbox] {
+            width: 14px;
+            height: 14px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+
+    .cua-cb-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #374151;
+        cursor: pointer;
+    }
+
+    /* Actions */
+    .fx-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+    }
+
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #16a34a;
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
         cursor: pointer;
         transition: background .15s;
     }
 
-        .custom-select-option:hover {
-            background: #e9f0ff;
-            color: #0d6efd;
+        .btn-submit:hover {
+            background: #15803d;
         }
 
-        .custom-select-option.selected {
-            background: #e9f0ff;
-            color: #0d6efd;
-            font-weight: 500;
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        background: #fff;
+        color: #374151;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .15s;
+    }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            color: #111827;
+            text-decoration: none;
         }
 
-        .custom-select-option.no-result {
-            color: #adb5bd;
-            cursor: default;
+    .val-summary {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 18px;
+        font-size: 0.82rem;
+        color: #dc2626;
+        display: none;
+    }
+
+        .val-summary ul {
+            margin: 0;
+            padding-left: 16px;
         }
 
-            .custom-select-option.no-result:hover {
-                background: none;
-            }
+    .info-hint {
+        font-size: 0.76rem;
+        color: #6b7280;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-bottom: 14px;
+        line-height: 1.5;
+    }
+
+        .info-hint strong {
+            color: #374151;
+        }
+
+    /* Dark mode */
+    body.dark-mode .fx-header h1 {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .fx-header p, body.dark-mode .fx-breadcrumb, body.dark-mode .fx-breadcrumb a {
+        color: #9ca3af !important;
+    }
+
+    body.dark-mode .fx-card {
+        background: #1a1d27 !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .fx-card-header {
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .fx-card-title {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .field-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .field-input {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .csel-trigger {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .csel-dropdown {
+        background: #1a1d27 !important;
+        border-color: #16a34a !important;
+    }
+
+    body.dark-mode .csel-option {
+        color: #d1d5db !important;
+    }
+
+        body.dark-mode .csel-option:hover {
+            background: #052e16 !important;
+            color: #4ade80 !important;
+        }
+
+    body.dark-mode .perm-cb {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .perm-cb-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .perm-cb:hover, body.dark-mode .perm-cb.checked {
+        border-color: #16a34a !important;
+        background: #052e16 !important;
+    }
+
+    body.dark-mode .perm-cb.deny {
+        background: #2e0f0f !important;
+        border-color: #991b1b !important;
+    }
+
+    body.dark-mode .cua-cb {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+    }
+
+    body.dark-mode .cua-cb-label {
+        color: #d1d5db !important;
+    }
+
+    body.dark-mode .cua-cb:hover, body.dark-mode .cua-cb.checked {
+        border-color: #16a34a !important;
+        background: #052e16 !important;
+    }
+
+    body.dark-mode .btn-cancel {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-mode .perm-section-title {
+        color: #6b7280 !important;
+    }
+
+    body.dark-mode .perm-tab {
+        color: #6b7280 !important;
+    }
+
+        body.dark-mode .perm-tab.active {
+            color: #4ade80 !important;
+            border-bottom-color: #16a34a !important;
+        }
+
+    body.dark-mode .role-info-box {
+        background: #052e16 !important;
+        border-color: #166534 !important;
+    }
+
+        body.dark-mode .role-info-box p {
+            color: #4ade80 !important;
+        }
+
+    body.dark-mode .role-perm-tag {
+        background: #14532d !important;
+        color: #4ade80 !important;
+    }
+
+    body.dark-mode .info-hint {
+        background: #22263a !important;
+        border-color: #2e3248 !important;
+        color: #9ca3af !important;
+    }
 </style>
 
-<h1>Tạo tài khoản</h1>
-<hr />
-<div class="row">
-    <div class="col-md-5">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="fx-page">
+    <div class="fx-breadcrumb">
+        <a href="/">Dashboard</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <a asp-action="Index">Tài khoản</a>
+        <span class="sep"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg></span>
+        <span class="cur">Tạo mới</span>
+    </div>
 
-            <input type="hidden" asp-for="NguoiDungId" id="hdNguoiDungId" />
+    <div class="fx-header">
+        <h1>Thêm tài khoản</h1>
+        <p>Tạo tài khoản mới và phân quyền chi tiết.</p>
+    </div>
 
-            <div class="form-group mb-3">
-                <label class="control-label">Nhân viên</label>
-                <div class="custom-select-wrapper" id="nhanVienSelect">
-                    <div class="custom-select-trigger" onclick="toggleDropdown()">
-                        <span id="selectedLabel" class="placeholder">-- Tìm nhân viên --</span>
-                        <div style="display:flex;align-items:center;gap:4px;">
-                            <span class="clear-btn" id="clearBtn" onclick="clearSelect(event)" style="display:none">×</span>
-                            <span class="arrow"><i class="mdi mdi-chevron-down"></i></span>
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="fx-layout">
+
+            <!-- CỘT TRÁI -->
+            <div>
+                <!-- Thông tin cơ bản -->
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <div>
+                            <p class="fx-card-title">Thông tin tài khoản</p>
+                            <p class="fx-card-sub">Điền thông tin đăng nhập</p>
                         </div>
                     </div>
-                    <div class="custom-select-dropdown" id="dropdown">
-                        <div class="custom-select-search">
-                            <input type="text" id="searchInput" placeholder="Tìm kiếm..." oninput="filterOptions(this.value)" />
+                    <div class="fx-card-body">
+                        <div asp-validation-summary="ModelOnly" class="val-summary"></div>
+                        <input type="hidden" asp-for="NguoiDungId" id="hdNguoiDungId" />
+
+                        <div class="field-group">
+                            <label class="field-label">Nhân viên <span style="color:#ef4444;">*</span></label>
+                            <div class="csel-wrapper" id="nhanVienSelect">
+                                <div class="csel-trigger" onclick="toggleCsel()">
+                                    <span id="cselLabel" class="placeholder">-- Tìm nhân viên --</span>
+                                    <span style="color:#9ca3af;font-size:12px;"><i class="mdi mdi-chevron-down"></i></span>
+                                </div>
+                                <div class="csel-dropdown" id="cselDropdown">
+                                    <div class="csel-search"><input type="text" id="cselSearch" placeholder="Tìm kiếm..." oninput="filterCsel(this.value)" /></div>
+                                    <div class="csel-list" id="cselList">
+                                        @foreach (var nv in Model.DanhSachNhanVien)
+                                        {
+                                            <div class="csel-option" data-value="@nv.Id" data-label="@nv.FullName" onclick="selectCsel(this)">@nv.FullName</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <span asp-validation-for="NguoiDungId" class="field-error"></span>
                         </div>
-                        <div class="custom-select-list" id="optionList">
-                            @foreach (var nv in Model.DanhSachNhanVien)
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="UserName">Username <span style="color:#ef4444;">*</span></label>
+                            <input asp-for="UserName" class="field-input" placeholder="Nhập username..." />
+                            <span asp-validation-for="UserName" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Email">Email <span style="color:#ef4444;">*</span></label>
+                            <input asp-for="Email" class="field-input" type="email" placeholder="Nhập email..." />
+                            <span asp-validation-for="Email" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Password">Mật khẩu <span style="color:#ef4444;">*</span></label>
+                            <div class="pw-wrap">
+                                <input asp-for="Password" class="field-input" type="password" id="pwInput" placeholder="Tối thiểu 6 ký tự..." />
+                                <i class="mdi mdi-eye pw-eye" onclick="togglePw('pwInput',this)"></i>
+                            </div>
+                            <span asp-validation-for="Password" class="field-error"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label" asp-for="Role">Role <span style="color:#ef4444;">*</span></label>
+                            <select asp-for="Role" class="field-input" id="roleSelect" onchange="onRoleChange(this.value)">
+                                <option value="">-- Chọn role --</option>
+                                @foreach (var r in Model.AvailableRoles)
+                                {
+                                    <option value="@r">@r</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Role" class="field-error"></span>
+                            <div class="role-info-box" id="roleInfoBox" style="display:none;">
+                                <p>Quyền mặc định từ role này:</p>
+                                <div class="role-perm-list" id="rolePermList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cửa xuất -->
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <div>
+                            <p class="fx-card-title">Cửa xuất được phép</p>
+                            <p class="fx-card-sub">Cửa xuất nhân viên được thao tác</p>
+                        </div>
+                    </div>
+                    <div class="fx-card-body">
+                        <div class="cua-grid">
+                            @foreach (var c in Model.CuaXuats)
                             {
-                                <div class="custom-select-option"
-                                     data-value="@nv.Id"
-                                     data-label="@nv.FullName"
-                                     onclick="selectOption(this)">
-                                    @nv.FullName
+                                <label class="cua-cb">
+                                    <input type="checkbox" name="SelectedCuaXuatIds" value="@c.Id" />
+                                    <span class="cua-cb-label">@c.Ten</span>
+                                </label>
+                            }
+                        </div>
+                        @if (!Model.CuaXuats.Any())
+                        {
+                            <p style="color:#9ca3af;font-size:0.82rem;margin:0;">Chưa có cửa xuất nào.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Cửa nhập -->
+                <div class="fx-card">
+                    <div class="fx-card-header">
+                        <div>
+                            <p class="fx-card-title">Cửa nhập được phép</p>
+                            <p class="fx-card-sub">Cửa nhập nhân viên được thao tác</p>
+                        </div>
+                    </div>
+                    <div class="fx-card-body">
+                        <div class="cua-grid">
+                            @foreach (var c in Model.CuaNhaps)
+                            {
+                                <label class="cua-cb">
+                                    <input type="checkbox" name="SelectedCuaNhapIds" value="@c.Id" />
+                                    <span class="cua-cb-label">@c.Ten</span>
+                                </label>
+                            }
+                        </div>
+                        @if (!Model.CuaNhaps.Any())
+                        {
+                            <p style="color:#9ca3af;font-size:0.82rem;margin:0;">Chưa có cửa nhập nào.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: Override permissions -->
+            <div class="fx-card" style="margin-bottom:0;">
+                <div class="fx-card-header">
+                    <div>
+                        <p class="fx-card-title">Override quyền cá nhân</p>
+                        <p class="fx-card-sub">Thêm/bớt quyền ngoài quyền mặc định của role</p>
+                    </div>
+                </div>
+                <div class="fx-card-body">
+
+                    <div class="info-hint">
+                        Quyền mặc định đã được gán ở <strong>Role</strong>. Chỉ cần override khi user này cần <strong>thêm</strong> hoặc <strong>thu hồi</strong> quyền so với role.
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="perm-tabs">
+                        <div class="perm-tab active" onclick="switchTab('extra')">➕ Thêm quyền (Extra)</div>
+                        <div class="perm-tab" onclick="switchTab('deny')">🚫 Thu hồi quyền (Deny)</div>
+                    </div>
+
+                    <!-- Tab Extra -->
+                    <div class="perm-tab-content active" id="tab-extra">
+                        <p style="font-size:0.78rem;color:#6b7280;margin-bottom:14px;">Quyền được grant thêm ngoài role. User sẽ CÓ các quyền này dù role không có.</p>
+                        @if (!Model.ExtraPermissionGroups.Any())
+                        {
+                            <p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">
+                                Chưa có quyền Extra nào. Vào <strong>Quản lý quyền</strong> để thêm.
+                            </p>
+                        }
+                        @foreach (var group in Model.ExtraPermissionGroups)
+                        {
+                            <div class="perm-section">
+                                <div class="perm-section-header">
+                                    <p class="perm-section-title">@group.GroupName</p>
+                                    <span class="perm-section-selall" onclick="selectGroupExtra('@group.GroupName.Replace(" ","_")', true)">Chọn tất cả</span>
+                                </div>
+                                <div class="perm-grid">
+                                    @foreach (var item in group.Items)
+                                    {
+                                        <label class="perm-cb" id="extra_label_@item.Value.Replace(".","_")">
+                                            <input type="checkbox" name="SelectedExtraPermissions" value="@item.Value"
+                                                   class="extra-cb grp-extra-@group.GroupName.Replace(" ","_")"
+                                                   onchange="syncCbClass(this)" />
+                                            <span class="perm-cb-label">@item.Label</span>
+                                        </label>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Tab Deny -->
+                    <!-- Tab Deny -->
+                    <div class="perm-tab-content" id="tab-deny">
+                        <p style="font-size:0.78rem;color:#ef4444;margin-bottom:14px;">Quyền bị thu hồi khỏi role. User sẽ KHÔNG CÓ các quyền này dù role có.</p>
+                        <div id="deny-container">
+                            @if (!Model.DenyPermissionGroups.Any())
+                            {
+                                <p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">
+                                    Role này chưa có quyền nào để thu hồi.
+                                </p>
+                            }
+                            @foreach (var group in Model.DenyPermissionGroups)
+                            {
+                                <div class="perm-section">
+                                    <div class="perm-section-header">
+                                        <p class="perm-section-title">@group.GroupName</p>
+                                    </div>
+                                    <div class="perm-grid">
+                                        @foreach (var item in group.Items)
+                                        {
+                                            bool isDeny = Model.SelectedDenyPermissions?.Contains(item.Value) ?? false;
+                                            <label class="perm-cb deny @(isDeny ? "checked" : "")">
+                                                <input type="checkbox" name="SelectedDenyPermissions" value="@item.Value"
+                                                @(isDeny ? "checked" : "")
+                                                       onchange="syncCbClass(this, true)" />
+                                                <span class="perm-cb-label">@item.Label</span>
+                                            </label>
+                                        }
+                                    </div>
                                 </div>
                             }
                         </div>
                     </div>
                 </div>
-                <span asp-validation-for="NguoiDungId" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="UserName" class="control-label">Username</label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Email" class="control-label">Email</label>
-                <input asp-for="Email" class="form-control" type="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label">Mật khẩu</label>
-                <div style="position:relative;">
-                    <input asp-for="Password" class="form-control" type="password"
-                           id="passwordInput" style="padding-right:40px;" />
-                    <i class="mdi mdi-eye" onclick="togglePass('passwordInput', this)"
-                       style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
-                              cursor:pointer;color:#6c757d;font-size:18px;"></i>
-                </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Role" class="control-label">Role</label>
-                <select asp-for="Role" class="form-control">
-                    <option value="">-- Không gán role --</option>
-                    @foreach (var r in Model.AvailableRoles)
-                    {
-                        <option value="@r">@r</option>
-                    }
-                </select>
-            </div>
-            <div class="form-group mt-3">
-                <input type="submit" value="Tạo tài khoản" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Trở về</a>
-            </div>
-        </form>
-    </div>
+        <div class="fx-actions" style="margin-top:20px;">
+            <button type="submit" class="btn-submit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Tạo tài khoản
+            </button>
+            <a asp-action="Index" class="btn-cancel">Hủy</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
     <script>
-        function toggleDropdown() {
-            const trigger = document.querySelector('.custom-select-trigger');
-            const dropdown = document.getElementById('dropdown');
-            const isOpen = dropdown.classList.contains('open');
-            if (isOpen) {
-                closeDropdown();
-            } else {
-                trigger.classList.add('open');
-                dropdown.classList.add('open');
-                document.getElementById('searchInput').focus();
+        // Role permissions data từ server (để hiển thị tham khảo)
+        const rolePermissions = {};
+
+        async function onRoleChange(roleName) {
+            const box = document.getElementById('roleInfoBox');
+            const list = document.getElementById('rolePermList');
+            const denyContainer = document.getElementById('deny-container');
+
+            if (!roleName) {
+                box.style.display = 'none';
+                if (denyContainer) denyContainer.innerHTML =
+                    '<p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">Chọn Role trước.</p>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/Roles/GetRolePermissions?roleName=${encodeURIComponent(roleName)}`);
+                if (!res.ok) return;
+                const perms = await res.json();
+
+                // Hiển thị quyền mặc định
+                list.innerHTML = perms.length
+                    ? perms.map(p => `<span class="role-perm-tag">${p}</span>`).join('')
+                    : '<span style="font-size:0.75rem;color:#9ca3af;">Role này chưa có quyền mặc định</span>';
+                box.style.display = 'block';
+
+                if (!denyContainer) return;
+
+                if (!perms.length) {
+                    denyContainer.innerHTML =
+                        '<p style="font-size:0.82rem;color:#9ca3af;text-align:center;padding:20px 0;">Role này chưa có quyền nào để thu hồi.</p>';
+                    return;
+                }
+
+                // Gọi API lấy label + groupName
+                const labelRes = await fetch(
+                    `/Permissions/GetPermissionLabels?values=${perms.map(p => encodeURIComponent(p)).join('&values=')}`
+                );
+                let labelMap = {};   // value → label
+                let groupMap = {};   // value → groupName
+
+                if (labelRes.ok) {
+                    const labels = await labelRes.json();
+                    labels.forEach(l => {
+                        labelMap[l.value] = l.label;
+                        groupMap[l.value] = l.groupName; // ← dùng groupName từ DB
+                    });
+                }
+
+                // Group theo groupName từ DB (đúng tên, có dấu)
+                const grouped = {};
+                perms.forEach(p => {
+                    const group = groupMap[p] || p.split('.')[0];
+                    if (!grouped[group]) grouped[group] = [];
+                    grouped[group].push(p);
+                });
+
+                denyContainer.innerHTML = Object.entries(grouped).map(([group, items]) => `
+                    <div class="perm-section">
+                        <div class="perm-section-header">
+                            <p class="perm-section-title">${group}</p>
+                        </div>
+                        <div class="perm-grid">
+                            ${items.map(p => `
+                                <label class="perm-cb deny">
+                                    <input type="checkbox" name="SelectedDenyPermissions" value="${p}"
+                                           onchange="syncCbClass(this)" />
+                                    <span class="perm-cb-label">${labelMap[p] || p}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch(e) {
+                console.error(e);
+                box.style.display = 'none';
             }
         }
 
-        function closeDropdown() {
-            document.querySelector('.custom-select-trigger').classList.remove('open');
-            document.getElementById('dropdown').classList.remove('open');
-            document.getElementById('searchInput').value = '';
-            filterOptions('');
-        }
-
-        function selectOption(el) {
-            const value = el.dataset.value;
-            const label = el.dataset.label;
-            document.getElementById('hdNguoiDungId').value = value;
-            document.getElementById('selectedLabel').textContent = label;
-            document.getElementById('selectedLabel').classList.remove('placeholder');
-            document.getElementById('clearBtn').style.display = 'inline';
-
-            document.querySelectorAll('.custom-select-option').forEach(o => {
-                o.classList.toggle('selected', o.dataset.value == value);
+        function switchTab(tab) {
+            document.querySelectorAll('.perm-tab').forEach((t, i) => {
+                t.classList.toggle('active', (i === 0 && tab === 'extra') || (i === 1 && tab === 'deny'));
             });
-
-            closeDropdown();
+            document.getElementById('tab-extra').classList.toggle('active', tab === 'extra');
+            document.getElementById('tab-deny').classList.toggle('active', tab === 'deny');
         }
 
-        function clearSelect(e) {
-            e.stopPropagation();
-            document.getElementById('hdNguoiDungId').value = '';
-            document.getElementById('selectedLabel').textContent = '-- Tìm nhân viên --';
-            document.getElementById('selectedLabel').classList.add('placeholder');
-            document.getElementById('clearBtn').style.display = 'none';
-            document.querySelectorAll('.custom-select-option').forEach(o => o.classList.remove('selected'));
+        function syncCbClass(cb) {
+            const label = cb.closest('.perm-cb');
+            label.classList.toggle('checked', cb.checked);
         }
 
-        function filterOptions(keyword) {
-            const kw = keyword.toLowerCase();
-            const options = document.querySelectorAll('.custom-select-option');
+        function selectGroupExtra(groupId, checked) {
+            document.querySelectorAll(`.grp-extra-${groupId}`).forEach(cb => {
+                cb.checked = checked;
+                cb.closest('.perm-cb').classList.toggle('checked', checked);
+            });
+        }
+
+        // Custom select nhân viên
+        function toggleCsel() {
+            const trigger = document.querySelector('.csel-trigger');
+            const dropdown = document.getElementById('cselDropdown');
+            if (dropdown.classList.contains('open')) { closeCsel(); }
+            else { trigger.classList.add('open'); dropdown.classList.add('open'); document.getElementById('cselSearch').focus(); }
+        }
+        function closeCsel() {
+            document.querySelector('.csel-trigger').classList.remove('open');
+            document.getElementById('cselDropdown').classList.remove('open');
+            document.getElementById('cselSearch').value = '';
+            filterCsel('');
+        }
+        function selectCsel(el) {
+            document.getElementById('hdNguoiDungId').value = el.dataset.value;
+            const label = document.getElementById('cselLabel');
+            label.textContent = el.dataset.label;
+            label.classList.remove('placeholder');
+            document.querySelectorAll('.csel-option').forEach(o => o.classList.toggle('selected', o.dataset.value == el.dataset.value));
+            closeCsel();
+        }
+        function filterCsel(kw) {
+            const q = kw.toLowerCase();
             let found = false;
-            options.forEach(o => {
-                const match = o.dataset.label.toLowerCase().includes(kw);
-                o.style.display = match ? 'block' : 'none';
+            document.querySelectorAll('.csel-option').forEach(o => {
+                const match = o.dataset.label?.toLowerCase().includes(q);
+                o.style.display = match ? '' : 'none';
                 if (match) found = true;
             });
-
-            const noResult = document.getElementById('noResult');
-            if (!found) {
-                if (!noResult) {
-                    const div = document.createElement('div');
-                    div.id = 'noResult';
-                    div.className = 'custom-select-option no-result';
-                    div.textContent = 'Không tìm thấy nhân viên';
-                    document.getElementById('optionList').appendChild(div);
-                }
-            } else {
-                if (noResult) noResult.remove();
-            }
+            let noRes = document.getElementById('cselNoResult');
+            if (!found && !noRes) {
+                noRes = document.createElement('div');
+                noRes.id = 'cselNoResult';
+                noRes.className = 'csel-option no-result';
+                noRes.textContent = 'Không tìm thấy';
+                document.getElementById('cselList').appendChild(noRes);
+            } else if (found && noRes) noRes.remove();
         }
+        document.addEventListener('click', e => {
+            if (!document.getElementById('nhanVienSelect').contains(e.target)) closeCsel();
+        });
 
-        // Đóng khi click ra ngoài
-        document.addEventListener('click', function (e) {
-            if (!document.getElementById('nhanVienSelect').contains(e.target)) {
-                closeDropdown();
+        document.addEventListener('DOMContentLoaded', () => {
+            const pre = '@Model.NguoiDungId';
+            if (pre && pre !== '0') {
+                const opt = document.querySelector(`.csel-option[data-value="${pre}"]`);
+                if (opt) selectCsel(opt);
             }
         });
 
-        function togglePass(inputId, icon) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.replace('mdi-eye', 'mdi-eye-off');
-            } else {
-                input.type = 'password';
-                icon.classList.replace('mdi-eye-off', 'mdi-eye');
-            }
+        function togglePw(id, icon) {
+            const inp = document.getElementById(id);
+            if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('mdi-eye','mdi-eye-off'); }
+            else { inp.type = 'password'; icon.classList.replace('mdi-eye-off','mdi-eye'); }
         }
-                // Tự động chọn sẵn nhân viên nếu có nguoiDungId từ URL
-        document.addEventListener('DOMContentLoaded', function () {
-            const preselectedId = '@Model.NguoiDungId';
-            if (preselectedId && preselectedId !== '0') {
-                const option = document.querySelector(`.custom-select-option[data-value="${preselectedId}"]`);
-                if (option) {
-                    selectOption(option);
-                }
-            }
-        });
+
+        const vs = document.querySelector('.val-summary');
+        if (vs && vs.innerText.trim()) vs.style.display = 'block';
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
