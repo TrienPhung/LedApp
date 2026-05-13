@@ -37,6 +37,7 @@ namespace LedApp.Controllers
         }
 
         // GET: DanhSachXes
+        [Authorize(Policy = "DanhSachXe.View")]
         public async Task<IActionResult> Index()
         {
             var danhSachXe = _context.DanhSachXes.Include(x => x.TaiXe);
@@ -44,6 +45,7 @@ namespace LedApp.Controllers
         }
 
         // GET: DanhSachXes/Details/5
+        [Authorize(Policy = "DanhSachXe.View")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -55,6 +57,7 @@ namespace LedApp.Controllers
         }
 
         // GET: DanhSachXes/Create
+        [Authorize(Policy = "DanhSachXe.Create")]
         public async Task<IActionResult> Create()
         {
             var taixe = await GetDanhSachTaiXe();
@@ -64,6 +67,7 @@ namespace LedApp.Controllers
 
         // POST: DanhSachXes/Create
         [HttpPost]
+        [Authorize(Policy = "DanhSachXe.Create")]
         public async Task<IActionResult> Create(
             [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,TaiXeId")] DanhSachXe xe)
         {
@@ -84,6 +88,7 @@ namespace LedApp.Controllers
         }
 
         // GET: DanhSachXes/Edit/5
+        [Authorize(Policy = "DanhSachXe.Edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -96,6 +101,7 @@ namespace LedApp.Controllers
 
         // POST: DanhSachXes/Edit/5
         [HttpPost]
+        [Authorize(Policy = "DanhSachXe.Edit")]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,BienSoXe,LoaiXe,TaiTrong,TrangThai,GhiChu,TaiXeId")] DanhSachXe xe)
         {
@@ -130,6 +136,7 @@ namespace LedApp.Controllers
         }
 
         // GET: DanhSachXes/Delete/5
+        [Authorize(Policy = "DanhSachXe.Delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -142,6 +149,7 @@ namespace LedApp.Controllers
 
         // POST: DanhSachXes/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "DanhSachXe.Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
@@ -170,6 +178,7 @@ namespace LedApp.Controllers
 
         // POST: DanhSachXes/BulkDelete
         [HttpPost]
+        [Authorize(Policy = "DanhSachXe.Delete")]
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> BulkDelete([FromBody] BulkDeleteXeRequest request)
         {

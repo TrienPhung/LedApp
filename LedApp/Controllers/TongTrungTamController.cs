@@ -272,7 +272,19 @@ namespace LedApp.Controllers
                 xuatQuaGio = await _context.Xuats.CountAsync(x => x.ThoiGianPhanCong.Date == today && x.TrangThai == (int)TrangThaiXuat.QuaThoiGian),
                 xeGroups
             };
-
+            var xeRoiKho = await _context.Xuats
+                .Where(x => x.ThoiGianPhanCong.Date == today
+                         && x.TrangThai == (int)TrangThaiXuat.DaXuatPhat)
+                .Include(x => x.Xe)
+                .Include(x => x.CuaXuat)
+                .OrderByDescending(x => x.ThoiGianXuatPhat)
+                .Select(x => new
+                {
+                    bienSo = x.Xe != null ? x.Xe.BienSoXe : "--",
+                    tenCua = x.CuaXuat != null ? x.CuaXuat.Ten : "--",
+                    thoiGianRoi = x.ThoiGianXuatPhat
+                })
+                .ToListAsync();
             return Ok(new
             {
                 timestamp = DateTime.Now,
@@ -281,6 +293,7 @@ namespace LedApp.Controllers
                 xeChoRaCong,
                 xeVanChuyenViettel, // xe đang trên đường về (từ API Viettel)
                 xeTrongBai,         // xe trong bãi đầy đủ thông tin
+                xeRoiKho,
                 canhBaos = canhBaoList,
                 kpi
             });

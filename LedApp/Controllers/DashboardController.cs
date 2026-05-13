@@ -19,10 +19,11 @@ namespace LedApp.Controllers
             _context = context;
             _logger = logger;
         }
-
+        [Authorize(Policy = "Dashboard.View")]
         public IActionResult Index() => View();
 
         [HttpGet]
+        [Authorize(Policy = "Dashboard.View")]
         public async Task<IActionResult> GetStats()
         {
             try
@@ -243,6 +244,7 @@ namespace LedApp.Controllers
 
         // ── [MỚI] Export Excel báo cáo hôm nay ──
         [HttpGet]
+        [Authorize(Policy = "Dashboard.Export")]
         public async Task<IActionResult> ExportExcel()
         {
             try

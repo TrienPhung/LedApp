@@ -76,7 +76,7 @@
               "RelativeDocumentMoniker": "Viettel_post_API\\Models\\TrangThaiChuyen.cs",
               "ToolTip": "E:\\CodeLVTN\\LedApp\\Viettel_post_API\\Viettel_post_API\\Models\\TrangThaiChuyen.cs",
               "RelativeToolTip": "Viettel_post_API\\Models\\TrangThaiChuyen.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-02T17:18:31.193Z",
               "EditorCaption": ""
@@ -139,8 +139,7 @@
               "RelativeToolTip": "Viettel_post_API\\Controllers\\DanhSachXesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T17:30:49.276Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-02T17:30:49.276Z"
             },
             {
               "$type": "Document",

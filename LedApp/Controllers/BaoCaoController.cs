@@ -18,10 +18,11 @@ namespace LedApp.Controllers
             _context = context;
             _logger = logger;
         }
-
+        [Authorize(Policy = "BaoCao.View")]
         public IActionResult Index() => View();
 
         [HttpGet]
+        [Authorize(Policy = "BaoCao.View")]
         public async Task<IActionResult> GetBaoCao(string? tuNgay, string? denNgay)
         {
             try
@@ -237,6 +238,7 @@ namespace LedApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "BaoCao.Export")]
         public async Task<IActionResult> ExportExcel(string? tuNgay, string? denNgay)
         {
             var from = string.IsNullOrEmpty(tuNgay) ? DateTime.Today.AddDays(-30) : DateTime.Parse(tuNgay);
